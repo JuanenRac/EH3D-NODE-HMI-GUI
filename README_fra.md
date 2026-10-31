@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.2` |
 | Maturité | Échafaudage |
-| Tests | 7 programmes de test sur ordinateur (79053 vérifications comptées) |
+| Tests | 7 programmes de test sur ordinateur (87767 vérifications comptées) |
 | Pile technique | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Sur du matériel réel | Non : le firmware n'a été ni compilé ni flashé et rien n'a été branché sur une machine |
 
@@ -45,7 +45,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Logiciel | 🟠 | Le projet ESP-IDF (ESP32-P4, LVGL 9, le fichier de réglages dans sa propre partition) est écrit ; il n'a été ni compilé ni flashé. |
-| Tests | 🟢 | 7 programmes de test sur ordinateur réussissent (`ctest`) : 79053 vérifications du fichier de réglages, de la porte, des ordres et alertes vocaux, des claviers, des avis enregistrés, du client du serveur et des textes des écrans en huit langues. |
+| Tests | 🟢 | 7 programmes de test sur ordinateur réussissent (`ctest`) : 87767 vérifications du fichier de réglages, de la porte, des ordres et alertes vocaux, des claviers, des avis enregistrés, du client du serveur et des textes des écrans en huit langues. |
 | Règles de sécurité | 🟡 | Tout déplacement et tout ordre de broche passent par la porte : confirmation à l'écran, verrou de l'arrêt matériel que seul un acquittement à l'écran lève une fois le bouton relâché, aucun déplacement si la liaison n'est pas armée. Couvert par des tests ; jamais essayé avec un vrai bouton d'arrêt. |
 | Voix | 🟡 | Les ordres et alertes vocaux sont reconnus et formulés en huit langues et testés comme du texte ; aucun micro ni haut-parleur n'a été utilisé. |
 | Écrans | 🟠 | Les écrans machine, travail (microSD), machines et stations et réglages sont écrits, en paysage et en portrait, avec l'aspect du programme de bureau ; l'onglet vue est encore une carte vide. Il n'existe qu'un dessin de la mise en page, pas une capture d'un module. |
@@ -62,6 +62,10 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 * Le **module** : le Guition JC8012P4A1C (ESP32-P4 avec 32 Mo de RAM externe, écran tactile MIPI-DSI de 10,1 pouces en 800x1280, un ESP32-C6 pour le Wi-Fi, le codec ES8311 avec amplificateur de haut-parleur et l'entrée micro ES7210). La dalle de l'unité est la nouvelle.
 * **Debout ou couché :** le réglage `orientation` (`auto`, `landscape`, `portrait`) tourne l'image de la dalle : en paysage (1280 x 800) le travail, la vue en plan et le pavé de jog sont en trois colonnes au-dessus de la barre de position, en portrait (800 x 1280) ils s'empilent ; le toucher tombe où l'on touche l'écran dans les deux cas.
 * **La microSD et le serveur, comme un seul flux :** la carte liste les fichiers de perçage et de défonçage ; l'écran envoie le fichier choisi à EH3D-SERVER comme un travail qui attend prêt, l'opérateur le lance par la porte, et la progression, les arrêts pour changement d'outil et la fin reviennent de la flotte en temps réel, comme dans les programmes de bureau et le nœud. La réponse du serveur pour chaque travail est enregistrée sur la carte.
+* **Les outils du fichier et la broche :** quand un fichier est choisi, la page du travail montre ce qu'il contient (les outils, leur diamètre et le nombre de trous ou de découpes de chacun) et une pastille par outil : un appui le désactive ou le réactive, et le travail part au serveur sans lui (`skip_tools`) ; si tous les outils sont désactivés, rien n'est envoyé. Elle montre aussi la broche de la machine (`original` ou `vfd`) avec ses vitesses, comme le serveur les donne. Écrit et testé sur un ordinateur (`core/job_tools.hpp`) ; non vu sur un module.
+* **La porte respecte la broche :** un ordre de broche porte les tours qu'il demande (`spindle_rpm`, ce que demande le bouton de la broche) et la porte ne le laisse jamais dépasser le plus petit de `spindle_max_rpm` et de la vitesse maximale de la broche que porte la machine, telle que le serveur la donne. Avec `spindle_over = clip` (par défaut) un ordre qui en demande plus est ramené à cette vitesse et l'écran le dit ; avec `refuse` il est refusé avec une raison. La confirmation montre les tours que la broche recevra vraiment. Écrit et testé sur un ordinateur ; non vu sur un module.
+* **Un travail arrêté reprend :** quand un travail quitte la machine, l'écran demande au serveur comment il s'est terminé ; un travail annulé ou en échec est montré comme arrêté, avec les trous (découpes) qu'il a faits, et un bouton renvoie le même fichier avec `skip` égal à ce qui est déjà fait, de sorte que seul le reste est percé ou fraisé. Les outils désactivés le restent et le démarrage passe par la porte comme tout autre. Écrit et testé sur un ordinateur ; non vu sur un module.
+* **Percer puis fraiser :** un fichier de perçage et un fichier de fraisage choisis l'un après l'autre sont deux programmes d'un même travail : quand le serveur dit que le perçage est terminé, le fraisage est créé et attend que l'opérateur le démarre, après le changement d'outil, et la page du travail nomme le programme suivant. Écrit et testé sur un ordinateur ; non vu sur un module.
 
 ## 🧩 Rôle dans EH3D
 
@@ -162,6 +166,8 @@ Tout ce qui est ajusté est une ligne de `hmi.cfg` (copiez `hmi.cfg.example` dan
 | `confirm_timeout_ms` | 8000 | 1000 - 60000 | combien de temps une confirmation attend |
 | `jog_max_mm` | 20 | 1 - 200 | le plus long jog que l'écran envoie |
 | `spindle_max_rpm` | 24000 | 0 - 65535 | la vitesse de broche maximale demandée (0 : ne démarre jamais la broche) |
+| `spindle_rpm` | 12000 | 0 - 65535 | les tours que demande le bouton de la broche (0 : la vitesse du travail) ; la porte les ramène à ce que donne la broche |
+| `spindle_over` | clip | clip / refuse | un ordre qui demande plus de tours que la broche n'en donne : ramené à sa vitesse maximale avec avertissement, ou refusé |
 | `hw_stop_required` | on | on / off | ne pilote la machine que si l'entrée d'arrêt matériel est câblée et relâchée |
 | `voice_orders` | off | on / off | accepte les ordres vocaux |
 | `voice_confirm` | off | on / off | accepte un oui parlé comme confirmation d'un déplacement |
@@ -182,7 +188,7 @@ Le firmware n'a pas encore été compilé : le moment venu, `idf.py set-target e
 
 ## 🧪 Tests
 
-Les tests sur ordinateur (`build.bat` ou `./build.sh`, puis `ctest`) sont deux programmes et tout passe : `test_hmi` (638 vérifications) sur le fichier de réglages, la porte (l'arrêt passe toujours, verrou de l'arrêt matériel, confirmation, délai et débordement de l'horloge, règles vocales, interrupteurs), les ordres et alertes vocaux et les textes d'écran en huit langues ; et `test_workflow` (115 vérifications) sur l'orientation et le toucher, les fichiers de la carte (types, noms sûrs, tri), le lecteur JSON, les requêtes et réponses du serveur et le déroulement d'un travail de la carte à sa fin. Les deux autres programmes couvrent les claviers (`test_keyboard`, 137 vérifications : chaque réglage a son clavier, les plages du pavé sont celles du fichier de réglages, les décimales, le signe, les flèches, le clavier complet de chaque langue, la majuscule, les symboles et la longueur) et les avis enregistrés (`test_notices`, 66 vérifications : le réglage, le fichier de chaque langue et genre). Trois programmes de plus : `test_machine` (55 vérifications : les types de machine, le refus de la broche et la phrase dans chaque langue), `test_quality` (911 vérifications : les requêtes, la lecture du rapport, chaque constat) et `test_locales` (76655 vérifications : chaque clé a un texte dans chacune des 29 autres langues, rien n'est vide ni trop long, l'écriture de chaque langue est la bonne, et tout caractère pouvant être dessiné est dans la plage des polices générées).
+Les tests sur ordinateur (`build.bat` ou `./build.sh`, puis `ctest`) sont deux programmes et tout passe : `test_hmi` (955 vérifications) sur le fichier de réglages, la porte (l'arrêt passe toujours, verrou de l'arrêt matériel, confirmation, délai et débordement de l'horloge, règles vocales, interrupteurs), les ordres et alertes vocaux et les textes d'écran en huit langues ; et `test_workflow` (185 vérifications) sur l'orientation et le toucher, les fichiers de la carte (types, noms sûrs, tri), le lecteur JSON, les requêtes et réponses du serveur et le déroulement d'un travail de la carte à sa fin. Les deux autres programmes couvrent les claviers (`test_keyboard`, 231 vérifications : chaque réglage a son clavier, les plages du pavé sont celles du fichier de réglages, les décimales, le signe, les flèches, le clavier complet de chaque langue, la majuscule, les symboles et la longueur) et les avis enregistrés (`test_notices`, 266 vérifications : le réglage, le fichier de chaque langue et genre). Trois programmes de plus : `test_machine` (55 vérifications : les types de machine, le refus de la broche et la phrase dans chaque langue), `test_quality` (911 vérifications : les requêtes, la lecture du rapport, chaque constat) et `test_locales` (85164 vérifications : chaque clé a un texte dans chacune des 29 autres langues, rien n'est vide ni trop long, l'écriture de chaque langue est la bonne, et tout caractère pouvant être dessiné est dans la plage des polices générées).
 
 ## 🏗️ Compilation et publication
 
@@ -215,6 +221,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── voice.hpp                                     ordres et alertes vocaux en huit langues
 │   ├── orientation.hpp sdfiles.hpp                   portrait et paysage, fichiers de la carte
 │   ├── server_link.hpp workflow.hpp job_memory.hpp   client du serveur et déroulement d'un travail
+│   ├── job_tools.hpp                                 les outils d'un fichier et ceux désactivés
 │   ├── quality.hpp                                   le contrôle qualité et l'anneau de LED
 │   ├── ui_text.hpp keyboard.hpp notices.hpp          textes, claviers et avis
 │   ├── locales.hpp locales_gen.hpp font_ranges.hpp   37 langues et plages de polices

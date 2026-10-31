@@ -70,3 +70,10 @@ f.image_blurry	φωτογραφία εκτός εστίασης
 f.not_calibrated	ορίστε πρώτα την κλίμακα
 f.nothing_to_check	κανένας έλεγχος δεν είναι ενεργός
 f.no_expected_holes	καμία τρύπα της εργασίας στην εικόνα
+ui.Holes	οπές
+ui.Cuts	κοπές
+ui.SpindleCut	Η εντολή περιορίστηκε στη μέγιστη ταχύτητα του άξονα
+ui.WhySpindleFast	Η εντολή ζητά περισσότερες στροφές από όσες δίνει ο άξονας.
+ui.Resume	Συνέχεια
+ui.Stopped	Σταμάτησε
+ui.Next	Επόμενο

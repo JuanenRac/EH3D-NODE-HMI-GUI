@@ -70,3 +70,10 @@ f.image_blurry	stampa mhux fuq il-fokus
 f.not_calibrated	waqqaf l-iskala qabel
 f.nothing_to_check	ebda kontroll mhu mixgħul
 f.no_expected_holes	ebda toqba tax-xogħol fil-veduta
+ui.Holes	toqob
+ui.Cuts	qtugħ
+ui.SpindleCut	Il-kmand ġie limitat għall-ogħla veloċità tal-ispindil
+ui.WhySpindleFast	Il-kmand jitlob aktar rotazzjonijiet minn dak li jagħti l-ispindil.
+ui.Resume	Kompli
+ui.Stopped	Waqaf
+ui.Next	Li jmiss

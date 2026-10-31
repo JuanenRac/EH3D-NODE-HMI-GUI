@@ -30,7 +30,7 @@
 |---|---|
 | Versión | `0.0.2` |
 | Madurez | Andamiaje |
-| Pruebas | 7 programas de prueba en el ordenador (79053 comprobaciones contadas) |
+| Pruebas | 7 programas de prueba en el ordenador (87767 comprobaciones contadas) |
 | Pila tecnológica | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | En hardware real | No: el firmware no se ha compilado ni grabado y nada se ha conectado a una máquina |
 
@@ -45,7 +45,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Software | 🟠 | El proyecto ESP-IDF (ESP32-P4, LVGL 9, el fichero de ajustes en su propia partición) está escrito; no se ha compilado ni grabado. |
-| Pruebas | 🟢 | Pasan 7 programas de prueba en el ordenador (`ctest`): 79053 comprobaciones del fichero de ajustes, la compuerta, las órdenes y avisos por voz, los teclados, los avisos grabados, el cliente del servidor y los textos de las pantallas en ocho idiomas. |
+| Pruebas | 🟢 | Pasan 7 programas de prueba en el ordenador (`ctest`): 87767 comprobaciones del fichero de ajustes, la compuerta, las órdenes y avisos por voz, los teclados, los avisos grabados, el cliente del servidor y los textos de las pantallas en ocho idiomas. |
 | Reglas de seguridad | 🟡 | Todo movimiento y toda orden de husillo pasan por la compuerta: confirmación en la pantalla, pestillo de la parada por hardware que solo borra un reconocimiento en la pantalla cuando el pulsador está suelto, ningún movimiento con el enlace sin armar. Cubierto por pruebas; nunca probado con un pulsador de parada real. |
 | Voz | 🟡 | Las órdenes y avisos por voz se reconocen y se formulan en ocho idiomas y se prueban como texto; no se ha usado ningún micrófono ni altavoz. |
 | Pantallas | 🟠 | Las pantallas de máquina, trabajo (microSD), máquinas y estaciones y ajustes están escritas, en horizontal y en vertical, con el aspecto del programa de escritorio; la pestaña del visor sigue siendo una tarjeta vacía. Solo existe un dibujo del diseño, no una captura de un módulo. |
@@ -62,6 +62,10 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 * El **módulo**: el Guition JC8012P4A1C (ESP32-P4 con 32 MB de RAM externa, pantalla táctil MIPI-DSI de 10,1 pulgadas y 800x1280, un ESP32-C6 para el Wi-Fi, el códec ES8311 con amplificador de altavoz y la entrada de micrófono ES7210). El panel de la unidad es el nuevo.
 * **En vertical o en horizontal:** el ajuste `orientation` (`auto`, `landscape`, `portrait`) gira la imagen del panel: en horizontal (1280 x 800) el trabajo, la vista en planta y el pad de movimiento van en tres columnas sobre la barra de posición, en vertical (800 x 1280) se apilan; el toque cae donde se toca la pantalla en ambos.
 * **La microSD y el servidor, como un solo flujo:** la tarjeta lista los ficheros de taladrado y fresado; la pantalla envía el fichero elegido a EH3D-SERVER como un trabajo que espera listo, el operador lo inicia por la compuerta, y el progreso, las paradas por cambio de herramienta y el final vuelven desde la flota en tiempo real, igual que en los programas de escritorio y el nodo. La respuesta del servidor para cada trabajo se guarda en la tarjeta.
+* **Las herramientas del archivo y el husillo:** al elegir un archivo la página del trabajo muestra lo que contiene (las herramientas, su diámetro y cuántos taladros o cortes tiene cada una) y una ficha por herramienta: un toque la desactiva o la activa, y el trabajo se envía al servidor sin ella (`skip_tools`); con todas desactivadas no se envía nada. También muestra el husillo que lleva la máquina (`original` o `vfd`) con sus revoluciones, según el servidor. Escrito y probado en un ordenador (`core/job_tools.hpp`); sin verlo en un módulo.
+* **La compuerta respeta el husillo:** una orden de husillo lleva las vueltas que pide (`spindle_rpm`, lo que pide el botón del husillo) y la compuerta nunca la deja pasar de lo menor entre `spindle_max_rpm` y la velocidad máxima del husillo que lleva la máquina, según dice el servidor. Con `spindle_over = clip` (por defecto) una orden que pide más se recorta a esa velocidad y la pantalla lo avisa; con `refuse` se rechaza con un motivo. La confirmación muestra las vueltas que el husillo recibirá de verdad. Escrito y probado en el ordenador; sin ver en un módulo.
+* **Un trabajo parado continúa:** cuando un trabajo sale de la máquina la pantalla pregunta al servidor cómo terminó; uno cancelado o fallido se muestra como parado, con los taladros (cortes) que hizo, y un botón envía de nuevo el mismo archivo con `skip` igual a los ya hechos, de modo que solo se taladra o fresa el resto. Las herramientas apagadas siguen apagadas y el inicio pasa por la compuerta como cualquier otro. Escrito y probado en el ordenador; sin ver en un módulo.
+* **Taladrar y después fresar:** un archivo de taladrado y uno de fresado elegidos uno tras otro son dos programas de un mismo trabajo: cuando el servidor dice que el taladrado terminó, se crea el fresado y espera a que el operario lo inicie, tras el cambio de herramienta, y la página del trabajo nombra el programa que viene después. Escrito y probado en el ordenador; sin ver en un módulo.
 
 ## 🧩 Papel en EH3D
 
@@ -162,6 +166,8 @@ Todo lo afinado es una línea de `hmi.cfg` (copia `hmi.cfg.example` a la partici
 | `confirm_timeout_ms` | 8000 | 1000 - 60000 | cuánto espera una confirmación |
 | `jog_max_mm` | 20 | 1 - 200 | el movimiento manual más largo que envía la pantalla |
 | `spindle_max_rpm` | 24000 | 0 - 65535 | la velocidad máxima de husillo que pide (0: nunca arranca el husillo) |
+| `spindle_rpm` | 12000 | 0 - 65535 | las vueltas que pide el botón del husillo (0: la velocidad que dice el trabajo); la compuerta las recorta a lo que da el husillo |
+| `spindle_over` | clip | clip / refuse | una orden con más vueltas de las que da el husillo: se recorta a su velocidad máxima y se avisa, o se rechaza |
 | `hw_stop_required` | on | on / off | maneja la máquina solo con la entrada de parada por hardware cableada y suelta |
 | `voice_orders` | off | on / off | acepta órdenes por voz |
 | `voice_confirm` | off | on / off | acepta un sí hablado como confirmación de un movimiento |
@@ -182,7 +188,7 @@ El firmware todavía no se ha compilado: cuando se compile, `idf.py set-target e
 
 ## 🧪 Pruebas
 
-Las pruebas en el ordenador (`build.bat` o `./build.sh`, y luego `ctest`) son dos programas y pasa todo: `test_hmi` (638 comprobaciones) del fichero de ajustes, la compuerta (la parada siempre pasa, pestillo de la parada por hardware, confirmación, tiempo límite y vuelta del reloj, reglas de voz, interruptores), las órdenes y avisos por voz y los textos de pantalla en ocho idiomas; y `test_workflow` (115 comprobaciones) de la orientación y el toque, los ficheros de la tarjeta (tipos, nombres seguros, orden), el lector de JSON, las peticiones y respuestas del servidor y el flujo de un trabajo desde la tarjeta hasta su final. Los otros dos programas cubren los teclados (`test_keyboard`, 137 comprobaciones: cada ajuste tiene su teclado, los rangos del teclado numérico son los del fichero de ajustes, los decimales, el signo, las flechas, el teclado completo de cada idioma, la mayúscula, los símbolos y la longitud) y los avisos grabados (`test_notices`, 66 comprobaciones: el ajuste, el fichero de cada idioma y género). Tres programas más: `test_machine` (55 comprobaciones: los tipos de máquina, la negativa del husillo y la frase en cada idioma), `test_quality` (911 comprobaciones: las peticiones, la lectura del informe, cada hallazgo) y `test_locales` (76655 comprobaciones: cada clave tiene texto en cada uno de los otros 29 idiomas, nada está vacío ni es demasiado largo, la escritura de cada idioma es la correcta, y todo carácter que pueda dibujarse está en el rango de las fuentes generadas).
+Las pruebas en el ordenador (`build.bat` o `./build.sh`, y luego `ctest`) son dos programas y pasa todo: `test_hmi` (955 comprobaciones) del fichero de ajustes, la compuerta (la parada siempre pasa, pestillo de la parada por hardware, confirmación, tiempo límite y vuelta del reloj, reglas de voz, interruptores), las órdenes y avisos por voz y los textos de pantalla en ocho idiomas; y `test_workflow` (185 comprobaciones) de la orientación y el toque, los ficheros de la tarjeta (tipos, nombres seguros, orden), el lector de JSON, las peticiones y respuestas del servidor y el flujo de un trabajo desde la tarjeta hasta su final. Los otros dos programas cubren los teclados (`test_keyboard`, 231 comprobaciones: cada ajuste tiene su teclado, los rangos del teclado numérico son los del fichero de ajustes, los decimales, el signo, las flechas, el teclado completo de cada idioma, la mayúscula, los símbolos y la longitud) y los avisos grabados (`test_notices`, 266 comprobaciones: el ajuste, el fichero de cada idioma y género). Tres programas más: `test_machine` (55 comprobaciones: los tipos de máquina, la negativa del husillo y la frase en cada idioma), `test_quality` (911 comprobaciones: las peticiones, la lectura del informe, cada hallazgo) y `test_locales` (85164 comprobaciones: cada clave tiene texto en cada uno de los otros 29 idiomas, nada está vacío ni es demasiado largo, la escritura de cada idioma es la correcta, y todo carácter que pueda dibujarse está en el rango de las fuentes generadas).
 
 ## 🏗️ Compilación y publicación
 
@@ -215,6 +221,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── voice.hpp                                     órdenes y avisos por voz en ocho idiomas
 │   ├── orientation.hpp sdfiles.hpp                   diseños vertical y horizontal, ficheros de la tarjeta
 │   ├── server_link.hpp workflow.hpp job_memory.hpp   cliente del servidor y flujo de un trabajo
+│   ├── job_tools.hpp                                 las herramientas de un archivo y las desactivadas
 │   ├── quality.hpp                                   la verificación de calidad y el aro de LEDs
 │   ├── ui_text.hpp keyboard.hpp notices.hpp          textos, teclados y avisos
 │   ├── locales.hpp locales_gen.hpp font_ranges.hpp   37 idiomas y rangos de fuente

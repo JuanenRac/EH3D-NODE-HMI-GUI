@@ -70,3 +70,10 @@ f.image_blurry	paveikslėlis neryškus
 f.not_calibrated	pirmiausia nustatykite mastelį
 f.nothing_to_check	neįjungta jokia patikra
 f.no_expected_holes	vaizde nėra jokios darbo skylės
+ui.Holes	skylės
+ui.Cuts	pjūviai
+ui.SpindleCut	Komanda apribota iki didžiausio suklio greičio
+ui.WhySpindleFast	Komanda prašo daugiau apsisukimų, nei suklys gali duoti.
+ui.Resume	Tęsti
+ui.Stopped	Sustabdyta
+ui.Next	Kitas

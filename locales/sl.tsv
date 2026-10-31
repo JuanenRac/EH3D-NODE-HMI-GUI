@@ -70,3 +70,10 @@ f.image_blurry	slika ni ostra
 f.not_calibrated	najprej nastavite merilo
 f.nothing_to_check	nobeno preverjanje ni vklopljeno
 f.no_expected_holes	v pogledu ni izvrtine opravila
+ui.Holes	luknje
+ui.Cuts	rezi
+ui.SpindleCut	Ukaz omejen na največjo hitrost vretena
+ui.WhySpindleFast	Ukaz zahteva več vrtljajev, kot jih vreteno daje.
+ui.Resume	Nadaljuj
+ui.Stopped	Ustavljeno
+ui.Next	Naslednji

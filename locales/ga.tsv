@@ -70,3 +70,10 @@ f.image_blurry	pictiúr as fócas
 f.not_calibrated	socraigh an scála ar dtús
 f.nothing_to_check	níl aon seiceáil ar siúl
 f.no_expected_holes	níl poll den obair le feiceáil
+ui.Holes	poill
+ui.Cuts	gearrthaí
+ui.SpindleCut	Cuireadh an t-ordú faoi theorainn luas uasta na fearsaide
+ui.WhySpindleFast	Iarrann an t-ordú níos mó rothlaí ná mar a thugann an fhearsaid.
+ui.Resume	Lean ar aghaidh
+ui.Stopped	Stoptha
+ui.Next	An chéad cheann eile

@@ -22,6 +22,9 @@ enum class T : unsigned {
     AskMove, AskSpindle,
     WhyHardwareStop, WhyNotArmed, WhyVoiceOff, WhyNoStop, WhySpindle, WhyNoSpindleHere,
     Feed, Progress, Tool, Jog,
+    Holes, Cuts,
+    SpindleCut, WhySpindleFast,
+    Resume, Stopped, Next,
     Count
 };
 
@@ -62,6 +65,13 @@ inline const Row& text_row(T t) {
         {"Progress", "Progreso", "Avanzamento lavoro", "Fortschritt", "Progression", "Progresso", "进度", "進行"},
         {"Tool", "Herramienta", "Utensile", "Werkzeug", "Outil", "Ferramenta", "刀具", "工具"},
         {"Jog", "Movimiento manual", "Spostamento manuale", "Tippbetrieb", "Jog", "Movimento manual", "点动", "ジョグ"},
+        {"holes", "taladros", "fori", "Bohrungen", "trous", "furos", "孔", "穴"},
+        {"cuts", "cortes", "tagli", "Fräsungen", "découpes", "cortes", "切削", "切削"},
+        {"Order cut to the top speed of the spindle", "Orden recortada a la velocidad máxima del husillo", "Ordine ridotto alla velocità massima del mandrino", "Befehl auf die Höchstdrehzahl der Spindel gekürzt", "Ordre ramené à la vitesse maximale de la broche", "Ordem reduzida à velocidade máxima do fuso", "指令已降至主轴最高转速", "指令をスピンドルの最高回転数に制限しました"},
+        {"The order asks for more turns than the spindle gives.", "La orden pide más vueltas de las que da el husillo.", "L'ordine chiede più giri di quanti ne dia il mandrino.", "Der Befehl verlangt mehr Drehzahl, als die Spindel liefert.", "L'ordre demande plus de tours que la broche n'en donne.", "A ordem pede mais rotações do que o fuso dá.", "指令要求的转速超过主轴能提供的转速。", "指令の回転数がスピンドルの上限を超えています。"},
+        {"Resume", "Reanudar", "Riprendi", "Fortsetzen", "Reprendre", "Retomar", "继续", "再開"},
+        {"Stopped", "Parado", "Fermato", "Gestoppt", "Arrêté", "Parado", "已停止", "停止済み"},
+        {"Next", "Siguiente", "Successivo", "Weiter", "Suivant", "Seguinte", "下一个", "次"},
     }};
     return rows[static_cast<std::size_t>(t)];
 }
@@ -79,6 +89,7 @@ inline const char* why_text(Why w, Lang l) {
         case Why::NoHardwareStop: return text(T::WhyNoStop, l);
         case Why::SpindleDisabled: return text(T::WhySpindle, l);
         case Why::NoSpindleHere: return text(T::WhyNoSpindleHere, l);
+        case Why::SpindleTooFast: return text(T::WhySpindleFast, l);
         default: return "";
     }
 }

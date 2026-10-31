@@ -70,3 +70,10 @@ f.image_blurry	irudia fokuz kanpo
 f.not_calibrated	konfiguratu lehenik eskala
 f.nothing_to_check	ez dago egiaztapenik aktibatuta
 f.no_expected_holes	lanaren zulorik ez dago ikusgai
+ui.Holes	zuloak
+ui.Cuts	mozketak
+ui.SpindleCut	Agindua ardatzaren gehieneko abiadurara mugatu da
+ui.WhySpindleFast	Aginduak ardatzak ematen duena baino bira gehiago eskatzen du.
+ui.Resume	Jarraitu
+ui.Stopped	Geldituta
+ui.Next	Hurrengoa

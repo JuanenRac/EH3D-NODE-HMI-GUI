@@ -70,3 +70,10 @@ f.image_blurry	obraz nieostry
 f.not_calibrated	najpierw ustaw skalę
 f.nothing_to_check	żadna kontrola nie jest włączona
 f.no_expected_holes	w widoku nie ma otworu zadania
+ui.Holes	otwory
+ui.Cuts	cięcia
+ui.SpindleCut	Polecenie ograniczone do maksymalnej prędkości wrzeciona
+ui.WhySpindleFast	Polecenie żąda więcej obrotów, niż daje wrzeciono.
+ui.Resume	Wznów
+ui.Stopped	Zatrzymano
+ui.Next	Dalej

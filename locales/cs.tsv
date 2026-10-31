@@ -70,3 +70,10 @@ f.image_blurry	snímek je rozostřený
 f.not_calibrated	nejdřív nastavte měřítko
 f.nothing_to_check	není zapnuta žádná kontrola
 f.no_expected_holes	v záběru není žádný otvor úlohy
+ui.Holes	otvory
+ui.Cuts	řezy
+ui.SpindleCut	Příkaz snížen na nejvyšší otáčky vřetena
+ui.WhySpindleFast	Příkaz žádá více otáček, než vřeteno dává.
+ui.Resume	Pokračovat
+ui.Stopped	Zastaveno
+ui.Next	Další

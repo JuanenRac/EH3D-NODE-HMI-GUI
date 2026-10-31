@@ -6,6 +6,7 @@
 
 #include "../core/gate.hpp"
 #include "../core/hmi_config.hpp"
+#include "../core/job_tools.hpp"
 #include "../core/orientation.hpp"
 #include "../core/quality.hpp"
 #include "../core/sdfiles.hpp"
@@ -24,7 +25,7 @@ struct State {
     std::string note;  // the line under the buttons: why something was refused, what the server answered
 };
 
-enum class What { Action, AckRelease, Confirm, Cancel, SetOrientation, SetLanguage, OpenCard, SendJob, RefreshCard, LightSet, InspectRun, InspectPreset, InspectCalibrate };
+enum class What { Action, AckRelease, Confirm, Cancel, SetOrientation, SetLanguage, OpenCard, SendJob, RefreshCard, LightSet, InspectRun, InspectPreset, InspectCalibrate, ToggleTool, Resume, SetSpindleOver };
 
 /// What the operator did on the screen; the application runs it through the gate.
 struct Request {
@@ -36,6 +37,8 @@ struct Request {
     int light = 0;        // LightSet and InspectRun: the index in hmi::kLightLevels
     int hole = 0;         // InspectRun: the index in hmi::kHoleWidths
     int preset = 0;       // InspectPreset: 0 standard, 1 fine pitch, 2 prototype
+    int tool = 0;         // ToggleTool: the number of the tool (the pen of a routing file) to switch off or on
+    bool refuse = false;  // SetSpindleOver: true = refuse an order beyond the spindle, false = cut it to the top speed
 };
 
 /// Builds the screens for a layout (with the LVGL lock taken). `post` is called, in the LVGL task, for each request of the operator.
@@ -50,6 +53,21 @@ void refused(hmi::Why why, const hmi::Settings& settings);
 void show_fleet(const hmi::FleetView& fleet, const hmi::Settings& settings);
 /// Shows the quality check: the verdict of the last one, the ring of LEDs, and whether a check is running now.
 void show_quality(const hmi::QualityView& quality, const hmi::LightView& light, bool running, const hmi::Settings& settings);
+/// Shows what the chosen file holds: a chip for each tool (a tap switches it off or on), how many holes or cuts stay in the job, and the spindle of the machine.
+void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, const hmi::Settings& settings);
+/// Where the job is, for the job page: a job stopped part way (and whether it can go on from there), the holes (cuts) already done, and the program that comes next.
+struct FlowState {
+    bool stopped = false;
+    bool can_resume = false;
+    bool route = false;     // the program in turn is a routing one
+    int done = 0;           // stopped: the holes (paths) the stopped job did
+    int total = 0;          // stopped: the holes (paths) it had
+    int skipped = 0;        // the holes (paths) already done before the job in turn
+    std::string next;       // the name of the file of the program that comes next, empty when none
+    std::string message;    // why the job stopped, as the server says it
+};
+/// Shows where the job is: what a stopped job did and the button to go on from there, and the program that comes next.
+void show_flow(const FlowState& flow, const hmi::Settings& settings);
 /// Shows the files of the card.
 void show_card(const std::vector<hmi::Entry>& files, const hmi::Settings& settings);
 

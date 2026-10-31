@@ -222,12 +222,150 @@ static void a_job_is_followed_again_after_a_reset() {
     CHECK(v.stage() == Stage::Finished);
 }
 
+static void tools_of_a_file_and_the_spindle() {
+    // the summary of a drilling file: the tools declared, their diameters (inches are turned into mm) and the holes of each
+    const std::string drl = "M48\nMETRIC,TZ\nT1C0.8\nT02C1.0\nT3C3.0\n%\nT1\nX1.0Y1.0\nX2.0Y1.0\nT2\nX3.0Y3.0\nT0\nM30\n";
+    FileSummary s = summarize_drill(drl);
+    CHECK(s.tools.size() == 3 && s.total == 3 && !s.route);
+    CHECK(s.tools[0].number == 1 && s.tools[0].diameter_mm == 0.8 && s.tools[0].count == 2);
+    CHECK(s.tools[1].number == 2 && s.tools[1].count == 1 && s.tools[2].number == 3 && s.tools[2].count == 0);
+    FileSummary inch = summarize_drill("M48\nINCH,LZ\nT1C0.0315\n%\nT1\nX1Y1\n");
+    CHECK(inch.tools.size() == 1 && inch.tools[0].diameter_mm > 0.79 && inch.tools[0].diameter_mm < 0.81 && inch.total == 1);
+    CHECK(summarize_drill("").tools.empty() && summarize_drill("garbage\n\n").total == 0);
+
+    // a routing file: the pens and their cuts
+    FileSummary r = summarize_route("IN;SP1;PU0,0;PD10,0,10,10;PU;SP2;PU5,5;PD6,6;PU;PD7,7;SP0;");
+    CHECK(r.route && r.tools.size() == 2 && r.tools[0].number == 1 && r.tools[0].count == 1 && r.tools[1].number == 2 && r.tools[1].count == 2 && r.total == 3);
+    CHECK(summarize_route("IN;PU0,0;PD1,1;").tools.empty());  // no pen taken: nothing to switch
+
+    // switching tools off
+    ToolSwitch sw;
+    sw.reset(s);
+    CHECK(sw.off().empty() && sw.remaining() == 3 && !sw.nothing_left());
+    CHECK(sw.toggle(2) && sw.is_off(2) && sw.remaining() == 2 && sw.off().size() == 1);
+    CHECK(!sw.toggle(9));  // the file has no such tool
+    CHECK(sw.toggle(2) && !sw.is_off(2) && sw.off().empty());
+    CHECK(sw.toggle(1) && sw.toggle(2) && sw.nothing_left() && sw.remaining() == 0);
+
+    // the flow: the switches go to the server as `skip_tools`, and a job with nothing left is not sent
+    Workflow w;
+    std::string why;
+    CHECK(w.choose("board.NCD", drl, why) && w.tool_switch().summary().tools.size() == 3);
+    Json b;
+    CHECK(parse_json(w.create_request("m1").body, b) && b.get("skip_tools") == nullptr);  // all on: the request is the same as before
+    CHECK(w.toggle_tool(3) && w.toggle_tool(1));
+    CHECK(parse_json(w.create_request("m1").body, b) && b.get("skip_tools") && b.get("skip_tools")->a.size() == 2 && b.get("skip_tools")->a[0].n == 1 && b.get("skip_tools")->a[1].n == 3);
+    CHECK(w.toggle_tool(2) && w.nothing_to_do() && w.create_request("m1").path.empty());
+    CHECK(w.toggle_tool(2) && !w.nothing_to_do() && !w.create_request("m1").path.empty());
+    CHECK(w.choose("other.NCD", drl, why) && w.tool_switch().off().empty());  // a new file starts with every tool on
+    CHECK(w.on_created(ok(201, "{\"id\":\"j1\"}"), why) && !w.toggle_tool(1));  // once the job is made it is the server's
+
+    // the spindle of the machine
+    const char* spindle = "{\"spindle\":\"vfd\",\"guard\":\"reject\",\"limits\":{},\"active\":{\"min_rpm\":6000,\"max_rpm\":24000,\"max_bit_mm\":6},\"node_max_rpm\":24000}";
+    SpindleView v;
+    CHECK(spindle_request("m1").path == "/api/v1/machines/m1/spindle" && spindle_request("m1").method == "GET");
+    CHECK(parse_spindle(spindle, v) && v.known && v.kind == "vfd" && v.min_rpm == 6000 && v.max_rpm == 24000 && v.guard == "reject");
+    CHECK(spindle_ceiling(60000, v) == 24000 && spindle_ceiling(12000, v) == 12000 && spindle_ceiling(0, v) == 0);
+    CHECK(parse_spindle("{\"spindle\":\"\",\"guard\":\"reject\",\"active\":null,\"node_max_rpm\":null}", v) && !v.known && spindle_ceiling(24000, v) == 24000);
+    CHECK(!parse_spindle("[]", v) && !parse_spindle("nope", v));
+}
+
+static void a_stopped_job_goes_on_and_two_programs_follow_each_other() {
+    const std::string drl = "M48\nMETRIC,TZ\nT1C0.8\nT2C1.0\n%\nT1\nX1Y1\nX2Y1\nT2\nX3Y3\nX4Y4\nT0\nM30\n";
+    const std::string plt = "IN;SP1;PU0,0;PD10,0,10,10;PU;SP2;PU5,5;PD6,6;PU;";
+    std::string why;
+
+    // the report of the server about a job: how it ended and what it did
+    JobReport jr;
+    CHECK(job_report_request("j1").path == "/api/v1/jobs/j1" && job_report_request("j1").method == "GET");
+    CHECK(parse_job_report("{\"state\":\"cancelled\",\"message\":\"\",\"holes_done\":2,\"holes_total\":4,\"items_done\":9}", jr) && jr.state == "cancelled" && jr.holes_done == 2 && jr.holes_total == 4);
+    CHECK(parse_job_report("{\"state\":\"done\",\"holes_done\":5,\"holes_total\":3}", jr) && jr.holes_total == 5);
+    CHECK(!parse_job_report("{\"id\":\"x\"}", jr) && !parse_job_report("[]", jr));
+    // the job carries the holes that are already done
+    Json b;
+    CHECK(parse_json(job_request("m1", false, "a.ncd", "M48\n", "", {}, 0).body, b) && b.get("skip") == nullptr);
+    CHECK(parse_json(job_request("m1", false, "a.ncd", "M48\n", "", {2}, 3).body, b) && b.get("skip") && b.get("skip")->n == 3 && b.get("skip_tools")->a.size() == 1);
+
+    // a drilling job is started, the operator stops it after two holes: it ends as stopped, with the holes it did
+    Workflow w;
+    CHECK(w.choose("board.NCD", drl, why) && w.on_created(ok(201, "{\"id\":\"j1\"}"), why) && w.on_started(ok(200, "{}"), why));
+    CHECK(!w.want_report());
+    w.on_fleet(fleet_of("j1", "busy", 50, ""), "m1");
+    w.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(w.stage() == Stage::Finished && w.want_report() && w.report_request().path == "/api/v1/jobs/j1");
+    CHECK(w.on_report(ok(200, "{\"state\":\"cancelled\",\"message\":\"stopped\",\"holes_done\":2,\"holes_total\":4}")));
+    CHECK(w.stage() == Stage::Stopped && !w.want_report() && w.done() == 2 && w.total() == 4 && w.can_resume() && w.message() == "stopped");
+    CHECK(w.cancel_request().path.empty() && !w.advance());
+    // go on: the same file is sent again leaving out the two holes that are done, and once more after a second stop
+    CHECK(w.resume(why) && w.stage() == Stage::FileChosen && w.skipped() == 2);
+    CHECK(parse_json(w.create_request("m1").body, b) && b.get("skip") && b.get("skip")->n == 2 && b.str("kind") == "drill");
+    CHECK(w.on_created(ok(201, "{\"id\":\"j2\"}"), why) && w.on_started(ok(200, "{}"), why));
+    w.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(w.on_report(ok(200, "{\"state\":\"failed\",\"message\":\"alarm\",\"holes_done\":1,\"holes_total\":2}")) && w.stage() == Stage::Stopped);
+    CHECK(w.resume(why) && w.skipped() == 3 && parse_json(w.create_request("m1").body, b) && b.get("skip")->n == 3);
+    // the tools switched off stay off when the job goes on
+    CHECK(w.stage() == Stage::FileChosen);
+
+    // a job stopped before any hole cannot go on (it is sent again from the start), and one that was not stopped cannot either
+    Workflow z;
+    CHECK(z.choose("board.NCD", drl, why) && z.on_created(ok(201, "{\"id\":\"j3\"}"), why) && z.on_started(ok(200, "{}"), why));
+    CHECK(!z.can_resume() && !z.resume(why) && !why.empty());
+    z.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(z.on_report(ok(200, "{\"state\":\"cancelled\",\"holes_done\":0,\"holes_total\":4}")) && z.stage() == Stage::Stopped && !z.can_resume());
+    // a report that cannot be read or comes late leaves the job finished and stops the asking
+    Workflow y;
+    CHECK(y.choose("board.NCD", drl, why) && y.on_created(ok(201, "{\"id\":\"j4\"}"), why) && y.on_started(ok(200, "{}"), why));
+    y.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(!y.on_report(ok(502, "")) && y.stage() == Stage::Finished && !y.want_report() && !y.can_resume());
+    // a job followed again after a reset has no file: it cannot go on from here
+    Workflow a;
+    CHECK(a.adopt("j9", "board.NCD"));
+    a.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(a.on_report(ok(200, "{\"state\":\"cancelled\",\"holes_done\":3,\"holes_total\":4}")) && a.stage() == Stage::Stopped && !a.can_resume());
+
+    // two programs: the drilling first whatever the order the files were chosen in, then the routing
+    Workflow c;
+    CHECK(c.choose("outline.plt", plt, why) && c.route() && c.next_name().empty());
+    CHECK(c.choose("board.NCD", drl, why) && !c.route() && c.name() == "board.NCD" && c.next_name() == "outline.plt");
+    c.set_tools("T1C0.8\n");  // the table goes with the drilling file just chosen
+    CHECK(parse_json(c.create_request("m1").body, b) && b.str("kind") == "drill" && b.get("files")->str("dtd") == "T1C0.8\n");
+    CHECK(!c.advance());  // nothing has run yet
+    CHECK(c.on_created(ok(201, "{\"id\":\"d1\"}"), why) && c.on_started(ok(200, "{}"), why));
+    c.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(!c.advance());  // it ended, but the server has not said it ended well
+    CHECK(c.on_report(ok(200, "{\"state\":\"done\",\"holes_done\":4,\"holes_total\":4}")) && c.stage() == Stage::Finished);
+    CHECK(c.advance() && c.stage() == Stage::FileChosen && c.route() && c.name() == "outline.plt" && c.job_id().empty() && c.next_name().empty() && c.percent() == 0);
+    CHECK(parse_json(c.create_request("m1").body, b) && b.str("kind") == "route" && b.get("skip") == nullptr);
+    CHECK(c.on_created(ok(201, "{\"id\":\"r1\"}"), why) && c.start_request().path == "/api/v1/jobs/r1/start");  // started by the operator through the gate
+    CHECK(c.on_started(ok(200, "{}"), why));
+    c.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(c.on_report(ok(200, "{\"state\":\"done\",\"holes_done\":3,\"holes_total\":3}")) && !c.advance());  // the end of the job
+    // the routing can be stopped and go on too
+    Workflow r;
+    CHECK(r.choose("outline.plt", plt, why) && r.on_created(ok(201, "{\"id\":\"r2\"}"), why) && r.on_started(ok(200, "{}"), why));
+    r.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(r.on_report(ok(200, "{\"state\":\"cancelled\",\"holes_done\":1,\"holes_total\":3}")) && r.resume(why));
+    CHECK(parse_json(r.create_request("m1").body, b) && b.str("kind") == "route" && b.get("skip")->n == 1);
+
+    // a drilling file whose tools are all off: the routing is next
+    Workflow e;
+    CHECK(e.choose("board.NCD", drl, why) && e.choose("outline.plt", plt, why));
+    CHECK(e.toggle_tool(1) && e.toggle_tool(2) && e.nothing_to_do() && e.create_request("m1").path.empty());
+    CHECK(e.skip_empty() && e.route() && !e.nothing_to_do() && !e.create_request("m1").path.empty());
+    Workflow f;
+    CHECK(f.choose("board.NCD", drl, why) && f.toggle_tool(1) && f.toggle_tool(2) && !f.skip_empty());  // no program after it
+    // choosing a file once a job was sent starts all over again
+    CHECK(c.choose("another.NCD", drl, why) && c.next_name().empty() && !c.route() && c.skipped() == 0);
+}
+
 int main() {
     orientation_rules();
     sd_files();
     server_client();
     the_flow_of_a_job();
     a_job_is_followed_again_after_a_reset();
+    tools_of_a_file_and_the_spindle();
+    a_stopped_job_goes_on_and_two_programs_follow_each_other();
     std::printf("%d checks, %d failed\n", g_checks, g_failed);
     return g_failed == 0 ? 0 : 1;
 }

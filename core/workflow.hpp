@@ -3,21 +3,24 @@
 // The flow of a job between the screen, the server, the node and the desktop programs, as the screen sees it: a file of the card is chosen,
 // sent to the server (which plans it and keeps it READY; nothing starts by itself), started by the operator through the gate, followed
 // in the fleet as it runs (the desktop programs see the same job at the same time), and answered when it waits for the operator at a tool
-// change. Every step is a request to the server or a reading of its answer, so the flow is tested without a server.
+// change. A job that was stopped goes on from the holes (or paths) already done, and a drilling file and a routing file chosen together run one after the other.
+// Every step is a request to the server or a reading of its answer, so the flow is tested without a server.
 #pragma once
 
 #include <string>
 
+#include "job_tools.hpp"
 #include "sdfiles.hpp"
 #include "server_link.hpp"
 
 namespace hmi {
 
-enum class Stage { Nothing, FileChosen, Ready, Running, Waiting, Finished, Failed };
+enum class Stage { Nothing, FileChosen, Ready, Running, Waiting, Finished, Failed, Stopped };
 
 class Workflow {
 public:
-    /// The operator chose a file of the card (its name and text). A file of another kind than a drilling or routing job is refused.
+    /// The operator chose a file of the card (its name and text). A file of another kind than a drilling or routing job is refused. A drilling file and a routing
+    /// file chosen one after the other are two programs of one job: the drilling goes first, the routing after it. Choosing a file once a job was sent starts again.
     bool choose(const std::string& name, const std::string& text, std::string& why) {
         FileKind k = kind_of_file(name);
         if (k != FileKind::Drill && k != FileKind::Route) {
@@ -28,21 +31,51 @@ public:
             why = "the file is empty";
             return false;
         }
-        name_ = name;
-        text_ = text;
-        route_ = k == FileKind::Route;
+        if (stage_ != Stage::Nothing && stage_ != Stage::FileChosen) {
+            slots_[0] = Slot{};
+            slots_[1] = Slot{};
+        }
+        const bool route = k == FileKind::Route;
+        Slot& s = slots_[route ? 1 : 0];
+        s = Slot{};
+        s.loaded = true;
+        s.route = route;
+        s.name = name;
+        s.text = text;
+        s.sw.reset(route ? summarize_route(text) : summarize_drill(text));  // every tool starts on
+        last_ = route ? 1 : 0;
+        cur_ = first_to_do();
         job_id_.clear();
+        reset_run();
         stage_ = Stage::FileChosen;
         return true;
     }
 
-    /// The tool table that goes with the chosen file (the same name with the extension of the table, read by the application when it exists).
-    void set_tools(const std::string& text) { tools_ = text; }
+    /// The tool table that goes with the file just chosen (the same name with the extension of the table, read by the application when it exists).
+    void set_tools(const std::string& text) { slots_[last_].tools = text; }
 
-    /// The request that sends the chosen file to the machine as a job; empty path when there is nothing to send or no machine is set.
+    /// What the file of the program in turn holds (its tools and how many holes or cuts each has) and which tools the operator switched off; the screen shows both.
+    const ToolSwitch& tool_switch() const { return slots_[cur_].sw; }
+    /// Switches a tool of the chosen file off or on (only before the job is sent); false when there is no such tool or the job is already made.
+    bool toggle_tool(int number) { return stage_ == Stage::FileChosen && slots_[cur_].sw.toggle(number); }
+
+    /// The request that sends the program in turn to the machine as a job, without the tools that are switched off and without the holes (paths) already done; empty
+    /// path when there is nothing to send, no machine is set, or every tool is off (`nothing_to_do`).
     Request create_request(const std::string& machine) const {
-        if (stage_ != Stage::FileChosen || machine.empty()) return {};
-        return job_request(machine, route_, name_, text_, tools_);
+        const Slot& s = slots_[cur_];
+        if (stage_ != Stage::FileChosen || machine.empty() || !s.loaded || s.sw.nothing_left()) return {};
+        return job_request(machine, s.route, s.name, s.text, s.tools, s.sw.off(), s.skip);
+    }
+    /// True when the operator switched off every tool of the program in turn.
+    bool nothing_to_do() const { return stage_ == Stage::FileChosen && slots_[cur_].loaded && slots_[cur_].sw.nothing_left(); }
+    /// The program in turn has nothing left to do (all its tools are off) but the other one has: goes on to it. False when there is no other program to go to.
+    bool skip_empty() {
+        if (!nothing_to_do()) return false;
+        const int other = 1 - cur_;
+        if (!slots_[other].loaded || slots_[other].done || slots_[other].sw.nothing_left()) return false;
+        slots_[cur_].done = true;
+        cur_ = other;
+        return true;
     }
 
     /// The answer of the server to the creation of the job.
@@ -75,15 +108,17 @@ public:
     }
 
     /// After a reset: follow the job that this screen had (its id and name come from `job_memory.hpp`). It counts as running until the next reading of the fleet says
-    /// what it is: still running or waiting, or over (the server no longer shows it on the machine). False when there is no id.
+    /// what it is: still running or waiting, or over (the server no longer shows it on the machine). False when there is no id. The text of the file is not kept, so a
+    /// job followed this way cannot be resumed from here.
     bool adopt(const std::string& job_id, const std::string& name) {
         if (job_id.empty()) return false;
+        slots_[0] = Slot{};
+        slots_[1] = Slot{};
+        cur_ = 0;
+        last_ = 0;
+        slots_[0].name = name;
         job_id_ = job_id;
-        name_ = name;
-        text_.clear();
-        tools_.clear();
-        pause_.clear();
-        percent_ = 0;
+        reset_run();
         stage_ = Stage::Running;
         return true;
     }
@@ -100,34 +135,129 @@ public:
                 stage_ = (m.state == "waiting" || !m.pause_kind.empty()) ? Stage::Waiting : Stage::Running;
                 pause_ = m.pause_kind;
             } else if (stage_ == Stage::Running || stage_ == Stage::Waiting) {
-                // the machine has another job or none: ours is over
+                // the machine has another job or none: ours is over; how it ended (done, stopped, failed) is asked of the server next
                 stage_ = Stage::Finished;
                 percent_ = 100;
                 pause_.clear();
+                unreported_ = true;
             }
             return;
         }
     }
 
+    /// True once a job ended and the screen has not yet asked the server how: the application sends `report_request` and gives the answer to `on_report`.
+    bool want_report() const { return unreported_ && !job_id_.empty(); }
+    Request report_request() const { return want_report() ? job_report_request(job_id_) : Request{}; }
+    /// The answer to `report_request`: a job that is `done` stays finished; one that was cancelled or failed becomes `Stopped`, with the holes (paths) it did. Any
+    /// answer ends the asking. True when the answer said how the job ended.
+    bool on_report(const Response& r) {
+        unreported_ = false;
+        JobReport j;
+        if (stage_ != Stage::Finished || r.status != 200 || !parse_job_report(r.body, j)) return false;
+        if (j.state == "done") {
+            reported_done_ = true;
+            return true;
+        }
+        if (j.state == "cancelled" || j.state == "failed") {
+            stage_ = Stage::Stopped;
+            done_ = j.holes_done;
+            total_ = j.holes_total;
+            message_ = j.message;
+            return true;
+        }
+        return false;
+    }
+
+    /// A job that was stopped can go on: its file is still here and it did some of its work.
+    bool can_resume() const { return stage_ == Stage::Stopped && slots_[cur_].loaded && done_ > 0; }
+    /// Prepares the job to go on from the holes (paths) already done: the program in turn is ready to be sent again with `skip`; the tools switched off stay off. The
+    /// application sends it, and the start goes through the gate as any other.
+    bool resume(std::string& why) {
+        if (!can_resume()) {
+            why = "there is nothing to go on from";
+            return false;
+        }
+        slots_[cur_].skip += done_;
+        job_id_.clear();
+        reset_run();
+        stage_ = Stage::FileChosen;
+        return true;
+    }
+
+    /// The job that was running ended well and the other program of the job is still to do (the routing after the drilling): it comes next. The application sends it
+    /// and the operator starts it, after changing the tool. False when there is nothing after it.
+    bool advance() {
+        if (stage_ != Stage::Finished || !reported_done_) return false;
+        const int other = 1 - cur_;
+        if (!slots_[other].loaded || slots_[other].done) return false;
+        slots_[cur_].done = true;
+        cur_ = other;
+        job_id_.clear();
+        reset_run();
+        stage_ = Stage::FileChosen;
+        return true;
+    }
+    /// The name of the program that comes after the one in turn, empty when there is none.
+    const std::string& next_name() const {
+        static const std::string none;
+        const Slot& o = slots_[1 - cur_];
+        return o.loaded && !o.done ? o.name : none;
+    }
+    /// True when the program in turn is a routing one.
+    bool route() const { return slots_[cur_].route; }
+    /// The holes (paths) already done before the job in turn, and the ones a stopped job did of the ones it had; for the screen.
+    int skipped() const { return slots_[cur_].skip; }
+    int done() const { return done_; }
+    int total() const { return total_; }
+    const std::string& message() const { return message_; }
+
     Stage stage() const { return stage_; }
     int percent() const { return percent_; }
     const std::string& job_id() const { return job_id_; }
-    const std::string& name() const { return name_; }
+    const std::string& name() const { return slots_[cur_].name; }
     /// `tool_change` while the job waits for the operator.
     const std::string& pause() const { return pause_; }
     /// A name for the report of the job on the card, free of anything that is already there.
     std::string report_base() const {
-        std::string b = name_;
+        std::string b = slots_[cur_].name;
         std::size_t dot = b.rfind('.');
         if (dot != std::string::npos && dot > 0) b.resize(dot);
         return b + "-job";
     }
 
 private:
+    struct Slot {
+        bool loaded = false;
+        bool route = false;
+        bool done = false;  // this program of the job has been done
+        std::string name, text, tools;
+        ToolSwitch sw;
+        int skip = 0;  // the holes (paths) already done before this job
+    };
+
+    int first_to_do() const {
+        for (int i = 0; i < 2; ++i)
+            if (slots_[i].loaded && !slots_[i].done) return i;
+        return slots_[0].loaded ? 0 : 1;
+    }
+    void reset_run() {
+        percent_ = 0;
+        done_ = 0;
+        total_ = 0;
+        message_.clear();
+        pause_.clear();
+        unreported_ = false;
+        reported_done_ = false;
+    }
+
     Stage stage_ = Stage::Nothing;
-    std::string name_, text_, tools_, job_id_, pause_;
-    bool route_ = false;
+    Slot slots_[2];  // 0: the drilling program, 1: the routing one
+    int cur_ = 0;    // the program in turn
+    int last_ = 0;   // the program whose file was chosen last (it receives its tool table)
+    std::string job_id_, pause_, message_;
     int percent_ = 0;
+    int done_ = 0, total_ = 0;
+    bool unreported_ = false, reported_done_ = false;
 };
 
 }  // namespace hmi

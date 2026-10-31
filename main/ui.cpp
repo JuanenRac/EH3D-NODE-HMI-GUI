@@ -43,6 +43,12 @@ lv_obj_t* g_dialog_text = nullptr;
 lv_obj_t* g_fleet_list = nullptr;
 lv_obj_t* g_card_list = nullptr;
 lv_obj_t* g_selected_file = nullptr;
+lv_obj_t* g_job_summary = nullptr;
+lv_obj_t* g_tools_box = nullptr;
+lv_obj_t* g_flow_label = nullptr;
+lv_obj_t* g_resume_button = nullptr;
+lv_obj_t* g_over_label = nullptr;
+bool g_over_refuse = false;
 lv_obj_t* g_move_buttons[10] = {nullptr};
 int g_move_count = 0;
 // the quality check
@@ -189,6 +195,24 @@ void on_calibrate(lv_event_t*) {
     send(r);
 }
 
+void on_tool(lv_event_t* e) {
+    Request r;
+    r.what = What::ToggleTool;
+    r.tool = static_cast<int>(reinterpret_cast<intptr_t>(lv_event_get_user_data(e)));
+    send(r);
+}
+
+void on_resume(lv_event_t*) { Request r; r.what = What::Resume; send(r); }
+
+void on_spindle_over(lv_event_t*) {
+    g_over_refuse = !g_over_refuse;
+    lv_label_set_text(lv_obj_get_child(g_over_label, 0), g_over_refuse ? "refuse" : "clip");
+    Request r;
+    r.what = What::SetSpindleOver;
+    r.refuse = g_over_refuse;
+    send(r);
+}
+
 void on_send_job(lv_event_t*) { Request r; r.what = What::SendJob; send(r); }
 void on_refresh_card(lv_event_t*) { Request r; r.what = What::RefreshCard; send(r); }
 
@@ -197,7 +221,7 @@ const hmi::Action kJog[6] = {{hmi::Kind::Motion, "jog X -"}, {hmi::Kind::Motion,
 const hmi::Action kStart{hmi::Kind::Motion, "start job"};
 const hmi::Action kPause{hmi::Kind::Stop, "pause"};
 const hmi::Action kHome{hmi::Kind::Motion, "home"};
-const hmi::Action kSpindle{hmi::Kind::Spindle, "spindle on"};
+hmi::Action g_spindle_action{hmi::Kind::Spindle, "spindle on", 0};  // the turns come from the setting `spindle_rpm`; the gate cuts them to what the spindle gives
 
 void remember_move(lv_obj_t* b) {
     if (g_move_count < 10) g_move_buttons[g_move_count++] = b;
@@ -210,6 +234,8 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
     g_post = post;
     g_layout = layout;
     g_move_count = 0;
+    g_spindle_action.rpm = static_cast<int>(s.spindle_rpm);
+    g_over_refuse = s.spindle_over == hmi::SpindleOver::Refuse;
     lv_obj_t* scr = lv_screen_active();
     lv_obj_clean(scr);
     lv_obj_set_style_bg_color(scr, kBg, 0);
@@ -272,7 +298,7 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
     for (int i = 0; i < 6; ++i) remember_move(icon_button(jog, arrows[i], on_action, const_cast<hmi::Action*>(&kJog[i]), kSlate, 120, 80));
     remember_move(icon_button(jog, LV_SYMBOL_HOME, on_action, const_cast<hmi::Action*>(&kHome), kSlate, 120, 80));
     // only a machine with a spindle gets the button that starts it: the screen never fires a laser or starts a pick and place head
-    if (hmi::controls_for(s.machine).spindle) remember_move(icon_button(jog, LV_SYMBOL_REFRESH, on_action, const_cast<hmi::Action*>(&kSpindle), kSlate, 120, 80));
+    if (hmi::controls_for(s.machine).spindle) remember_move(icon_button(jog, LV_SYMBOL_REFRESH, on_action, &g_spindle_action, kSlate, 120, 80));
 
     // job: the files of the microSD card, and the button that sends the chosen one to the server as a job
     lv_obj_t* files = card(g_pages[1], "microSD");
@@ -283,6 +309,27 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
     lv_obj_set_size(side, layout.portrait ? LV_PCT(100) : LV_PCT(32), LV_PCT(100));
     icon_button(side, LV_SYMBOL_SD_CARD " " LV_SYMBOL_REFRESH, on_refresh_card, nullptr, kSlate, 180, 64);
     remember_move(icon_button(side, LV_SYMBOL_UPLOAD, on_send_job, nullptr, kGo, 180, 64));
+    // what the chosen file holds: the summary, and a chip for each tool that switches it off or on
+    g_job_summary = lv_label_create(side);
+    lv_obj_set_width(g_job_summary, LV_PCT(100));
+    lv_label_set_long_mode(g_job_summary, LV_LABEL_LONG_WRAP);
+    lv_label_set_text(g_job_summary, "");
+    g_tools_box = lv_obj_create(side);
+    lv_obj_remove_style_all(g_tools_box);
+    lv_obj_set_size(g_tools_box, LV_PCT(100), LV_SIZE_CONTENT);
+    lv_obj_set_flex_flow(g_tools_box, LV_FLEX_FLOW_ROW_WRAP);
+    lv_obj_set_style_pad_gap(g_tools_box, 6, 0);
+    // where the job is: what a stopped job did, the button that goes on from there, and the program that comes next
+    g_flow_label = lv_label_create(side);
+    lv_obj_set_width(g_flow_label, LV_PCT(100));
+    lv_label_set_long_mode(g_flow_label, LV_LABEL_LONG_WRAP);
+    lv_label_set_text(g_flow_label, "");
+    {
+        char label[64];
+        std::snprintf(label, sizeof label, "%s  %s", LV_SYMBOL_PLAY, hmi::text(T::Resume, s.language));
+        g_resume_button = button(side, label, on_resume, nullptr, kGo, 220, 64);
+        lv_obj_add_flag(g_resume_button, LV_OBJ_FLAG_HIDDEN);
+    }
 
     // viewer: the plan of the chosen job
     lv_obj_t* view = card(g_pages[2], hmi::text(T::Viewer, s.language));
@@ -301,6 +348,13 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
     const char* o_names[3] = {"auto", "landscape", "portrait"};
     for (int i = 0; i < 3; ++i) {
         button(set, o_names[i], on_orientation, reinterpret_cast<void*>(static_cast<intptr_t>(i)), kSlate, 220, 80);
+    }
+
+    // the spindle: an order for more turns than the spindle gives is cut to its top speed (clip) or refused (refuse); kept until the next start, hmi.cfg holds the lasting choice
+    if (hmi::controls_for(s.machine).spindle) {
+        lv_obj_t* box = card(set, hmi::text(T::Spindle, s.language));
+        lv_obj_set_size(box, LV_PCT(100), LV_SIZE_CONTENT);
+        g_over_label = button(box, g_over_refuse ? "refuse" : "clip", on_spindle_over, nullptr, kSlate, 220, 64);
     }
 
     // the language: the thirty-seven languages, each named in itself, in a list that scrolls; the one in use is outlined
@@ -493,6 +547,52 @@ void show_fleet(const hmi::FleetView& fleet, const hmi::Settings&) {
         else std::snprintf(row, sizeof row, "%s   %s   (%d)", m.name.c_str(), m.state.c_str(), m.ready);
         lv_list_add_button(g_fleet_list, nullptr, row);
     }
+}
+
+void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, const hmi::Settings& s) {
+    using hmi::T;
+    if (g_tools_box == nullptr || g_job_summary == nullptr) return;
+    lv_obj_clean(g_tools_box);
+    const hmi::FileSummary& file = tools.summary();
+    std::string text;
+    if (!file.tools.empty()) {
+        // the chips: the number, the diameter when the file says it and how many holes or cuts; a tool that is off is dim, with a cross
+        for (const hmi::ToolInfo& t : file.tools) {
+            char label[64];
+            const bool off = tools.is_off(t.number);
+            if (t.diameter_mm > 0) std::snprintf(label, sizeof label, "%s %d  %.2f mm  (%d)", off ? LV_SYMBOL_CLOSE : LV_SYMBOL_OK, t.number, t.diameter_mm, t.count);
+            else std::snprintf(label, sizeof label, "%s %s %d  (%d)", off ? LV_SYMBOL_CLOSE : LV_SYMBOL_OK, hmi::text(T::Tool, s.language), t.number, t.count);
+            lv_obj_t* b = button(g_tools_box, label, on_tool, reinterpret_cast<void*>(static_cast<intptr_t>(t.number)), off ? kDim : kSlate, 200, 56);
+            if (off) lv_obj_set_style_text_opa(lv_obj_get_child(b, 0), LV_OPA_60, 0);
+        }
+        text = std::to_string(tools.remaining()) + "/" + std::to_string(file.total) + " " + hmi::text(file.route ? T::Cuts : T::Holes, s.language);
+        if (tools.nothing_left()) text += std::string("  ") + LV_SYMBOL_WARNING;
+    }
+    if (spindle.known) {
+        char line[96];
+        std::snprintf(line, sizeof line, "%s%s: %s %d-%d rpm", text.empty() ? "" : "\n", hmi::text(T::Spindle, s.language), spindle.kind.c_str(), spindle.min_rpm, spindle.max_rpm);
+        text += line;
+    }
+    lv_label_set_text(g_job_summary, text.c_str());
+}
+
+void show_flow(const FlowState& flow, const hmi::Settings& s) {
+    using hmi::T;
+    if (g_flow_label == nullptr || g_resume_button == nullptr) return;
+    const char* what = hmi::text(flow.route ? T::Cuts : T::Holes, s.language);
+    std::string text;
+    char line[160];
+    if (flow.stopped) {
+        std::snprintf(line, sizeof line, "%s: %d/%d %s", hmi::text(T::Stopped, s.language), flow.skipped + flow.done, flow.skipped + flow.total, what);
+        text = line;
+        if (!flow.message.empty()) text += "\n" + flow.message;
+    } else if (flow.skipped > 0) {
+        std::snprintf(line, sizeof line, "%d %s", flow.skipped, what);
+        text = line;
+    }
+    if (!flow.next.empty()) text += std::string(text.empty() ? "" : "\n") + hmi::text(T::Next, s.language) + ": " + flow.next;
+    lv_label_set_text(g_flow_label, text.c_str());
+    if (flow.can_resume) lv_obj_remove_flag(g_resume_button, LV_OBJ_FLAG_HIDDEN); else lv_obj_add_flag(g_resume_button, LV_OBJ_FLAG_HIDDEN);
 }
 
 void show_card(const std::vector<hmi::Entry>& files, const hmi::Settings&) {

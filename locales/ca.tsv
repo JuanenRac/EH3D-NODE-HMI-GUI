@@ -70,3 +70,10 @@ f.image_blurry	imatge desenfocada
 f.not_calibrated	primer configura l'escala
 f.nothing_to_check	no hi ha cap verificació activada
 f.no_expected_holes	cap forat de la feina a la vista
+ui.Holes	forats
+ui.Cuts	talls
+ui.SpindleCut	Ordre limitada a la velocitat màxima del broquer
+ui.WhySpindleFast	L'ordre demana més voltes de les que dona el broquer.
+ui.Resume	Reprèn
+ui.Stopped	Aturat
+ui.Next	Següent

@@ -45,6 +45,8 @@ inline const std::vector<FieldSpec>& field_specs() {
         {"confirm_timeout_ms", FieldKind::Number, 1000, 60000, 0},
         {"jog_max_mm", FieldKind::Number, 1, 200, 0},
         {"spindle_max_rpm", FieldKind::Number, 0, 65535, 0},
+        {"spindle_rpm", FieldKind::Number, 0, 65535, 0},
+        {"spindle_over", FieldKind::List},
         {"hw_stop_required", FieldKind::Switch},
         {"link_idle_ms", FieldKind::Number, 200, 60000, 0},
         {"voice_alerts", FieldKind::Switch},

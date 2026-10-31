@@ -70,3 +70,10 @@ f.image_blurry	pilt on fookusest väljas
 f.not_calibrated	määrake esmalt mõõtkava
 f.nothing_to_check	ühtegi kontrolli pole sisse lülitatud
 f.no_expected_holes	töö auke pole pildis
+ui.Holes	augud
+ui.Cuts	lõiked
+ui.SpindleCut	Käsk piiratud spindli maksimaalse kiiruseni
+ui.WhySpindleFast	Käsk nõuab rohkem pöördeid, kui spindel annab.
+ui.Resume	Jätka
+ui.Stopped	Peatatud
+ui.Next	Järgmine

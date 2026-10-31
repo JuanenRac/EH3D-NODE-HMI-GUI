@@ -70,3 +70,10 @@ f.image_blurry	слика је ван фокуса
 f.not_calibrated	прво подесите размеру
 f.nothing_to_check	ниједна провера није укључена
 f.no_expected_holes	ниједна рупа посла није у кадру
+ui.Holes	рупе
+ui.Cuts	резови
+ui.SpindleCut	Команда је ограничена на највећу брзину вретена
+ui.WhySpindleFast	Команда тражи више обртаја него што вретено даје.
+ui.Resume	Настави
+ui.Stopped	Заустављено
+ui.Next	Следеће

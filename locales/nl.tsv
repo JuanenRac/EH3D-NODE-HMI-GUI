@@ -70,3 +70,10 @@ f.image_blurry	foto onscherp
 f.not_calibrated	stel eerst de schaal in
 f.nothing_to_check	er is geen controle ingeschakeld
 f.no_expected_holes	geen gat van de opdracht in beeld
+ui.Holes	gaten
+ui.Cuts	sneden
+ui.SpindleCut	Opdracht beperkt tot de maximumsnelheid van de spindel
+ui.WhySpindleFast	De opdracht vraagt meer toeren dan de spindel geeft.
+ui.Resume	Hervatten
+ui.Stopped	Gestopt
+ui.Next	Volgende

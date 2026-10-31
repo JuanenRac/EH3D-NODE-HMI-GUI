@@ -30,7 +30,7 @@
 |---|---|
 | Versão | `0.0.2` |
 | Maturidade | Estrutura inicial |
-| Testes | 7 programas de teste no computador (79053 verificações contadas) |
+| Testes | 7 programas de teste no computador (87767 verificações contadas) |
 | Tecnologias | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Em hardware real | Não: o firmware não foi compilado nem gravado e nada foi ligado a uma máquina |
 
@@ -45,7 +45,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Software | 🟠 | O projeto ESP-IDF (ESP32-P4, LVGL 9, o ficheiro de definições na sua própria partição) está escrito; não foi compilado nem gravado. |
-| Testes | 🟢 | Passam 7 programas de teste no computador (`ctest`): 79053 verificações do ficheiro de definições, da comporta, das ordens e avisos por voz, dos teclados, dos avisos gravados, do cliente do servidor e dos textos dos ecrãs em oito idiomas. |
+| Testes | 🟢 | Passam 7 programas de teste no computador (`ctest`): 87767 verificações do ficheiro de definições, da comporta, das ordens e avisos por voz, dos teclados, dos avisos gravados, do cliente do servidor e dos textos dos ecrãs em oito idiomas. |
 | Regras de segurança | 🟡 | Todo o movimento e toda a ordem do fuso passam pela comporta: confirmação no ecrã, trinco da paragem por hardware que só um reconhecimento no ecrã levanta com o botão solto, nenhum movimento com a ligação por armar. Coberto por testes; nunca experimentado com um botão de paragem real. |
 | Voz | 🟡 | As ordens e avisos por voz são reconhecidos e formulados em oito idiomas e testados como texto; não se usou nenhum microfone nem altifalante. |
 | Ecrãs | 🟠 | Os ecrãs máquina, trabalho (microSD), máquinas e estações e definições estão escritos, na horizontal e na vertical, com o aspeto do programa de secretária; o separador visor ainda é um cartão vazio. Só existe um desenho do esquema, não uma captura de um módulo. |
@@ -62,6 +62,10 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 * O **módulo**: o Guition JC8012P4A1C (ESP32-P4 com 32 MB de RAM externa, ecrã tátil MIPI-DSI de 10,1 polegadas e 800x1280, um ESP32-C6 para o Wi-Fi, o codec ES8311 com amplificador de altifalante e a entrada de microfone ES7210). O painel da unidade é o novo.
 * **Na vertical ou na horizontal:** a definição `orientation` (`auto`, `landscape`, `portrait`) roda a imagem do painel: na horizontal (1280 x 800) o trabalho, a vista em planta e o pad de movimento ficam em três colunas sobre a barra de posição, na vertical (800 x 1280) empilham-se; o toque cai onde se toca no ecrã em ambos.
 * **O microSD e o servidor, como um só fluxo:** o cartão lista os ficheiros de furação e fresagem; o ecrã envia o ficheiro escolhido ao EH3D-SERVER como um trabalho que espera pronto, o operador inicia-o pela comporta, e o progresso, as paragens para mudança de ferramenta e o fim voltam da frota em tempo real, tal como nos programas de secretária e no nó. A resposta do servidor a cada trabalho fica guardada no cartão.
+* **As ferramentas do ficheiro e o fuso:** ao escolher um ficheiro, a página do trabalho mostra o que ele contém (as ferramentas, o seu diâmetro e quantos furos ou cortes cada uma tem) e uma ficha por ferramenta: um toque desliga-a ou liga-a, e o trabalho segue para o servidor sem ela (`skip_tools`); com todas desligadas não se envia nada. Mostra também o fuso que a máquina leva (`original` ou `vfd`) com as suas rotações, como o servidor as indica. Escrito e testado num computador (`core/job_tools.hpp`); não visto num módulo.
+* **A comporta respeita o fuso:** uma ordem de fuso leva as rotações que pede (`spindle_rpm`, o que o botão do fuso pede) e a comporta nunca a deixa passar o menor valor entre `spindle_max_rpm` e a velocidade máxima do fuso que a máquina leva, como o servidor a diz. Com `spindle_over = clip` (por omissão) uma ordem que pede mais é reduzida a essa velocidade e o ecrã avisa; com `refuse` é recusada com um motivo. A confirmação mostra as rotações que o fuso vai mesmo receber. Escrito e testado num computador; não visto num módulo.
+* **Um trabalho parado continua:** quando um trabalho sai da máquina, o ecrã pergunta ao servidor como terminou; um cancelado ou falhado é mostrado como parado, com os furos (cortes) que fez, e um botão envia de novo o mesmo ficheiro com `skip` igual aos já feitos, de modo que só se fura ou fresa o resto. As ferramentas desligadas continuam desligadas e o arranque passa pela comporta como qualquer outro. Escrito e testado num computador; não visto num módulo.
+* **Furar e depois fresar:** um ficheiro de furação e um de fresagem escolhidos um a seguir ao outro são dois programas de um só trabalho: quando o servidor diz que a furação terminou, a fresagem é criada e espera que o operador a inicie, depois da troca de ferramenta, e a página do trabalho nomeia o programa seguinte. Escrito e testado num computador; não visto num módulo.
 
 ## 🧩 Papel no EH3D
 
@@ -162,6 +166,8 @@ Tudo o que é afinado é uma linha de `hmi.cfg` (copia `hmi.cfg.example` para a 
 | `confirm_timeout_ms` | 8000 | 1000 - 60000 | quanto tempo espera uma confirmação |
 | `jog_max_mm` | 20 | 1 - 200 | o movimento manual mais longo que o ecrã envia |
 | `spindle_max_rpm` | 24000 | 0 - 65535 | a velocidade máxima do fuso que pede (0: nunca arranca o fuso) |
+| `spindle_rpm` | 12000 | 0 - 65535 | as rotações que o botão do fuso pede (0: a velocidade do trabalho); a comporta reduz-as ao que o fuso dá |
+| `spindle_over` | clip | clip / refuse | uma ordem com mais rotações do que o fuso dá: reduzida à sua velocidade máxima com aviso, ou recusada |
 | `hw_stop_required` | on | on / off | só comanda a máquina com a entrada de paragem por hardware ligada e solta |
 | `voice_orders` | off | on / off | aceita ordens por voz |
 | `voice_confirm` | off | on / off | aceita um sim falado como confirmação de um movimento |
@@ -182,7 +188,7 @@ O firmware ainda não foi compilado: quando for, `idf.py set-target esp32p4 && i
 
 ## 🧪 Testes
 
-Os testes no computador (`build.bat` ou `./build.sh`, e depois `ctest`) são dois programas e passa tudo: `test_hmi` (638 verificações) do ficheiro de definições, da comporta (a paragem passa sempre, trinco da paragem por hardware, confirmação, tempo limite e volta do relógio, regras de voz, interruptores), das ordens e avisos por voz e dos textos de ecrã em oito idiomas; e `test_workflow` (115 verificações) da orientação e do toque, dos ficheiros do cartão (tipos, nomes seguros, ordenação), do leitor de JSON, dos pedidos e respostas do servidor e do fluxo de um trabalho desde o cartão até ao fim. Os outros dois programas cobrem os teclados (`test_keyboard`, 137 verificações: cada definição tem o seu teclado, os intervalos do teclado numérico são os do ficheiro de definições, as casas decimais, o sinal, as setas, o teclado completo de cada idioma, a maiúscula, os símbolos e o comprimento) e os avisos gravados (`test_notices`, 66 verificações: a definição, o ficheiro de cada idioma e género). Mais três programas: `test_machine` (55 verificações: os tipos de máquina, a recusa do fuso e a frase em cada idioma), `test_quality` (911 verificações: os pedidos, a leitura do relatório, cada achado) e `test_locales` (76655 verificações: cada chave tem texto em cada um dos outros 29 idiomas, nada está vazio nem é demasiado longo, a escrita de cada idioma é a certa, e todo o carater desenhável está no intervalo dos tipos de letra gerados).
+Os testes no computador (`build.bat` ou `./build.sh`, e depois `ctest`) são dois programas e passa tudo: `test_hmi` (955 verificações) do ficheiro de definições, da comporta (a paragem passa sempre, trinco da paragem por hardware, confirmação, tempo limite e volta do relógio, regras de voz, interruptores), das ordens e avisos por voz e dos textos de ecrã em oito idiomas; e `test_workflow` (185 verificações) da orientação e do toque, dos ficheiros do cartão (tipos, nomes seguros, ordenação), do leitor de JSON, dos pedidos e respostas do servidor e do fluxo de um trabalho desde o cartão até ao fim. Os outros dois programas cobrem os teclados (`test_keyboard`, 231 verificações: cada definição tem o seu teclado, os intervalos do teclado numérico são os do ficheiro de definições, as casas decimais, o sinal, as setas, o teclado completo de cada idioma, a maiúscula, os símbolos e o comprimento) e os avisos gravados (`test_notices`, 266 verificações: a definição, o ficheiro de cada idioma e género). Mais três programas: `test_machine` (55 verificações: os tipos de máquina, a recusa do fuso e a frase em cada idioma), `test_quality` (911 verificações: os pedidos, a leitura do relatório, cada achado) e `test_locales` (85164 verificações: cada chave tem texto em cada um dos outros 29 idiomas, nada está vazio nem é demasiado longo, a escrita de cada idioma é a certa, e todo o carater desenhável está no intervalo dos tipos de letra gerados).
 
 ## 🏗️ Compilação e publicação
 
@@ -215,6 +221,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── voice.hpp                                     ordens e avisos por voz em oito idiomas
 │   ├── orientation.hpp sdfiles.hpp                   vertical e horizontal, ficheiros do cartão
 │   ├── server_link.hpp workflow.hpp job_memory.hpp   cliente do servidor e fluxo de um trabalho
+│   ├── job_tools.hpp                                 as ferramentas de um ficheiro e as desligadas
 │   ├── quality.hpp                                   a verificação de qualidade e o anel de LEDs
 │   ├── ui_text.hpp keyboard.hpp notices.hpp          textos, teclados e avisos
 │   ├── locales.hpp locales_gen.hpp font_ranges.hpp   37 idiomas e intervalos de letra

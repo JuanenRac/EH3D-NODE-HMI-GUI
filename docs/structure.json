@@ -105,6 +105,20 @@
         },
         {
           "desc": {
+            "en": "the tools of a file and the ones switched off",
+            "es": "las herramientas de un archivo y las desactivadas",
+            "it": "gli utensili di un file e quelli disattivati",
+            "de": "die Werkzeuge einer Datei und die abgeschalteten",
+            "fr": "les outils d'un fichier et ceux désactivés",
+            "pt": "as ferramentas de um ficheiro e as desligadas",
+            "zh": "文件中的刀具和被关闭的刀具",
+            "ja": "ファイルの工具とオフにした工具"
+          },
+          "name": "job_tools.hpp",
+          "tree_name": "job_tools.hpp"
+        },
+        {
+          "desc": {
             "en": "the quality check and the ring of LEDs",
             "es": "la verificación de calidad y el aro de LEDs",
             "it": "il controllo qualità e l'anello di LED",

@@ -181,6 +181,63 @@ static void gate_switches() {
     CHECK(g.request({Kind::Spindle, "on"}, Origin::Touch, 0).why == Why::SpindleDisabled);
 }
 
+static void spindle_over_the_limit() {
+    // the setting alone limits an order when the machine's spindle is not known
+    Settings s = ready_settings();
+    Gate g(s);
+    make_ready(g);
+    CHECK(g.spindle_limit() == 24000);
+    Decision d = g.request({Kind::Spindle, "spindle on", 12000}, Origin::Touch, 0);
+    CHECK(d.verdict == Verdict::NeedConfirm && !d.clipped && d.rpm == 12000 && g.pending_action().rpm == 12000);
+    CHECK(g.pending_action().what == "spindle on 12000 rpm");  // the confirmation shows the turns that will be asked
+    // the spindle the machine carries gives less: the order is cut to it, and the screen is told
+    g.machine_spindle_max(18000);
+    CHECK(g.spindle_limit() == 18000);
+    d = g.request({Kind::Spindle, "spindle on", 24000}, Origin::Touch, 0);
+    CHECK(d.verdict == Verdict::NeedConfirm && d.clipped && d.asked_rpm == 24000 && d.rpm == 18000);
+    CHECK(g.pending_action().rpm == 18000 && g.pending_action().what == "spindle on 18000 rpm");
+    Action out;
+    CHECK(g.confirm(Origin::Touch, 10, out) && out.rpm == 18000 && out.what == "spindle on 18000 rpm");
+    // an order inside the limit is not touched; a spindle that gives more than the setting does not raise it
+    d = g.request({Kind::Spindle, "spindle on", 18000}, Origin::Touch, 0);
+    CHECK(d.verdict == Verdict::NeedConfirm && !d.clipped && d.rpm == 18000);
+    g.machine_spindle_max(60000);
+    CHECK(g.spindle_limit() == 24000);
+    d = g.request({Kind::Spindle, "spindle on", 30000}, Origin::Touch, 0);
+    CHECK(d.clipped && d.rpm == 24000);
+    // an order that does not say the turns (the speed of the job) is not cut and says none
+    g.machine_spindle_max(18000);
+    d = g.request({Kind::Spindle, "spindle on"}, Origin::Touch, 0);
+    CHECK(d.verdict == Verdict::NeedConfirm && !d.clipped && d.rpm == 0 && g.pending_action().what == "spindle on");
+    // a move is never cut
+    d = g.request({Kind::Motion, "jog X +", 99999}, Origin::Touch, 0);
+    CHECK(d.verdict == Verdict::NeedConfirm && !d.clipped && g.pending_action().rpm == 99999);
+    // without the confirmation (a bench setting) the cut order goes at once with the turns it got
+    s.confirm_moves = false;
+    d = g.request({Kind::Spindle, "spindle on", 24000}, Origin::Touch, 0);
+    CHECK(d.verdict == Verdict::Run && d.clipped && d.rpm == 18000);
+    // the other choice of the setting: refuse
+    s.confirm_moves = true;
+    s.spindle_over = SpindleOver::Refuse;
+    d = g.request({Kind::Spindle, "spindle on", 24000}, Origin::Touch, 0);
+    CHECK(d.verdict == Verdict::Refused && d.why == Why::SpindleTooFast && !g.pending());
+    CHECK(g.request({Kind::Spindle, "spindle on", 18000}, Origin::Touch, 0).verdict == Verdict::NeedConfirm);
+    // a spoken order is cut the same way, and a stop is never held back
+    s.spindle_over = SpindleOver::Clip;
+    d = g.request({Kind::Spindle, "spindle on", 24000}, Origin::Voice, 0);
+    CHECK(d.verdict == Verdict::NeedConfirm && d.clipped && d.rpm == 18000);
+    CHECK(g.request({Kind::Stop, "stop", 0}, Origin::Touch, 0).verdict == Verdict::Run);
+    // the setting: the file reads it and the default is to cut
+    std::vector<Problem> p;
+    CHECK(parse_settings("", p).spindle_over == SpindleOver::Clip && parse_settings("", p).spindle_rpm == 12000);
+    CHECK(parse_settings("spindle_rpm = 9000", p).spindle_rpm == 9000 && parse_settings("spindle_rpm = 70000", p).spindle_rpm == 12000);
+    p.clear();
+    CHECK(parse_settings("spindle_over = refuse", p).spindle_over == SpindleOver::Refuse && p.empty());
+    CHECK(parse_settings("spindle_over = clip", p).spindle_over == SpindleOver::Clip && p.empty());
+    p.clear();
+    CHECK(parse_settings("spindle_over = maybe", p).spindle_over == SpindleOver::Clip && p.size() == 1);
+}
+
 static void voice_orders() {
     CHECK(recognise("Stop!", Lang::En) == Intent::Stop);
     CHECK(recognise("please stop now", Lang::En) == Intent::Stop);
@@ -242,7 +299,7 @@ static void screen_texts() {
             if (i >= 6) CHECK(static_cast<unsigned char>(s[0]) >= 0xE3 || (s[0] >= 'A' && s[0] <= 'Z'));
         }
     }
-    for (Why w : {Why::HardwareStop, Why::NotArmed, Why::VoiceOrdersOff, Why::NoHardwareStop, Why::SpindleDisabled})
+    for (Why w : {Why::HardwareStop, Why::NotArmed, Why::VoiceOrdersOff, Why::NoHardwareStop, Why::SpindleDisabled, Why::SpindleTooFast})
         for (std::size_t i = 0; i < kLangCount; ++i) CHECK(std::strlen(why_text(w, static_cast<Lang>(i))) > 10);
     CHECK(std::strlen(why_text(Why::None, Lang::En)) == 0);
 }
@@ -251,6 +308,7 @@ int main() {
     settings_file();
     gate_rules();
     gate_switches();
+    spindle_over_the_limit();
     voice_orders();
     texts_are_complete();
     screen_texts();

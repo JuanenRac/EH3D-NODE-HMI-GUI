@@ -70,3 +70,10 @@ f.image_blurry	bildet er uskarpt
 f.not_calibrated	still først inn skalaen
 f.nothing_to_check	ingen kontroll er slått på
 f.no_expected_holes	ingen av jobbens hull i bildet
+ui.Holes	hull
+ui.Cuts	kutt
+ui.SpindleCut	Kommandoen er begrenset til spindelens maksimale hastighet
+ui.WhySpindleFast	Kommandoen ber om flere omdreininger enn spindelen gir.
+ui.Resume	Gjenoppta
+ui.Stopped	Stoppet
+ui.Next	Neste

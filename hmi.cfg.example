@@ -19,6 +19,8 @@ confirm_moves = on         # a move or a spindle order asks for a confirmation o
 confirm_timeout_ms = 8000  # 1000..60000
 jog_max_mm = 20            # 1..200
 spindle_max_rpm = 24000    # 0 = the screen never starts the spindle
+spindle_rpm = 12000        # the turns the spindle button asks for (0 = the speed the job says); the gate cuts it to what the spindle of the machine gives
+spindle_over = clip        # an order for more turns than the spindle gives: clip (cut to its top speed and say so) or refuse
 hw_stop_required = on      # control the machine only while the hardware stop input is wired and released
 link_idle_ms = 3000        # 200..60000
 

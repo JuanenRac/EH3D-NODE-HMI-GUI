@@ -70,3 +70,10 @@ f.image_blurry	bilden är oskarp
 f.not_calibrated	ställ först in skalan
 f.nothing_to_check	ingen kontroll är påslagen
 f.no_expected_holes	inget av jobbets hål syns
+ui.Holes	hål
+ui.Cuts	skärningar
+ui.SpindleCut	Kommandot begränsat till spindelns maximala hastighet
+ui.WhySpindleFast	Kommandot begär fler varv än spindeln ger.
+ui.Resume	Återuppta
+ui.Stopped	Stoppad
+ui.Next	Nästa

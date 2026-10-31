@@ -47,7 +47,7 @@ static const Key* find_do(const std::vector<std::vector<Key>>& rows, Key::Do wha
 static void every_setting_has_its_keyboard() {
     // every key the settings file reads has a description, and the other way round
     const char* keys[] = {"language", "theme", "orientation", "brightness_percent", "idle_dim_s", "server_host", "server_port", "server_machine", "token", "poll_s",
-                          "confirm_moves", "confirm_timeout_ms", "jog_max_mm", "spindle_max_rpm", "hw_stop_required", "link_idle_ms", "voice_alerts", "voice_orders",
+                          "confirm_moves", "confirm_timeout_ms", "jog_max_mm", "spindle_max_rpm", "spindle_rpm", "spindle_over", "hw_stop_required", "link_idle_ms", "voice_alerts", "voice_orders",
                           "voice_confirm", "volume_percent", "mic_gain_percent", "sound_finish", "sound_tool_change", "sound_check_ok", "sound_check_bad"};
     for (const char* k : keys) CHECK(field_spec(k) != nullptr);
     CHECK(field_specs().size() == sizeof(keys) / sizeof(keys[0]));

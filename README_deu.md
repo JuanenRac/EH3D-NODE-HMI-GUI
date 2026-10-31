@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.2` |
 | Reifegrad | Gerüst |
-| Tests | 7 Host-Testprogramme (79053 Prüfungen gezählt) |
+| Tests | 7 Host-Testprogramme (87767 Prüfungen gezählt) |
 | Technologie-Stack | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Auf echter Hardware | Nein: die Firmware wurde weder gebaut noch geflasht, und nichts wurde an eine Maschine angeschlossen |
 
@@ -45,7 +45,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Software | 🟠 | Das ESP-IDF-Projekt (ESP32-P4, LVGL 9, die Einstellungsdatei in einer eigenen Partition) ist geschrieben; es wurde weder gebaut noch geflasht. |
-| Tests | 🟢 | 7 Host-Testprogramme bestehen (`ctest`): 79053 Prüfungen zu Einstellungsdatei, Tor, gesprochenen Befehlen und Hinweisen, den Tastaturen, den aufgenommenen Hinweisen, dem Server-Client und den Bildschirmtexten in acht Sprachen. |
+| Tests | 🟢 | 7 Host-Testprogramme bestehen (`ctest`): 87767 Prüfungen zu Einstellungsdatei, Tor, gesprochenen Befehlen und Hinweisen, den Tastaturen, den aufgenommenen Hinweisen, dem Server-Client und den Bildschirmtexten in acht Sprachen. |
 | Sicherheitsregeln | 🟡 | Jede Bewegung und jeder Spindelbefehl läuft durch das Tor: Bestätigung auf dem Bildschirm, Hardware-Stopp-Sperre, die bei losgelassenem Taster nur eine Quittung auf dem Bildschirm löst, keine Bewegung bei nicht scharfer Verbindung. Durch Tests gedeckt; nie mit einem echten Stopp-Taster erprobt. |
 | Sprache | 🟡 | Gesprochene Befehle und Hinweise werden in acht Sprachen erkannt und formuliert und als Text getestet; es wurde kein Mikrofon und kein Lautsprecher benutzt. |
 | Bildschirme | 🟠 | Die Bildschirme Maschine, Auftrag (microSD), Maschinen und Stationen und Einstellungen sind geschrieben, im Quer- und im Hochformat, im Aussehen des Desktop-Programms; der Reiter Ansicht ist noch eine leere Karte. Es gibt nur eine Zeichnung des Layouts, keine Aufnahme eines Moduls. |
@@ -62,6 +62,10 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 * Das **Modul**: das Guition JC8012P4A1C (ESP32-P4 mit 32 MB externem RAM, 10,1-Zoll-MIPI-DSI-Touchdisplay mit 800x1280, ein ESP32-C6 für WLAN, der Codec ES8311 mit Lautsprecherverstärker und der Mikrofoneingang ES7210). Das Panel der Einheit ist das neue.
 * **Hoch- oder Querformat:** die Einstellung `orientation` (`auto`, `landscape`, `portrait`) dreht das Bild des Panels: im Querformat (1280 x 800) stehen Auftrag, Draufsicht und Tipp-Pad in drei Spalten über der Positionsleiste, im Hochformat (800 x 1280) sind sie gestapelt; die Berührung trifft in beiden dort, wo der Bildschirm berührt wird.
 * **microSD und Server als ein Ablauf:** die Karte listet die Bohr- und Fräsdateien; der Bildschirm sendet die gewählte Datei als bereit wartenden Auftrag an EH3D-SERVER, der Bediener startet ihn über das Tor, und Fortschritt, Halte für den Werkzeugwechsel und das Ende kommen in Echtzeit aus der Flotte zurück, wie bei den Desktop-Programmen und dem Knoten. Die Antwort des Servers zu jedem Auftrag wird auf der Karte gespeichert.
+* **Die Werkzeuge der Datei und die Spindel:** Wählt man eine Datei, zeigt die Auftragsseite, was sie enthält (die Werkzeuge, ihren Durchmesser und wie viele Bohrungen oder Fräsungen jedes hat), und einen Chip je Werkzeug: Ein Tippen schaltet es aus oder ein, und der Auftrag geht ohne es an den Server (`skip_tools`); sind alle Werkzeuge aus, wird nichts gesendet. Außerdem zeigt sie die Spindel der Maschine (`original` oder `vfd`) mit ihren Drehzahlen, wie der Server sie meldet. Geschrieben und auf einem Computer getestet (`core/job_tools.hpp`); auf einem Modul nicht gesehen.
+* **Das Tor hält sich an die Spindel:** Ein Spindelbefehl trägt die Drehzahl, die er verlangt (`spindle_rpm`, was die Spindeltaste anfordert), und das Tor lässt ihn nie über den kleineren Wert von `spindle_max_rpm` und der Höchstdrehzahl der Spindel der Maschine, wie der Server sie meldet, hinaus. Mit `spindle_over = clip` (Standard) wird ein Befehl mit mehr auf diese Drehzahl gekürzt und der Bildschirm sagt es; mit `refuse` wird er mit Begründung abgelehnt. Die Bestätigung zeigt die Drehzahl, die die Spindel wirklich bekommt. Geschrieben und auf dem Rechner getestet; nicht auf einem Modul gesehen.
+* **Ein gestoppter Auftrag macht weiter:** Verlässt ein Auftrag die Maschine, fragt der Bildschirm den Server, wie er endete; ein abgebrochener oder fehlgeschlagener wird als gestoppt gezeigt, mit den Bohrungen (Fräsungen), die er geschafft hat, und eine Taste sendet dieselbe Datei erneut mit `skip` gleich der bereits erledigten Zahl, sodass nur der Rest gebohrt oder gefräst wird. Abgeschaltete Werkzeuge bleiben aus und der Start geht wie jeder andere durch das Tor. Geschrieben und auf dem Rechner getestet; nicht auf einem Modul gesehen.
+* **Erst bohren, dann fräsen:** Eine Bohrdatei und eine Frässdatei, nacheinander gewählt, sind zwei Programme eines Auftrags: Meldet der Server das Bohren als erledigt, wird das Fräsen angelegt und wartet darauf, dass der Bediener es nach dem Werkzeugwechsel startet; die Auftragsseite nennt das nächste Programm. Geschrieben und auf dem Rechner getestet; nicht auf einem Modul gesehen.
 
 ## 🧩 Rolle in EH3D
 
@@ -162,6 +166,8 @@ Alles Abgestimmte ist eine Zeile in `hmi.cfg` (kopiere `hmi.cfg.example` in die 
 | `confirm_timeout_ms` | 8000 | 1000 - 60000 | wie lange eine Bestätigung wartet |
 | `jog_max_mm` | 20 | 1 - 200 | die längste einzelne Tippbewegung, die der Bildschirm sendet |
 | `spindle_max_rpm` | 24000 | 0 - 65535 | die höchste angeforderte Spindeldrehzahl (0: startet nie die Spindel) |
+| `spindle_rpm` | 12000 | 0 - 65535 | die Drehzahl, die die Spindeltaste anfordert (0: die Drehzahl des Auftrags); das Tor kürzt sie auf das, was die Spindel liefert |
+| `spindle_over` | clip | clip / refuse | ein Befehl mit mehr Drehzahl, als die Spindel liefert: auf ihre Höchstdrehzahl kürzen und melden, oder ablehnen |
 | `hw_stop_required` | on | on / off | steuert die Maschine nur bei verdrahtetem und gelöstem Hardware-Stopp-Eingang |
 | `voice_orders` | off | on / off | nimmt gesprochene Befehle an |
 | `voice_confirm` | off | on / off | nimmt ein gesprochenes Ja als Bestätigung einer Bewegung an |
@@ -182,7 +188,7 @@ Die Firmware wurde noch nicht gebaut: wenn es so weit ist, erzeugt `idf.py set-t
 
 ## 🧪 Tests
 
-Die Host-Tests (`build.bat` oder `./build.sh`, dann `ctest`) sind zwei Programme und alles besteht: `test_hmi` (638 Prüfungen) zu Einstellungsdatei, Tor (Stopp geht immer, Hardware-Stopp-Sperre, Bestätigung, Zeitlimit und Uhrenüberlauf, Sprachregeln, Schalter), gesprochenen Befehlen und Hinweisen und Bildschirmtexten in acht Sprachen; und `test_workflow` (115 Prüfungen) zu Ausrichtung und Berührung, Dateien der Karte (Arten, sichere Namen, Sortierung), JSON-Leser, Anfragen und Antworten des Servers und dem Ablauf eines Auftrags von der Karte bis zum Ende. Die beiden anderen Programme decken die Tastaturen ab (`test_keyboard`, 137 Prüfungen: jede Einstellung hat ihre Tastatur, die Bereiche des Zahlenblocks sind die der Einstellungsdatei, die Nachkommastellen, das Vorzeichen, die Pfeile, die volle Tastatur jeder Sprache, die Umschaltung, die Symbole und die Länge) und die aufgenommenen Hinweise (`test_notices`, 66 Prüfungen: die Einstellung, die Datei jeder Sprache und jedes Geschlechts). Drei weitere Programme: `test_machine` (55 Prüfungen: die Maschinenarten, die Spindelablehnung und der Satz in jeder Sprache), `test_quality` (911 Prüfungen: die Anfragen, das Lesen des Berichts, jeder Befund) und `test_locales` (76655 Prüfungen: jeder Schlüssel hat in jeder der 29 anderen Sprachen einen Text, nichts ist leer oder zu lang, die Schrift jeder Sprache stimmt, und jedes darstellbare Zeichen liegt im Bereich der erzeugten Schriften).
+Die Host-Tests (`build.bat` oder `./build.sh`, dann `ctest`) sind zwei Programme und alles besteht: `test_hmi` (955 Prüfungen) zu Einstellungsdatei, Tor (Stopp geht immer, Hardware-Stopp-Sperre, Bestätigung, Zeitlimit und Uhrenüberlauf, Sprachregeln, Schalter), gesprochenen Befehlen und Hinweisen und Bildschirmtexten in acht Sprachen; und `test_workflow` (185 Prüfungen) zu Ausrichtung und Berührung, Dateien der Karte (Arten, sichere Namen, Sortierung), JSON-Leser, Anfragen und Antworten des Servers und dem Ablauf eines Auftrags von der Karte bis zum Ende. Die beiden anderen Programme decken die Tastaturen ab (`test_keyboard`, 231 Prüfungen: jede Einstellung hat ihre Tastatur, die Bereiche des Zahlenblocks sind die der Einstellungsdatei, die Nachkommastellen, das Vorzeichen, die Pfeile, die volle Tastatur jeder Sprache, die Umschaltung, die Symbole und die Länge) und die aufgenommenen Hinweise (`test_notices`, 266 Prüfungen: die Einstellung, die Datei jeder Sprache und jedes Geschlechts). Drei weitere Programme: `test_machine` (55 Prüfungen: die Maschinenarten, die Spindelablehnung und der Satz in jeder Sprache), `test_quality` (911 Prüfungen: die Anfragen, das Lesen des Berichts, jeder Befund) und `test_locales` (85164 Prüfungen: jeder Schlüssel hat in jeder der 29 anderen Sprachen einen Text, nichts ist leer oder zu lang, die Schrift jeder Sprache stimmt, und jedes darstellbare Zeichen liegt im Bereich der erzeugten Schriften).
 
 ## 🏗️ Build und Veröffentlichung
 
@@ -215,6 +221,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── voice.hpp                                     gesprochene Befehle und Hinweise in acht Sprachen
 │   ├── orientation.hpp sdfiles.hpp                   Hoch- und Querformat, Dateien der Karte
 │   ├── server_link.hpp workflow.hpp job_memory.hpp   Client des Servers und Ablauf eines Auftrags
+│   ├── job_tools.hpp                                 die Werkzeuge einer Datei und die abgeschalteten
 │   ├── quality.hpp                                   die Qualitätsprüfung und der LED-Ring
 │   ├── ui_text.hpp keyboard.hpp notices.hpp          Texte, Tastaturen und Hinweise
 │   ├── locales.hpp locales_gen.hpp font_ranges.hpp   37 Sprachen, Schriftbereiche

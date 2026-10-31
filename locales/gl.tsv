@@ -70,3 +70,10 @@ f.image_blurry	imaxe desenfocada
 f.not_calibrated	primeiro configura a escala
 f.nothing_to_check	non hai ningunha verificación activada
 f.no_expected_holes	ningún furado do traballo á vista
+ui.Holes	buratos
+ui.Cuts	cortes
+ui.SpindleCut	Orde limitada á velocidade máxima do husillo
+ui.WhySpindleFast	A orde pide máis voltas das que dá o husillo.
+ui.Resume	Continuar
+ui.Stopped	Parado
+ui.Next	Seguinte

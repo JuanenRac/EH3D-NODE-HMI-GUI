@@ -70,3 +70,10 @@ f.image_blurry	fotografia është jashtë fokusit
 f.not_calibrated	së pari caktoni shkallën
 f.nothing_to_check	asnjë kontroll nuk është i ndezur
 f.no_expected_holes	asnjë vrimë e punës në pamje
+ui.Holes	vrima
+ui.Cuts	prerje
+ui.SpindleCut	Komanda u kufizua në shpejtësinë maksimale të boshtit
+ui.WhySpindleFast	Komanda kërkon më shumë rrotullime nga sa jep boshti.
+ui.Resume	Vazhdo
+ui.Stopped	Ndalur
+ui.Next	Tjetri

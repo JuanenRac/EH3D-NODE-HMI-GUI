@@ -70,3 +70,10 @@ f.image_blurry	életlen kép
 f.not_calibrated	előbb állítsa be a skálát
 f.nothing_to_check	nincs ellenőrzés bekapcsolva
 f.no_expected_holes	a munka egy furata sincs a képen
+ui.Holes	furatok
+ui.Cuts	vágások
+ui.SpindleCut	A parancs a főorsó legnagyobb fordulatszámára korlátozva
+ui.WhySpindleFast	A parancs több fordulatot kér, mint amennyit a főorsó ad.
+ui.Resume	Folytatás
+ui.Stopped	Leállítva
+ui.Next	Következő

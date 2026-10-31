@@ -70,3 +70,10 @@ f.image_blurry	attēls nav fokusā
 f.not_calibrated	vispirms iestatiet mērogu
 f.nothing_to_check	neviena pārbaude nav ieslēgta
 f.no_expected_holes	skatā nav neviena darba urbuma
+ui.Holes	caurumi
+ui.Cuts	griezumi
+ui.SpindleCut	Komanda ierobežota līdz vārpstas maksimālajam ātrumam
+ui.WhySpindleFast	Komanda prasa vairāk apgriezienu, nekā vārpsta dod.
+ui.Resume	Turpināt
+ui.Stopped	Apturēts
+ui.Next	Nākamais

@@ -30,7 +30,7 @@
 |---|---|
 | Versione | `0.0.2` |
 | Maturità | Impalcatura |
-| Test | 7 programmi di test sul computer (79053 controlli contati) |
+| Test | 7 programmi di test sul computer (87767 controlli contati) |
 | Stack tecnologico | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Su hardware reale | No: il firmware non è stato compilato né scritto e nulla è stato collegato a una macchina |
 
@@ -45,7 +45,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Software | 🟠 | Il progetto ESP-IDF (ESP32-P4, LVGL 9, il file delle impostazioni in una partizione propria) è scritto; non è stato compilato né scritto sul chip. |
-| Test | 🟢 | 7 programmi di test sul computer passano (`ctest`): 79053 controlli sul file delle impostazioni, il varco, gli ordini e gli avvisi vocali, le tastiere, gli avvisi registrati, il client del server e i testi delle schermate in otto lingue. |
+| Test | 🟢 | 7 programmi di test sul computer passano (`ctest`): 87767 controlli sul file delle impostazioni, il varco, gli ordini e gli avvisi vocali, le tastiere, gli avvisi registrati, il client del server e i testi delle schermate in otto lingue. |
 | Regole di sicurezza | 🟡 | Ogni movimento e ogni ordine al mandrino passa dal varco: conferma sullo schermo, blocco dell'arresto hardware che solo una conferma sullo schermo toglie a pulsante rilasciato, nessun movimento con il collegamento non armato. Coperto da test; mai provato con un vero pulsante di arresto. |
 | Voce | 🟡 | Ordini e avvisi vocali sono riconosciuti e formulati in otto lingue e provati come testo; nessun microfono o altoparlante è stato usato. |
 | Schermate | 🟠 | Le schermate macchina, lavoro (microSD), macchine e stazioni e impostazioni sono scritte, in orizzontale e in verticale, con l'aspetto del programma desktop; la scheda della vista è ancora una scheda vuota. Esiste solo un disegno del layout, non una cattura di un modulo. |
@@ -62,6 +62,10 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 * Il **modulo**: il Guition JC8012P4A1C (ESP32-P4 con 32 MB di RAM esterna, display touch MIPI-DSI da 10,1 pollici 800x1280, un ESP32-C6 per il Wi-Fi, il codec ES8311 con amplificatore per altoparlante e l'ingresso microfono ES7210). Il pannello dell'unità è quello nuovo.
 * **In piedi o sdraiato:** l'impostazione `orientation` (`auto`, `landscape`, `portrait`) ruota l'immagine del pannello: in orizzontale (1280 x 800) il lavoro, la vista in pianta e il pad di spostamento stanno in tre colonne sopra la barra di posizione, in verticale (800 x 1280) si impilano; il tocco cade dove si tocca lo schermo in entrambi.
 * **La microSD e il server, come un solo flusso:** la scheda elenca i file di foratura e fresatura; lo schermo invia il file scelto a EH3D-SERVER come lavoro che aspetta pronto, l'operatore lo avvia dal varco, e l'avanzamento, le soste per il cambio utensile e la fine tornano dalla flotta in tempo reale, come nei programmi desktop e nel nodo. La risposta del server per ogni lavoro viene salvata sulla scheda.
+* **Gli utensili del file e il mandrino:** quando si sceglie un file la pagina del lavoro mostra cosa contiene (gli utensili, il loro diametro e quanti fori o tagli ha ciascuno) e una scheda per utensile: un tocco lo disattiva o lo riattiva, e il lavoro va al server senza di esso (`skip_tools`); con tutti gli utensili disattivati non si invia nulla. Mostra anche il mandrino della macchina (`original` o `vfd`) con i suoi giri, come li dà il server. Scritto e provato su un computer (`core/job_tools.hpp`); non visto su un modulo.
+* **Il varco rispetta il mandrino:** un ordine al mandrino porta i giri che chiede (`spindle_rpm`, ciò che chiede il pulsante del mandrino) e il varco non lo lascia mai superare il minore tra `spindle_max_rpm` e la velocità massima del mandrino che la macchina monta, come la dice il server. Con `spindle_over = clip` (predefinito) un ordine che ne chiede di più viene ridotto a quella velocità e lo schermo lo dice; con `refuse` viene rifiutato con un motivo. La conferma mostra i giri che il mandrino riceverà davvero. Scritto e provato su un computer; non visto su un modulo.
+* **Un lavoro fermato prosegue:** quando un lavoro lascia la macchina, lo schermo chiede al server come è finito; uno annullato o fallito è mostrato come fermato, con i fori (tagli) che ha fatto, e un pulsante rinvia lo stesso file con `skip` pari a quelli già fatti, così si fora o si fresa solo il resto. Gli utensili disattivati restano disattivati e l'avvio passa dal varco come ogni altro. Scritto e provato su un computer; non visto su un modulo.
+* **Prima forare, poi fresare:** un file di foratura e uno di fresatura scelti uno dopo l'altro sono due programmi di un solo lavoro: quando il server dice che la foratura è finita, la fresatura viene creata e aspetta che l'operatore la avvii, dopo il cambio utensile, e la pagina del lavoro indica il programma successivo. Scritto e provato su un computer; non visto su un modulo.
 
 ## 🧩 Ruolo in EH3D
 
@@ -162,6 +166,8 @@ Tutto ciò che si regola è una riga di `hmi.cfg` (copia `hmi.cfg.example` nella
 | `confirm_timeout_ms` | 8000 | 1000 - 60000 | quanto attende una conferma |
 | `jog_max_mm` | 20 | 1 - 200 | il movimento manuale più lungo che lo schermo invia |
 | `spindle_max_rpm` | 24000 | 0 - 65535 | la velocità massima del mandrino richiesta (0: non avvia mai il mandrino) |
+| `spindle_rpm` | 12000 | 0 - 65535 | i giri che chiede il pulsante del mandrino (0: la velocità del lavoro); il varco li riduce a ciò che il mandrino dà |
+| `spindle_over` | clip | clip / refuse | un ordine con più giri di quelli che il mandrino dà: ridotto alla sua velocità massima con avviso, oppure rifiutato |
 | `hw_stop_required` | on | on / off | comanda la macchina solo con l'ingresso di arresto hardware collegato e rilasciato |
 | `voice_orders` | off | on / off | accetta ordini vocali |
 | `voice_confirm` | off | on / off | accetta un sì parlato come conferma di un movimento |
@@ -182,7 +188,7 @@ Il firmware non è ancora stato compilato: quando lo sarà, `idf.py set-target e
 
 ## 🧪 Test
 
-I test sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono due programmi e passa tutto: `test_hmi` (638 controlli) su file delle impostazioni, varco (l'arresto passa sempre, blocco dell'arresto hardware, conferma, tempo limite e giro dell'orologio, regole vocali, interruttori), ordini e avvisi vocali e testi delle schermate in otto lingue; e `test_workflow` (115 controlli) su orientamento e tocco, file della scheda (tipi, nomi sicuri, ordinamento), lettore JSON, richieste e risposte del server e flusso di un lavoro dalla scheda alla fine. Gli altri due programmi coprono le tastiere (`test_keyboard`, 137 controlli: ogni impostazione ha la sua tastiera, gli intervalli del tastierino sono quelli del file delle impostazioni, i decimali, il segno, le frecce, la tastiera completa di ogni lingua, il maiuscolo, i simboli e la lunghezza) e gli avvisi registrati (`test_notices`, 66 controlli: l'impostazione, il file di ogni lingua e genere). Altri tre programmi: `test_machine` (55 controlli: i tipi di macchina, il rifiuto del mandrino e la frase in ogni lingua), `test_quality` (911 controlli: le richieste, la lettura del rapporto, ogni rilievo) e `test_locales` (76655 controlli: ogni chiave ha un testo in ciascuna delle altre 29 lingue, niente è vuoto o troppo lungo, la scrittura di ogni lingua è quella giusta, e ogni carattere disegnabile è nell'intervallo dei font generati).
+I test sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono due programmi e passa tutto: `test_hmi` (955 controlli) su file delle impostazioni, varco (l'arresto passa sempre, blocco dell'arresto hardware, conferma, tempo limite e giro dell'orologio, regole vocali, interruttori), ordini e avvisi vocali e testi delle schermate in otto lingue; e `test_workflow` (185 controlli) su orientamento e tocco, file della scheda (tipi, nomi sicuri, ordinamento), lettore JSON, richieste e risposte del server e flusso di un lavoro dalla scheda alla fine. Gli altri due programmi coprono le tastiere (`test_keyboard`, 231 controlli: ogni impostazione ha la sua tastiera, gli intervalli del tastierino sono quelli del file delle impostazioni, i decimali, il segno, le frecce, la tastiera completa di ogni lingua, il maiuscolo, i simboli e la lunghezza) e gli avvisi registrati (`test_notices`, 266 controlli: l'impostazione, il file di ogni lingua e genere). Altri tre programmi: `test_machine` (55 controlli: i tipi di macchina, il rifiuto del mandrino e la frase in ogni lingua), `test_quality` (911 controlli: le richieste, la lettura del rapporto, ogni rilievo) e `test_locales` (85164 controlli: ogni chiave ha un testo in ciascuna delle altre 29 lingue, niente è vuoto o troppo lungo, la scrittura di ogni lingua è quella giusta, e ogni carattere disegnabile è nell'intervallo dei font generati).
 
 ## 🏗️ Compilazione e rilascio
 
@@ -215,6 +221,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── voice.hpp                                     ordini e avvisi vocali in otto lingue
 │   ├── orientation.hpp sdfiles.hpp                   layout verticale e orizzontale, file della scheda
 │   ├── server_link.hpp workflow.hpp job_memory.hpp   client del server e flusso di un lavoro
+│   ├── job_tools.hpp                                 gli utensili di un file e quelli disattivati
 │   ├── quality.hpp                                   il controllo qualità e l'anello di LED
 │   ├── ui_text.hpp keyboard.hpp notices.hpp          testi, tastiere e avvisi
 │   ├── locales.hpp locales_gen.hpp font_ranges.hpp   37 lingue e intervalli dei font

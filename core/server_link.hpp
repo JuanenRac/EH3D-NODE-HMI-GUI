@@ -236,18 +236,87 @@ inline std::string error_line(const Response& r) {
 }
 
 inline Request fleet_request() { return {"GET", "/api/v1/fleet", ""}; }
+inline Request job_report_request(const std::string& id) { return {"GET", "/api/v1/jobs/" + id, ""}; }
 inline Request job_start_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/start", "{}"}; }
 inline Request job_cancel_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/cancel", "{}"}; }
 inline Request job_confirm_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/confirm", "{}"}; }
 
 /// A drilling or routing job made of the text of the file of the card (and its tool table when there is one); the server plans it and keeps
 /// it ready: nothing starts until `job_start_request` is sent, and that goes through the gate of the screen.
-inline Request job_request(const std::string& machine, bool route, const std::string& name, const std::string& file_text, const std::string& tools_text) {
+inline Request job_request(const std::string& machine, bool route, const std::string& name, const std::string& file_text, const std::string& tools_text,
+                           const std::vector<int>& skip_tools = {}, int skip = 0) {
     std::string files = std::string("{") + json_quote(route ? "plt" : "ncd") + ":" + json_quote(file_text);
     if (!tools_text.empty()) files += std::string(",") + json_quote(route ? "rtd" : "dtd") + ":" + json_quote(tools_text);
     files += "}";
-    std::string body = std::string("{\"kind\":") + json_quote(route ? "route" : "drill") + ",\"name\":" + json_quote(name) + ",\"files\":" + files + "}";
+    std::string body = std::string("{\"kind\":") + json_quote(route ? "route" : "drill") + ",\"name\":" + json_quote(name) + ",\"files\":" + files;
+    // the tools (the pens of a routing job) that are switched off: the server leaves their holes or paths out of the job and they need not be in the tool table
+    if (!skip_tools.empty()) {
+        body += ",\"skip_tools\":[";
+        for (std::size_t i = 0; i < skip_tools.size(); ++i) body += (i ? "," : "") + std::to_string(skip_tools[i]);
+        body += "]";
+    }
+    // how many holes (or paths) are already done: a job that goes on after a stop does only the rest
+    if (skip > 0) body += ",\"skip\":" + std::to_string(skip);
+    body += "}";
     return {"POST", "/api/v1/machines/" + machine + "/jobs", body};
+}
+
+/// How a job ended, as `GET /jobs/:id` says it: its state (`done`, `cancelled`, `failed`, ...), why, and the holes (the paths of a routing job) it did of the ones it had.
+struct JobReport {
+    std::string state, message;
+    int holes_done = 0;
+    int holes_total = 0;
+};
+
+inline bool parse_job_report(const std::string& body, JobReport& out) {
+    Json j;
+    if (!parse_json(body, j) || j.type != Json::Type::Object || j.str("state").empty()) return false;
+    JobReport r;
+    r.state = j.str("state");
+    r.message = j.str("message");
+    r.holes_done = static_cast<int>(j.num("holes_done"));
+    r.holes_total = static_cast<int>(j.num("holes_total"));
+    if (r.holes_done < 0) r.holes_done = 0;
+    if (r.holes_total < r.holes_done) r.holes_total = r.holes_done;
+    out = std::move(r);
+    return true;
+}
+
+/// The spindle of the machine and its limits (`GET /machines/:id/spindle`): which one it carries (`original` or `vfd`; empty when none is said), the slowest and
+/// the fastest turns of the one in use, and the top speed the node of the machine is told to keep to (0 when none is known).
+inline Request spindle_request(const std::string& machine) { return {"GET", "/api/v1/machines/" + machine + "/spindle", ""}; }
+
+struct SpindleView {
+    bool known = false;
+    std::string kind;
+    int min_rpm = 0;
+    int max_rpm = 0;
+    int node_max_rpm = 0;
+    std::string guard;  // `reject` or `warn`
+};
+
+inline bool parse_spindle(const std::string& body, SpindleView& out) {
+    Json j;
+    if (!parse_json(body, j) || j.type != Json::Type::Object) return false;
+    SpindleView v;
+    v.kind = j.str("spindle");
+    v.guard = j.str("guard");
+    v.node_max_rpm = static_cast<int>(j.num("node_max_rpm"));
+    const Json* active = j.get("active");
+    if (active && active->type == Json::Type::Object) {
+        v.min_rpm = static_cast<int>(active->num("min_rpm"));
+        v.max_rpm = static_cast<int>(active->num("max_rpm"));
+    }
+    v.known = !v.kind.empty() && v.max_rpm > 0;
+    out = std::move(v);
+    return true;
+}
+
+/// The most turns the screen may ask of the spindle: what the settings allow, and not more than the spindle of the machine gives (0 = the screen never starts it).
+inline int spindle_ceiling(int settings_max_rpm, const SpindleView& s) {
+    if (settings_max_rpm <= 0) return 0;
+    if (!s.known) return settings_max_rpm;
+    return settings_max_rpm < s.max_rpm ? settings_max_rpm : s.max_rpm;
 }
 
 struct MachineRow {

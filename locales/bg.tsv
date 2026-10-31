@@ -70,3 +70,10 @@ f.image_blurry	снимката е извън фокус
 f.not_calibrated	първо задайте мащаба
 f.nothing_to_check	няма включена проверка
 f.no_expected_holes	няма отвор от задачата в кадър
+ui.Holes	отвори
+ui.Cuts	срезове
+ui.SpindleCut	Заповедта е намалена до максималните обороти на шпиндела
+ui.WhySpindleFast	Заповедта иска повече обороти, отколкото шпинделът дава.
+ui.Resume	Продължи
+ui.Stopped	Спряно
+ui.Next	Следващо

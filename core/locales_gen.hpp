@@ -44,6 +44,13 @@ inline const char* const kText_bg[kKeyCount] = {
     "Напредък",  // ui.Progress
     "Инструмент",  // ui.Tool
     "Ръчно движение",  // ui.Jog
+    "отвори",  // ui.Holes
+    "срезове",  // ui.Cuts
+    "Заповедта е намалена до максималните обороти на шпиндела",  // ui.SpindleCut
+    "Заповедта иска повече обороти, отколкото шпинделът дава.",  // ui.WhySpindleFast
+    "Продължи",  // ui.Resume
+    "Спряно",  // ui.Stopped
+    "Следващо",  // ui.Next
     "Проверка на качеството на работата",  // q.Title
     "Светлинен пръстен",  // q.Light
     "Изкл.",  // q.LightOff
@@ -119,6 +126,13 @@ inline const char* const kText_hr[kKeyCount] = {
     "Napredak",  // ui.Progress
     "Alat",  // ui.Tool
     "Ručni pomak",  // ui.Jog
+    "rupe",  // ui.Holes
+    "rezovi",  // ui.Cuts
+    "Naredba je ograničena na najveću brzinu vretena",  // ui.SpindleCut
+    "Naredba traži više okretaja nego što vreteno daje.",  // ui.WhySpindleFast
+    "Nastavi",  // ui.Resume
+    "Zaustavljeno",  // ui.Stopped
+    "Sljedeće",  // ui.Next
     "Provjera kvalitete rada",  // q.Title
     "Svjetlosni prsten",  // q.Light
     "Isklj.",  // q.LightOff
@@ -194,6 +208,13 @@ inline const char* const kText_cs[kKeyCount] = {
     "Průběh",  // ui.Progress
     "Nástroj",  // ui.Tool
     "Ruční pojezd",  // ui.Jog
+    "otvory",  // ui.Holes
+    "řezy",  // ui.Cuts
+    "Příkaz snížen na nejvyšší otáčky vřetena",  // ui.SpindleCut
+    "Příkaz žádá více otáček, než vřeteno dává.",  // ui.WhySpindleFast
+    "Pokračovat",  // ui.Resume
+    "Zastaveno",  // ui.Stopped
+    "Další",  // ui.Next
     "Kontrola kvality práce",  // q.Title
     "Světelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -269,6 +290,13 @@ inline const char* const kText_da[kKeyCount] = {
     "Fremdrift",  // ui.Progress
     "Værktøj",  // ui.Tool
     "Jog",  // ui.Jog
+    "huller",  // ui.Holes
+    "snit",  // ui.Cuts
+    "Ordren er begrænset til spindlens maksimale hastighed",  // ui.SpindleCut
+    "Ordren kræver flere omdrejninger, end spindlen giver.",  // ui.WhySpindleFast
+    "Genoptag",  // ui.Resume
+    "Stoppet",  // ui.Stopped
+    "Næste",  // ui.Next
     "Kvalitetskontrol af arbejdet",  // q.Title
     "Lysring",  // q.Light
     "Fra",  // q.LightOff
@@ -344,6 +372,13 @@ inline const char* const kText_nl[kKeyCount] = {
     "Voortgang",  // ui.Progress
     "Gereedschap",  // ui.Tool
     "Handbediening",  // ui.Jog
+    "gaten",  // ui.Holes
+    "sneden",  // ui.Cuts
+    "Opdracht beperkt tot de maximumsnelheid van de spindel",  // ui.SpindleCut
+    "De opdracht vraagt meer toeren dan de spindel geeft.",  // ui.WhySpindleFast
+    "Hervatten",  // ui.Resume
+    "Gestopt",  // ui.Stopped
+    "Volgende",  // ui.Next
     "Kwaliteitscontrole van het werk",  // q.Title
     "Lichtring",  // q.Light
     "Uit",  // q.LightOff
@@ -419,6 +454,13 @@ inline const char* const kText_et[kKeyCount] = {
     "Edenemine",  // ui.Progress
     "Tööriist",  // ui.Tool
     "Käsiliigutus",  // ui.Jog
+    "augud",  // ui.Holes
+    "lõiked",  // ui.Cuts
+    "Käsk piiratud spindli maksimaalse kiiruseni",  // ui.SpindleCut
+    "Käsk nõuab rohkem pöördeid, kui spindel annab.",  // ui.WhySpindleFast
+    "Jätka",  // ui.Resume
+    "Peatatud",  // ui.Stopped
+    "Järgmine",  // ui.Next
     "Töö kvaliteedikontroll",  // q.Title
     "Valgusrõngas",  // q.Light
     "Väljas",  // q.LightOff
@@ -494,6 +536,13 @@ inline const char* const kText_fi[kKeyCount] = {
     "Eteneminen",  // ui.Progress
     "Työkalu",  // ui.Tool
     "Käsiajo",  // ui.Jog
+    "reiät",  // ui.Holes
+    "leikkaukset",  // ui.Cuts
+    "Komento rajattu karan suurimpaan nopeuteen",  // ui.SpindleCut
+    "Komento pyytää enemmän kierroksia kuin kara antaa.",  // ui.WhySpindleFast
+    "Jatka",  // ui.Resume
+    "Pysäytetty",  // ui.Stopped
+    "Seuraava",  // ui.Next
     "Työn laatutarkastus",  // q.Title
     "Valorengas",  // q.Light
     "Pois",  // q.LightOff
@@ -569,6 +618,13 @@ inline const char* const kText_el[kKeyCount] = {
     "Πρόοδος",  // ui.Progress
     "Εργαλείο",  // ui.Tool
     "Χειροκίνηση",  // ui.Jog
+    "οπές",  // ui.Holes
+    "κοπές",  // ui.Cuts
+    "Η εντολή περιορίστηκε στη μέγιστη ταχύτητα του άξονα",  // ui.SpindleCut
+    "Η εντολή ζητά περισσότερες στροφές από όσες δίνει ο άξονας.",  // ui.WhySpindleFast
+    "Συνέχεια",  // ui.Resume
+    "Σταμάτησε",  // ui.Stopped
+    "Επόμενο",  // ui.Next
     "Έλεγχος ποιότητας της εργασίας",  // q.Title
     "Δακτύλιος φωτός",  // q.Light
     "Κλειστό",  // q.LightOff
@@ -644,6 +700,13 @@ inline const char* const kText_hu[kKeyCount] = {
     "Előrehaladás",  // ui.Progress
     "Szerszám",  // ui.Tool
     "Léptetés",  // ui.Jog
+    "furatok",  // ui.Holes
+    "vágások",  // ui.Cuts
+    "A parancs a főorsó legnagyobb fordulatszámára korlátozva",  // ui.SpindleCut
+    "A parancs több fordulatot kér, mint amennyit a főorsó ad.",  // ui.WhySpindleFast
+    "Folytatás",  // ui.Resume
+    "Leállítva",  // ui.Stopped
+    "Következő",  // ui.Next
     "A munka minőségellenőrzése",  // q.Title
     "Fénygyűrű",  // q.Light
     "Ki",  // q.LightOff
@@ -719,6 +782,13 @@ inline const char* const kText_ga[kKeyCount] = {
     "Dul chun cinn",  // ui.Progress
     "Uirlis",  // ui.Tool
     "Jog",  // ui.Jog
+    "poill",  // ui.Holes
+    "gearrthaí",  // ui.Cuts
+    "Cuireadh an t-ordú faoi theorainn luas uasta na fearsaide",  // ui.SpindleCut
+    "Iarrann an t-ordú níos mó rothlaí ná mar a thugann an fhearsaid.",  // ui.WhySpindleFast
+    "Lean ar aghaidh",  // ui.Resume
+    "Stoptha",  // ui.Stopped
+    "An chéad cheann eile",  // ui.Next
     "Seiceáil cáilíochta na hoibre",  // q.Title
     "Fáinne solais",  // q.Light
     "Múchta",  // q.LightOff
@@ -794,6 +864,13 @@ inline const char* const kText_lv[kKeyCount] = {
     "Progress",  // ui.Progress
     "Rīks",  // ui.Tool
     "Jog",  // ui.Jog
+    "caurumi",  // ui.Holes
+    "griezumi",  // ui.Cuts
+    "Komanda ierobežota līdz vārpstas maksimālajam ātrumam",  // ui.SpindleCut
+    "Komanda prasa vairāk apgriezienu, nekā vārpsta dod.",  // ui.WhySpindleFast
+    "Turpināt",  // ui.Resume
+    "Apturēts",  // ui.Stopped
+    "Nākamais",  // ui.Next
     "Darba kvalitātes pārbaude",  // q.Title
     "Gaismas gredzens",  // q.Light
     "Izsl.",  // q.LightOff
@@ -869,6 +946,13 @@ inline const char* const kText_lt[kKeyCount] = {
     "Eiga",  // ui.Progress
     "Įrankis",  // ui.Tool
     "Jog",  // ui.Jog
+    "skylės",  // ui.Holes
+    "pjūviai",  // ui.Cuts
+    "Komanda apribota iki didžiausio suklio greičio",  // ui.SpindleCut
+    "Komanda prašo daugiau apsisukimų, nei suklys gali duoti.",  // ui.WhySpindleFast
+    "Tęsti",  // ui.Resume
+    "Sustabdyta",  // ui.Stopped
+    "Kitas",  // ui.Next
     "Darbo kokybės patikra",  // q.Title
     "Šviesos žiedas",  // q.Light
     "Išj.",  // q.LightOff
@@ -944,6 +1028,13 @@ inline const char* const kText_mt[kKeyCount] = {
     "Progress",  // ui.Progress
     "Għodda",  // ui.Tool
     "Jog",  // ui.Jog
+    "toqob",  // ui.Holes
+    "qtugħ",  // ui.Cuts
+    "Il-kmand ġie limitat għall-ogħla veloċità tal-ispindil",  // ui.SpindleCut
+    "Il-kmand jitlob aktar rotazzjonijiet minn dak li jagħti l-ispindil.",  // ui.WhySpindleFast
+    "Kompli",  // ui.Resume
+    "Waqaf",  // ui.Stopped
+    "Li jmiss",  // ui.Next
     "Verifika tal-kwalità tax-xogħol",  // q.Title
     "Ċirku tad-dawl",  // q.Light
     "Mitfi",  // q.LightOff
@@ -1019,6 +1110,13 @@ inline const char* const kText_pl[kKeyCount] = {
     "Postęp",  // ui.Progress
     "Narzędzie",  // ui.Tool
     "Jog",  // ui.Jog
+    "otwory",  // ui.Holes
+    "cięcia",  // ui.Cuts
+    "Polecenie ograniczone do maksymalnej prędkości wrzeciona",  // ui.SpindleCut
+    "Polecenie żąda więcej obrotów, niż daje wrzeciono.",  // ui.WhySpindleFast
+    "Wznów",  // ui.Resume
+    "Zatrzymano",  // ui.Stopped
+    "Dalej",  // ui.Next
     "Kontrola jakości wykonania",  // q.Title
     "Pierścień świetlny",  // q.Light
     "Wył.",  // q.LightOff
@@ -1094,6 +1192,13 @@ inline const char* const kText_ro[kKeyCount] = {
     "Progres",  // ui.Progress
     "Sculă",  // ui.Tool
     "Jog",  // ui.Jog
+    "găuri",  // ui.Holes
+    "tăieturi",  // ui.Cuts
+    "Comanda a fost limitată la turația maximă a axului",  // ui.SpindleCut
+    "Comanda cere mai multe rotații decât oferă axul.",  // ui.WhySpindleFast
+    "Reia",  // ui.Resume
+    "Oprit",  // ui.Stopped
+    "Următorul",  // ui.Next
     "Verificarea calității lucrării",  // q.Title
     "Inel de lumină",  // q.Light
     "Oprit",  // q.LightOff
@@ -1169,6 +1274,13 @@ inline const char* const kText_sk[kKeyCount] = {
     "Priebeh",  // ui.Progress
     "Nástroj",  // ui.Tool
     "Jog",  // ui.Jog
+    "otvory",  // ui.Holes
+    "rezy",  // ui.Cuts
+    "Príkaz obmedzený na maximálne otáčky vretena",  // ui.SpindleCut
+    "Príkaz žiada viac otáčok, než vreteno dáva.",  // ui.WhySpindleFast
+    "Pokračovať",  // ui.Resume
+    "Zastavené",  // ui.Stopped
+    "Ďalší",  // ui.Next
     "Kontrola kvality práce",  // q.Title
     "Svetelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -1244,6 +1356,13 @@ inline const char* const kText_sl[kKeyCount] = {
     "Napredek",  // ui.Progress
     "Orodje",  // ui.Tool
     "Ročni pomik",  // ui.Jog
+    "luknje",  // ui.Holes
+    "rezi",  // ui.Cuts
+    "Ukaz omejen na največjo hitrost vretena",  // ui.SpindleCut
+    "Ukaz zahteva več vrtljajev, kot jih vreteno daje.",  // ui.WhySpindleFast
+    "Nadaljuj",  // ui.Resume
+    "Ustavljeno",  // ui.Stopped
+    "Naslednji",  // ui.Next
     "Kontrola kakovosti izdelka",  // q.Title
     "Svetlobni obroč",  // q.Light
     "Izklj.",  // q.LightOff
@@ -1319,6 +1438,13 @@ inline const char* const kText_sv[kKeyCount] = {
     "Förlopp",  // ui.Progress
     "Verktyg",  // ui.Tool
     "Jogga",  // ui.Jog
+    "hål",  // ui.Holes
+    "skärningar",  // ui.Cuts
+    "Kommandot begränsat till spindelns maximala hastighet",  // ui.SpindleCut
+    "Kommandot begär fler varv än spindeln ger.",  // ui.WhySpindleFast
+    "Återuppta",  // ui.Resume
+    "Stoppad",  // ui.Stopped
+    "Nästa",  // ui.Next
     "Kvalitetskontroll av arbetet",  // q.Title
     "Ljusring",  // q.Light
     "Av",  // q.LightOff
@@ -1394,6 +1520,13 @@ inline const char* const kText_no[kKeyCount] = {
     "Fremdrift",  // ui.Progress
     "Verktøy",  // ui.Tool
     "Jogg",  // ui.Jog
+    "hull",  // ui.Holes
+    "kutt",  // ui.Cuts
+    "Kommandoen er begrenset til spindelens maksimale hastighet",  // ui.SpindleCut
+    "Kommandoen ber om flere omdreininger enn spindelen gir.",  // ui.WhySpindleFast
+    "Gjenoppta",  // ui.Resume
+    "Stoppet",  // ui.Stopped
+    "Neste",  // ui.Next
     "Kvalitetskontroll av arbeidet",  // q.Title
     "Lysring",  // q.Light
     "Av",  // q.LightOff
@@ -1469,6 +1602,13 @@ inline const char* const kText_is[kKeyCount] = {
     "Framvinda",  // ui.Progress
     "Verkfæri",  // ui.Tool
     "Handfærsla",  // ui.Jog
+    "göt",  // ui.Holes
+    "skurðir",  // ui.Cuts
+    "Skipunin takmörkuð við hámarkshraða snældunnar",  // ui.SpindleCut
+    "Skipunin biður um fleiri snúninga en snældan gefur.",  // ui.WhySpindleFast
+    "Halda áfram",  // ui.Resume
+    "Stöðvað",  // ui.Stopped
+    "Næsta",  // ui.Next
     "Gæðaskoðun verksins",  // q.Title
     "Ljósahringur",  // q.Light
     "Af",  // q.LightOff
@@ -1544,6 +1684,13 @@ inline const char* const kText_uk[kKeyCount] = {
     "Хід виконання",  // ui.Progress
     "Інструмент",  // ui.Tool
     "Ручний рух",  // ui.Jog
+    "отвори",  // ui.Holes
+    "різи",  // ui.Cuts
+    "Команду обмежено максимальною швидкістю шпинделя",  // ui.SpindleCut
+    "Команда вимагає більше обертів, ніж дає шпиндель.",  // ui.WhySpindleFast
+    "Продовжити",  // ui.Resume
+    "Зупинено",  // ui.Stopped
+    "Далі",  // ui.Next
     "Контроль якості виконаної роботи",  // q.Title
     "Світлове кільце",  // q.Light
     "Вимк.",  // q.LightOff
@@ -1619,6 +1766,13 @@ inline const char* const kText_ru[kKeyCount] = {
     "Ход выполнения",  // ui.Progress
     "Инструмент",  // ui.Tool
     "Ручное движение",  // ui.Jog
+    "отверстия",  // ui.Holes
+    "резы",  // ui.Cuts
+    "Команда ограничена максимальной скоростью шпинделя",  // ui.SpindleCut
+    "Команда требует больше оборотов, чем даёт шпиндель.",  // ui.WhySpindleFast
+    "Продолжить",  // ui.Resume
+    "Остановлено",  // ui.Stopped
+    "Далее",  // ui.Next
     "Контроль качества выполненной работы",  // q.Title
     "Световое кольцо",  // q.Light
     "Выкл.",  // q.LightOff
@@ -1694,6 +1848,13 @@ inline const char* const kText_sr[kKeyCount] = {
     "Напредак",  // ui.Progress
     "Алат",  // ui.Tool
     "Ручно кретање",  // ui.Jog
+    "рупе",  // ui.Holes
+    "резови",  // ui.Cuts
+    "Команда је ограничена на највећу брзину вретена",  // ui.SpindleCut
+    "Команда тражи више обртаја него што вретено даје.",  // ui.WhySpindleFast
+    "Настави",  // ui.Resume
+    "Заустављено",  // ui.Stopped
+    "Следеће",  // ui.Next
     "Провера квалитета рада",  // q.Title
     "Светлосни прстен",  // q.Light
     "Искљ.",  // q.LightOff
@@ -1769,6 +1930,13 @@ inline const char* const kText_sq[kKeyCount] = {
     "Përparimi",  // ui.Progress
     "Mjeti",  // ui.Tool
     "Lëvizje manuale",  // ui.Jog
+    "vrima",  // ui.Holes
+    "prerje",  // ui.Cuts
+    "Komanda u kufizua në shpejtësinë maksimale të boshtit",  // ui.SpindleCut
+    "Komanda kërkon më shumë rrotullime nga sa jep boshti.",  // ui.WhySpindleFast
+    "Vazhdo",  // ui.Resume
+    "Ndalur",  // ui.Stopped
+    "Tjetri",  // ui.Next
     "Kontrolli i cilësisë së punës",  // q.Title
     "Unaza e dritës",  // q.Light
     "Fikur",  // q.LightOff
@@ -1844,6 +2012,13 @@ inline const char* const kText_ca[kKeyCount] = {
     "Progrés",  // ui.Progress
     "Eina",  // ui.Tool
     "Jog",  // ui.Jog
+    "forats",  // ui.Holes
+    "talls",  // ui.Cuts
+    "Ordre limitada a la velocitat màxima del broquer",  // ui.SpindleCut
+    "L'ordre demana més voltes de les que dona el broquer.",  // ui.WhySpindleFast
+    "Reprèn",  // ui.Resume
+    "Aturat",  // ui.Stopped
+    "Següent",  // ui.Next
     "Verificació de qualitat de la feina",  // q.Title
     "Aro de llum",  // q.Light
     "Apagat",  // q.LightOff
@@ -1919,6 +2094,13 @@ inline const char* const kText_gl[kKeyCount] = {
     "Progreso",  // ui.Progress
     "Ferramenta",  // ui.Tool
     "Jog",  // ui.Jog
+    "buratos",  // ui.Holes
+    "cortes",  // ui.Cuts
+    "Orde limitada á velocidade máxima do husillo",  // ui.SpindleCut
+    "A orde pide máis voltas das que dá o husillo.",  // ui.WhySpindleFast
+    "Continuar",  // ui.Resume
+    "Parado",  // ui.Stopped
+    "Seguinte",  // ui.Next
     "Verificación de calidade do traballo",  // q.Title
     "Aro de luz",  // q.Light
     "Apagado",  // q.LightOff
@@ -1994,6 +2176,13 @@ inline const char* const kText_eu[kKeyCount] = {
     "Aurrerapena",  // ui.Progress
     "Erreminta",  // ui.Tool
     "Jog",  // ui.Jog
+    "zuloak",  // ui.Holes
+    "mozketak",  // ui.Cuts
+    "Agindua ardatzaren gehieneko abiadurara mugatu da",  // ui.SpindleCut
+    "Aginduak ardatzak ematen duena baino bira gehiago eskatzen du.",  // ui.WhySpindleFast
+    "Jarraitu",  // ui.Resume
+    "Geldituta",  // ui.Stopped
+    "Hurrengoa",  // ui.Next
     "Lanaren kalitate-egiaztapena",  // q.Title
     "Argi-eraztuna",  // q.Light
     "Itzalita",  // q.LightOff
@@ -2069,6 +2258,13 @@ inline const char* const kText_pt_br[kKeyCount] = {
     nullptr,  // ui.Progress
     nullptr,  // ui.Tool
     nullptr,  // ui.Jog
+    nullptr,  // ui.Holes
+    nullptr,  // ui.Cuts
+    nullptr,  // ui.SpindleCut
+    nullptr,  // ui.WhySpindleFast
+    nullptr,  // ui.Resume
+    nullptr,  // ui.Stopped
+    nullptr,  // ui.Next
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff
@@ -2144,6 +2340,13 @@ inline const char* const kText_fr_ca[kKeyCount] = {
     nullptr,  // ui.Progress
     nullptr,  // ui.Tool
     nullptr,  // ui.Jog
+    nullptr,  // ui.Holes
+    nullptr,  // ui.Cuts
+    nullptr,  // ui.SpindleCut
+    nullptr,  // ui.WhySpindleFast
+    nullptr,  // ui.Resume
+    nullptr,  // ui.Stopped
+    nullptr,  // ui.Next
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff

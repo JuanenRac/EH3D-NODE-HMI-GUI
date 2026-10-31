@@ -70,3 +70,10 @@ f.image_blurry	billedet er ude af fokus
 f.not_calibrated	angiv først skalaen
 f.nothing_to_check	ingen kontrol er slået til
 f.no_expected_holes	intet af jobbets huller er i billedet
+ui.Holes	huller
+ui.Cuts	snit
+ui.SpindleCut	Ordren er begrænset til spindlens maksimale hastighed
+ui.WhySpindleFast	Ordren kræver flere omdrejninger, end spindlen giver.
+ui.Resume	Genoptag
+ui.Stopped	Stoppet
+ui.Next	Næste

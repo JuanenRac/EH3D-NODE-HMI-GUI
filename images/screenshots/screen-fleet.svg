@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800" font-family="'Ubuntu','Segoe UI','Noto Sans','Noto Sans CJK SC','Noto Sans CJK JP','Yu Gothic',sans-serif">
+<rect width="1280" height="800" fill="#14110d"/>
+<text x="30" y="46" font-size="24" fill="#ffb300">&lt;</text>
+<text x="64" y="46" font-size="28" fill="#f0e6d0">EH3D</text><text x="142" y="46" font-size="28" fill="#ffb300">BUNGARD</text>
+<rect x="330" y="16" width="128" height="38" rx="9" fill="none" stroke="#ffb300" stroke-width="1.3"/><text x="394.0" y="40.0" font-size="15" fill="#f0e6d0" text-anchor="middle">Máquina</text>
+<rect x="470" y="16" width="110" height="38" rx="9" fill="none" stroke="#ffb300" stroke-width="1.3"/><text x="525.0" y="40.0" font-size="15" fill="#f0e6d0" text-anchor="middle">Trabalho</text>
+<rect x="592" y="16" width="110" height="38" rx="9" fill="none" stroke="#ffb300" stroke-width="1.3"/><text x="647.0" y="40.0" font-size="15" fill="#f0e6d0" text-anchor="middle">Visor</text>
+<rect x="714" y="16" width="230" height="38" rx="9" fill="#3a2a00" stroke="#ffb300" stroke-width="1.3"/><text x="829.0" y="40.0" font-size="15" fill="#f0e6d0" text-anchor="middle">Máquinas e estações</text>
+<rect x="956" y="16" width="128" height="38" rx="9" fill="none" stroke="#ffb300" stroke-width="1.3"/><text x="1020.0" y="40.0" font-size="15" fill="#f0e6d0" text-anchor="middle">Definições</text>
+<text x="1252" y="32" font-size="13" fill="#f0e6d0" text-anchor="end">Armada   server</text>
+<text x="1252" y="52" font-size="13" fill="#a89878" text-anchor="end">PT</text>
+<line x1="0" y1="66" x2="1280" y2="66" stroke="#3a2f1e"/>
+<polygon points="34,80 1262,80 1262,536 1246,552 18,552 18,96" fill="#181410" stroke="#ffb300" stroke-width="1.5"/><text x="34" y="108" font-size="13" fill="#ffb300" letter-spacing="1">MÁQUINAS E ESTAÇÕES</text>
+<text x="40" y="152" font-size="14" fill="#ffb300" letter-spacing="1">BENCH</text>
+<circle cx="52" cy="188" r="8" fill="#ffb300"/><text x="76" y="196" font-size="22" fill="#f0e6d0">Bungard CCD 1</text>
+<text x="360" y="196" font-size="18" fill="#f0e6d0">busy</text>
+<text x="510" y="186" font-size="14" fill="#f0e6d0">power-board.ncd</text>
+<rect x="510" y="194" width="260" height="8" rx="4" fill="#241c10"/><rect x="510" y="194" width="153" height="8" rx="4" fill="#ffb300"/>
+<text x="782" y="204" font-size="15" fill="#f0e6d0">59%</text>
+<circle cx="52" cy="254" r="8" fill="#ff9100"/><text x="76" y="262" font-size="22" fill="#f0e6d0">Bungard CCD 2</text>
+<text x="360" y="262" font-size="18" fill="#f0e6d0">waiting</text>
+<text x="510" y="252" font-size="14" fill="#f0e6d0">sensor.ncd</text>
+<rect x="510" y="260" width="260" height="8" rx="4" fill="#241c10"/><rect x="510" y="260" width="213" height="8" rx="4" fill="#ff9100"/>
+<text x="782" y="270" font-size="15" fill="#f0e6d0">82%</text>
+<circle cx="52" cy="320" r="8" fill="#9be564"/><text x="76" y="328" font-size="22" fill="#f0e6d0">Bungard CCD 3</text>
+<text x="360" y="328" font-size="18" fill="#f0e6d0">idle</text>
+<text x="40" y="384" font-size="14" fill="#ffb300" letter-spacing="1">ROOM</text>
+<circle cx="52" cy="420" r="8" fill="#ffb300"/><text x="76" y="428" font-size="22" fill="#f0e6d0">Router 1</text>
+<text x="360" y="428" font-size="18" fill="#f0e6d0">busy</text>
+<text x="510" y="418" font-size="14" fill="#f0e6d0">frame.plt</text>
+<rect x="510" y="426" width="260" height="8" rx="4" fill="#241c10"/><rect x="510" y="426" width="88" height="8" rx="4" fill="#ffb300"/>
+<text x="782" y="436" font-size="15" fill="#f0e6d0">34%</text>
+<circle cx="52" cy="486" r="8" fill="#9be564"/><text x="76" y="494" font-size="22" fill="#f0e6d0">Router 2</text>
+<text x="360" y="494" font-size="18" fill="#f0e6d0">idle</text>
+<polygon points="34,566 1262,566 1262,766 1246,782 18,782 18,582" fill="#181410" stroke="#ffb300" stroke-width="1.5"/>
+<text x="44" y="606" font-size="12" fill="#a89878">X</text><text x="44" y="640" font-size="28" fill="#f0e6d0">19.5 mm</text>
+<text x="194" y="606" font-size="12" fill="#a89878">Y</text><text x="194" y="640" font-size="28" fill="#f0e6d0">77.5 mm</text>
+<text x="344" y="606" font-size="12" fill="#a89878">Z</text><text x="344" y="640" font-size="28" fill="#f0e6d0">-0.4 mm</text>
+<text x="494" y="606" font-size="12" fill="#a89878">MÁQUINA</text><text x="494" y="640" font-size="28" fill="#f0e6d0">CCD</text>
+<text x="44" y="678" font-size="12" fill="#a89878">PROGRESSO</text>
+<rect x="44" y="690" width="560" height="14" rx="7" fill="#241c10"/><rect x="44" y="690" width="207" height="14" rx="7" fill="#ffb300"/>
+<text x="618" y="704" font-size="16" fill="#f0e6d0">37 %</text>
+<circle cx="790" cy="650" r="52" fill="#1d1812" stroke="#ffb300" stroke-width="5"/><circle cx="790" cy="650" r="40" fill="#c62828"/><polygon points="790,622.72 760.24,674.8 819.76,674.8" fill="#ffffff"/><rect x="787.52" y="640.08" width="4.960000000000001" height="17.36" fill="#c62828"/><circle cx="790" cy="665.376" r="3.224" fill="#c62828"/>
+<polygon points="870,618 982,618 994,630 994,682 882,682 870,670" fill="#2896ff"/><g><rect x="918.5088" y="636.5088" width="10.79296" height="26.982400000000002" fill="#ffffff"/><rect x="934.69824" y="636.5088" width="10.79296" height="26.982400000000002" fill="#ffffff"/></g>
+<polygon points="1006,618 1118,618 1130,630 1130,682 1018,682 1006,670" fill="#28e65a"/><g><polygon points="1058.55616,636.5088 1081.4912,650.0 1058.55616,663.4912" fill="#ffffff"/></g>
+<polygon points="1142,618 1234,618 1246,630 1246,682 1154,682 1142,670" fill="#ff2828"/><g><rect x="1180.5088" y="636.5088" width="26.982400000000002" height="26.982400000000002" fill="#ffffff"/></g>
+</svg>

@@ -1,0 +1,5 @@
+dependencies:
+  idf: ">=5.5.5"
+  lvgl/lvgl: "~9.3.0"
+  espressif/esp_lvgl_port: "^2.6.0"
+  espressif/esp32_p4_function_ev_board: "^5.0.0"

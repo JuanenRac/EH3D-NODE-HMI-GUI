@@ -1,0 +1,14 @@
+menu "EH3D HMI"
+    config HMI_HW_STOP_GPIO
+        int "GPIO of the hardware stop input (-1: not wired)"
+        default -1
+        help
+            The stop button is wired to this input AND cuts the machine's drive by itself, independent of this screen. The screen only
+            reads it to show the state and to refuse moves while it is pressed. Check the pin against the schematic of the module.
+    config HMI_HW_STOP_ACTIVE_LOW
+        bool "The stop input is active low"
+        default y
+    config HMI_CONFIG_PATH
+        string "Settings file in the config partition"
+        default "/config/hmi.cfg"
+endmenu

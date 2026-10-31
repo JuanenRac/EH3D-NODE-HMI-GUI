@@ -1,0 +1,166 @@
+{
+  "repo": "EH3D-NODE-HMI-GUI",
+  "ecosystem": "eh3d",
+  "tagline": "A touch screen with an ESP32-P4 that controls a CNC machine, a laser or a pick and place machine on its own.",
+  "description": "EH3D-NODE-HMI-GUI is firmware in C++17 for the ESP32-P4 module with a 10.1-inch touch display, written for ESP-IDF 5.5 and LVGL 9. Every move and spindle order, from a touch or from the voice, passes the gate: a confirmation on the screen, the hardware-stop latch and the armed link. The rules, the settings file, the spoken orders and the texts in eight languages are tested on a computer; the firmware has not been built or run on a module.",
+  "columns": [
+    "WHO USES IT",
+    "THIS REPOSITORY",
+    "WHAT IT DEPENDS ON"
+  ],
+  "nodes": [
+    {
+      "id": "operator",
+      "column": 0,
+      "level": "external",
+      "title": "The operator",
+      "lines": [
+        "touches the screen or speaks",
+        "in one of eight languages"
+      ]
+    },
+    {
+      "id": "stop",
+      "column": 0,
+      "level": "external",
+      "title": "Hardware stop button",
+      "lines": [
+        "cuts the drive by itself;",
+        "the screen only reads it"
+      ]
+    },
+    {
+      "id": "screens",
+      "column": 1,
+      "level": "untested",
+      "title": "LVGL screens",
+      "lines": [
+        "machine, job, viewer, fleet,",
+        "settings; stop always on top"
+      ],
+      "code": [
+        "main/ui.cpp",
+        "main/app_main.cpp"
+      ]
+    },
+    {
+      "id": "voice",
+      "column": 1,
+      "level": "tested",
+      "title": "Voice and texts",
+      "lines": [
+        "spoken orders and alerts,",
+        "screen texts in eight languages"
+      ],
+      "code": [
+        "core/voice.hpp",
+        "core/ui_text.hpp"
+      ]
+    },
+    {
+      "id": "gate",
+      "column": 1,
+      "level": "tested",
+      "title": "The gate",
+      "lines": [
+        "confirmation, stop latch, armed",
+        "link; a stop always goes"
+      ],
+      "code": [
+        "core/gate.hpp",
+        "core/machine.hpp"
+      ]
+    },
+    {
+      "id": "settings",
+      "column": 1,
+      "level": "tested",
+      "title": "Settings file",
+      "lines": [
+        "hmi.cfg with safe defaults;",
+        "a bad value changes nothing"
+      ],
+      "code": [
+        "core/hmi_config.hpp"
+      ]
+    },
+    {
+      "id": "module",
+      "column": 2,
+      "level": "untested",
+      "title": "Guition ESP32-P4 module",
+      "lines": [
+        "10.1-inch touch, microSD, codec,",
+        "microphone; never flashed"
+      ],
+      "code": [
+        "main/board_p4.cpp"
+      ]
+    },
+    {
+      "id": "server",
+      "column": 2,
+      "level": "untested",
+      "title": "EH3D-SERVER or node",
+      "lines": [
+        "plans and runs the jobs; the",
+        "client is written, never run"
+      ],
+      "code": [
+        "docs/HARDWARE.md"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "operator",
+      "to": "screens",
+      "label": "touch",
+      "level": "untested"
+    },
+    {
+      "from": "operator",
+      "to": "voice",
+      "label": "voice",
+      "level": "tested"
+    },
+    {
+      "from": "stop",
+      "to": "gate",
+      "level": "tested"
+    },
+    {
+      "from": "screens",
+      "to": "gate",
+      "level": "tested"
+    },
+    {
+      "from": "voice",
+      "to": "screens",
+      "level": "untested"
+    },
+    {
+      "from": "settings",
+      "to": "gate",
+      "level": "tested"
+    },
+    {
+      "from": "screens",
+      "to": "module",
+      "level": "untested"
+    },
+    {
+      "from": "gate",
+      "to": "server",
+      "level": "untested"
+    }
+  ],
+  "legend": {
+    "tested": "rules covered by tests on a computer",
+    "contract": "shared base, kept identical by a tool",
+    "config": "builds, never flashed",
+    "untested": "has not run on real hardware",
+    "external": "a program, a person or another repository"
+  },
+  "footer": "Nothing has run on a module or on a machine yet."
+}

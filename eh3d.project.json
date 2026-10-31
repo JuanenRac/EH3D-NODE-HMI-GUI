@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "ecosystem": "EH3D",
+  "name": "EH3D-NODE-HMI-GUI",
+  "version": "0.0.1",
+  "role": "ui",
+  "stack": "C++17 (host-tested core); ESP-IDF 5.5 firmware with LVGL 9 for the ESP32-P4",
+  "technologies": [
+    "C++17",
+    "ESP-IDF",
+    "LVGL",
+    "ESP32-P4"
+  ],
+  "deployment_target": "mcu",
+  "maturity": "scaffolding",
+  "evidence": "host-test",
+  "family": "CNC Workflow Tools",
+  "parent": null,
+  "build": "cmake -S tests -B build/host && cmake --build build/host && ctest --test-dir build/host -C Debug",
+  "notes": "Scaffolding v0.0.1: a 10.1-inch touch screen (Guition JC8012P4A1C, ESP32-P4) meant to control a CNC machine, a laser or a pick and place machine on its own, on the hardware and the firmware base of EH3D-NODE-BUNGARD-HMI, with the screens in eight languages and spoken alerts and orders. The rules are in the host-tested core: the settings file with safe defaults and the kind of machine (only a CNC machine gets a spindle button; the screen never fires a laser or starts a pick and place head), the gate that every move and spindle order passes (confirmation on the screen, hardware-stop latch, armed link), the spoken orders and alerts and the screen texts in eight languages. The ESP-IDF firmware with the LVGL screens has not been flashed or run on a module and nothing has been connected to a machine.",
+  "native_version": {
+    "file": "eh3d.project.json",
+    "pattern": "\"version\"\\s*:\\s*\"(\\d+\\.\\d+\\.\\d+)\""
+  }
+}

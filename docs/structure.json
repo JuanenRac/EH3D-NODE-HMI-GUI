@@ -1,0 +1,507 @@
+{
+  "repo": "EH3D-NODE-HMI-GUI",
+  "ecosystem": "eh3d",
+  "svg": "en",
+  "exempt": [
+    "test.bat",
+    "test.sh"
+  ],
+  "tagline": {
+    "en": "Two levels: the folders, and the files that carry the logic.",
+    "es": "Dos niveles: las carpetas y los ficheros que llevan la lógica.",
+    "de": "Zwei Ebenen: die Ordner und die Dateien, die die Logik tragen.",
+    "fr": "Deux niveaux : les dossiers et les fichiers qui portent la logique.",
+    "it": "Due livelli: le cartelle e i file che portano la logica.",
+    "ja": "2階層：フォルダと、ロジックを担うファイル。",
+    "zh": "两个层级：文件夹，以及承载逻辑的文件。",
+    "pt": "Dois níveis: as pastas e os ficheiros que levam a lógica."
+  },
+  "cards": [
+    {
+      "name": "core/",
+      "span": 3,
+      "accent": "a",
+      "rows": [
+        {
+          "desc": {
+            "en": "the settings file and its safe defaults",
+            "es": "el fichero de ajustes y sus valores seguros",
+            "it": "il file delle impostazioni e i suoi valori sicuri",
+            "de": "die Einstellungsdatei und ihre sicheren Standardwerte",
+            "fr": "le fichier de réglages et ses valeurs sûres",
+            "pt": "o ficheiro de definições e os seus valores seguros",
+            "zh": "设置文件及其安全默认值",
+            "ja": "設定ファイルと安全な既定値"
+          },
+          "name": "hmi_config.hpp  lang.hpp",
+          "tree_name": "hmi_config.hpp lang.hpp"
+        },
+        {
+          "desc": {
+            "en": "the gate: confirmation, hardware-stop latch",
+            "es": "la compuerta: confirmación, pestillo de la parada",
+            "it": "il varco: conferma, blocco dell'arresto",
+            "de": "das Tor: Bestätigung, Stopp-Sperre",
+            "fr": "la porte : confirmation, verrou d'arrêt",
+            "pt": "a comporta: confirmação, trinco da paragem",
+            "zh": "闸门：确认、急停锁存",
+            "ja": "関門：確認、停止ラッチ"
+          },
+          "name": "gate.hpp"
+        },
+        {
+          "name": "machine.hpp",
+          "desc": {
+            "en": "the kind of machine",
+            "es": "el tipo de máquina",
+            "it": "il tipo di macchina",
+            "de": "die Art der Maschine",
+            "fr": "le type de machine",
+            "pt": "o tipo de máquina",
+            "zh": "机床类型",
+            "ja": "マシンの種類"
+          }
+        },
+        {
+          "desc": {
+            "en": "spoken orders and alerts in eight languages",
+            "es": "órdenes y avisos por voz en ocho idiomas",
+            "it": "ordini e avvisi vocali in otto lingue",
+            "de": "gesprochene Befehle und Hinweise in acht Sprachen",
+            "fr": "ordres et alertes vocaux en huit langues",
+            "pt": "ordens e avisos por voz em oito idiomas",
+            "zh": "八种语言的语音指令和提示",
+            "ja": "8 言語の音声命令と通知"
+          },
+          "name": "voice.hpp"
+        },
+        {
+          "desc": {
+            "en": "standing and lying layouts, files of the card",
+            "es": "diseños vertical y horizontal, ficheros de la tarjeta",
+            "it": "layout verticale e orizzontale, file della scheda",
+            "de": "Hoch- und Querformat, Dateien der Karte",
+            "fr": "portrait et paysage, fichiers de la carte",
+            "pt": "vertical e horizontal, ficheiros do cartão",
+            "zh": "竖屏和横屏布局、卡上的文件",
+            "ja": "縦横のレイアウト、カードのファイル"
+          },
+          "name": "orientation.hpp  sdfiles.hpp",
+          "tree_name": "orientation.hpp sdfiles.hpp"
+        },
+        {
+          "desc": {
+            "en": "client of the server and the flow of a job",
+            "es": "cliente del servidor y flujo de un trabajo",
+            "it": "client del server e flusso di un lavoro",
+            "de": "Client des Servers und Ablauf eines Auftrags",
+            "fr": "client du serveur et déroulement d'un travail",
+            "pt": "cliente do servidor e fluxo de um trabalho",
+            "zh": "服务器客户端和作业流程",
+            "ja": "サーバーのクライアントとジョブの流れ"
+          },
+          "name": "server_link.hpp  workflow.hpp  job_memory.hpp",
+          "tree_name": "server_link.hpp workflow.hpp job_memory.hpp"
+        },
+        {
+          "desc": {
+            "en": "texts, keyboards and notices",
+            "es": "textos, teclados y avisos",
+            "it": "testi, tastiere e avvisi",
+            "de": "Texte, Tastaturen und Hinweise",
+            "fr": "textes, claviers et avis",
+            "pt": "textos, teclados e avisos",
+            "zh": "文本、键盘与提示",
+            "ja": "文言、キーボード、通知"
+          },
+          "name": "ui_text.hpp  keyboard.hpp  notices.hpp",
+          "tree_name": "ui_text.hpp keyboard.hpp notices.hpp"
+        }
+      ],
+      "sub": {
+        "en": "no hardware, tested on a computer",
+        "es": "sin hardware, probado en un ordenador",
+        "it": "senza hardware, provato su un computer",
+        "de": "ohne Hardware, auf einem Computer getestet",
+        "fr": "sans matériel, testé sur ordinateur",
+        "pt": "sem hardware, testado num computador",
+        "zh": "无硬件，在计算机上测试",
+        "ja": "ハードウェア非依存、コンピューターでテスト済み"
+      }
+    },
+    {
+      "name": "main/",
+      "span": 3,
+      "accent": "b",
+      "rows": [
+        {
+          "desc": {
+            "en": "start, settings, the loop of the gate",
+            "es": "arranque, ajustes, el bucle de la compuerta",
+            "it": "avvio, impostazioni, il ciclo del varco",
+            "de": "Start, Einstellungen, die Schleife des Tors",
+            "fr": "démarrage, réglages, la boucle de la porte",
+            "pt": "arranque, definições, o ciclo da comporta",
+            "zh": "启动、设置、闸门循环",
+            "ja": "起動、設定、関門のループ"
+          },
+          "name": "app_main.cpp"
+        },
+        {
+          "desc": {
+            "en": "the LVGL screens and the stop button",
+            "es": "las pantallas LVGL y el botón de parada",
+            "it": "le schermate LVGL e il pulsante di arresto",
+            "de": "die LVGL-Bildschirme und der Stopp-Knopf",
+            "fr": "les écrans LVGL et le bouton d'arrêt",
+            "pt": "os ecrãs LVGL e o botão de paragem",
+            "zh": "LVGL 界面和停止按钮",
+            "ja": "LVGL 画面と停止ボタン"
+          },
+          "name": "ui.cpp  ui.hpp",
+          "tree_name": "ui.cpp ui.hpp"
+        },
+        {
+          "desc": {
+            "en": "the module: display, sound, stop input",
+            "es": "el módulo: pantalla, sonido, entrada de parada",
+            "it": "il modulo: display, suono, ingresso di arresto",
+            "de": "das Modul: Display, Ton, Stopp-Eingang",
+            "fr": "le module : écran, son, entrée d'arrêt",
+            "pt": "o módulo: ecrã, som, entrada de paragem",
+            "zh": "模块：显示、声音、急停输入",
+            "ja": "モジュール：表示、サウンド、停止入力"
+          },
+          "name": "board_p4.cpp  board.hpp",
+          "tree_name": "board_p4.cpp board.hpp"
+        },
+        {
+          "desc": {
+            "en": "the sockets of the client of the server",
+            "es": "los sockets del cliente del servidor",
+            "it": "i socket del client del server",
+            "de": "die Sockets des Server-Clients",
+            "fr": "les sockets du client du serveur",
+            "pt": "os sockets do cliente do servidor",
+            "zh": "服务器客户端的套接字",
+            "ja": "サーバークライアントのソケット"
+          },
+          "name": "server_link.cpp  server_link.hpp",
+          "tree_name": "server_link.cpp server_link.hpp"
+        },
+        {
+          "desc": {
+            "en": "component list and menuconfig pins",
+            "es": "lista de componentes y pines de menuconfig",
+            "it": "elenco dei componenti e pin di menuconfig",
+            "de": "Komponentenliste und menuconfig-Pins",
+            "fr": "liste des composants et broches de menuconfig",
+            "pt": "lista de componentes e pinos do menuconfig",
+            "zh": "组件列表和 menuconfig 引脚",
+            "ja": "コンポーネント一覧と menuconfig のピン"
+          },
+          "name": "idf_component.yml  Kconfig.projbuild",
+          "tree_name": "idf_component.yml Kconfig.projbuild"
+        }
+      ],
+      "sub": {
+        "en": "the ESP-IDF firmware, not built yet",
+        "es": "el firmware de ESP-IDF, aún sin compilar",
+        "it": "il firmware ESP-IDF, ancora da compilare",
+        "de": "die ESP-IDF-Firmware, noch nicht gebaut",
+        "fr": "le firmware ESP-IDF, pas encore compilé",
+        "pt": "o firmware ESP-IDF, ainda por compilar",
+        "zh": "ESP-IDF 固件，尚未编译",
+        "ja": "ESP-IDF ファームウェア（未ビルド）"
+      }
+    },
+    {
+      "name": "tests/",
+      "span": 3,
+      "accent": "d",
+      "rows": [
+        {
+          "desc": {
+            "en": "the settings, the gate, the voice and the texts",
+            "es": "los ajustes, la compuerta, la voz y los textos",
+            "it": "le impostazioni, il varco, la voce e i testi",
+            "de": "die Einstellungen, das Tor, die Sprache und die Texte",
+            "fr": "les réglages, la porte, la voix et les textes",
+            "pt": "as definições, a comporta, a voz e os textos",
+            "zh": "设置、闸门、语音和文本",
+            "ja": "設定、関門、音声、文言"
+          },
+          "name": "test_hmi.cpp  test_workflow.cpp",
+          "tree_name": "test_hmi.cpp test_workflow.cpp"
+        },
+        {
+          "desc": {
+            "en": "keyboards and notices",
+            "es": "teclados y avisos",
+            "it": "tastiere e avvisi",
+            "de": "Tastaturen und Hinweise",
+            "fr": "claviers et avis",
+            "pt": "teclados e avisos",
+            "zh": "键盘与提示",
+            "ja": "キーボードと通知"
+          },
+          "name": "test_keyboard.cpp  test_notices.cpp",
+          "tree_name": "test_keyboard.cpp test_notices.cpp"
+        },
+        {
+          "name": "test_machine.cpp",
+          "desc": {
+            "en": "tests of the kind of machine",
+            "es": "pruebas del tipo de máquina",
+            "it": "test del tipo di macchina",
+            "de": "Tests der Art der Maschine",
+            "fr": "tests du type de machine",
+            "pt": "testes do tipo de máquina",
+            "zh": "机床类型的测试",
+            "ja": "マシンの種類のテスト"
+          }
+        }
+      ],
+      "tree": {
+        "en": "host tests of the settings, the gate, the voice and the screen texts",
+        "es": "pruebas en el ordenador de los ajustes, la compuerta, la voz y los textos de pantalla",
+        "it": "test su computer di impostazioni, varco, voce e testi delle schermate",
+        "de": "Host-Tests von Einstellungen, Tor, Sprache und Bildschirmtexten",
+        "fr": "tests sur ordinateur des réglages, de la porte, de la voix et des textes d'écran",
+        "pt": "testes no computador das definições, da comporta, da voz e dos textos de ecrã",
+        "zh": "设置、闸门、语音和界面文本的主机测试",
+        "ja": "設定、関門、音声、画面文言のホストテスト"
+      }
+    },
+    {
+      "name": {
+        "en": "Other folders and the files at the root",
+        "es": "Otras carpetas y los archivos de la raíz",
+        "de": "Weitere Ordner und die Dateien im Wurzelverzeichnis",
+        "fr": "Autres dossiers et fichiers à la racine",
+        "it": "Altre cartelle e i file nella radice",
+        "ja": "その他のフォルダーとルートのファイル",
+        "zh": "其他文件夹和根目录文件",
+        "pt": "Outras pastas e os ficheiros da raiz"
+      },
+      "span": 3,
+      "accent": "a",
+      "kind": "group",
+      "rows": [
+        {
+          "desc": {
+            "en": "the hardware notes and the two pictures' sources",
+            "es": "las notas de hardware y las fuentes de los dos dibujos",
+            "it": "le note hardware e le fonti dei due disegni",
+            "de": "die Hardware-Hinweise und die Quellen der beiden Bilder",
+            "fr": "les notes matérielles et les sources des deux images",
+            "pt": "as notas de hardware e as fontes dos dois desenhos",
+            "zh": "硬件说明和两幅图的源文件",
+            "ja": "ハードウェアのメモと 2 つの図のソース"
+          },
+          "name": "docs/"
+        },
+        {
+          "desc": {
+            "en": "CI check, README check and the picture tools",
+            "es": "comprobación de CI, de README y herramientas de dibujos",
+            "it": "controllo CI, README e strumenti dei disegni",
+            "de": "CI-Prüfung, README-Prüfung und Bildwerkzeuge",
+            "fr": "contrôle CI, contrôle du README et outils des images",
+            "pt": "verificação de CI, de README e ferramentas dos desenhos",
+            "zh": "CI 检查、README 检查和绘图工具",
+            "ja": "CI チェック、README チェック、図のツール"
+          },
+          "name": "tools/"
+        },
+        {
+          "desc": {
+            "en": "the ESP-IDF project",
+            "es": "el proyecto ESP-IDF",
+            "de": "das ESP-IDF-Projekt",
+            "fr": "le projet ESP-IDF",
+            "it": "il progetto ESP-IDF",
+            "ja": "ESP-IDF プロジェクト",
+            "zh": "ESP-IDF 工程",
+            "pt": "o projeto ESP-IDF"
+          },
+          "name": "CMakeLists.txt"
+        },
+        {
+          "desc": {
+            "en": "the flash layout with two slots",
+            "es": "el reparto de la flash con dos ranuras",
+            "it": "la mappa della flash con due slot",
+            "de": "die Flash-Aufteilung mit zwei Slots",
+            "fr": "la répartition de la flash à deux emplacements",
+            "pt": "a divisão da flash com duas ranhuras",
+            "zh": "带两个槽位的闪存布局",
+            "ja": "2 スロットのフラッシュ配置"
+          },
+          "name": "partitions.csv"
+        },
+        {
+          "desc": {
+            "en": "every setting with its default and range",
+            "es": "cada ajuste con su valor por defecto y su rango",
+            "it": "ogni impostazione con il suo default e intervallo",
+            "de": "jede Einstellung mit Standardwert und Bereich",
+            "fr": "chaque réglage avec sa valeur par défaut et sa plage",
+            "pt": "cada definição com o seu valor por omissão e intervalo",
+            "zh": "每个设置及其默认值和范围",
+            "ja": "各設定の既定値と範囲"
+          },
+          "name": "hmi.cfg.example"
+        },
+        {
+          "desc": {
+            "en": "ESP-IDF settings for the ESP32-P4 module",
+            "es": "ajustes de ESP-IDF para el módulo ESP32-P4",
+            "it": "impostazioni ESP-IDF per il modulo ESP32-P4",
+            "de": "ESP-IDF-Einstellungen für das ESP32-P4-Modul",
+            "fr": "réglages ESP-IDF pour le module ESP32-P4",
+            "pt": "definições do ESP-IDF para o módulo ESP32-P4",
+            "zh": "ESP32-P4 模块的 ESP-IDF 设置",
+            "ja": "ESP32-P4 モジュール向けの ESP-IDF 設定"
+          },
+          "name": "sdkconfig.defaults"
+        },
+        {
+          "desc": {
+            "en": "settings of the board",
+            "es": "ajustes de la placa",
+            "it": "impostazioni della scheda",
+            "de": "Einstellungen der Platine",
+            "fr": "réglages de la carte",
+            "pt": "definições da placa",
+            "zh": "开发板设置",
+            "ja": "ボードの設定"
+          },
+          "name": "sdkconfig.board.p4",
+          "tree_name": "sdkconfig.board.p4"
+        },
+        {
+          "desc": {
+            "en": "the exact versions of the components",
+            "es": "las versiones exactas de los componentes",
+            "it": "le versioni esatte dei componenti",
+            "de": "die genauen Versionen der Komponenten",
+            "fr": "les versions exactes des composants",
+            "pt": "as versões exatas dos componentes",
+            "zh": "组件的确切版本",
+            "ja": "コンポーネントの正確なバージョン"
+          },
+          "name": "dependencies.lock",
+          "tree_name": "dependencies.lock"
+        },
+        {
+          "name": "images/",
+          "desc": {
+            "en": "banner and the Architecture and Repository Structure pictures",
+            "es": "banner y las imágenes de Arquitectura y Estructura del repositorio",
+            "de": "Banner und die Bilder von Architektur und Repository-Struktur",
+            "fr": "bannière et images d'Architecture et de Structure du dépôt",
+            "it": "banner e le immagini di Architettura e Struttura del repository",
+            "ja": "バナーとアーキテクチャ・リポジトリ構成の図",
+            "zh": "横幅图以及架构和仓库结构图片",
+            "pt": "banner e as imagens de Arquitetura e Estrutura do repositório"
+          }
+        },
+        {
+          "name": ".github/",
+          "desc": {
+            "en": "CI and release workflows, issue and pull-request templates",
+            "es": "flujos de CI y de publicación, plantillas de issues y pull requests",
+            "de": "CI- und Release-Workflows, Vorlagen für Issues und Pull Requests",
+            "fr": "workflows de CI et de publication, modèles d'issues et de pull requests",
+            "it": "workflow di CI e di rilascio, modelli di issue e pull request",
+            "ja": "CI とリリースのワークフロー、Issue と PR のテンプレート",
+            "zh": "CI 与发布工作流、Issue 和 PR 模板",
+            "pt": "fluxos de CI e de publicação, modelos de issues e pull requests"
+          }
+        },
+        {
+          "desc": {
+            "en": "build and run the host tests in a live panel",
+            "es": "compila y ejecuta las pruebas en el ordenador con un panel en vivo",
+            "de": "baut und führt die Host-Tests in einem Live-Panel aus",
+            "fr": "compile et exécute les tests sur ordinateur dans un panneau en direct",
+            "it": "compila ed esegue i test su computer in un pannello dal vivo",
+            "ja": "ホスト テストをライブ パネルでビルドして実行",
+            "zh": "在实时面板中编译并运行主机测试",
+            "pt": "compila e executa os testes no computador num painel em direto"
+          },
+          "name": "build.sh  build.bat",
+          "tree_name": "build.sh build.bat"
+        },
+        {
+          "name": "eh3d.project.json",
+          "desc": {
+            "en": "manifest: version, role, maturity and build command",
+            "es": "manifiesto: versión, rol, madurez y comando de compilación",
+            "de": "Manifest: Version, Rolle, Reifegrad und Build-Befehl",
+            "fr": "manifeste : version, rôle, maturité et commande de compilation",
+            "it": "manifesto: versione, ruolo, maturità e comando di compilazione",
+            "ja": "マニフェスト：バージョン、役割、成熟度、ビルドコマンド",
+            "zh": "清单：版本、角色、成熟度和构建命令",
+            "pt": "manifesto: versão, papel, maturidade e comando de compilação"
+          }
+        },
+        {
+          "name": "CHANGELOG.md",
+          "desc": {
+            "en": "what changed in each version",
+            "es": "qué cambió en cada versión",
+            "de": "was sich in jeder Version geändert hat",
+            "fr": "ce qui a changé dans chaque version",
+            "it": "cosa è cambiato in ogni versione",
+            "ja": "各バージョンの変更点",
+            "zh": "每个版本的变更",
+            "pt": "o que mudou em cada versão"
+          }
+        },
+        {
+          "name": "SECURITY.md  SUPPORT.md",
+          "tree_name": "SECURITY.md SUPPORT.md",
+          "desc": {
+            "en": "how to report a vulnerability and where to ask",
+            "es": "cómo informar de una vulnerabilidad y dónde preguntar",
+            "de": "Schwachstellen melden und Fragen stellen",
+            "fr": "signaler une vulnérabilité et poser des questions",
+            "it": "come segnalare una vulnerabilità e dove chiedere",
+            "ja": "脆弱性の報告方法と問い合わせ先",
+            "zh": "如何报告漏洞及在哪里提问",
+            "pt": "como comunicar uma vulnerabilidade e onde perguntar"
+          }
+        },
+        {
+          "name": "CONTRIBUTING.md  LICENSE",
+          "tree_name": "CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE",
+          "desc": {
+            "en": "how to contribute, the code of conduct and the licence",
+            "es": "cómo contribuir, el código de conducta y la licencia",
+            "de": "Mitwirken, Verhaltenskodex und Lizenz",
+            "fr": "contribuer, code de conduite et licence",
+            "it": "come contribuire, codice di condotta e licenza",
+            "ja": "貢献方法、行動規範、ライセンス",
+            "zh": "参与贡献、行为准则和许可证",
+            "pt": "como contribuir, o código de conduta e a licença"
+          }
+        },
+        {
+          "desc": {
+            "en": "version utility of the manifest",
+            "es": "utilidad de versión del manifiesto",
+            "it": "utilità di versione del manifesto",
+            "de": "Versionswerkzeug des Manifests",
+            "fr": "utilitaire de version du manifeste",
+            "pt": "utilitário de versão do manifesto",
+            "zh": "清单的版本工具",
+            "ja": "マニフェストのバージョンユーティリティ"
+          },
+          "name": "bump_manifest_version.py"
+        }
+      ]
+    }
+  ]
+}

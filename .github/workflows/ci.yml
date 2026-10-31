@@ -1,0 +1,38 @@
+# Checks the repository on every push to main and on every pull request.
+name: EH3D CI baseline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate the repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Manifest, documentation and language parity
+        run: python -I tools/ci_validate.py
+      - name: Pictures of the README
+        run: |
+          python -I tools/make_architecture.py --check
+          python -I tools/make_structure.py --check --readmes
+
+  host-tests:
+    name: Host tests (core)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build and run
+        run: |
+          cmake -S tests -B build/host
+          cmake --build build/host
+          ctest --test-dir build/host --output-on-failure

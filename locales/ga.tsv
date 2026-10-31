@@ -1,0 +1,72 @@
+# Gaeilge (ga): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Amharc
+ui.Job	Obair
+ui.Machine	Meaisín
+ui.Settings	Socruithe
+ui.Fleet	Meaisíní agus stáisiúin
+ui.Start	Tosaigh
+ui.Pause	Sos
+ui.Stop	Stop
+ui.Home	Baile
+ui.Confirm	Deimhnigh
+ui.Cancel	Cealaigh
+ui.Armed	Armtha
+ui.NotArmed	Gan armú
+ui.StopPressed	STOP CRUA-EARRAÍ BRÚITE
+ui.AckRelease	Scaoileadh an stop: admhaigh
+ui.Language	Teanga
+ui.Voice	Guth
+ui.Brightness	Gile
+ui.Volume	Airde fuaime
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Fearsaid
+ui.AskMove	An mbogfar an meaisín?
+ui.AskSpindle	An bhfuil sé ceart go leor an fhearsaid a thosú?
+ui.WhyHardwareStop	Tá an stop crua-earraí brúite nó gan admháil.
+ui.WhyNotArmed	Níl an meaisín armtha.
+ui.WhyVoiceOff	Tá orduithe cainte múchta sna socruithe.
+ui.WhyNoStop	Níl ionchur an stop crua-earraí cuibhrithe.
+ui.WhySpindle	Tá an fhearsaid múchta sna socruithe.
+ui.Feed	Beart
+ui.Progress	Dul chun cinn
+ui.Tool	Uirlis
+ui.Jog	Jog
+q.Title	Seiceáil cáilíochta na hoibre
+q.Light	Fáinne solais
+q.LightOff	Múchta
+q.CheckNow	Seiceáil anois
+q.Checking	Ag seiceáil...
+q.VerdictOk	OK
+q.VerdictNotOk	NÍL OK
+q.VerdictUnknown	NÍ FÉIDIR BREITHNIÚ
+q.NotChecked	Gan seiceáil go fóill
+q.HoleWidth	Poll sa lár (mm)
+q.HoleNone	gan poll
+q.Profile	Próifíl
+q.Standard	Caighdeánach
+q.FinePitch	Pit mhín
+q.Prototype	Prótaitíopa
+q.Calibrate	Calabraigh ón bpoll seo
+q.HolesOk	poill ceart go leor
+q.ChannelWidth	leithead cainéil
+q.NeedServer	Socraigh meaisín an fhreastalaí i hmi.cfg.
+f.hole_missing	níl poll ansin
+f.hole_wrong_size	méid mícheart
+f.hole_off_centre	as lár
+f.hole_not_round	gan a bheith cruinn
+f.hole_debris	ciumhaiseanna nó deannach timpeall
+f.hole_out_of_view	lasmuigh den amharc
+f.mill_no_channels	níl aon chainéal le feiceáil
+f.mill_too_narrow	cainéil róchúng
+f.mill_too_wide	cainéil ró-leathan
+f.mill_pinched	cainéal cúngaithe: baol gearrchiorcaid
+f.mill_uneven	cainéil neamhchothroma
+f.image_too_dark	pictiúr ródhorcha: tuilleadh solais
+f.image_too_bright	pictiúr ró-ghlé: níos lú solais
+f.image_low_contrast	pictiúr gan codarsnacht
+f.image_blurry	pictiúr as fócas
+f.not_calibrated	socraigh an scála ar dtús
+f.nothing_to_check	níl aon seiceáil ar siúl
+f.no_expected_holes	níl poll den obair le feiceáil

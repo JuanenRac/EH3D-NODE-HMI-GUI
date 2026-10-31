@@ -1,0 +1,72 @@
+# Hrvatski (hr): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Pregled
+ui.Job	Posao
+ui.Machine	Strojni
+ui.Settings	Postavke
+ui.Fleet	Strojevi i postaje
+ui.Start	Start
+ui.Pause	Pauza
+ui.Stop	Stop
+ui.Home	Home
+ui.Confirm	Potvrdi
+ui.Cancel	Otkaži
+ui.Armed	Spreman
+ui.NotArmed	Nije spreman
+ui.StopPressed	HARDVERSKI STOP JE PRITISNUT
+ui.AckRelease	Stop otpušten: potvrdite
+ui.Language	Jezik
+ui.Voice	Glas
+ui.Brightness	Svjetlina
+ui.Volume	Glasnoća
+ui.JogX	Ručni pomak X
+ui.JogY	Ručni pomak Y
+ui.JogZ	Ručni pomak Z
+ui.Spindle	Vreteno
+ui.AskMove	Pomaknuti stroj?
+ui.AskSpindle	Pokrenuti vreteno?
+ui.WhyHardwareStop	Hardverski stop je pritisnut ili nepotvrđen.
+ui.WhyNotArmed	Stroj nije spreman.
+ui.WhyVoiceOff	Glasovne naredbe isključene su u postavkama.
+ui.WhyNoStop	Ulaz hardverskog stopa nije spojen.
+ui.WhySpindle	Vreteno je isključeno u postavkama.
+ui.Feed	Posmak
+ui.Progress	Napredak
+ui.Tool	Alat
+ui.Jog	Ručni pomak
+q.Title	Provjera kvalitete rada
+q.Light	Svjetlosni prsten
+q.LightOff	Isklj.
+q.CheckNow	Provjeri sada
+q.Checking	Provjera...
+q.VerdictOk	U REDU
+q.VerdictNotOk	NIJE U REDU
+q.VerdictUnknown	NE MOŽE SE PROCIJENITI
+q.NotChecked	Još nije provjereno
+q.HoleWidth	Rupa u sredini (mm)
+q.HoleNone	nema rupe
+q.Profile	Profil
+q.Standard	Standardni
+q.FinePitch	Fini korak
+q.Prototype	Prototip
+q.Calibrate	Kalibriraj prema ovoj rupi
+q.HolesOk	rupa u redu
+q.ChannelWidth	širina kanala
+q.NeedServer	Postavite stroj poslužitelja u hmi.cfg.
+f.hole_missing	tamo nema rupe
+f.hole_wrong_size	pogrešna veličina
+f.hole_off_centre	izvan središta
+f.hole_not_round	nije okrugla
+f.hole_debris	srh ili prašina oko rupe
+f.hole_out_of_view	izvan kadra
+f.mill_no_channels	kanali se ne vide
+f.mill_too_narrow	kanali preuski
+f.mill_too_wide	kanali preširoki
+f.mill_pinched	kanal se sužava: opasnost od kratkog spoja
+f.mill_uneven	kanali neujednačeni
+f.image_too_dark	snimka pretamna: više svjetla
+f.image_too_bright	snimka presvijetla: manje svjetla
+f.image_low_contrast	snimka bez kontrasta
+f.image_blurry	snimka nije u fokusu
+f.not_calibrated	najprije postavite mjerilo
+f.nothing_to_check	nijedna provjera nije uključena
+f.no_expected_holes	nijedna rupa posla nije u kadru

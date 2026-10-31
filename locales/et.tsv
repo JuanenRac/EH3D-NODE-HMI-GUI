@@ -1,0 +1,72 @@
+# Eesti (et): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Vaade
+ui.Job	Töö
+ui.Machine	Masin
+ui.Settings	Seaded
+ui.Fleet	Masinad ja jaamad
+ui.Start	Käivita
+ui.Pause	Paus
+ui.Stop	Peata
+ui.Home	Home
+ui.Confirm	Kinnita
+ui.Cancel	Tühista
+ui.Armed	Valmis
+ui.NotArmed	Pole valmis
+ui.StopPressed	RAUDVARA STOPP ON VAJUTATUD
+ui.AckRelease	Stopp vabastatud: kinnita
+ui.Language	Keel
+ui.Voice	Hääl
+ui.Brightness	Eredus
+ui.Volume	Helitugevus
+ui.JogX	Käsiliigutus X
+ui.JogY	Käsiliigutus Y
+ui.JogZ	Käsiliigutus Z
+ui.Spindle	Spindel
+ui.AskMove	Kas liigutada masinat?
+ui.AskSpindle	Kas käivitada spindel?
+ui.WhyHardwareStop	Raudvara stopp on vajutatud või kinnitamata.
+ui.WhyNotArmed	Masin ei ole valmis.
+ui.WhyVoiceOff	Häälkäsklused on seadetes välja lülitatud.
+ui.WhyNoStop	Raudvara stoppi sisend on ühendamata.
+ui.WhySpindle	Spindel on seadetes välja lülitatud.
+ui.Feed	Ettenihe
+ui.Progress	Edenemine
+ui.Tool	Tööriist
+ui.Jog	Käsiliigutus
+q.Title	Töö kvaliteedikontroll
+q.Light	Valgusrõngas
+q.LightOff	Väljas
+q.CheckNow	Kontrolli kohe
+q.Checking	Kontrollin...
+q.VerdictOk	SOBIB
+q.VerdictNotOk	EI SOBI
+q.VerdictUnknown	EI SAA HINNATA
+q.NotChecked	Pole veel kontrollitud
+q.HoleWidth	Auk keskel (mm)
+q.HoleNone	auku pole
+q.Profile	Profiil
+q.Standard	Standardne
+q.FinePitch	Peen samm
+q.Prototype	Prototüüp
+q.Calibrate	Kalibreeri selle augu järgi
+q.HolesOk	auku korras
+q.ChannelWidth	kanali laius
+q.NeedServer	Määra serveri masin failis hmi.cfg.
+f.hole_missing	seal pole auku
+f.hole_wrong_size	vale suurus
+f.hole_off_centre	nihkes
+f.hole_not_round	pole ümar
+f.hole_debris	kraat või tolm ümber
+f.hole_out_of_view	pildist väljas
+f.mill_no_channels	kanaleid pole näha
+f.mill_too_narrow	kanalid liiga kitsad
+f.mill_too_wide	kanalid liiga laiad
+f.mill_pinched	kanal kitseneb: lühise oht
+f.mill_uneven	kanalid ebaühtlased
+f.image_too_dark	pilt liiga tume: rohkem valgust
+f.image_too_bright	pilt liiga hele: vähem valgust
+f.image_low_contrast	pildil pole kontrasti
+f.image_blurry	pilt on fookusest väljas
+f.not_calibrated	määrake esmalt mõõtkava
+f.nothing_to_check	ühtegi kontrolli pole sisse lülitatud
+f.no_expected_holes	töö auke pole pildis

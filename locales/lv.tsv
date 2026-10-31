@@ -1,0 +1,72 @@
+# Latviešu (lv): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Skats
+ui.Job	Darbs
+ui.Machine	Iekārta
+ui.Settings	Iestatījumi
+ui.Fleet	Iekārtas un stacijas
+ui.Start	Sākt
+ui.Pause	Pauze
+ui.Stop	Apturēt
+ui.Home	Home
+ui.Confirm	Apstiprināt
+ui.Cancel	Atcelt
+ui.Armed	Gatava
+ui.NotArmed	Nav gatava
+ui.StopPressed	HARDVERA STOP NOSPIESTS
+ui.AckRelease	Stop atlaists: apstipriniet
+ui.Language	Valoda
+ui.Voice	Balss
+ui.Brightness	Spilgtums
+ui.Volume	Skaļums
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Vārpsta
+ui.AskMove	Pārvietot iekārtu?
+ui.AskSpindle	Vai drīkst iedarbināt vārpstu?
+ui.WhyHardwareStop	Hardvera stop ir nospiests vai nav apstiprināts.
+ui.WhyNotArmed	Iekārta nav gatava.
+ui.WhyVoiceOff	Balss komandas ir izslēgtas iestatījumos.
+ui.WhyNoStop	Hardvera stop ieeja nav pieslēgta.
+ui.WhySpindle	Vārpsta ir izslēgta iestatījumos.
+ui.Feed	Padeve
+ui.Progress	Progress
+ui.Tool	Rīks
+ui.Jog	Jog
+q.Title	Darba kvalitātes pārbaude
+q.Light	Gaismas gredzens
+q.LightOff	Izsl.
+q.CheckNow	Pārbaudīt tagad
+q.Checking	Pārbauda...
+q.VerdictOk	ATBILST
+q.VerdictNotOk	NEATBILST
+q.VerdictUnknown	NEVAR NOVĒRTĒT
+q.NotChecked	Vēl nav pārbaudīts
+q.HoleWidth	Caurums centrā (mm)
+q.HoleNone	nav cauruma
+q.Profile	Profils
+q.Standard	Standarta
+q.FinePitch	Smalks solis
+q.Prototype	Prototips
+q.Calibrate	Kalibrēt pēc šī urbuma
+q.HolesOk	urbumi kārtībā
+q.ChannelWidth	kanāla platums
+q.NeedServer	Norādiet servera iekārtu failā hmi.cfg.
+f.hole_missing	tur nav urbuma
+f.hole_wrong_size	nepareizs izmērs
+f.hole_off_centre	nav centrā
+f.hole_not_round	nav apaļš
+f.hole_debris	ap to ir atskabargas vai putekļi
+f.hole_out_of_view	ārpus skata
+f.mill_no_channels	kanāli nav redzami
+f.mill_too_narrow	kanāli pārāk šauri
+f.mill_too_wide	kanāli pārāk plati
+f.mill_pinched	kanāls sašaurinās: īssavienojuma risks
+f.mill_uneven	kanāli nevienmērīgi
+f.image_too_dark	attēls pārāk tumšs: vairāk gaismas
+f.image_too_bright	attēls pārāk gaišs: mazāk gaismas
+f.image_low_contrast	attēls bez kontrasta
+f.image_blurry	attēls nav fokusā
+f.not_calibrated	vispirms iestatiet mērogu
+f.nothing_to_check	neviena pārbaude nav ieslēgta
+f.no_expected_holes	skatā nav neviena darba urbuma

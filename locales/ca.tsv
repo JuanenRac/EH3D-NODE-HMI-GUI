@@ -1,0 +1,72 @@
+# Català (ca): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Visor
+ui.Job	Treball
+ui.Machine	Màquina
+ui.Settings	Configuració
+ui.Fleet	Màquines i estacions
+ui.Start	Inicia
+ui.Pause	Pausa
+ui.Stop	Atura
+ui.Home	Home
+ui.Confirm	Confirma
+ui.Cancel	Cancel·la
+ui.Armed	Armada
+ui.NotArmed	Sense armar
+ui.StopPressed	PARADA DE MAQUINARI PREMUDA
+ui.AckRelease	Parada alliberada: reconeix
+ui.Language	Idioma
+ui.Voice	Veu
+ui.Brightness	Brillantor
+ui.Volume	Volum
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Broquer
+ui.AskMove	Moure la màquina?
+ui.AskSpindle	Es pot arrencar el broquer?
+ui.WhyHardwareStop	La parada de maquinari està premuda o sense reconèixer.
+ui.WhyNotArmed	La màquina no està armada.
+ui.WhyVoiceOff	Les ordres per veu estan desactivades als paràmetres.
+ui.WhyNoStop	L'entrada de la parada de maquinari no està cablejada.
+ui.WhySpindle	El capçal està desactivat als paràmetres.
+ui.Feed	Avanç
+ui.Progress	Progrés
+ui.Tool	Eina
+ui.Jog	Jog
+q.Title	Verificació de qualitat de la feina
+q.Light	Aro de llum
+q.LightOff	Apagat
+q.CheckNow	Verifica ara
+q.Checking	Verificant...
+q.VerdictOk	CORRECTE
+q.VerdictNotOk	INCORRECTE
+q.VerdictUnknown	NO ES POT JUTJAR
+q.NotChecked	Encara no verificat
+q.HoleWidth	Forat al centre (mm)
+q.HoleNone	sense forat
+q.Profile	Perfil
+q.Standard	Estàndard
+q.FinePitch	Pas fi
+q.Prototype	Prototip
+q.Calibrate	Calibra amb aquest forat
+q.HolesOk	forats correctes
+q.ChannelWidth	amplada del canal
+q.NeedServer	Indica la màquina del servidor a hmi.cfg.
+f.hole_missing	no hi ha forat
+f.hole_wrong_size	mida incorrecta
+f.hole_off_centre	descentrat
+f.hole_not_round	no és rodó
+f.hole_debris	rebaves o pols al voltant
+f.hole_out_of_view	fora de la vista
+f.mill_no_channels	no es veuen canals
+f.mill_too_narrow	canals massa estrets
+f.mill_too_wide	canals massa amples
+f.mill_pinched	un canal s'estreny: risc de curtcircuit
+f.mill_uneven	canals irregulars
+f.image_too_dark	imatge massa fosca: més llum
+f.image_too_bright	imatge massa brillant: menys llum
+f.image_low_contrast	imatge sense contrast
+f.image_blurry	imatge desenfocada
+f.not_calibrated	primer configura l'escala
+f.nothing_to_check	no hi ha cap verificació activada
+f.no_expected_holes	cap forat de la feina a la vista

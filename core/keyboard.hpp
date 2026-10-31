@@ -54,6 +54,8 @@ inline const std::vector<FieldSpec>& field_specs() {
         {"mic_gain_percent", FieldKind::Number, 0, 100, 0},
         {"sound_finish", FieldKind::List},
         {"sound_tool_change", FieldKind::List},
+        {"sound_check_ok", FieldKind::List},
+        {"sound_check_bad", FieldKind::List},
     };
     return specs;
 }

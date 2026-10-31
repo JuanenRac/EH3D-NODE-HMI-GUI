@@ -1,0 +1,72 @@
+# Euskara (eu): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Ikuspegia
+ui.Job	Lana
+ui.Machine	Makina
+ui.Settings	Ezarpenak
+ui.Fleet	Makinak eta estazioak
+ui.Start	Hasi
+ui.Pause	Pausatu
+ui.Stop	Gelditu
+ui.Home	Home
+ui.Confirm	Berretsi
+ui.Cancel	Utzi
+ui.Armed	Armatuta
+ui.NotArmed	Armatu gabe
+ui.StopPressed	HARDWARE-GELDIALDIA SAKATUTA
+ui.AckRelease	Geldialdia askatuta: aitortu
+ui.Language	Hizkuntza
+ui.Voice	Ahotsa
+ui.Brightness	Distira
+ui.Volume	Bolumena
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Ardatza
+ui.AskMove	Makina mugitu?
+ui.AskSpindle	Ardatza abiarazi daiteke?
+ui.WhyHardwareStop	Hardware-geldialdia sakatuta dago edo aitortu gabe.
+ui.WhyNotArmed	Makina ez dago armatuta.
+ui.WhyVoiceOff	Ahots-aginduak itzalita daude ezarpenetan.
+ui.WhyNoStop	Hardware-geldialdiaren sarrera ez dago kableatuta.
+ui.WhySpindle	Ardatza desgaituta dago ezarpenetan.
+ui.Feed	Aurrerapena
+ui.Progress	Aurrerapena
+ui.Tool	Erreminta
+ui.Jog	Jog
+q.Title	Lanaren kalitate-egiaztapena
+q.Light	Argi-eraztuna
+q.LightOff	Itzalita
+q.CheckNow	Egiaztatu orain
+q.Checking	Egiaztatzen...
+q.VerdictOk	ZUZENA
+q.VerdictNotOk	EZ DA ZUZENA
+q.VerdictUnknown	EZIN DA EBATZI
+q.NotChecked	Oraindik egiaztatu gabe
+q.HoleWidth	Zuloa erdian (mm)
+q.HoleNone	zulorik ez
+q.Profile	Profila
+q.Standard	Estandarra
+q.FinePitch	Pauso fina
+q.Prototype	Prototipoa
+q.Calibrate	Kalibratu zulo honekin
+q.HolesOk	zulo zuzen
+q.ChannelWidth	kanalaren zabalera
+q.NeedServer	Ezarri zerbitzariaren makina hmi.cfg fitxategian.
+f.hole_missing	ez dago zulorik
+f.hole_wrong_size	tamaina okerra
+f.hole_off_centre	zentratu gabe
+f.hole_not_round	ez da biribila
+f.hole_debris	bizarrak edo hautsa inguruan
+f.hole_out_of_view	ikuspegitik kanpo
+f.mill_no_channels	ez da kanalik ikusten
+f.mill_too_narrow	kanalak estuegiak
+f.mill_too_wide	kanalak zabalegiak
+f.mill_pinched	kanal bat estutzen da: zirkuitulaburraren arriskua
+f.mill_uneven	kanalak irregularrak
+f.image_too_dark	irudia ilunegia: argi gehiago
+f.image_too_bright	irudia distiratsuegia: argi gutxiago
+f.image_low_contrast	irudiak ez du kontrasterik
+f.image_blurry	irudia fokuz kanpo
+f.not_calibrated	konfiguratu lehenik eskala
+f.nothing_to_check	ez dago egiaztapenik aktibatuta
+f.no_expected_holes	lanaren zulorik ez dago ikusgai

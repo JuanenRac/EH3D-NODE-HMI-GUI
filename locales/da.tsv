@@ -1,0 +1,72 @@
+# Dansk (da): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Visning
+ui.Job	Job
+ui.Machine	Maskine
+ui.Settings	Indstillinger
+ui.Fleet	Maskiner og stationer
+ui.Start	Start
+ui.Pause	Pause
+ui.Stop	Stop
+ui.Home	Home
+ui.Confirm	Bekræft
+ui.Cancel	Annullér
+ui.Armed	Klar
+ui.NotArmed	Ikke klar
+ui.StopPressed	HARDWARESTOP TRYKKET
+ui.AckRelease	Stop frigivet: kvittér
+ui.Language	Sprog
+ui.Voice	Stemme
+ui.Brightness	Lysstyrke
+ui.Volume	Lydstyrke
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Spindel
+ui.AskMove	Flyt maskinen?
+ui.AskSpindle	Må spindlen startes?
+ui.WhyHardwareStop	Hardwarestoppet er trykket ned eller ikke kvitteret.
+ui.WhyNotArmed	Maskinen er ikke klar.
+ui.WhyVoiceOff	Stemmekommandoer er slået fra i indstillingerne.
+ui.WhyNoStop	Hardwarestoppets indgang er ikke tilsluttet.
+ui.WhySpindle	Spindlen er slået fra i indstillingerne.
+ui.Feed	Tilspænding
+ui.Progress	Fremdrift
+ui.Tool	Værktøj
+ui.Jog	Jog
+q.Title	Kvalitetskontrol af arbejdet
+q.Light	Lysring
+q.LightOff	Fra
+q.CheckNow	Kontrollér nu
+q.Checking	Kontrollerer...
+q.VerdictOk	OK
+q.VerdictNotOk	IKKE OK
+q.VerdictUnknown	KAN IKKE VURDERES
+q.NotChecked	Endnu ikke kontrolleret
+q.HoleWidth	Hul i midten (mm)
+q.HoleNone	intet hul
+q.Profile	Profil
+q.Standard	Standard
+q.FinePitch	Fin delingsafstand
+q.Prototype	Prototype
+q.Calibrate	Kalibrér ud fra dette hul
+q.HolesOk	huller ok
+q.ChannelWidth	kanalbredde
+q.NeedServer	Angiv serverens maskine i hmi.cfg.
+f.hole_missing	intet hul der
+f.hole_wrong_size	forkert størrelse
+f.hole_off_centre	ude af centrum
+f.hole_not_round	ikke rundt
+f.hole_debris	grater eller støv omkring
+f.hole_out_of_view	uden for billedet
+f.mill_no_channels	ingen kanaler set
+f.mill_too_narrow	kanalerne er for smalle
+f.mill_too_wide	kanalerne er for brede
+f.mill_pinched	en kanal indsnævres: risiko for kortslutning
+f.mill_uneven	kanalerne er ujævne
+f.image_too_dark	billedet er for mørkt: mere lys
+f.image_too_bright	billedet er for lyst: mindre lys
+f.image_low_contrast	billede uden kontrast
+f.image_blurry	billedet er ude af fokus
+f.not_calibrated	angiv først skalaen
+f.nothing_to_check	ingen kontrol er slået til
+f.no_expected_holes	intet af jobbets huller er i billedet

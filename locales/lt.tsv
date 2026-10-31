@@ -1,0 +1,72 @@
+# Lietuvių (lt): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Rodinys
+ui.Job	Darbas
+ui.Machine	Staklės
+ui.Settings	Nustatymai
+ui.Fleet	Staklės ir stotys
+ui.Start	Pradėti
+ui.Pause	Pauzė
+ui.Stop	Stabdyti
+ui.Home	Home
+ui.Confirm	Patvirtinti
+ui.Cancel	Atšaukti
+ui.Armed	Paruošta
+ui.NotArmed	Neparuošta
+ui.StopPressed	APARATINIS STOP NUSPAUSTAS
+ui.AckRelease	Stop atleistas: patvirtinkite
+ui.Language	Kalba
+ui.Voice	Balsas
+ui.Brightness	Ryškumas
+ui.Volume	Garsumas
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Suklys
+ui.AskMove	Judinti stakles?
+ui.AskSpindle	Ar galima paleisti suklį?
+ui.WhyHardwareStop	Aparatinis stop nuspaustas arba nepatvirtintas.
+ui.WhyNotArmed	Staklės neparuoštos.
+ui.WhyVoiceOff	Balso komandos nustatymuose išjungtos.
+ui.WhyNoStop	Aparatinio stop įvestis neprijungta.
+ui.WhySpindle	Verpstė nustatymuose išjungta.
+ui.Feed	Paduotis
+ui.Progress	Eiga
+ui.Tool	Įrankis
+ui.Jog	Jog
+q.Title	Darbo kokybės patikra
+q.Light	Šviesos žiedas
+q.LightOff	Išj.
+q.CheckNow	Tikrinti dabar
+q.Checking	Tikrinama...
+q.VerdictOk	GERAI
+q.VerdictNotOk	NEGERAI
+q.VerdictUnknown	NEGALIMA NUSPRĘSTI
+q.NotChecked	Dar netikrinta
+q.HoleWidth	Skylė centre (mm)
+q.HoleNone	skylės nėra
+q.Profile	Profilis
+q.Standard	Standartinis
+q.FinePitch	Smulkus žingsnis
+q.Prototype	Prototipas
+q.Calibrate	Kalibruoti pagal šią skylę
+q.HolesOk	skylės gerai
+q.ChannelWidth	kanalo plotis
+q.NeedServer	Nurodykite serverio stakles faile hmi.cfg.
+f.hole_missing	ten nėra skylės
+f.hole_wrong_size	neteisingas dydis
+f.hole_off_centre	ne centre
+f.hole_not_round	neapvali
+f.hole_debris	aplink aštrios briaunos arba dulkės
+f.hole_out_of_view	už vaizdo ribų
+f.mill_no_channels	kanalų nematyti
+f.mill_too_narrow	kanalai per siauri
+f.mill_too_wide	kanalai per platūs
+f.mill_pinched	kanalas susiaurėja: trumpojo jungimo rizika
+f.mill_uneven	kanalai nelygūs
+f.image_too_dark	paveikslėlis per tamsus: daugiau šviesos
+f.image_too_bright	paveikslėlis per šviesus: mažiau šviesos
+f.image_low_contrast	paveikslėlis be kontrasto
+f.image_blurry	paveikslėlis neryškus
+f.not_calibrated	pirmiausia nustatykite mastelį
+f.nothing_to_check	neįjungta jokia patikra
+f.no_expected_holes	vaizde nėra jokios darbo skylės

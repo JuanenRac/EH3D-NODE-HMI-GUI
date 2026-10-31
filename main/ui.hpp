@@ -7,6 +7,7 @@
 #include "../core/gate.hpp"
 #include "../core/hmi_config.hpp"
 #include "../core/orientation.hpp"
+#include "../core/quality.hpp"
 #include "../core/sdfiles.hpp"
 #include "../core/server_link.hpp"
 
@@ -23,14 +24,18 @@ struct State {
     std::string note;  // the line under the buttons: why something was refused, what the server answered
 };
 
-enum class What { Action, AckRelease, Confirm, Cancel, SetOrientation, OpenCard, SendJob, RefreshCard };
+enum class What { Action, AckRelease, Confirm, Cancel, SetOrientation, SetLanguage, OpenCard, SendJob, RefreshCard, LightSet, InspectRun, InspectPreset, InspectCalibrate };
 
 /// What the operator did on the screen; the application runs it through the gate.
 struct Request {
     What what = What::Action;
     hmi::Action action;
     hmi::Orientation orientation = hmi::Orientation::Auto;
+    hmi::Lang language = hmi::Lang::En;  // SetLanguage: the language the operator chose
     char file[64] = {0};  // the name of the file of the card for OpenCard
+    int light = 0;        // LightSet and InspectRun: the index in hmi::kLightLevels
+    int hole = 0;         // InspectRun: the index in hmi::kHoleWidths
+    int preset = 0;       // InspectPreset: 0 standard, 1 fine pitch, 2 prototype
 };
 
 /// Builds the screens for a layout (with the LVGL lock taken). `post` is called, in the LVGL task, for each request of the operator.
@@ -43,6 +48,8 @@ void ask(const hmi::Action* action, const hmi::Settings& settings);
 void refused(hmi::Why why, const hmi::Settings& settings);
 /// Shows the machines of the server, each with its state and its job.
 void show_fleet(const hmi::FleetView& fleet, const hmi::Settings& settings);
+/// Shows the quality check: the verdict of the last one, the ring of LEDs, and whether a check is running now.
+void show_quality(const hmi::QualityView& quality, const hmi::LightView& light, bool running, const hmi::Settings& settings);
 /// Shows the files of the card.
 void show_card(const std::vector<hmi::Entry>& files, const hmi::Settings& settings);
 

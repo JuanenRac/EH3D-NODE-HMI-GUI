@@ -1,0 +1,72 @@
+# Русский (ru): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Просмотр
+ui.Job	Задание
+ui.Machine	Машинная
+ui.Settings	Настройки
+ui.Fleet	Станки и станции
+ui.Start	Старт
+ui.Pause	Пауза
+ui.Stop	Стоп
+ui.Home	Home
+ui.Confirm	Подтвердить
+ui.Cancel	Отмена
+ui.Armed	Готов
+ui.NotArmed	Не готов
+ui.StopPressed	АППАРАТНЫЙ СТОП НАЖАТ
+ui.AckRelease	Стоп отпущен: подтвердите
+ui.Language	Язык
+ui.Voice	Голос
+ui.Brightness	Яркость
+ui.Volume	Громкость
+ui.JogX	Ручное движение X
+ui.JogY	Ручное движение Y
+ui.JogZ	Ручное движение Z
+ui.Spindle	Шпиндель
+ui.AskMove	Переместить станок?
+ui.AskSpindle	Запустить шпиндель?
+ui.WhyHardwareStop	Аппаратный стоп нажат или не подтверждён.
+ui.WhyNotArmed	Станок не готов.
+ui.WhyVoiceOff	Голосовые команды выключены в настройках.
+ui.WhyNoStop	Вход аппаратного стопа не подключён.
+ui.WhySpindle	Шпиндель выключен в настройках.
+ui.Feed	Подача
+ui.Progress	Ход выполнения
+ui.Tool	Инструмент
+ui.Jog	Ручное движение
+q.Title	Контроль качества выполненной работы
+q.Light	Световое кольцо
+q.LightOff	Выкл.
+q.CheckNow	Проверить
+q.Checking	Проверка...
+q.VerdictOk	ОК
+q.VerdictNotOk	НЕ ОК
+q.VerdictUnknown	НЕВОЗМОЖНО ОЦЕНИТЬ
+q.NotChecked	Ещё не проверено
+q.HoleWidth	Отверстие в центре (mm)
+q.HoleNone	нет отверстия
+q.Profile	Профиль
+q.Standard	Стандарт
+q.FinePitch	Мелкий шаг
+q.Prototype	Прототип
+q.Calibrate	Калибровать по этому отверстию
+q.HolesOk	отверстий в норме
+q.ChannelWidth	ширина канала
+q.NeedServer	Укажите станок сервера в hmi.cfg.
+f.hole_missing	отверстия нет
+f.hole_wrong_size	неверный размер
+f.hole_off_centre	смещено от центра
+f.hole_not_round	не круглое
+f.hole_debris	заусенцы или пыль вокруг
+f.hole_out_of_view	вне кадра
+f.mill_no_channels	каналов не видно
+f.mill_too_narrow	каналы слишком узкие
+f.mill_too_wide	каналы слишком широкие
+f.mill_pinched	канал сужается: риск замыкания
+f.mill_uneven	каналы неровные
+f.image_too_dark	изображение слишком тёмное: добавьте света
+f.image_too_bright	изображение слишком светлое: уменьшите свет
+f.image_low_contrast	изображение без контраста
+f.image_blurry	изображение не в фокусе
+f.not_calibrated	сначала задайте масштаб
+f.nothing_to_check	ни одна проверка не включена
+f.no_expected_holes	отверстий задания в кадре нет

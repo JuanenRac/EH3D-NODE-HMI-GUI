@@ -1,0 +1,72 @@
+# Українська (uk): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Перегляд
+ui.Job	Завдання
+ui.Machine	Машинна
+ui.Settings	Налаштування
+ui.Fleet	Верстати та станції
+ui.Start	Старт
+ui.Pause	Пауза
+ui.Stop	Стоп
+ui.Home	Home
+ui.Confirm	Підтвердити
+ui.Cancel	Скасувати
+ui.Armed	Готова
+ui.NotArmed	Не готова
+ui.StopPressed	АПАРАТНИЙ СТОП НАТИСНУТО
+ui.AckRelease	Стоп відпущено: підтвердіть
+ui.Language	Мова
+ui.Voice	Голос
+ui.Brightness	Яскравість
+ui.Volume	Гучність
+ui.JogX	Ручний рух X
+ui.JogY	Ручний рух Y
+ui.JogZ	Ручний рух Z
+ui.Spindle	Шпиндель
+ui.AskMove	Перемістити верстат?
+ui.AskSpindle	Запустити шпиндель?
+ui.WhyHardwareStop	Апаратний стоп натиснуто або не підтверджено.
+ui.WhyNotArmed	Верстат не готовий.
+ui.WhyVoiceOff	Голосові команди вимкнено в налаштуваннях.
+ui.WhyNoStop	Вхід апаратного стопу не підключено.
+ui.WhySpindle	Шпиндель вимкнено в налаштуваннях.
+ui.Feed	Подача
+ui.Progress	Хід виконання
+ui.Tool	Інструмент
+ui.Jog	Ручний рух
+q.Title	Контроль якості виконаної роботи
+q.Light	Світлове кільце
+q.LightOff	Вимк.
+q.CheckNow	Перевірити
+q.Checking	Перевірка...
+q.VerdictOk	ОК
+q.VerdictNotOk	НЕ ОК
+q.VerdictUnknown	НЕ МОЖНА ОЦІНИТИ
+q.NotChecked	Ще не перевірено
+q.HoleWidth	Отвір у центрі (mm)
+q.HoleNone	немає отвору
+q.Profile	Профіль
+q.Standard	Стандарт
+q.FinePitch	Дрібний крок
+q.Prototype	Прототип
+q.Calibrate	Калібрувати за цим отвором
+q.HolesOk	отворів у нормі
+q.ChannelWidth	ширина каналу
+q.NeedServer	Вкажіть верстат сервера в hmi.cfg.
+f.hole_missing	отвору немає
+f.hole_wrong_size	неправильний розмір
+f.hole_off_centre	зміщений від центру
+f.hole_not_round	не круглий
+f.hole_debris	задирки або пил навколо
+f.hole_out_of_view	поза кадром
+f.mill_no_channels	каналів не видно
+f.mill_too_narrow	канали занадто вузькі
+f.mill_too_wide	канали занадто широкі
+f.mill_pinched	канал звужується: ризик замикання
+f.mill_uneven	канали нерівні
+f.image_too_dark	зображення занадто темне: додайте світла
+f.image_too_bright	зображення занадто світле: зменште світло
+f.image_low_contrast	зображення без контрасту
+f.image_blurry	зображення не в фокусі
+f.not_calibrated	спершу задайте масштаб
+f.nothing_to_check	жодну перевірку не ввімкнено
+f.no_expected_holes	отворів завдання в кадрі немає

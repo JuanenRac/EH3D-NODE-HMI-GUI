@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.1` |
 | Reifegrad | Gerüst |
-| Tests | 5 Host-Testprogramme (1018 Prüfungen gezählt) |
+| Tests | 7 Host-Testprogramme (79053 Prüfungen gezählt) |
 | Technologie-Stack | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Auf echter Hardware | Nein: die Firmware wurde weder gebaut noch geflasht, und nichts wurde an eine Maschine angeschlossen |
 
@@ -45,7 +45,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Software | 🟠 | Das ESP-IDF-Projekt (ESP32-P4, LVGL 9, die Einstellungsdatei in einer eigenen Partition) ist geschrieben; es wurde weder gebaut noch geflasht. |
-| Tests | 🟢 | 5 Host-Testprogramme bestehen (`ctest`): 1018 Prüfungen zu Einstellungsdatei, Tor, gesprochenen Befehlen und Hinweisen, den Tastaturen, den aufgenommenen Hinweisen, dem Server-Client und den Bildschirmtexten in acht Sprachen. |
+| Tests | 🟢 | 7 Host-Testprogramme bestehen (`ctest`): 79053 Prüfungen zu Einstellungsdatei, Tor, gesprochenen Befehlen und Hinweisen, den Tastaturen, den aufgenommenen Hinweisen, dem Server-Client und den Bildschirmtexten in acht Sprachen. |
 | Sicherheitsregeln | 🟡 | Jede Bewegung und jeder Spindelbefehl läuft durch das Tor: Bestätigung auf dem Bildschirm, Hardware-Stopp-Sperre, die bei losgelassenem Taster nur eine Quittung auf dem Bildschirm löst, keine Bewegung bei nicht scharfer Verbindung. Durch Tests gedeckt; nie mit einem echten Stopp-Taster erprobt. |
 | Sprache | 🟡 | Gesprochene Befehle und Hinweise werden in acht Sprachen erkannt und formuliert und als Text getestet; es wurde kein Mikrofon und kein Lautsprecher benutzt. |
 | Bildschirme | 🟠 | Die Bildschirme Maschine, Auftrag (microSD), Maschinen und Stationen und Einstellungen sind geschrieben, im Quer- und im Hochformat, im Aussehen des Desktop-Programms; der Reiter Ansicht ist noch eine leere Karte. Es gibt nur eine Zeichnung des Layouts, keine Aufnahme eines Moduls. |
@@ -124,6 +124,8 @@ Wie die Teile dieses Repositorys zusammenpassen: wer mit ihm spricht, was es ent
 * **Aufgenommene Hinweise:** das Auftragsende und die Werkzeuganforderung können von einer aufgenommenen Stimme gesagt werden, in der eingestellten Sprache und dem Geschlecht (`sound_finish = voice:es:f`), aus dem Ordner `voices` der Karte; die Aufnahmen sind die von EH3D-BUNGARD-GUI. Der Lautsprecher ist in der Firmware noch nicht angeschlossen.
 * **Der Auftrag wird nach einem Neustart wieder verfolgt:** sobald der Bediener einen Auftrag startet, merkt sich der Bildschirm im Flash, welcher es ist (seine ID, die Maschine, sein Name); nach einem Stromausfall oder Neustart verfolgt er denselben Auftrag, die nächste Abfrage des Servers sagt, ob er noch läuft, an einem Werkzeugwechsel wartet oder zu Ende ist, und die Abbrechen-Taste lässt ihn los. Der Auftrag selbst lebt im Server. Auf einem Computer geschrieben und getestet; die Firmware lief nie auf einem Modul.
 * **Die Art der Maschine:** `machine_kind` in der Einstellungsdatei (`cnc`, `laser` oder `pnp`) bestimmt, was der Bildschirm befehlen darf. Nur eine CNC-Maschine bekommt die Spindeltaste, und die Schranke lehnt einen Spindelbefehl an einem Laser oder einer Pick-and-Place-Maschine ab, was die anderen Einstellungen auch sagen: Der Bildschirm löst nie einen Laser aus und startet nie von selbst einen Pick-and-Place-Kopf.
+* **Siebenunddreißig Sprachen auf dem Bildschirm:** Neben den acht der Tabellen sind die Texte der Bildschirme (die Reiter, die Tasten, die Ablehnungen des Tors und, an einer CNC-Maschine, die gesamte Qualitätsprüfung) in 29 weiteren Sprachen geschrieben (Bulgarisch, Kroatisch, Tschechisch, Dänisch, Niederländisch, Estnisch, Finnisch, Griechisch, Ungarisch, Irisch, Lettisch, Litauisch, Maltesisch, Polnisch, Rumänisch, Slowakisch, Slowenisch, Schwedisch, Norwegisch, Isländisch, Ukrainisch, Russisch, Serbisch, Albanisch, Katalanisch, Galicisch, Baskisch, brasilianisches Portugiesisch und kanadisches Französisch), je eine Datei in `locales/`, mit Schriften nur für die Zeichen, die der Bildschirm darstellen kann; die Sprache wird in einer scrollbaren Liste in den Einstellungen gewählt. Die gesprochenen Hinweise und Befehle bleiben bei den ersten acht. Ein fehlender Text wird auf Englisch angezeigt (auch der Satz für eine Maschine ohne Spindel, der noch zu übersetzen ist). Diese Texte und Schriften wurden nur auf einem Computer getestet, nicht auf dem echten Bildschirm.
+* **Qualitätsprüfung und Hinweise, nur an einer CNC-Maschine:** `machine_kind = cnc` fügt eine sechste Seite hinzu mit dem Urteil der Prüfung der Arbeit durch die Kamera des Bohrkopfs (OK, NICHT OK oder nicht beurteilbar), dem Gefundenen, dem LED-Ring, dem Profil und der Kalibrierung, alles über EH3D-SERVER; der Bildschirm sagt das Ergebnis laut an, wenn `sound_check_ok` und `sound_check_bad` gesetzt sind (ein Piepton oder eine aufgenommene Stimme). Ein Laser oder eine Pick-and-Place-Maschine hat weder die Seite noch diese Hinweise; die Hinweise zum Auftragsende und zum Werkzeugwechsel funktionieren bei jeder Maschinenart. Geschrieben und auf einem Computer getestet; nicht auf einem echten Bildschirm gesehen.
 
 ## 🔒 Sicherheit und Schutz
 
@@ -180,7 +182,7 @@ Die Firmware wurde noch nicht gebaut: wenn es so weit ist, erzeugt `idf.py set-t
 
 ## 🧪 Tests
 
-Die Host-Tests (`build.bat` oder `./build.sh`, dann `ctest`) sind zwei Programme und alles besteht: `test_hmi` (638 Prüfungen) zu Einstellungsdatei, Tor (Stopp geht immer, Hardware-Stopp-Sperre, Bestätigung, Zeitlimit und Uhrenüberlauf, Sprachregeln, Schalter), gesprochenen Befehlen und Hinweisen und Bildschirmtexten in acht Sprachen; und `test_workflow` (115 Prüfungen) zu Ausrichtung und Berührung, Dateien der Karte (Arten, sichere Namen, Sortierung), JSON-Leser, Anfragen und Antworten des Servers und dem Ablauf eines Auftrags von der Karte bis zum Ende. Die beiden anderen Programme decken die Tastaturen ab (`test_keyboard`, 137 Prüfungen: jede Einstellung hat ihre Tastatur, die Bereiche des Zahlenblocks sind die der Einstellungsdatei, die Nachkommastellen, das Vorzeichen, die Pfeile, die volle Tastatur jeder Sprache, die Umschaltung, die Symbole und die Länge) und die aufgenommenen Hinweise (`test_notices`, 66 Prüfungen: die Einstellung, die Datei jeder Sprache und jedes Geschlechts).
+Die Host-Tests (`build.bat` oder `./build.sh`, dann `ctest`) sind zwei Programme und alles besteht: `test_hmi` (638 Prüfungen) zu Einstellungsdatei, Tor (Stopp geht immer, Hardware-Stopp-Sperre, Bestätigung, Zeitlimit und Uhrenüberlauf, Sprachregeln, Schalter), gesprochenen Befehlen und Hinweisen und Bildschirmtexten in acht Sprachen; und `test_workflow` (115 Prüfungen) zu Ausrichtung und Berührung, Dateien der Karte (Arten, sichere Namen, Sortierung), JSON-Leser, Anfragen und Antworten des Servers und dem Ablauf eines Auftrags von der Karte bis zum Ende. Die beiden anderen Programme decken die Tastaturen ab (`test_keyboard`, 137 Prüfungen: jede Einstellung hat ihre Tastatur, die Bereiche des Zahlenblocks sind die der Einstellungsdatei, die Nachkommastellen, das Vorzeichen, die Pfeile, die volle Tastatur jeder Sprache, die Umschaltung, die Symbole und die Länge) und die aufgenommenen Hinweise (`test_notices`, 66 Prüfungen: die Einstellung, die Datei jeder Sprache und jedes Geschlechts). Drei weitere Programme: `test_machine` (55 Prüfungen: die Maschinenarten, die Spindelablehnung und der Satz in jeder Sprache), `test_quality` (911 Prüfungen: die Anfragen, das Lesen des Berichts, jeder Befund) und `test_locales` (76655 Prüfungen: jeder Schlüssel hat in jeder der 29 anderen Sprachen einen Text, nichts ist leer oder zu lang, die Schrift jeder Sprache stimmt, und jedes darstellbare Zeichen liegt im Bereich der erzeugten Schriften).
 
 ## 🏗️ Build und Veröffentlichung
 
@@ -213,14 +215,19 @@ EH3D-NODE-HMI-GUI/
 │   ├── voice.hpp                                     gesprochene Befehle und Hinweise in acht Sprachen
 │   ├── orientation.hpp sdfiles.hpp                   Hoch- und Querformat, Dateien der Karte
 │   ├── server_link.hpp workflow.hpp job_memory.hpp   Client des Servers und Ablauf eines Auftrags
-│   └── ui_text.hpp keyboard.hpp notices.hpp          Texte, Tastaturen und Hinweise
+│   ├── quality.hpp                                   die Qualitätsprüfung und der LED-Ring
+│   ├── ui_text.hpp keyboard.hpp notices.hpp          Texte, Tastaturen und Hinweise
+│   ├── locales.hpp locales_gen.hpp font_ranges.hpp   37 Sprachen, Schriftbereiche
+│   └── wav.hpp                                       die Aufnahmen und die Pieptöne der Hinweise
 ├── main/
 │   ├── app_main.cpp                                  Start, Einstellungen, die Schleife des Tors
 │   ├── ui.cpp ui.hpp                                 die LVGL-Bildschirme und der Stopp-Knopf
+│   ├── fonts/                                        die Schriften: Latein bis Japanisch
 │   ├── board_p4.cpp board.hpp                        das Modul: Display, Ton, Stopp-Eingang
 │   ├── server_link.cpp server_link.hpp               die Sockets des Server-Clients
 │   └── idf_component.yml Kconfig.projbuild           Komponentenliste und menuconfig-Pins
 ├── tests/                                            Host-Tests von Einstellungen, Tor, Sprache und Bildschirmtexten
+├── locales/                                          die Texte der übrigen 29 Sprachen, je eine Datei
 ├── docs/                                             die Hardware-Hinweise und die Quellen der beiden Bilder
 ├── tools/                                            CI-Prüfung, README-Prüfung und Bildwerkzeuge
 ├── CMakeLists.txt                                    das ESP-IDF-Projekt

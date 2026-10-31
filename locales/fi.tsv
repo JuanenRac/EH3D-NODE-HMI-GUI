@@ -1,0 +1,72 @@
+# Suomi (fi): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Näkymä
+ui.Job	Työ
+ui.Machine	Kone
+ui.Settings	Asetukset
+ui.Fleet	Koneet ja asemat
+ui.Start	Käynnistä
+ui.Pause	Tauko
+ui.Stop	Pysäytä
+ui.Home	Home
+ui.Confirm	Vahvista
+ui.Cancel	Peruuta
+ui.Armed	Valmis
+ui.NotArmed	Ei valmis
+ui.StopPressed	LAITTEISTOPYSÄYTYS PAINETTU
+ui.AckRelease	Pysäytys vapautettu: kuittaa
+ui.Language	Kieli
+ui.Voice	Ääni
+ui.Brightness	Kirkkaus
+ui.Volume	Äänenvoimakkuus
+ui.JogX	Käsiajo X
+ui.JogY	Käsiajo Y
+ui.JogZ	Käsiajo Z
+ui.Spindle	Kara
+ui.AskMove	Siirretäänkö konetta?
+ui.AskSpindle	Käynnistetäänkö kara?
+ui.WhyHardwareStop	Laitteistopysäytys on painettu tai kuittaamatta.
+ui.WhyNotArmed	Kone ei ole valmis.
+ui.WhyVoiceOff	Puhekomennot on poistettu käytöstä asetuksissa.
+ui.WhyNoStop	Laitteistopysäytyksen tuloa ei ole kytketty.
+ui.WhySpindle	Kara on poistettu käytöstä asetuksissa.
+ui.Feed	Syöttö
+ui.Progress	Eteneminen
+ui.Tool	Työkalu
+ui.Jog	Käsiajo
+q.Title	Työn laatutarkastus
+q.Light	Valorengas
+q.LightOff	Pois
+q.CheckNow	Tarkasta nyt
+q.Checking	Tarkastetaan...
+q.VerdictOk	HYVÄKSYTTY
+q.VerdictNotOk	HYLÄTTY
+q.VerdictUnknown	EI ARVIOITAVISSA
+q.NotChecked	Ei vielä tarkastettu
+q.HoleWidth	Reikä keskellä (mm)
+q.HoleNone	ei reikää
+q.Profile	Profiili
+q.Standard	Vakio
+q.FinePitch	Hieno jako
+q.Prototype	Prototyyppi
+q.Calibrate	Kalibroi tämän reiän mukaan
+q.HolesOk	reikää kunnossa
+q.ChannelWidth	uran leveys
+q.NeedServer	Aseta palvelimen kone tiedostossa hmi.cfg.
+f.hole_missing	ei reikää
+f.hole_wrong_size	väärä koko
+f.hole_off_centre	keskittämätön
+f.hole_not_round	ei pyöreä
+f.hole_debris	purseita tai pölyä ympärillä
+f.hole_out_of_view	kuvan ulkopuolella
+f.mill_no_channels	uria ei näy
+f.mill_too_narrow	urat liian kapeita
+f.mill_too_wide	urat liian leveitä
+f.mill_pinched	ura kapenee: oikosulun vaara
+f.mill_uneven	urat epätasaisia
+f.image_too_dark	kuva liian tumma: lisää valoa
+f.image_too_bright	kuva liian kirkas: vähemmän valoa
+f.image_low_contrast	kuvassa ei ole kontrastia
+f.image_blurry	kuva epätarkka
+f.not_calibrated	määritä ensin mittakaava
+f.nothing_to_check	mikään tarkastus ei ole päällä
+f.no_expected_holes	työn reikiä ei näy kuvassa

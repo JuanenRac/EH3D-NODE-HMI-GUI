@@ -1,0 +1,72 @@
+# Română (ro): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Vizualizare
+ui.Job	Lucrare
+ui.Machine	Mașină
+ui.Settings	Setări
+ui.Fleet	Mașini și stații
+ui.Start	Start
+ui.Pause	Pauză
+ui.Stop	Stop
+ui.Home	Home
+ui.Confirm	Confirmă
+ui.Cancel	Anulează
+ui.Armed	Pregătită
+ui.NotArmed	Nepregătită
+ui.StopPressed	OPRIRE HARDWARE APĂSATĂ
+ui.AckRelease	Oprire eliberată: confirmă
+ui.Language	Limbă
+ui.Voice	Voce
+ui.Brightness	Luminozitate
+ui.Volume	Volum
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Ax
+ui.AskMove	Deplasezi mașina?
+ui.AskSpindle	Pornesc axul?
+ui.WhyHardwareStop	Oprirea hardware este apăsată sau neconfirmată.
+ui.WhyNotArmed	Mașina nu este pregătită.
+ui.WhyVoiceOff	Comenzile vocale sunt dezactivate în setări.
+ui.WhyNoStop	Intrarea opririi hardware nu este conectată.
+ui.WhySpindle	Axul principal este dezactivat în setări.
+ui.Feed	Avans
+ui.Progress	Progres
+ui.Tool	Sculă
+ui.Jog	Jog
+q.Title	Verificarea calității lucrării
+q.Light	Inel de lumină
+q.LightOff	Oprit
+q.CheckNow	Verifică acum
+q.Checking	Se verifică...
+q.VerdictOk	OK
+q.VerdictNotOk	NU E OK
+q.VerdictUnknown	NU SE POATE JUDECA
+q.NotChecked	Încă neverificat
+q.HoleWidth	Gaură în centru (mm)
+q.HoleNone	fără gaură
+q.Profile	Profil
+q.Standard	Standard
+q.FinePitch	Pas fin
+q.Prototype	Prototip
+q.Calibrate	Calibrează după această gaură
+q.HolesOk	găuri ok
+q.ChannelWidth	lățime canal
+q.NeedServer	Setează mașina serverului în hmi.cfg.
+f.hole_missing	nicio gaură acolo
+f.hole_wrong_size	dimensiune greșită
+f.hole_off_centre	decentrată
+f.hole_not_round	neregulat rotundă
+f.hole_debris	bavuri sau praf în jur
+f.hole_out_of_view	în afara câmpului
+f.mill_no_channels	niciun canal vizibil
+f.mill_too_narrow	canale prea înguste
+f.mill_too_wide	canale prea late
+f.mill_pinched	un canal se îngustează: risc de scurtcircuit
+f.mill_uneven	canale neuniforme
+f.image_too_dark	imagine prea întunecată: mai multă lumină
+f.image_too_bright	imagine prea luminoasă: mai puțină lumină
+f.image_low_contrast	imagine fără contrast
+f.image_blurry	imagine neclară
+f.not_calibrated	setează mai întâi scara
+f.nothing_to_check	nicio verificare nu este activă
+f.no_expected_holes	nicio gaură a lucrării în câmp

@@ -1,0 +1,72 @@
+# Српски (sr): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Преглед
+ui.Job	Посао
+ui.Machine	Машински
+ui.Settings	Подешавања
+ui.Fleet	Машине и станице
+ui.Start	Старт
+ui.Pause	Пауза
+ui.Stop	Стоп
+ui.Home	Home
+ui.Confirm	Потврди
+ui.Cancel	Откажи
+ui.Armed	Спреман
+ui.NotArmed	Није спреман
+ui.StopPressed	ХАРДВЕРСКИ СТОП ПРИТИСНУТ
+ui.AckRelease	Стоп отпуштен: потврдите
+ui.Language	Језик
+ui.Voice	Глас
+ui.Brightness	Осветљеност
+ui.Volume	Јачина звука
+ui.JogX	Ручно кретање X
+ui.JogY	Ручно кретање Y
+ui.JogZ	Ручно кретање Z
+ui.Spindle	Вретено
+ui.AskMove	Померити машину?
+ui.AskSpindle	Покренути вретено?
+ui.WhyHardwareStop	Хардверски стоп је притиснут или непотврђен.
+ui.WhyNotArmed	Машина није спремна.
+ui.WhyVoiceOff	Гласовне команде су искључене у подешавањима.
+ui.WhyNoStop	Улаз хардверског стопа није повезан.
+ui.WhySpindle	Вретено је искључено у подешавањима.
+ui.Feed	Помак
+ui.Progress	Напредак
+ui.Tool	Алат
+ui.Jog	Ручно кретање
+q.Title	Провера квалитета рада
+q.Light	Светлосни прстен
+q.LightOff	Искљ.
+q.CheckNow	Провери сада
+q.Checking	Провера...
+q.VerdictOk	У РЕДУ
+q.VerdictNotOk	НИЈЕ У РЕДУ
+q.VerdictUnknown	НЕМОГУЋЕ ПРОЦЕНИТИ
+q.NotChecked	Још није проверено
+q.HoleWidth	Рупа у средини (mm)
+q.HoleNone	нема рупе
+q.Profile	Профил
+q.Standard	Стандардно
+q.FinePitch	Фини корак
+q.Prototype	Прототип
+q.Calibrate	Калибриши према овој рупи
+q.HolesOk	рупа у реду
+q.ChannelWidth	ширина канала
+q.NeedServer	Подесите машину сервера у hmi.cfg.
+f.hole_missing	нема рупе
+f.hole_wrong_size	погрешна величина
+f.hole_off_centre	ван центра
+f.hole_not_round	није округла
+f.hole_debris	ивери или прашина око рупе
+f.hole_out_of_view	ван кадра
+f.mill_no_channels	канали се не виде
+f.mill_too_narrow	канали су преуски
+f.mill_too_wide	канали су прешироки
+f.mill_pinched	канал се сужава: ризик од кратког споја
+f.mill_uneven	канали су неравни
+f.image_too_dark	слика је претамна: више светла
+f.image_too_bright	слика је превише светла: мање светла
+f.image_low_contrast	слика без контраста
+f.image_blurry	слика је ван фокуса
+f.not_calibrated	прво подесите размеру
+f.nothing_to_check	ниједна провера није укључена
+f.no_expected_holes	ниједна рупа посла није у кадру

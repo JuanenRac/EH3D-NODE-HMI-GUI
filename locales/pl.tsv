@@ -1,0 +1,72 @@
+# Polski (pl): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Podgląd
+ui.Job	Zadanie
+ui.Machine	Maszyna
+ui.Settings	Ustawienia
+ui.Fleet	Maszyny i stanowiska
+ui.Start	Start
+ui.Pause	Pauza
+ui.Stop	Stop
+ui.Home	Home
+ui.Confirm	Potwierdź
+ui.Cancel	Anuluj
+ui.Armed	Gotowa
+ui.NotArmed	Niegotowa
+ui.StopPressed	STOP SPRZĘTOWY WCIŚNIĘTY
+ui.AckRelease	Stop zwolniony: potwierdź
+ui.Language	Język
+ui.Voice	Głos
+ui.Brightness	Jasność
+ui.Volume	Głośność
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Wrzeciono
+ui.AskMove	Przesunąć maszynę?
+ui.AskSpindle	Uruchomić wrzeciono?
+ui.WhyHardwareStop	Stop sprzętowy jest wciśnięty lub niepotwierdzony.
+ui.WhyNotArmed	Maszyna nie jest gotowa.
+ui.WhyVoiceOff	Polecenia głosowe są wyłączone w ustawieniach.
+ui.WhyNoStop	Wejście stopu sprzętowego nie jest podłączone.
+ui.WhySpindle	Wrzeciono jest wyłączone w ustawieniach.
+ui.Feed	Posuw
+ui.Progress	Postęp
+ui.Tool	Narzędzie
+ui.Jog	Jog
+q.Title	Kontrola jakości wykonania
+q.Light	Pierścień świetlny
+q.LightOff	Wył.
+q.CheckNow	Sprawdź teraz
+q.Checking	Sprawdzanie...
+q.VerdictOk	OK
+q.VerdictNotOk	NIE OK
+q.VerdictUnknown	NIE MOŻNA OCENIĆ
+q.NotChecked	Jeszcze nie sprawdzono
+q.HoleWidth	Otwór pośrodku (mm)
+q.HoleNone	brak otworu
+q.Profile	Profil
+q.Standard	Standardowy
+q.FinePitch	Drobny raster
+q.Prototype	Prototyp
+q.Calibrate	Kalibruj według tego otworu
+q.HolesOk	otworów ok
+q.ChannelWidth	szerokość ścieżki
+q.NeedServer	Ustaw maszynę serwera w pliku hmi.cfg.
+f.hole_missing	brak otworu
+f.hole_wrong_size	zły rozmiar
+f.hole_off_centre	przesunięty
+f.hole_not_round	nieokrągły
+f.hole_debris	zadziory lub pył wokół
+f.hole_out_of_view	poza widokiem
+f.mill_no_channels	nie widać ścieżek
+f.mill_too_narrow	ścieżki zbyt wąskie
+f.mill_too_wide	ścieżki zbyt szerokie
+f.mill_pinched	ścieżka się zwęża: ryzyko zwarcia
+f.mill_uneven	ścieżki nierówne
+f.image_too_dark	obraz zbyt ciemny: więcej światła
+f.image_too_bright	obraz zbyt jasny: mniej światła
+f.image_low_contrast	obraz bez kontrastu
+f.image_blurry	obraz nieostry
+f.not_calibrated	najpierw ustaw skalę
+f.nothing_to_check	żadna kontrola nie jest włączona
+f.no_expected_holes	w widoku nie ma otworu zadania

@@ -1,0 +1,72 @@
+# Svenska (sv): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Vy
+ui.Job	Jobb
+ui.Machine	Maskin
+ui.Settings	Inställningar
+ui.Fleet	Maskiner och stationer
+ui.Start	Starta
+ui.Pause	Paus
+ui.Stop	Stopp
+ui.Home	Hem
+ui.Confirm	Bekräfta
+ui.Cancel	Avbryt
+ui.Armed	Redo
+ui.NotArmed	Inte redo
+ui.StopPressed	HÅRDVARUSTOPP NEDTRYCKT
+ui.AckRelease	Stopp släppt: kvittera
+ui.Language	Språk
+ui.Voice	Röst
+ui.Brightness	Ljusstyrka
+ui.Volume	Volym
+ui.JogX	Jogga X
+ui.JogY	Jogga Y
+ui.JogZ	Jogga Z
+ui.Spindle	Spindel
+ui.AskMove	Flytta maskinen?
+ui.AskSpindle	Starta spindeln?
+ui.WhyHardwareStop	Hårdvarustoppet är nedtryckt eller inte kvitterat.
+ui.WhyNotArmed	Maskinen är inte redo.
+ui.WhyVoiceOff	Röstkommandon är avstängda i inställningarna.
+ui.WhyNoStop	Hårdvarustoppets ingång är inte ansluten.
+ui.WhySpindle	Spindeln är avstängd i inställningarna.
+ui.Feed	Matning
+ui.Progress	Förlopp
+ui.Tool	Verktyg
+ui.Jog	Jogga
+q.Title	Kvalitetskontroll av arbetet
+q.Light	Ljusring
+q.LightOff	Av
+q.CheckNow	Kontrollera nu
+q.Checking	Kontrollerar...
+q.VerdictOk	OK
+q.VerdictNotOk	INTE OK
+q.VerdictUnknown	KAN INTE BEDÖMAS
+q.NotChecked	Inte kontrollerad än
+q.HoleWidth	Hål i mitten (mm)
+q.HoleNone	inget hål
+q.Profile	Profil
+q.Standard	Standard
+q.FinePitch	Fin delning
+q.Prototype	Prototyp
+q.Calibrate	Kalibrera från det här hålet
+q.HolesOk	hål ok
+q.ChannelWidth	spårbredd
+q.NeedServer	Ange serverns maskin i hmi.cfg.
+f.hole_missing	inget hål där
+f.hole_wrong_size	fel storlek
+f.hole_off_centre	inte centrerat
+f.hole_not_round	inte runt
+f.hole_debris	grader eller damm runt om
+f.hole_out_of_view	utanför bilden
+f.mill_no_channels	inga spår syns
+f.mill_too_narrow	spåren är för smala
+f.mill_too_wide	spåren är för breda
+f.mill_pinched	ett spår smalnar av: risk för kortslutning
+f.mill_uneven	ojämna spår
+f.image_too_dark	bilden är för mörk: mer ljus
+f.image_too_bright	bilden är för ljus: mindre ljus
+f.image_low_contrast	bilden saknar kontrast
+f.image_blurry	bilden är oskarp
+f.not_calibrated	ställ först in skalan
+f.nothing_to_check	ingen kontroll är påslagen
+f.no_expected_holes	inget av jobbets hål syns

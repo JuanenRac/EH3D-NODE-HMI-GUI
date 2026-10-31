@@ -30,7 +30,7 @@
 |---|---|
 | Versione | `0.0.1` |
 | Maturità | Impalcatura |
-| Test | 5 programmi di test sul computer (1018 controlli contati) |
+| Test | 7 programmi di test sul computer (79053 controlli contati) |
 | Stack tecnologico | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Su hardware reale | No: il firmware non è stato compilato né scritto e nulla è stato collegato a una macchina |
 
@@ -45,7 +45,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Software | 🟠 | Il progetto ESP-IDF (ESP32-P4, LVGL 9, il file delle impostazioni in una partizione propria) è scritto; non è stato compilato né scritto sul chip. |
-| Test | 🟢 | 5 programmi di test sul computer passano (`ctest`): 1018 controlli sul file delle impostazioni, il varco, gli ordini e gli avvisi vocali, le tastiere, gli avvisi registrati, il client del server e i testi delle schermate in otto lingue. |
+| Test | 🟢 | 7 programmi di test sul computer passano (`ctest`): 79053 controlli sul file delle impostazioni, il varco, gli ordini e gli avvisi vocali, le tastiere, gli avvisi registrati, il client del server e i testi delle schermate in otto lingue. |
 | Regole di sicurezza | 🟡 | Ogni movimento e ogni ordine al mandrino passa dal varco: conferma sullo schermo, blocco dell'arresto hardware che solo una conferma sullo schermo toglie a pulsante rilasciato, nessun movimento con il collegamento non armato. Coperto da test; mai provato con un vero pulsante di arresto. |
 | Voce | 🟡 | Ordini e avvisi vocali sono riconosciuti e formulati in otto lingue e provati come testo; nessun microfono o altoparlante è stato usato. |
 | Schermate | 🟠 | Le schermate macchina, lavoro (microSD), macchine e stazioni e impostazioni sono scritte, in orizzontale e in verticale, con l'aspetto del programma desktop; la scheda della vista è ancora una scheda vuota. Esiste solo un disegno del layout, non una cattura di un modulo. |
@@ -124,6 +124,8 @@ Come si incastrano le parti di questo repository: chi parla con esso, cosa conti
 * **Avvisi registrati:** la fine di un lavoro e la richiesta di utensile possono essere dette da una voce registrata, nella lingua e nel genere impostati (`sound_finish = voice:es:f`), dalla cartella `voices` della scheda; le registrazioni sono quelle di EH3D-BUNGARD-GUI. L'altoparlante non è ancora collegato nel firmware.
 * **Il lavoro viene seguito di nuovo dopo un riavvio:** da quando l'operatore avvia un lavoro, lo schermo conserva nella flash quale è (il suo id, la macchina, il suo nome); dopo un'interruzione di corrente o un riavvio segue lo stesso lavoro, la lettura successiva del server dice se è ancora in corso, aspetta a un cambio utensile o è finito, e il pulsante annulla lo lascia. Il lavoro vive nel server. Scritto e testato su un computer; il firmware non è mai stato eseguito su un modulo.
 * **Il tipo di macchina:** `machine_kind` nel file delle impostazioni (`cnc`, `laser` o `pnp`) decide cosa lo schermo può ordinare. Solo una macchina CNC ha il pulsante del mandrino, e il varco rifiuta un ordine al mandrino su un laser o su una macchina pick and place qualunque cosa dicano le altre impostazioni: lo schermo non fa mai partire un laser né avvia da solo una testa pick and place.
+* **Trentasette lingue sullo schermo:** oltre alle otto delle tabelle, i testi delle schermate (le schede, i pulsanti, i rifiuti del varco e, su una macchina CNC, tutto il controllo qualità) sono scritti in altre 29 lingue (bulgaro, croato, ceco, danese, olandese, estone, finlandese, greco, ungherese, irlandese, lettone, lituano, maltese, polacco, rumeno, slovacco, sloveno, svedese, norvegese, islandese, ucraino, russo, serbo, albanese, catalano, galiziano, basco, portoghese del Brasile e francese del Canada), un file ciascuna in `locales/`, con font fatti solo per i caratteri che lo schermo può disegnare; la lingua si sceglie in un elenco scorrevole nelle impostazioni. Gli avvisi e gli ordini vocali restano nelle prime otto. Un testo mancante in una lingua è mostrato in inglese (compresa la frase per una macchina senza mandrino, ancora da tradurre). Questi testi e font sono stati provati solo su un computer, non sullo schermo reale.
+* **Controllo qualità e avvisi, solo su una macchina CNC:** `machine_kind = cnc` aggiunge una sesta pagina con il verdetto del controllo del lavoro tramite la telecamera della testa di foratura (OK, NON OK o impossibile da giudicare), ciò che è stato trovato, l'anello di LED, il profilo e la calibrazione, tutto tramite EH3D-SERVER, e lo schermo dice il risultato a voce quando `sound_check_ok` e `sound_check_bad` sono impostati (un bip o una voce registrata). Un laser o una macchina pick and place non ha né la pagina né questi avvisi, e gli avvisi di fine lavoro e di cambio utensile funzionano su ogni tipo di macchina. Scritto e provato su un computer; non visto su uno schermo reale.
 
 ## 🔒 Sicurezza e protezione
 
@@ -180,7 +182,7 @@ Il firmware non è ancora stato compilato: quando lo sarà, `idf.py set-target e
 
 ## 🧪 Test
 
-I test sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono due programmi e passa tutto: `test_hmi` (638 controlli) su file delle impostazioni, varco (l'arresto passa sempre, blocco dell'arresto hardware, conferma, tempo limite e giro dell'orologio, regole vocali, interruttori), ordini e avvisi vocali e testi delle schermate in otto lingue; e `test_workflow` (115 controlli) su orientamento e tocco, file della scheda (tipi, nomi sicuri, ordinamento), lettore JSON, richieste e risposte del server e flusso di un lavoro dalla scheda alla fine. Gli altri due programmi coprono le tastiere (`test_keyboard`, 137 controlli: ogni impostazione ha la sua tastiera, gli intervalli del tastierino sono quelli del file delle impostazioni, i decimali, il segno, le frecce, la tastiera completa di ogni lingua, il maiuscolo, i simboli e la lunghezza) e gli avvisi registrati (`test_notices`, 66 controlli: l'impostazione, il file di ogni lingua e genere).
+I test sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono due programmi e passa tutto: `test_hmi` (638 controlli) su file delle impostazioni, varco (l'arresto passa sempre, blocco dell'arresto hardware, conferma, tempo limite e giro dell'orologio, regole vocali, interruttori), ordini e avvisi vocali e testi delle schermate in otto lingue; e `test_workflow` (115 controlli) su orientamento e tocco, file della scheda (tipi, nomi sicuri, ordinamento), lettore JSON, richieste e risposte del server e flusso di un lavoro dalla scheda alla fine. Gli altri due programmi coprono le tastiere (`test_keyboard`, 137 controlli: ogni impostazione ha la sua tastiera, gli intervalli del tastierino sono quelli del file delle impostazioni, i decimali, il segno, le frecce, la tastiera completa di ogni lingua, il maiuscolo, i simboli e la lunghezza) e gli avvisi registrati (`test_notices`, 66 controlli: l'impostazione, il file di ogni lingua e genere). Altri tre programmi: `test_machine` (55 controlli: i tipi di macchina, il rifiuto del mandrino e la frase in ogni lingua), `test_quality` (911 controlli: le richieste, la lettura del rapporto, ogni rilievo) e `test_locales` (76655 controlli: ogni chiave ha un testo in ciascuna delle altre 29 lingue, niente è vuoto o troppo lungo, la scrittura di ogni lingua è quella giusta, e ogni carattere disegnabile è nell'intervallo dei font generati).
 
 ## 🏗️ Compilazione e rilascio
 
@@ -213,14 +215,19 @@ EH3D-NODE-HMI-GUI/
 │   ├── voice.hpp                                     ordini e avvisi vocali in otto lingue
 │   ├── orientation.hpp sdfiles.hpp                   layout verticale e orizzontale, file della scheda
 │   ├── server_link.hpp workflow.hpp job_memory.hpp   client del server e flusso di un lavoro
-│   └── ui_text.hpp keyboard.hpp notices.hpp          testi, tastiere e avvisi
+│   ├── quality.hpp                                   il controllo qualità e l'anello di LED
+│   ├── ui_text.hpp keyboard.hpp notices.hpp          testi, tastiere e avvisi
+│   ├── locales.hpp locales_gen.hpp font_ranges.hpp   37 lingue e intervalli dei font
+│   └── wav.hpp                                       le registrazioni e i segnali acustici degli avvisi
 ├── main/
 │   ├── app_main.cpp                                  avvio, impostazioni, il ciclo del varco
 │   ├── ui.cpp ui.hpp                                 le schermate LVGL e il pulsante di arresto
+│   ├── fonts/                                        i font: dal latino al giapponese
 │   ├── board_p4.cpp board.hpp                        il modulo: display, suono, ingresso di arresto
 │   ├── server_link.cpp server_link.hpp               i socket del client del server
 │   └── idf_component.yml Kconfig.projbuild           elenco dei componenti e pin di menuconfig
 ├── tests/                                            test su computer di impostazioni, varco, voce e testi delle schermate
+├── locales/                                          i testi delle altre 29 lingue, un file ciascuna
 ├── docs/                                             le note hardware e le fonti dei due disegni
 ├── tools/                                            controllo CI, README e strumenti dei disegni
 ├── CMakeLists.txt                                    il progetto ESP-IDF

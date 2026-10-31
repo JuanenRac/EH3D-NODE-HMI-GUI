@@ -1,0 +1,72 @@
+# Slovenčina (sk): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Zobrazenie
+ui.Job	Úloha
+ui.Machine	Stroj
+ui.Settings	Nastavenia
+ui.Fleet	Stroje a stanice
+ui.Start	Štart
+ui.Pause	Pauza
+ui.Stop	Stop
+ui.Home	Home
+ui.Confirm	Potvrdiť
+ui.Cancel	Zrušiť
+ui.Armed	Pripravený
+ui.NotArmed	Nepripravený
+ui.StopPressed	HARDVÉROVÝ STOP STLAČENÝ
+ui.AckRelease	Stop uvoľnený: potvrďte
+ui.Language	Jazyk
+ui.Voice	Hlas
+ui.Brightness	Jas
+ui.Volume	Hlasitosť
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Vreteno
+ui.AskMove	Posunúť stroj?
+ui.AskSpindle	Spustiť vreteno?
+ui.WhyHardwareStop	Hardvérový stop je stlačený alebo nepotvrdený.
+ui.WhyNotArmed	Stroj nie je pripravený.
+ui.WhyVoiceOff	Hlasové príkazy sú v nastaveniach vypnuté.
+ui.WhyNoStop	Vstup hardvérového stopu nie je zapojený.
+ui.WhySpindle	Vreteno je v nastaveniach vypnuté.
+ui.Feed	Posuv
+ui.Progress	Priebeh
+ui.Tool	Nástroj
+ui.Jog	Jog
+q.Title	Kontrola kvality práce
+q.Light	Svetelný kruh
+q.LightOff	Vyp.
+q.CheckNow	Skontrolovať teraz
+q.Checking	Kontroluje sa...
+q.VerdictOk	OK
+q.VerdictNotOk	NIE JE OK
+q.VerdictUnknown	NEDÁ SA POSÚDIŤ
+q.NotChecked	Ešte nekontrolované
+q.HoleWidth	Otvor v strede (mm)
+q.HoleNone	žiadny otvor
+q.Profile	Profil
+q.Standard	Štandardný
+q.FinePitch	Jemný rozstup
+q.Prototype	Prototyp
+q.Calibrate	Kalibrovať podľa tohto otvoru
+q.HolesOk	otvorov ok
+q.ChannelWidth	šírka kanála
+q.NeedServer	Nastavte stroj servera v hmi.cfg.
+f.hole_missing	otvor tam nie je
+f.hole_wrong_size	zlá veľkosť
+f.hole_off_centre	mimo stredu
+f.hole_not_round	nie je okrúhly
+f.hole_debris	otrepy alebo prach okolo
+f.hole_out_of_view	mimo záberu
+f.mill_no_channels	nie sú vidieť kanály
+f.mill_too_narrow	kanály sú príliš úzke
+f.mill_too_wide	kanály sú príliš široké
+f.mill_pinched	kanál sa zužuje: riziko skratu
+f.mill_uneven	kanály sú nerovnomerné
+f.image_too_dark	obraz je príliš tmavý: viac svetla
+f.image_too_bright	obraz je príliš svetlý: menej svetla
+f.image_low_contrast	obraz bez kontrastu
+f.image_blurry	obraz je rozostrený
+f.not_calibrated	najprv nastavte mierku
+f.nothing_to_check	nie je zapnutá žiadna kontrola
+f.no_expected_holes	v zábere nie je žiadny otvor úlohy

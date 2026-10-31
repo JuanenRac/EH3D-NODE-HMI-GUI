@@ -1,0 +1,72 @@
+# Shqip (sq): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Pamja
+ui.Job	Puna
+ui.Machine	Makinë
+ui.Settings	Cilësimet
+ui.Fleet	Makinat dhe stacionet
+ui.Start	Nis
+ui.Pause	Pauzë
+ui.Stop	Ndalo
+ui.Home	Home
+ui.Confirm	Konfirmo
+ui.Cancel	Anulo
+ui.Armed	Gati
+ui.NotArmed	Jo gati
+ui.StopPressed	STOPI HARDUERIK I SHTYPUR
+ui.AckRelease	Stopi u lirua: konfirmo
+ui.Language	Gjuha
+ui.Voice	Zëri
+ui.Brightness	Ndriçimi
+ui.Volume	Volumi
+ui.JogX	Lëvizje manuale X
+ui.JogY	Lëvizje manuale Y
+ui.JogZ	Lëvizje manuale Z
+ui.Spindle	Boshti
+ui.AskMove	Të lëvizet makina?
+ui.AskSpindle	Të niset boshti?
+ui.WhyHardwareStop	Stopi harduerik është i shtypur ose i pakonfirmuar.
+ui.WhyNotArmed	Makina nuk është gati.
+ui.WhyVoiceOff	Komandat zanore janë çaktivizuar te cilësimet.
+ui.WhyNoStop	Hyrja e stopit harduerik nuk është e lidhur.
+ui.WhySpindle	Boshti është çaktivizuar te cilësimet.
+ui.Feed	Avancimi
+ui.Progress	Përparimi
+ui.Tool	Mjeti
+ui.Jog	Lëvizje manuale
+q.Title	Kontrolli i cilësisë së punës
+q.Light	Unaza e dritës
+q.LightOff	Fikur
+q.CheckNow	Kontrollo tani
+q.Checking	Duke kontrolluar...
+q.VerdictOk	NË RREGULL
+q.VerdictNotOk	JO NË RREGULL
+q.VerdictUnknown	NUK MUND TË GJYKOHET
+q.NotChecked	Ende pa kontrolluar
+q.HoleWidth	Vrima në qendër (mm)
+q.HoleNone	pa vrimë
+q.Profile	Profili
+q.Standard	Standard
+q.FinePitch	Hap i imët
+q.Prototype	Prototip
+q.Calibrate	Kalibro nga kjo vrimë
+q.HolesOk	vrima në rregull
+q.ChannelWidth	gjerësia e kanalit
+q.NeedServer	Cakto makinën e serverit te hmi.cfg.
+f.hole_missing	nuk ka vrimë aty
+f.hole_wrong_size	madhësi e gabuar
+f.hole_off_centre	jashtë qendrës
+f.hole_not_round	jo e rrumbullakët
+f.hole_debris	gërvishtje ose pluhur përreth
+f.hole_out_of_view	jashtë pamjes
+f.mill_no_channels	nuk shihen kanale
+f.mill_too_narrow	kanalet janë shumë të ngushta
+f.mill_too_wide	kanalet janë shumë të gjera
+f.mill_pinched	një kanal ngushtohet: rrezik për lidhje të shkurtër
+f.mill_uneven	kanale të parregullta
+f.image_too_dark	fotografia është shumë e errët: më shumë dritë
+f.image_too_bright	fotografia është shumë e ndritshme: më pak dritë
+f.image_low_contrast	fotografi pa kontrast
+f.image_blurry	fotografia është jashtë fokusit
+f.not_calibrated	së pari caktoni shkallën
+f.nothing_to_check	asnjë kontroll nuk është i ndezur
+f.no_expected_holes	asnjë vrimë e punës në pamje

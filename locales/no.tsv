@@ -1,0 +1,72 @@
+# Norsk (no): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Visning
+ui.Job	Jobb
+ui.Machine	Maskin
+ui.Settings	Innstillinger
+ui.Fleet	Maskiner og stasjoner
+ui.Start	Start
+ui.Pause	Pause
+ui.Stop	Stopp
+ui.Home	Hjem
+ui.Confirm	Bekreft
+ui.Cancel	Avbryt
+ui.Armed	Klar
+ui.NotArmed	Ikke klar
+ui.StopPressed	MASKINVARESTOPP TRYKKET
+ui.AckRelease	Stopp sluppet: kvitter
+ui.Language	Språk
+ui.Voice	Stemme
+ui.Brightness	Lysstyrke
+ui.Volume	Volum
+ui.JogX	Jogg X
+ui.JogY	Jogg Y
+ui.JogZ	Jogg Z
+ui.Spindle	Spindel
+ui.AskMove	Flytte maskinen?
+ui.AskSpindle	Starte spindelen?
+ui.WhyHardwareStop	Maskinvarestoppen er trykket inn eller ikke kvittert.
+ui.WhyNotArmed	Maskinen er ikke klar.
+ui.WhyVoiceOff	Talekommandoer er slått av i innstillingene.
+ui.WhyNoStop	Inngangen for maskinvarestopp er ikke koblet til.
+ui.WhySpindle	Spindelen er slått av i innstillingene.
+ui.Feed	Mating
+ui.Progress	Fremdrift
+ui.Tool	Verktøy
+ui.Jog	Jogg
+q.Title	Kvalitetskontroll av arbeidet
+q.Light	Lysring
+q.LightOff	Av
+q.CheckNow	Kontroller nå
+q.Checking	Kontrollerer...
+q.VerdictOk	OK
+q.VerdictNotOk	IKKE OK
+q.VerdictUnknown	KAN IKKE VURDERES
+q.NotChecked	Ikke kontrollert ennå
+q.HoleWidth	Hull i midten (mm)
+q.HoleNone	ingen hull
+q.Profile	Profil
+q.Standard	Standard
+q.FinePitch	Fin delning
+q.Prototype	Prototype
+q.Calibrate	Kalibrer fra dette hullet
+q.HolesOk	hull ok
+q.ChannelWidth	sporbredde
+q.NeedServer	Angi serverens maskin i hmi.cfg.
+f.hole_missing	ikke noe hull der
+f.hole_wrong_size	feil størrelse
+f.hole_off_centre	ikke sentrert
+f.hole_not_round	ikke rundt
+f.hole_debris	grader eller støv rundt
+f.hole_out_of_view	utenfor bildet
+f.mill_no_channels	ingen spor synlige
+f.mill_too_narrow	sporene er for smale
+f.mill_too_wide	sporene er for brede
+f.mill_pinched	et spor smalner inn: fare for kortslutning
+f.mill_uneven	ujevne spor
+f.image_too_dark	bildet er for mørkt: mer lys
+f.image_too_bright	bildet er for lyst: mindre lys
+f.image_low_contrast	bildet mangler kontrast
+f.image_blurry	bildet er uskarpt
+f.not_calibrated	still først inn skalaen
+f.nothing_to_check	ingen kontroll er slått på
+f.no_expected_holes	ingen av jobbens hull i bildet

@@ -1,0 +1,72 @@
+# Íslenska (is): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Sýn
+ui.Job	Verk
+ui.Machine	Vél
+ui.Settings	Stillingar
+ui.Fleet	Vélar og stöðvar
+ui.Start	Byrja
+ui.Pause	Hlé
+ui.Stop	Stöðva
+ui.Home	Heim
+ui.Confirm	Staðfesta
+ui.Cancel	Hætta við
+ui.Armed	Tilbúin
+ui.NotArmed	Ekki tilbúin
+ui.StopPressed	VÉLBÚNAÐARSTOPP VIRKT
+ui.AckRelease	Stopp sleppt: staðfestu
+ui.Language	Tungumál
+ui.Voice	Rödd
+ui.Brightness	Birtustig
+ui.Volume	Hljóðstyrkur
+ui.JogX	Handfærsla X
+ui.JogY	Handfærsla Y
+ui.JogZ	Handfærsla Z
+ui.Spindle	Snælda
+ui.AskMove	Færa vélina?
+ui.AskSpindle	Ræsa snælduna?
+ui.WhyHardwareStop	Vélbúnaðarstoppið er virkt eða óstaðfest.
+ui.WhyNotArmed	Vélin er ekki tilbúin.
+ui.WhyVoiceOff	Raddskipanir eru óvirkar í stillingum.
+ui.WhyNoStop	Inngangur vélbúnaðarstopps er ekki tengdur.
+ui.WhySpindle	Snældan er óvirk í stillingum.
+ui.Feed	Færsluhraði
+ui.Progress	Framvinda
+ui.Tool	Verkfæri
+ui.Jog	Handfærsla
+q.Title	Gæðaskoðun verksins
+q.Light	Ljósahringur
+q.LightOff	Af
+q.CheckNow	Skoða núna
+q.Checking	Skoða...
+q.VerdictOk	Í LAGI
+q.VerdictNotOk	EKKI Í LAGI
+q.VerdictUnknown	ÓMÖGULEGT AÐ META
+q.NotChecked	Ekki skoðað enn
+q.HoleWidth	Gat í miðjunni (mm)
+q.HoleNone	ekkert gat
+q.Profile	Snið
+q.Standard	Staðlað
+q.FinePitch	Fín hæð
+q.Prototype	Frumgerð
+q.Calibrate	Kvarða út frá þessu gati
+q.HolesOk	göt í lagi
+q.ChannelWidth	breidd rásar
+q.NeedServer	Stilltu vél netþjónsins í hmi.cfg.
+f.hole_missing	ekkert gat þar
+f.hole_wrong_size	röng stærð
+f.hole_off_centre	ekki í miðju
+f.hole_not_round	ekki kringlótt
+f.hole_debris	rendur eða ryk í kring
+f.hole_out_of_view	utan sýnar
+f.mill_no_channels	engar rásir sjást
+f.mill_too_narrow	rásirnar eru of þröngar
+f.mill_too_wide	rásirnar eru of breiðar
+f.mill_pinched	rás þrengist: hætta á skammhlaupi
+f.mill_uneven	ójafnar rásir
+f.image_too_dark	myndin er of dökk: meira ljós
+f.image_too_bright	myndin er of björt: minna ljós
+f.image_low_contrast	myndin hefur engin birtuskil
+f.image_blurry	myndin er úr fókus
+f.not_calibrated	stilltu fyrst kvarðann
+f.nothing_to_check	engin skoðun er virk
+f.no_expected_holes	ekkert gat verksins sést

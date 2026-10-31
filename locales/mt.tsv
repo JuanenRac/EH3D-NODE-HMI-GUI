@@ -1,0 +1,72 @@
+# Malti (mt): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Veduta
+ui.Job	Xogħol
+ui.Machine	Magna
+ui.Settings	Settings
+ui.Fleet	Magni u stazzjonijiet
+ui.Start	Ibda
+ui.Pause	Waqfa
+ui.Stop	Waqqaf
+ui.Home	Home
+ui.Confirm	Ikkonferma
+ui.Cancel	Ikkanċella
+ui.Armed	Armat
+ui.NotArmed	Mhux armat
+ui.StopPressed	STOP TAL-HARDWARE MIKBUS
+ui.AckRelease	Stop meħlus: ikkonferma
+ui.Language	Lingwa
+ui.Voice	Vuċi
+ui.Brightness	Luminożità
+ui.Volume	Volum
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Mandrin
+ui.AskMove	Tċaqlaq il-magna?
+ui.AskSpindle	Nibdew il-mandrin?
+ui.WhyHardwareStop	L-istop tal-hardware huwa mikbus jew mhux ikkonfermat.
+ui.WhyNotArmed	Il-magna mhix armata.
+ui.WhyVoiceOff	L-ordnijiet bil-vuċi huma mitfija fis-settings.
+ui.WhyNoStop	L-input tal-istop tal-hardware mhuwiex imqabbad.
+ui.WhySpindle	L-ispindil huwa mitfi fis-settings.
+ui.Feed	Avvanz
+ui.Progress	Progress
+ui.Tool	Għodda
+ui.Jog	Jog
+q.Title	Verifika tal-kwalità tax-xogħol
+q.Light	Ċirku tad-dawl
+q.LightOff	Mitfi
+q.CheckNow	Iċċekkja issa
+q.Checking	Qed niċċekkja...
+q.VerdictOk	OK
+q.VerdictNotOk	MHUX OK
+q.VerdictUnknown	MA NISTAX NIĠĠUDIKA
+q.NotChecked	Għadu ma ġiex iċċekkjat
+q.HoleWidth	Toqba fin-nofs (mm)
+q.HoleNone	ebda toqba
+q.Profile	Profil
+q.Standard	Standard
+q.FinePitch	Pass fin
+q.Prototype	Prototip
+q.Calibrate	Ikkalibra minn din it-toqba
+q.HolesOk	toqob ok
+q.ChannelWidth	wisa' tal-kanal
+q.NeedServer	Issettja l-magna tas-server f'hmi.cfg.
+f.hole_missing	ebda toqba hemm
+f.hole_wrong_size	qies ħażin
+f.hole_off_centre	mhux iċċentrata
+f.hole_not_round	mhix tonda
+f.hole_debris	xewk jew trab madwarha
+f.hole_out_of_view	barra mill-veduta
+f.mill_no_channels	ma dehru l-ebda kanali
+f.mill_too_narrow	kanali dejqin wisq
+f.mill_too_wide	kanali wiesgħin wisq
+f.mill_pinched	kanal jidjaq: riskju ta' short
+f.mill_uneven	kanali irregolari
+f.image_too_dark	stampa skura wisq: iżjed dawl
+f.image_too_bright	stampa qawwija wisq: inqas dawl
+f.image_low_contrast	stampa mingħajr kuntrast
+f.image_blurry	stampa mhux fuq il-fokus
+f.not_calibrated	waqqaf l-iskala qabel
+f.nothing_to_check	ebda kontroll mhu mixgħul
+f.no_expected_holes	ebda toqba tax-xogħol fil-veduta

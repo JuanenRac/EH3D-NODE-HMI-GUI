@@ -1,5 +1,5 @@
 # EH3D-NODE-HMI-GUI settings: copy to hmi.cfg in the config partition. Every value is optional; the defaults are the safe ones.
-language = en              # en es it de fr pt zh ja
+language = en              # en es it de fr pt zh ja bg hr cs da nl et fi el hu ga lv lt mt pl ro sk sl sv no is uk ru sr sq ca gl eu pt-br fr-ca
 theme = forge
 orientation = auto         # auto, landscape (1280 x 800) or portrait (800 x 1280)
 brightness_percent = 80    # 10..100
@@ -11,7 +11,7 @@ server_machine =
 poll_s = 3                 # how often the fleet is read, 1..60 seconds
 token =                    # write-only, 8..64 characters
 
-# the kind of machine: cnc (it has a spindle), laser or pnp (pick and place). The screen never starts a spindle on a laser or on a pick and place machine
+# the kind of machine: cnc (it has a spindle and the visual check of the board), laser or pnp (pick and place). The screen never starts a spindle on a laser or on a pick and place machine, and only a CNC machine has the page and the notices of the visual check
 machine_kind = cnc
 
 # the safety switches (every default is the conservative one)
@@ -32,3 +32,6 @@ mic_gain_percent = 50
 # the notices: off, default (the tone) or a recorded voice in the folder voices of the card: voice:LANG:f (female) or voice:LANG:m (male); LANG is en, es, it, de, fr, pt, zh or ja
 sound_finish = off
 sound_tool_change = off
+# the visual check of the board with the camera of the drill head (CNC only): the notice when it is correct and when it is not correct (a voice says: the visual check of the board is correct / is not correct)
+sound_check_ok = off
+sound_check_bad = off

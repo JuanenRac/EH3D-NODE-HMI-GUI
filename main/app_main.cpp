@@ -20,9 +20,11 @@
 #include "../core/hmi_config.hpp"
 #include "../core/job_memory.hpp"
 #include "../core/orientation.hpp"
+#include "../core/quality.hpp"
 #include "../core/sdfiles.hpp"
 #include "../core/ui_text.hpp"
 #include "../core/voice.hpp"
+#include "../core/wav.hpp"
 #include "../core/workflow.hpp"
 #include "board.hpp"
 #include "server_link.hpp"
@@ -32,11 +34,12 @@ static const char* TAG = "hmi";
 static hmi::Settings g_settings;
 static QueueHandle_t g_requests = nullptr;  // from the screens to the application task: ui::Request
 static QueueHandle_t g_to_server = nullptr; // from the application task to the link task: ServerJob
+static QueueHandle_t g_say = nullptr;       // the notices to say: hmi::Cue
 static SemaphoreHandle_t g_lock = nullptr;  // guards what the link task shares: the fleet, the note, the workflow
 
 // what the link task is asked to do
 struct ServerJob {
-    enum class Do { Create, Start, Cancel, Confirm } what = Do::Create;
+    enum class Do { Create, Start, Cancel, Confirm, Light, Inspect, Preset, Calibrate, Last } what = Do::Create;
 };
 
 static hmi::FleetView g_fleet;
@@ -44,6 +47,15 @@ static bool g_fleet_new = false;
 static bool g_server_ok = false;
 static std::string g_note;
 static hmi::Workflow g_flow;
+
+// the quality check: what the server last said, the ring of LEDs, and what the operator chose for the next request
+static hmi::QualityView g_quality;
+static hmi::LightView g_light;
+static bool g_quality_new = false;
+static bool g_quality_running = false;
+static int g_arg_light = 0;
+static int g_arg_hole = 0;
+static int g_arg_preset = 0;
 
 
 // ------------------------------------------------------------------------------------------------------------------------------ the job that this screen follows
@@ -87,6 +99,42 @@ static bool memory_load(hmi::JobMemory& m) {
     return ok;
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------ the notices
+// A notice is off, the tone of the screen or a recorded voice (voices/LANG/f|m/<name>.wav on the card); a voice that is not there, or is not 16-bit mono, plays the tone instead of
+// nothing. They are said by a task of their own, because playing takes a second or two and the screen and the gate must not wait for it.
+
+static void say_task(void*) {
+    for (;;) {
+        hmi::Cue cue;
+        if (xQueueReceive(g_say, &cue, portMAX_DELAY) != pdTRUE) continue;
+        const hmi::NoticeSetting* setting = nullptr;
+        switch (cue) {
+            case hmi::Cue::Finished: setting = &g_settings.sound_finish; break;
+            case hmi::Cue::ToolChange: setting = &g_settings.sound_tool_change; break;
+            case hmi::Cue::CheckOk: setting = &g_settings.sound_check_ok; break;
+            case hmi::Cue::CheckNotOk: setting = &g_settings.sound_check_bad; break;
+        }
+        if (setting == nullptr || setting->kind == hmi::NoticeSetting::Kind::Off) continue;
+        const unsigned volume = g_settings.volume_percent;
+        if (setting->kind == hmi::NoticeSetting::Kind::Voice) {
+            std::string bytes;
+            hmi::WavInfo info;
+            if (board::read_file(hmi::notice_file("/sdcard", *setting, cue), bytes, 400 * 1024) && hmi::parse_wav(bytes, info)) {
+                std::vector<std::int16_t> samples = hmi::wav_samples(bytes, info);
+                hmi::scale_samples(samples, volume);
+                board::play(samples.data(), samples.size(), info.rate);
+                continue;
+            }
+        }
+        const std::vector<std::int16_t> tone = hmi::tone_samples(cue, 22050, volume);
+        board::play(tone.data(), tone.size(), 22050);
+    }
+}
+
+static void say(hmi::Cue cue) {
+    if (g_say != nullptr) xQueueSend(g_say, &cue, 0);
+}
+
 // called by the screens in the LVGL task: the request is only queued
 static void post(const ui::Request& r) {
     if (g_requests != nullptr) xQueueSend(g_requests, &r, 0);
@@ -109,6 +157,59 @@ static void set_note(const std::string& s) {
     xSemaphoreGive(g_lock);
 }
 
+// A request of the quality check: the ring of LEDs, a check, a preset of the profile, the calibration of the scale, or the last check. Everything goes through the server of
+// the machine, which holds the token of the node of the drill head.
+static void quality_job(const ServerJob& job) {
+    if (!hmi::controls_for(g_settings.machine).quality_check) return;  // a laser or a pick and place machine has no camera for the visual check
+    if (g_settings.server_machine.empty()) {
+        set_note(hmi::quality_text(hmi::Q::NeedServer, g_settings.language));
+        return;
+    }
+    int light = 0, hole = 0, preset = 0;
+    xSemaphoreTake(g_lock, portMAX_DELAY);
+    light = g_arg_light;
+    hole = g_arg_hole;
+    preset = g_arg_preset;
+    xSemaphoreGive(g_lock);
+    hmi::Request req;
+    switch (job.what) {
+        case ServerJob::Do::Light: req = hmi::light_request(g_settings.server_machine, hmi::kLightLevels[light]); break;
+        case ServerJob::Do::Inspect: req = hmi::inspect_request(g_settings.server_machine, hmi::kLightLevels[light], hmi::kHoleWidths[hole]); break;
+        case ServerJob::Do::Preset: req = hmi::preset_request(g_settings.server_machine, preset); break;
+        case ServerJob::Do::Calibrate: req = hmi::calibrate_request(g_settings.server_machine); break;
+        case ServerJob::Do::Last: req = hmi::inspect_last_request(g_settings.server_machine); break;
+        default: return;
+    }
+    hmi::Response r;
+    std::string error;
+    const bool reached = srvlink::call(g_settings, req, r, error);
+    xSemaphoreTake(g_lock, portMAX_DELAY);
+    if (job.what == ServerJob::Do::Inspect) g_quality_running = false;
+    bool say_ok = false, say_bad = false;
+    if (!reached) {
+        g_note = error;
+    } else if (r.status == 200) {
+        hmi::QualityView q;
+        hmi::LightView l;
+        if ((job.what == ServerJob::Do::Inspect || job.what == ServerJob::Do::Last) && hmi::parse_quality(r.body, q)) {
+            g_quality = q;
+            // only a check that was just made is said, never the last one that is shown when the page opens; "cannot judge" is neither correct nor not correct
+            if (job.what == ServerJob::Do::Inspect) {
+                say_ok = q.verdict == hmi::QualityVerdict::Ok;
+                say_bad = q.verdict == hmi::QualityVerdict::NotOk;
+            }
+        }
+        if (job.what == ServerJob::Do::Light && hmi::parse_light(r.body, l)) g_light = l;
+        if (job.what == ServerJob::Do::Preset || job.what == ServerJob::Do::Calibrate) g_note = "ok";
+        g_quality_new = true;
+    } else if (job.what != ServerJob::Do::Last) {
+        g_note = hmi::error_line(r);  // the screen that has never been checked has no last check: that is not an error to show
+    }
+    xSemaphoreGive(g_lock);
+    if (say_ok) say(hmi::Cue::CheckOk);
+    if (say_bad) say(hmi::Cue::CheckNotOk);
+}
+
 // The task of the link: asks for the fleet every `poll_s` seconds and does what the operator asked, one request at a time.
 static void link_task(void*) {
     TickType_t next_poll = 0;
@@ -117,7 +218,9 @@ static void link_task(void*) {
         const bool asked = xQueueReceive(g_to_server, &job, pdMS_TO_TICKS(200)) == pdTRUE;
         std::string error;
         hmi::Response r;
-        if (asked) {
+        if (asked && job.what >= ServerJob::Do::Light) {
+            quality_job(job);
+        } else if (asked) {
             hmi::Request req;
             xSemaphoreTake(g_lock, portMAX_DELAY);
             switch (job.what) {
@@ -125,6 +228,12 @@ static void link_task(void*) {
                 case ServerJob::Do::Start: req = g_flow.start_request(); break;
                 case ServerJob::Do::Cancel: req = g_flow.cancel_request(); break;
                 case ServerJob::Do::Confirm: req = g_flow.confirm_request(); break;
+                // the quality check has its own function (quality_job): it never gets here
+                case ServerJob::Do::Light:
+                case ServerJob::Do::Inspect:
+                case ServerJob::Do::Preset:
+                case ServerJob::Do::Calibrate:
+                case ServerJob::Do::Last: break;
             }
             xSemaphoreGive(g_lock);
             if (req.path.empty()) {
@@ -207,6 +316,8 @@ extern "C" void app_main() {
 
     g_requests = xQueueCreate(8, sizeof(ui::Request));
     g_to_server = xQueueCreate(4, sizeof(ServerJob));
+    g_say = xQueueCreate(4, sizeof(hmi::Cue));
+    xTaskCreate(say_task, "say", 8192, nullptr, 3, nullptr);
     g_lock = xSemaphoreCreateMutex();
     // a job that was running when the screen went down: follow it again; the operator can leave it with the cancel button
     {
@@ -220,9 +331,16 @@ extern "C" void app_main() {
     }
     xTaskCreate(link_task, "link", 8192, nullptr, 4, nullptr);
     rebuild(false);
+    if (hmi::controls_for(g_settings.machine).quality_check) {
+        // the last check of the machine, so the screen shows what the desktop program found too
+        ServerJob last;
+        last.what = ServerJob::Do::Last;
+        xQueueSend(g_to_server, &last, 0);
+    }
 
     hmi::Gate gate(g_settings);
     ui::State state;
+    hmi::Stage last_stage = hmi::Stage::Nothing;
     for (;;) {
         bool wired = false, pressed = false;
         board::read_hardware_stop(wired, pressed);
@@ -271,6 +389,12 @@ extern "C" void app_main() {
                     rebuild(false);
                     board::lvgl_lock();
                     break;
+                case ui::What::SetLanguage:
+                    g_settings.language = r.language;  // kept until the next start: hmi.cfg (language = ...) holds the lasting choice
+                    board::lvgl_unlock();
+                    rebuild(false);
+                    board::lvgl_lock();
+                    break;
                 case ui::What::RefreshCard:
                     ui::show_card(board::sd_list(), g_settings);
                     break;
@@ -290,6 +414,21 @@ extern "C" void app_main() {
                     set_note(ok ? std::string("file: ") + r.file : (why.empty() ? "the file cannot be read" : why));
                     break;
                 }
+                case ui::What::LightSet:
+                case ui::What::InspectRun:
+                case ui::What::InspectPreset:
+                case ui::What::InspectCalibrate: {
+                    if (!hmi::controls_for(g_settings.machine).quality_check) break;
+                    ServerJob job;
+                    xSemaphoreTake(g_lock, portMAX_DELAY);
+                    if (r.what == ui::What::LightSet) { g_arg_light = r.light; job.what = ServerJob::Do::Light; }
+                    else if (r.what == ui::What::InspectRun) { g_arg_light = r.light; g_arg_hole = r.hole; g_quality_running = true; job.what = ServerJob::Do::Inspect; }
+                    else if (r.what == ui::What::InspectPreset) { g_arg_preset = r.preset; job.what = ServerJob::Do::Preset; }
+                    else job.what = ServerJob::Do::Calibrate;
+                    xSemaphoreGive(g_lock);
+                    xQueueSend(g_to_server, &job, 0);
+                    break;
+                }
                 case ui::What::SendJob: {
                     ServerJob job;
                     job.what = ServerJob::Do::Create;
@@ -305,20 +444,33 @@ extern "C" void app_main() {
         const bool fleet_new = g_fleet_new;
         const hmi::FleetView fleet = g_fleet;
         g_fleet_new = false;
+        const hmi::QualityView quality = g_quality;
+        const hmi::LightView light = g_light;
+        const bool quality_new = g_quality_new || g_quality_running;
+        const bool quality_running = g_quality_running;
+        g_quality_new = false;
         state.server_ok = g_server_ok;
         state.note = g_note;
         state.percent = g_flow.percent();
         // the machine counts as armed while the job of this screen runs or waits for the operator
         state.armed = g_flow.stage() == hmi::Stage::Running || g_flow.stage() == hmi::Stage::Waiting;
         const bool over = g_flow.stage() == hmi::Stage::Finished || g_flow.stage() == hmi::Stage::Failed;
+        const hmi::Stage stage_now = g_flow.stage();
         xSemaphoreGive(g_lock);
         if (over && g_remembered) memory_clear();
+        // the notices of the job, once each time the stage changes into them
+        if (stage_now != last_stage) {
+            if (stage_now == hmi::Stage::Finished) say(hmi::Cue::Finished);
+            if (stage_now == hmi::Stage::Waiting) say(hmi::Cue::ToolChange);
+            last_stage = stage_now;
+        }
         state.stop_wired = wired;
         state.stop_pressed = pressed;
         state.stop_latched = gate.latched();
         board::lvgl_lock();
         ui::show(state, g_settings);
         if (fleet_new) ui::show_fleet(fleet, g_settings);
+        if (quality_new && hmi::controls_for(g_settings.machine).quality_check) ui::show_quality(quality, light, quality_running, g_settings);
         if (!gate.pending()) ui::ask(nullptr, g_settings);
         board::lvgl_unlock();
         vTaskDelay(pdMS_TO_TICKS(50));

@@ -1,0 +1,72 @@
+# Magyar (hu): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Nézet
+ui.Job	Munka
+ui.Machine	Gép
+ui.Settings	Beállítások
+ui.Fleet	Gépek és állomások
+ui.Start	Indítás
+ui.Pause	Szünet
+ui.Stop	Leállítás
+ui.Home	Referencia
+ui.Confirm	Megerősítés
+ui.Cancel	Mégse
+ui.Armed	Élesítve
+ui.NotArmed	Nincs élesítve
+ui.StopPressed	HARDVERES LEÁLLÍTÁS NYOMVA
+ui.AckRelease	Leállítás feloldva: nyugtázza
+ui.Language	Nyelv
+ui.Voice	Hang
+ui.Brightness	Fényerő
+ui.Volume	Hangerő
+ui.JogX	Léptetés X
+ui.JogY	Léptetés Y
+ui.JogZ	Léptetés Z
+ui.Spindle	Főorsó
+ui.AskMove	Mozgatja a gépet?
+ui.AskSpindle	Indíthatja a főorsót?
+ui.WhyHardwareStop	A hardveres leállítás meg van nyomva vagy nincs nyugtázva.
+ui.WhyNotArmed	A gép nincs élesítve.
+ui.WhyVoiceOff	A hangparancsok ki vannak kapcsolva a beállításokban.
+ui.WhyNoStop	A hardveres leállítás bemenete nincs bekötve.
+ui.WhySpindle	A főorsó ki van kapcsolva a beállításokban.
+ui.Feed	Előtolás
+ui.Progress	Előrehaladás
+ui.Tool	Szerszám
+ui.Jog	Léptetés
+q.Title	A munka minőségellenőrzése
+q.Light	Fénygyűrű
+q.LightOff	Ki
+q.CheckNow	Ellenőrzés most
+q.Checking	Ellenőrzés...
+q.VerdictOk	RENDBEN
+q.VerdictNotOk	NEM RENDBEN
+q.VerdictUnknown	NEM ÍTÉLHETŐ MEG
+q.NotChecked	Még nincs ellenőrizve
+q.HoleWidth	Furat középen (mm)
+q.HoleNone	nincs furat
+q.Profile	Profil
+q.Standard	Szabványos
+q.FinePitch	Finom raszter
+q.Prototype	Prototípus
+q.Calibrate	Kalibrálás ebből a furatból
+q.HolesOk	furat rendben
+q.ChannelWidth	csatornaszélesség
+q.NeedServer	Adja meg a szerver gépét a hmi.cfg fájlban.
+f.hole_missing	nincs ott furat
+f.hole_wrong_size	rossz méret
+f.hole_off_centre	nem középen
+f.hole_not_round	nem kerek
+f.hole_debris	sorja vagy por körülötte
+f.hole_out_of_view	a képen kívül
+f.mill_no_channels	nem látszik csatorna
+f.mill_too_narrow	a csatornák túl keskenyek
+f.mill_too_wide	a csatornák túl szélesek
+f.mill_pinched	egy csatorna beszűkül: zárlat veszélye
+f.mill_uneven	egyenetlen csatornák
+f.image_too_dark	túl sötét kép: több fény kell
+f.image_too_bright	túl világos kép: kevesebb fény kell
+f.image_low_contrast	kontraszt nélküli kép
+f.image_blurry	életlen kép
+f.not_calibrated	előbb állítsa be a skálát
+f.nothing_to_check	nincs ellenőrzés bekapcsolva
+f.no_expected_holes	a munka egy furata sincs a képen

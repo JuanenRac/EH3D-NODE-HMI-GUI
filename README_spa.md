@@ -30,7 +30,7 @@
 |---|---|
 | Versión | `0.0.1` |
 | Madurez | Andamiaje |
-| Pruebas | 5 programas de prueba en el ordenador (1018 comprobaciones contadas) |
+| Pruebas | 7 programas de prueba en el ordenador (79053 comprobaciones contadas) |
 | Pila tecnológica | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | En hardware real | No: el firmware no se ha compilado ni grabado y nada se ha conectado a una máquina |
 
@@ -45,7 +45,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Software | 🟠 | El proyecto ESP-IDF (ESP32-P4, LVGL 9, el fichero de ajustes en su propia partición) está escrito; no se ha compilado ni grabado. |
-| Pruebas | 🟢 | Pasan 5 programas de prueba en el ordenador (`ctest`): 1018 comprobaciones del fichero de ajustes, la compuerta, las órdenes y avisos por voz, los teclados, los avisos grabados, el cliente del servidor y los textos de las pantallas en ocho idiomas. |
+| Pruebas | 🟢 | Pasan 7 programas de prueba en el ordenador (`ctest`): 79053 comprobaciones del fichero de ajustes, la compuerta, las órdenes y avisos por voz, los teclados, los avisos grabados, el cliente del servidor y los textos de las pantallas en ocho idiomas. |
 | Reglas de seguridad | 🟡 | Todo movimiento y toda orden de husillo pasan por la compuerta: confirmación en la pantalla, pestillo de la parada por hardware que solo borra un reconocimiento en la pantalla cuando el pulsador está suelto, ningún movimiento con el enlace sin armar. Cubierto por pruebas; nunca probado con un pulsador de parada real. |
 | Voz | 🟡 | Las órdenes y avisos por voz se reconocen y se formulan en ocho idiomas y se prueban como texto; no se ha usado ningún micrófono ni altavoz. |
 | Pantallas | 🟠 | Las pantallas de máquina, trabajo (microSD), máquinas y estaciones y ajustes están escritas, en horizontal y en vertical, con el aspecto del programa de escritorio; la pestaña del visor sigue siendo una tarjeta vacía. Solo existe un dibujo del diseño, no una captura de un módulo. |
@@ -124,6 +124,8 @@ Cómo encajan las partes de este repositorio: quién habla con él, qué contien
 * **Avisos grabados:** el fin de un trabajo y la petición de herramienta pueden decirse con una voz grabada, en el idioma y el género que se ajusten (`sound_finish = voice:es:f`), desde la carpeta `voices` de la tarjeta; las grabaciones son las de EH3D-BUNGARD-GUI. El altavoz aún no está cableado en el firmware.
 * **El trabajo se sigue de nuevo tras un reinicio:** desde que el operador inicia un trabajo, la pantalla guarda en su flash cuál es (su id, la máquina, su nombre); tras un corte de luz o un reinicio sigue el mismo trabajo, la siguiente lectura del servidor dice si aún corre, espera en un cambio de herramienta o ya terminó, y el botón de cancelar lo deja. El trabajo vive en el servidor. Escrito y probado en un ordenador; el firmware nunca se ha ejecutado en un módulo.
 * **El tipo de máquina:** `machine_kind` en el fichero de ajustes (`cnc`, `laser` o `pnp`) decide lo que la pantalla puede ordenar. Solo una máquina CNC tiene el botón del husillo, y la puerta rechaza una orden de husillo en un láser o en una máquina pick and place diga lo que diga el resto de ajustes: la pantalla nunca dispara un láser ni arranca por sí sola un cabezal pick and place.
+* **Treinta y siete idiomas en la pantalla:** además de los ocho de las tablas, los textos de las pantallas (las pestañas, los botones, las negativas de la compuerta y, en una máquina CNC, toda la verificación de calidad) están escritos en 29 idiomas más (búlgaro, croata, checo, danés, neerlandés, estonio, finés, griego, húngaro, irlandés, letón, lituano, maltés, polaco, rumano, eslovaco, esloveno, sueco, noruego, islandés, ucraniano, ruso, serbio, albanés, catalán, gallego, euskera, portugués de Brasil y francés de Canadá), un fichero cada uno en `locales/`, con fuentes hechas solo para los caracteres que la pantalla puede dibujar; el idioma se elige en una lista con desplazamiento en los ajustes. Los avisos y órdenes por voz siguen en los ocho primeros. Un texto que falta en un idioma se muestra en inglés (incluida la frase para una máquina sin husillo, pendiente de traducir). Estos textos y fuentes solo se han probado en un ordenador, no en la pantalla real.
+* **Verificación de calidad y avisos, solo en una máquina CNC:** `machine_kind = cnc` añade una sexta página con el veredicto de la comprobación del trabajo con la cámara del cabezal de taladrado (OK, NO OK o no se puede juzgar), lo encontrado, el aro de LEDs, el perfil y la calibración, todo a través de EH3D-SERVER, y la pantalla dice el resultado en voz alta cuando `sound_check_ok` y `sound_check_bad` están definidos (un pitido o una voz grabada). Un láser o una máquina pick and place no tiene ni la página ni esos avisos, y los avisos del fin de trabajo y del cambio de herramienta funcionan en cualquier tipo de máquina. Escrito y probado en un ordenador; no visto en una pantalla real.
 
 ## 🔒 Seguridad y protección
 
@@ -180,7 +182,7 @@ El firmware todavía no se ha compilado: cuando se compile, `idf.py set-target e
 
 ## 🧪 Pruebas
 
-Las pruebas en el ordenador (`build.bat` o `./build.sh`, y luego `ctest`) son dos programas y pasa todo: `test_hmi` (638 comprobaciones) del fichero de ajustes, la compuerta (la parada siempre pasa, pestillo de la parada por hardware, confirmación, tiempo límite y vuelta del reloj, reglas de voz, interruptores), las órdenes y avisos por voz y los textos de pantalla en ocho idiomas; y `test_workflow` (115 comprobaciones) de la orientación y el toque, los ficheros de la tarjeta (tipos, nombres seguros, orden), el lector de JSON, las peticiones y respuestas del servidor y el flujo de un trabajo desde la tarjeta hasta su final. Los otros dos programas cubren los teclados (`test_keyboard`, 137 comprobaciones: cada ajuste tiene su teclado, los rangos del teclado numérico son los del fichero de ajustes, los decimales, el signo, las flechas, el teclado completo de cada idioma, la mayúscula, los símbolos y la longitud) y los avisos grabados (`test_notices`, 66 comprobaciones: el ajuste, el fichero de cada idioma y género).
+Las pruebas en el ordenador (`build.bat` o `./build.sh`, y luego `ctest`) son dos programas y pasa todo: `test_hmi` (638 comprobaciones) del fichero de ajustes, la compuerta (la parada siempre pasa, pestillo de la parada por hardware, confirmación, tiempo límite y vuelta del reloj, reglas de voz, interruptores), las órdenes y avisos por voz y los textos de pantalla en ocho idiomas; y `test_workflow` (115 comprobaciones) de la orientación y el toque, los ficheros de la tarjeta (tipos, nombres seguros, orden), el lector de JSON, las peticiones y respuestas del servidor y el flujo de un trabajo desde la tarjeta hasta su final. Los otros dos programas cubren los teclados (`test_keyboard`, 137 comprobaciones: cada ajuste tiene su teclado, los rangos del teclado numérico son los del fichero de ajustes, los decimales, el signo, las flechas, el teclado completo de cada idioma, la mayúscula, los símbolos y la longitud) y los avisos grabados (`test_notices`, 66 comprobaciones: el ajuste, el fichero de cada idioma y género). Tres programas más: `test_machine` (55 comprobaciones: los tipos de máquina, la negativa del husillo y la frase en cada idioma), `test_quality` (911 comprobaciones: las peticiones, la lectura del informe, cada hallazgo) y `test_locales` (76655 comprobaciones: cada clave tiene texto en cada uno de los otros 29 idiomas, nada está vacío ni es demasiado largo, la escritura de cada idioma es la correcta, y todo carácter que pueda dibujarse está en el rango de las fuentes generadas).
 
 ## 🏗️ Compilación y publicación
 
@@ -213,14 +215,19 @@ EH3D-NODE-HMI-GUI/
 │   ├── voice.hpp                                     órdenes y avisos por voz en ocho idiomas
 │   ├── orientation.hpp sdfiles.hpp                   diseños vertical y horizontal, ficheros de la tarjeta
 │   ├── server_link.hpp workflow.hpp job_memory.hpp   cliente del servidor y flujo de un trabajo
-│   └── ui_text.hpp keyboard.hpp notices.hpp          textos, teclados y avisos
+│   ├── quality.hpp                                   la verificación de calidad y el aro de LEDs
+│   ├── ui_text.hpp keyboard.hpp notices.hpp          textos, teclados y avisos
+│   ├── locales.hpp locales_gen.hpp font_ranges.hpp   37 idiomas y rangos de fuente
+│   └── wav.hpp                                       las grabaciones y los pitidos de los avisos
 ├── main/
 │   ├── app_main.cpp                                  arranque, ajustes, el bucle de la compuerta
 │   ├── ui.cpp ui.hpp                                 las pantallas LVGL y el botón de parada
+│   ├── fonts/                                        las fuentes: del latín al japonés
 │   ├── board_p4.cpp board.hpp                        el módulo: pantalla, sonido, entrada de parada
 │   ├── server_link.cpp server_link.hpp               los sockets del cliente del servidor
 │   └── idf_component.yml Kconfig.projbuild           lista de componentes y pines de menuconfig
 ├── tests/                                            pruebas en el ordenador de los ajustes, la compuerta, la voz y los textos de pantalla
+├── locales/                                          los textos de los otros 29 idiomas, un fichero cada uno
 ├── docs/                                             las notas de hardware y las fuentes de los dos dibujos
 ├── tools/                                            comprobación de CI, de README y herramientas de dibujos
 ├── CMakeLists.txt                                    el proyecto ESP-IDF

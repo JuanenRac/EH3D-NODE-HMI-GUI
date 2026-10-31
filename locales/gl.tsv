@@ -1,0 +1,72 @@
+# Galego (gl): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Visor
+ui.Job	Traballo
+ui.Machine	Máquina
+ui.Settings	Configuración
+ui.Fleet	Máquinas e estacións
+ui.Start	Iniciar
+ui.Pause	Pausa
+ui.Stop	Parar
+ui.Home	Home
+ui.Confirm	Confirmar
+ui.Cancel	Cancelar
+ui.Armed	Armada
+ui.NotArmed	Sen armar
+ui.StopPressed	PARADA POR HARDWARE PREMIDA
+ui.AckRelease	Parada liberada: recoñecer
+ui.Language	Idioma
+ui.Voice	Voz
+ui.Brightness	Brillo
+ui.Volume	Volume
+ui.JogX	Jog X
+ui.JogY	Jog Y
+ui.JogZ	Jog Z
+ui.Spindle	Husillo
+ui.AskMove	Mover a máquina?
+ui.AskSpindle	Pódese arrincar o husillo?
+ui.WhyHardwareStop	A parada por hardware está premida ou sen recoñecer.
+ui.WhyNotArmed	A máquina non está armada.
+ui.WhyVoiceOff	As ordes por voz están desactivadas nos axustes.
+ui.WhyNoStop	A entrada da parada por hardware non está cableada.
+ui.WhySpindle	O fuso está desactivado nos axustes.
+ui.Feed	Avance
+ui.Progress	Progreso
+ui.Tool	Ferramenta
+ui.Jog	Jog
+q.Title	Verificación de calidade do traballo
+q.Light	Aro de luz
+q.LightOff	Apagado
+q.CheckNow	Verificar agora
+q.Checking	Verificando...
+q.VerdictOk	CORRECTO
+q.VerdictNotOk	INCORRECTO
+q.VerdictUnknown	NON SE PODE XULGAR
+q.NotChecked	Aínda sen verificar
+q.HoleWidth	Burato no centro (mm)
+q.HoleNone	sen burato
+q.Profile	Perfil
+q.Standard	Estándar
+q.FinePitch	Paso fino
+q.Prototype	Prototipo
+q.Calibrate	Calibrar con este furado
+q.HolesOk	furados correctos
+q.ChannelWidth	largura da canle
+q.NeedServer	Indica a máquina do servidor en hmi.cfg.
+f.hole_missing	non hai furado
+f.hole_wrong_size	tamaño incorrecto
+f.hole_off_centre	descentrado
+f.hole_not_round	non é redondo
+f.hole_debris	rebarbas ou po arredor
+f.hole_out_of_view	fóra da vista
+f.mill_no_channels	non se ven canles
+f.mill_too_narrow	canles demasiado estreitas
+f.mill_too_wide	canles demasiado anchas
+f.mill_pinched	unha canle estréitase: risco de curtocircuíto
+f.mill_uneven	canles irregulares
+f.image_too_dark	imaxe demasiado escura: máis luz
+f.image_too_bright	imaxe demasiado brillante: menos luz
+f.image_low_contrast	imaxe sen contraste
+f.image_blurry	imaxe desenfocada
+f.not_calibrated	primeiro configura a escala
+f.nothing_to_check	non hai ningunha verificación activada
+f.no_expected_holes	ningún furado do traballo á vista

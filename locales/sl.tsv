@@ -1,0 +1,72 @@
+# Slovenščina (sl): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Pogled
+ui.Job	Delo
+ui.Machine	Stroj
+ui.Settings	Nastavitve
+ui.Fleet	Stroji in postaje
+ui.Start	Začni
+ui.Pause	Premor
+ui.Stop	Ustavi
+ui.Home	Referenca
+ui.Confirm	Potrdi
+ui.Cancel	Prekliči
+ui.Armed	Pripravljen
+ui.NotArmed	Ni pripravljen
+ui.StopPressed	STOP STROJNE OPREME PRITISNJEN
+ui.AckRelease	Stop sproščen: potrdite
+ui.Language	Jezik
+ui.Voice	Glas
+ui.Brightness	Svetlost
+ui.Volume	Glasnost
+ui.JogX	Ročni pomik X
+ui.JogY	Ročni pomik Y
+ui.JogZ	Ročni pomik Z
+ui.Spindle	Vreteno
+ui.AskMove	Premaknem stroj?
+ui.AskSpindle	Zagnati vreteno?
+ui.WhyHardwareStop	Stop je pritisnjen ali nepotrjen.
+ui.WhyNotArmed	Stroj ni pripravljen.
+ui.WhyVoiceOff	Glasovni ukazi so v nastavitvah izklopljeni.
+ui.WhyNoStop	Vhod stopa ni priključen.
+ui.WhySpindle	Vreteno je v nastavitvah izklopljeno.
+ui.Feed	Podajanje
+ui.Progress	Napredek
+ui.Tool	Orodje
+ui.Jog	Ročni pomik
+q.Title	Kontrola kakovosti izdelka
+q.Light	Svetlobni obroč
+q.LightOff	Izklj.
+q.CheckNow	Preveri zdaj
+q.Checking	Preverjanje ...
+q.VerdictOk	V REDU
+q.VerdictNotOk	NI V REDU
+q.VerdictUnknown	NI MOGOČE OCENITI
+q.NotChecked	Še ni preverjeno
+q.HoleWidth	Luknja v sredini (mm)
+q.HoleNone	brez luknje
+q.Profile	Profil
+q.Standard	Standardno
+q.FinePitch	Fin korak
+q.Prototype	Prototip
+q.Calibrate	Kalibriraj iz te izvrtine
+q.HolesOk	izvrtin v redu
+q.ChannelWidth	širina kanala
+q.NeedServer	Nastavite stroj strežnika v hmi.cfg.
+f.hole_missing	tam ni izvrtine
+f.hole_wrong_size	napačna velikost
+f.hole_off_centre	izven središča
+f.hole_not_round	ni okrogla
+f.hole_debris	srha ali prah okoli
+f.hole_out_of_view	izven pogleda
+f.mill_no_channels	kanalov ni videti
+f.mill_too_narrow	kanali preozki
+f.mill_too_wide	kanali preširoki
+f.mill_pinched	kanal se zoži: nevarnost kratkega stika
+f.mill_uneven	kanali neenakomerni
+f.image_too_dark	slika preveč temna: več luči
+f.image_too_bright	slika preveč svetla: manj luči
+f.image_low_contrast	slika brez kontrasta
+f.image_blurry	slika ni ostra
+f.not_calibrated	najprej nastavite merilo
+f.nothing_to_check	nobeno preverjanje ni vklopljeno
+f.no_expected_holes	v pogledu ni izvrtine opravila

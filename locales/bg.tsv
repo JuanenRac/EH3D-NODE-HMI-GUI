@@ -1,0 +1,72 @@
+# Български (bg): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Преглед
+ui.Job	Задача
+ui.Machine	Машинна
+ui.Settings	Настройки
+ui.Fleet	Машини и станции
+ui.Start	Старт
+ui.Pause	Пауза
+ui.Stop	Стоп
+ui.Home	Home
+ui.Confirm	Потвърди
+ui.Cancel	Отказ
+ui.Armed	Готова
+ui.NotArmed	Не е готова
+ui.StopPressed	АВАРИЙНИЯТ СТОП Е НАТИСНАТ
+ui.AckRelease	Стопът е освободен: потвърдете
+ui.Language	Език
+ui.Voice	Глас
+ui.Brightness	Яркост
+ui.Volume	Сила на звука
+ui.JogX	Ръчно движение X
+ui.JogY	Ръчно движение Y
+ui.JogZ	Ръчно движение Z
+ui.Spindle	Шпиндел
+ui.AskMove	Да преместя ли машината?
+ui.AskSpindle	Да стартирам ли шпиндела?
+ui.WhyHardwareStop	Хардуерният стоп е натиснат или непотвърден.
+ui.WhyNotArmed	Машината не е готова.
+ui.WhyVoiceOff	Гласовите команди са изключени в настройките.
+ui.WhyNoStop	Входът на хардуерния стоп не е свързан.
+ui.WhySpindle	Шпинделът е изключен в настройките.
+ui.Feed	Подаване
+ui.Progress	Напредък
+ui.Tool	Инструмент
+ui.Jog	Ръчно движение
+q.Title	Проверка на качеството на работата
+q.Light	Светлинен пръстен
+q.LightOff	Изкл.
+q.CheckNow	Провери сега
+q.Checking	Проверка...
+q.VerdictOk	ДОБРЕ
+q.VerdictNotOk	НЕДОБРЕ
+q.VerdictUnknown	НЕ МОЖЕ ДА СЕ ПРЕЦЕНИ
+q.NotChecked	Още не е проверено
+q.HoleWidth	Отвор в центъра (mm)
+q.HoleNone	няма отвор
+q.Profile	Профил
+q.Standard	Стандартен
+q.FinePitch	Фина стъпка
+q.Prototype	Прототип
+q.Calibrate	Калибрирай по този отвор
+q.HolesOk	отвора в ред
+q.ChannelWidth	ширина на канала
+q.NeedServer	Задайте машината на сървъра в hmi.cfg.
+f.hole_missing	там няма отвор
+f.hole_wrong_size	грешен размер
+f.hole_off_centre	извън центъра
+f.hole_not_round	не е кръгъл
+f.hole_debris	грапавини или прах наоколо
+f.hole_out_of_view	извън кадър
+f.mill_no_channels	не се виждат канали
+f.mill_too_narrow	каналите са твърде тесни
+f.mill_too_wide	каналите са твърде широки
+f.mill_pinched	канал се стеснява: риск от късо съединение
+f.mill_uneven	каналите са неравномерни
+f.image_too_dark	снимката е твърде тъмна: повече светлина
+f.image_too_bright	снимката е твърде светла: по-малко светлина
+f.image_low_contrast	снимка без контраст
+f.image_blurry	снимката е извън фокус
+f.not_calibrated	първо задайте мащаба
+f.nothing_to_check	няма включена проверка
+f.no_expected_holes	няма отвор от задачата в кадър

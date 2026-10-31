@@ -1,0 +1,72 @@
+# Nederlands (nl): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Weergave
+ui.Job	Taak
+ui.Machine	Machine
+ui.Settings	Instellingen
+ui.Fleet	Machines en stations
+ui.Start	Starten
+ui.Pause	Pauze
+ui.Stop	Stoppen
+ui.Home	Home
+ui.Confirm	Bevestigen
+ui.Cancel	Annuleren
+ui.Armed	Gereed
+ui.NotArmed	Niet gereed
+ui.StopPressed	HARDWARE-STOP INGEDRUKT
+ui.AckRelease	Stop losgelaten: bevestigen
+ui.Language	Taal
+ui.Voice	Stem
+ui.Brightness	Helderheid
+ui.Volume	Volume
+ui.JogX	Handbediening X
+ui.JogY	Handbediening Y
+ui.JogZ	Handbediening Z
+ui.Spindle	Spindel
+ui.AskMove	Machine verplaatsen?
+ui.AskSpindle	Spindel starten?
+ui.WhyHardwareStop	De hardware-stop is ingedrukt of niet bevestigd.
+ui.WhyNotArmed	De machine is niet gereed.
+ui.WhyVoiceOff	Spraakopdrachten staan uit in de instellingen.
+ui.WhyNoStop	De ingang van de hardware-stop is niet aangesloten.
+ui.WhySpindle	De spindel is uitgeschakeld in de instellingen.
+ui.Feed	Voeding
+ui.Progress	Voortgang
+ui.Tool	Gereedschap
+ui.Jog	Handbediening
+q.Title	Kwaliteitscontrole van het werk
+q.Light	Lichtring
+q.LightOff	Uit
+q.CheckNow	Nu controleren
+q.Checking	Controleren...
+q.VerdictOk	GOEDGEKEURD
+q.VerdictNotOk	AFGEKEURD
+q.VerdictUnknown	NIET TE BEOORDELEN
+q.NotChecked	Nog niet gecontroleerd
+q.HoleWidth	Gat in het midden (mm)
+q.HoleNone	geen gat
+q.Profile	Profiel
+q.Standard	Standaard
+q.FinePitch	Fijne steek
+q.Prototype	Prototype
+q.Calibrate	Kalibreren met dit gat
+q.HolesOk	gaten in orde
+q.ChannelWidth	kanaalbreedte
+q.NeedServer	Stel de machine van de server in via hmi.cfg.
+f.hole_missing	geen gat aanwezig
+f.hole_wrong_size	verkeerde maat
+f.hole_off_centre	niet gecentreerd
+f.hole_not_round	niet rond
+f.hole_debris	bramen of stof eromheen
+f.hole_out_of_view	buiten beeld
+f.mill_no_channels	geen kanalen zichtbaar
+f.mill_too_narrow	kanalen te smal
+f.mill_too_wide	kanalen te breed
+f.mill_pinched	een kanaal vernauwt: kans op kortsluiting
+f.mill_uneven	kanalen ongelijk
+f.image_too_dark	foto te donker: meer licht
+f.image_too_bright	foto te helder: minder licht
+f.image_low_contrast	foto zonder contrast
+f.image_blurry	foto onscherp
+f.not_calibrated	stel eerst de schaal in
+f.nothing_to_check	er is geen controle ingeschakeld
+f.no_expected_holes	geen gat van de opdracht in beeld

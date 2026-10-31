@@ -30,7 +30,7 @@ struct Settings {
     std::string token;                      // write-only: never shown, never logged
     std::uint32_t poll_s = 3;               // how often the screen asks the server for the fleet, 1..60
 
-    // the kind of machine: what the screen may order on it (a CNC machine has a spindle, a laser and a pick and place machine do not)
+    // the kind of machine: what the screen may order on it (a CNC machine has a spindle and the camera of the drill head, a laser and a pick and place machine do not)
     MachineKind machine = MachineKind::Cnc;
 
     // the safety switches; every default is the conservative one
@@ -49,6 +49,8 @@ struct Settings {
     std::uint16_t mic_gain_percent = 50;    // 0..100
     NoticeSetting sound_finish;             // the notice when a job ends: off, the tone or a recorded voice (voice:es:f)
     NoticeSetting sound_tool_change;        // the notice when the machine asks for a tool
+    NoticeSetting sound_check_ok;           // CNC only: the notice when the visual check of the board (the camera of the drill head) is correct
+    NoticeSetting sound_check_bad;          // and when it is not correct
 };
 
 struct Problem {
@@ -120,7 +122,7 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
         };
         if (key == "language") {
             Lang l;
-            if (lang_from_code(val, l)) s.language = l; else bad("not one of en, es, it, de, fr, pt, zh, ja");
+            if (lang_from_code(val, l)) s.language = l; else bad("not one of the language codes of the screen (en, es, it, de, fr, pt, zh, ja, pl, ru, ...)");
         } else if (key == "theme") {
             s.theme = val;
         } else if (key == "orientation") {
@@ -167,6 +169,10 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (!parse_notice(val, s.sound_finish)) bad("not off, default or voice:LANG:f|m");
         } else if (key == "sound_tool_change") {
             if (!parse_notice(val, s.sound_tool_change)) bad("not off, default or voice:LANG:f|m");
+        } else if (key == "sound_check_ok") {
+            if (!parse_notice(val, s.sound_check_ok)) bad("not off, default or voice:LANG:f|m");
+        } else if (key == "sound_check_bad") {
+            if (!parse_notice(val, s.sound_check_bad)) bad("not off, default or voice:LANG:f|m");
         } else if (key == "mic_gain_percent") {
             if (num(0, 100)) s.mic_gain_percent = static_cast<std::uint16_t>(n);
         } else {

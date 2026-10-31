@@ -56,6 +56,12 @@ static void settings_file() {
     p.clear();
     Settings w = parse_settings("language = de\r\nvolume_percent = 10", p);
     CHECK(p.empty() && w.language == Lang::De && w.volume_percent == 10);
+    Settings pl = parse_settings("language = pl\nvolume_percent = 20", p);
+    CHECK(p.empty() && pl.language == Lang::Pl);
+    Settings br = parse_settings("language = pt-br", p);
+    CHECK(p.empty() && br.language == Lang::PtBr);
+    parse_settings("language = PL", p);
+    CHECK(!p.empty());  // the codes are lower case
     for (unsigned i = 0; i < kLangCount; ++i) {
         Lang l;
         CHECK(lang_from_code(lang_code(static_cast<Lang>(i)), l) && l == static_cast<Lang>(i));
@@ -216,9 +222,9 @@ static void voice_orders() {
 static void texts_are_complete() {
     // every phrase and every alert has a text in every language, and none of the languages repeats English for the scripts without spaces
     for (const auto& p : detail::phrases())
-        for (std::size_t i = 0; i < kLangCount; ++i) CHECK(p.words[i] != nullptr && std::strlen(p.words[i]) > 0);
+        for (std::size_t i = 0; i < kBaseLangCount; ++i) CHECK(p.words[i] != nullptr && std::strlen(p.words[i]) > 0);
     for (int a = 0; a <= static_cast<int>(Alert::Armed); ++a) {
-        for (std::size_t i = 0; i < kLangCount; ++i) {
+        for (std::size_t i = 0; i < kBaseLangCount; ++i) {  // the spoken alerts and orders exist in the eight languages; the others say them in English
             const char* t = alert_text(static_cast<Alert>(a), static_cast<Lang>(i));
             CHECK(t != nullptr && std::strlen(t) > 3);
             if (i >= 6) CHECK(static_cast<unsigned char>(t[0]) >= 0xE3);  // Chinese and Japanese are not English
@@ -230,7 +236,7 @@ static void texts_are_complete() {
 static void screen_texts() {
     // every text exists in the eight languages, the scripts without spaces are not English, and every refusal has its sentence
     for (unsigned t = 0; t < static_cast<unsigned>(T::Count); ++t) {
-        for (std::size_t i = 0; i < kLangCount; ++i) {
+        for (std::size_t i = 0; i < kBaseLangCount; ++i) {  // the other twenty-nine languages are checked in test_locales.cpp
             const char* s = text(static_cast<T>(t), static_cast<Lang>(i));
             CHECK(s != nullptr && std::strlen(s) > 0);
             if (i >= 6) CHECK(static_cast<unsigned char>(s[0]) >= 0xE3 || (s[0] >= 'A' && s[0] <= 'Z'));

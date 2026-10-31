@@ -1,7 +1,7 @@
 // EH3D-NODE-HMI-GUI - core/machine.hpp
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 // The kind of machine the screen controls. The same screen serves a CNC machine, a laser and a pick and place machine; what changes is what the screen is
-// allowed to order. Today that is one thing: a spindle. The screen never fires a laser and never starts the vacuum or the nozzles of a pick and place head
+// allowed to order. Today that is a spindle and the visual check of the board. The screen never fires a laser and never starts the vacuum or the nozzles of a pick and place head
 // by itself; those are left to the controller of the machine until a safer way to ask for them is designed and tested.
 #pragma once
 
@@ -14,12 +14,15 @@ enum class MachineKind { Cnc, Laser, PickAndPlace };
 struct Controls {
     /// The screen may ask the machine to turn a spindle.
     bool spindle = false;
+    /// The screen has the page of the visual check of the board (the camera of the drill head) and says its notices. Only a drilling machine has that camera.
+    bool quality_check = false;
 };
 
 /// What the screen may order on a machine of this kind.
 inline Controls controls_for(MachineKind k) {
     Controls c;
     c.spindle = (k == MachineKind::Cnc);
+    c.quality_check = (k == MachineKind::Cnc);
     return c;
 }
 

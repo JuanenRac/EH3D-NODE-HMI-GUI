@@ -1,6 +1,6 @@
 // EH3D-NODE-HMI-GUI - core/ui_text.hpp
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
-// The texts of the screens in the eight languages (the order of lang.hpp: en, es, it, de, fr, pt, zh, ja). The screens of the touch
+// The texts of the screens in the eight languages of the tables (the order of lang.hpp: en, es, it, de, fr, pt, zh, ja) and, through locales.hpp, in the other twenty-nine. The screens of the touch
 // display are the ones of the desktop program: the viewer, the job, the machine, the settings and the machines and stations.
 #pragma once
 
@@ -9,6 +9,7 @@
 
 #include "gate.hpp"
 #include "lang.hpp"
+#include "locales.hpp"
 
 namespace hmi {
 
@@ -65,7 +66,9 @@ inline const Row& text_row(T t) {
     return rows[static_cast<std::size_t>(t)];
 }
 
-inline const char* text(T t, Lang l) { return pick(text_row(t), l); }
+static_assert(static_cast<std::size_t>(T::Count) == kUiKeyCount, "the keys of locales.hpp follow the enum T");
+
+inline const char* text(T t, Lang l) { return translated(l, static_cast<std::size_t>(t), text_row(t)); }
 
 /// The sentence that says why the gate refused.
 inline const char* why_text(Why w, Lang l) {

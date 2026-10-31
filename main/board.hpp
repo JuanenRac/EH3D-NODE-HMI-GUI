@@ -19,6 +19,10 @@ void lvgl_unlock();
 void set_brightness(unsigned percent);
 /// Starts the codec, the speaker and the microphone; false when the codec does not answer.
 bool audio_start();
+/// Plays 16-bit mono samples through the speaker and waits until they have been played (call it from a task of its own, never from the one of the screen).
+void play(const std::int16_t* samples, std::size_t count, unsigned rate);
+/// Reads a file whole by its full path (the recordings of the voices); false when it is not there or is bigger than `max_bytes`.
+bool read_file(const std::string& path, std::string& out, std::size_t max_bytes);
 /// Reads the hardware stop input: `wired` is false when no pin is set.
 void read_hardware_stop(bool& wired, bool& pressed);
 /// Turns the picture to the layout: 0 (standing up) or 90 degrees (lying down).

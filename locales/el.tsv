@@ -1,0 +1,72 @@
+# Ελληνικά (el): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Προβολή
+ui.Job	Εργασία
+ui.Machine	Μηχανή
+ui.Settings	Ρυθμίσεις
+ui.Fleet	Μηχανές και σταθμοί
+ui.Start	Έναρξη
+ui.Pause	Παύση
+ui.Stop	Διακοπή
+ui.Home	Home
+ui.Confirm	Επιβεβαίωση
+ui.Cancel	Ακύρωση
+ui.Armed	Έτοιμο
+ui.NotArmed	Μη έτοιμο
+ui.StopPressed	ΠΑΤΗΜΕΝΟ ΤΟ STOP ΥΛΙΚΟΥ
+ui.AckRelease	Το stop απελευθερώθηκε: επιβεβαιώστε
+ui.Language	Γλώσσα
+ui.Voice	Φωνή
+ui.Brightness	Φωτεινότητα
+ui.Volume	Ένταση
+ui.JogX	Χειροκίνηση X
+ui.JogY	Χειροκίνηση Y
+ui.JogZ	Χειροκίνηση Z
+ui.Spindle	Άξονας
+ui.AskMove	Μετακίνηση του μηχανήματος;
+ui.AskSpindle	Να ξεκινήσει ο άξονας;
+ui.WhyHardwareStop	Το stop υλικού είναι πατημένο ή δεν έχει επιβεβαιωθεί.
+ui.WhyNotArmed	Το μηχάνημα δεν είναι έτοιμο.
+ui.WhyVoiceOff	Οι φωνητικές εντολές είναι απενεργοποιημένες στις ρυθμίσεις.
+ui.WhyNoStop	Η είσοδος του stop υλικού δεν είναι συνδεδεμένη.
+ui.WhySpindle	Ο άξονας είναι απενεργοποιημένος στις ρυθμίσεις.
+ui.Feed	Τροφοδοσία
+ui.Progress	Πρόοδος
+ui.Tool	Εργαλείο
+ui.Jog	Χειροκίνηση
+q.Title	Έλεγχος ποιότητας της εργασίας
+q.Light	Δακτύλιος φωτός
+q.LightOff	Κλειστό
+q.CheckNow	Έλεγχος τώρα
+q.Checking	Έλεγχος...
+q.VerdictOk	ΕΠΙΤΥΧΙΑ
+q.VerdictNotOk	ΑΠΟΤΥΧΙΑ
+q.VerdictUnknown	ΑΔΥΝΑΤΗ ΚΡΙΣΗ
+q.NotChecked	Δεν έχει ελεγχθεί ακόμη
+q.HoleWidth	Οπή στο κέντρο (mm)
+q.HoleNone	χωρίς οπή
+q.Profile	Προφίλ
+q.Standard	Τυπικό
+q.FinePitch	Λεπτό βήμα
+q.Prototype	Πρωτότυπο
+q.Calibrate	Βαθμονόμηση από αυτή την τρύπα
+q.HolesOk	τρύπες εντάξει
+q.ChannelWidth	πλάτος καναλιού
+q.NeedServer	Ορίστε το μηχάνημα του διακομιστή στο hmi.cfg.
+f.hole_missing	δεν υπάρχει τρύπα
+f.hole_wrong_size	λάθος μέγεθος
+f.hole_off_centre	εκτός κέντρου
+f.hole_not_round	όχι στρογγυλή
+f.hole_debris	γρέζια ή σκόνη γύρω
+f.hole_out_of_view	εκτός εικόνας
+f.mill_no_channels	δεν φαίνονται κανάλια
+f.mill_too_narrow	κανάλια πολύ στενά
+f.mill_too_wide	κανάλια πολύ πλατιά
+f.mill_pinched	ένα κανάλι στενεύει: κίνδυνος βραχυκυκλώματος
+f.mill_uneven	κανάλια ανώμαλα
+f.image_too_dark	φωτογραφία πολύ σκούρα: περισσότερο φως
+f.image_too_bright	φωτογραφία πολύ φωτεινή: λιγότερο φως
+f.image_low_contrast	φωτογραφία χωρίς αντίθεση
+f.image_blurry	φωτογραφία εκτός εστίασης
+f.not_calibrated	ορίστε πρώτα την κλίμακα
+f.nothing_to_check	κανένας έλεγχος δεν είναι ενεργός
+f.no_expected_holes	καμία τρύπα της εργασίας στην εικόνα

@@ -105,6 +105,20 @@
         },
         {
           "desc": {
+            "en": "the quality check and the ring of LEDs",
+            "es": "la verificación de calidad y el aro de LEDs",
+            "it": "il controllo qualità e l'anello di LED",
+            "de": "die Qualitätsprüfung und der LED-Ring",
+            "fr": "le contrôle qualité et l'anneau de LED",
+            "pt": "a verificação de qualidade e o anel de LEDs",
+            "zh": "质量检查和 LED 环形灯",
+            "ja": "品質チェックと LED リング"
+          },
+          "name": "quality.hpp",
+          "tree_name": "quality.hpp"
+        },
+        {
+          "desc": {
             "en": "texts, keyboards and notices",
             "es": "textos, teclados y avisos",
             "it": "testi, tastiere e avvisi",
@@ -116,6 +130,34 @@
           },
           "name": "ui_text.hpp  keyboard.hpp  notices.hpp",
           "tree_name": "ui_text.hpp keyboard.hpp notices.hpp"
+        },
+        {
+          "name": "locales.hpp  locales_gen.hpp  font_ranges.hpp",
+          "tree_name": "locales.hpp locales_gen.hpp font_ranges.hpp",
+          "desc": {
+            "en": "37 languages and the font ranges",
+            "es": "37 idiomas y rangos de fuente",
+            "it": "37 lingue e intervalli dei font",
+            "de": "37 Sprachen, Schriftbereiche",
+            "fr": "37 langues et plages de polices",
+            "pt": "37 idiomas e intervalos de letra",
+            "zh": "37 种语言与字体范围",
+            "ja": "37 言語とフォント範囲"
+          }
+        },
+        {
+          "desc": {
+            "en": "the recordings and the beeps of the notices",
+            "es": "las grabaciones y los pitidos de los avisos",
+            "it": "le registrazioni e i segnali acustici degli avvisi",
+            "de": "die Aufnahmen und die Pieptöne der Hinweise",
+            "fr": "les enregistrements et les bips des avis",
+            "pt": "as gravações e os apitos dos avisos",
+            "zh": "提示的录音和提示音",
+            "ja": "通知の録音とビープ音"
+          },
+          "name": "wav.hpp",
+          "tree_name": "wav.hpp"
         }
       ],
       "sub": {
@@ -160,6 +202,19 @@
           },
           "name": "ui.cpp  ui.hpp",
           "tree_name": "ui.cpp ui.hpp"
+        },
+        {
+          "name": "fonts/",
+          "desc": {
+            "en": "the fonts: Latin to Japanese",
+            "es": "las fuentes: del latín al japonés",
+            "it": "i font: dal latino al giapponese",
+            "de": "die Schriften: Latein bis Japanisch",
+            "fr": "les polices : du latin au japonais",
+            "pt": "os tipos: do latim ao japonês",
+            "zh": "字体：拉丁到日文",
+            "ja": "フォント：ラテンから日本語"
+          }
         },
         {
           "desc": {
@@ -249,6 +304,34 @@
           "tree_name": "test_keyboard.cpp test_notices.cpp"
         },
         {
+          "desc": {
+            "en": "the quality check",
+            "es": "la verificación de calidad",
+            "it": "il controllo qualità",
+            "de": "die Qualitätsprüfung",
+            "fr": "le contrôle qualité",
+            "pt": "a verificação de qualidade",
+            "zh": "质量检查",
+            "ja": "品質チェック"
+          },
+          "name": "test_quality.cpp",
+          "tree_name": "test_quality.cpp"
+        },
+        {
+          "name": "test_locales.cpp",
+          "tree_name": "test_locales.cpp",
+          "desc": {
+            "en": "the 37 languages and the fonts",
+            "es": "los 37 idiomas y las fuentes",
+            "it": "le 37 lingue e i font",
+            "de": "die 37 Sprachen und die Schriften",
+            "fr": "les 37 langues et les polices",
+            "pt": "os 37 idiomas e os tipos de letra",
+            "zh": "37 种语言与字体",
+            "ja": "37 言語とフォント"
+          }
+        },
+        {
           "name": "test_machine.cpp",
           "desc": {
             "en": "tests of the kind of machine",
@@ -288,6 +371,19 @@
       "accent": "a",
       "kind": "group",
       "rows": [
+        {
+          "name": "locales/",
+          "desc": {
+            "en": "the texts of the 29 other languages, one file each",
+            "es": "los textos de los otros 29 idiomas, un fichero cada uno",
+            "it": "i testi delle altre 29 lingue, un file ciascuna",
+            "de": "die Texte der übrigen 29 Sprachen, je eine Datei",
+            "fr": "les textes des 29 autres langues, un fichier chacune",
+            "pt": "os textos das outras 29 línguas, um ficheiro cada",
+            "zh": "其余 29 种语言的文本，每种一个文件",
+            "ja": "残り 29 言語の文言（1 言語につき 1 ファイル）"
+          }
+        },
         {
           "desc": {
             "en": "the hardware notes and the two pictures' sources",

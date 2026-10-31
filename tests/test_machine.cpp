@@ -39,6 +39,10 @@ static void only_a_cnc_machine_has_a_spindle() {
     CHECK(controls_for(MachineKind::Cnc).spindle);
     CHECK(!controls_for(MachineKind::Laser).spindle);
     CHECK(!controls_for(MachineKind::PickAndPlace).spindle);
+    // the page and the notices of the visual check of the board belong to the CNC machine only
+    CHECK(controls_for(MachineKind::Cnc).quality_check);
+    CHECK(!controls_for(MachineKind::Laser).quality_check);
+    CHECK(!controls_for(MachineKind::PickAndPlace).quality_check);
 }
 
 static void the_settings_file_takes_the_kind() {

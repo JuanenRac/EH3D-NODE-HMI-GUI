@@ -26,7 +26,39 @@ void set_brightness(unsigned percent) {
     bsp_display_brightness_set(static_cast<int>(percent));
 }
 
-bool audio_start() { return bsp_audio_codec_speaker_init() != nullptr && bsp_audio_codec_microphone_init() != nullptr; }
+static esp_codec_dev_handle_t g_speaker = nullptr;
+
+bool audio_start() {
+    g_speaker = bsp_audio_codec_speaker_init();
+    return g_speaker != nullptr && bsp_audio_codec_microphone_init() != nullptr;
+}
+
+void play(const std::int16_t* samples, std::size_t count, unsigned rate) {
+    if (g_speaker == nullptr || samples == nullptr || count == 0) return;
+    esp_codec_dev_sample_info_t format = {};
+    format.bits_per_sample = 16;
+    format.channel = 1;
+    format.sample_rate = rate;
+    if (esp_codec_dev_open(g_speaker, &format) != ESP_CODEC_DEV_OK) return;
+    esp_codec_dev_set_out_vol(g_speaker, 100);  // the level of the notice is in the samples (volume_percent of the settings)
+    esp_codec_dev_write(g_speaker, const_cast<std::int16_t*>(samples), static_cast<int>(count * sizeof(std::int16_t)));
+    esp_codec_dev_close(g_speaker);
+}
+
+bool read_file(const std::string& path, std::string& out, std::size_t max_bytes) {
+    FILE* f = std::fopen(path.c_str(), "rb");
+    if (f == nullptr) return false;
+    out.clear();
+    char buf[1024];
+    std::size_t n;
+    bool ok = true;
+    while ((n = std::fread(buf, 1, sizeof buf, f)) > 0) {
+        if (out.size() + n > max_bytes) { ok = false; break; }
+        out.append(buf, n);
+    }
+    std::fclose(f);
+    return ok;
+}
 
 void read_hardware_stop(bool& wired, bool& pressed) {
     static bool configured = false;

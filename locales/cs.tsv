@@ -1,0 +1,72 @@
+# Čeština (cs): Key<TAB>text, one per line; a text that is missing is shown in English (in Portuguese / French for the two variants).
+ui.Viewer	Prohlížeč
+ui.Job	Úloha
+ui.Machine	Strojní
+ui.Settings	Nastavení
+ui.Fleet	Stroje a stanice
+ui.Start	Start
+ui.Pause	Pauza
+ui.Stop	Stop
+ui.Home	Home
+ui.Confirm	Potvrdit
+ui.Cancel	Zrušit
+ui.Armed	Připraven
+ui.NotArmed	Nepřipraven
+ui.StopPressed	HARDWAROVÝ STOP STISKNUT
+ui.AckRelease	Stop uvolněn: potvrďte
+ui.Language	Jazyk
+ui.Voice	Hlas
+ui.Brightness	Jas
+ui.Volume	Hlasitost
+ui.JogX	Ruční pojezd X
+ui.JogY	Ruční pojezd Y
+ui.JogZ	Ruční pojezd Z
+ui.Spindle	Vřeteno
+ui.AskMove	Posunout stroj?
+ui.AskSpindle	Spustit vřeteno?
+ui.WhyHardwareStop	Hardwarový stop je stisknut nebo nepotvrzen.
+ui.WhyNotArmed	Stroj není připraven.
+ui.WhyVoiceOff	Hlasové příkazy jsou v nastavení vypnuty.
+ui.WhyNoStop	Vstup hardwarového stopu není zapojen.
+ui.WhySpindle	Vřeteno je v nastavení vypnuto.
+ui.Feed	Posuv
+ui.Progress	Průběh
+ui.Tool	Nástroj
+ui.Jog	Ruční pojezd
+q.Title	Kontrola kvality práce
+q.Light	Světelný kruh
+q.LightOff	Vyp.
+q.CheckNow	Zkontrolovat
+q.Checking	Kontroluji...
+q.VerdictOk	V POŘÁDKU
+q.VerdictNotOk	VADNÉ
+q.VerdictUnknown	NELZE POSOUDIT
+q.NotChecked	Dosud nezkontrolováno
+q.HoleWidth	Díra uprostřed (mm)
+q.HoleNone	žádná díra
+q.Profile	Profil
+q.Standard	Standardní
+q.FinePitch	Jemná rozteč
+q.Prototype	Prototyp
+q.Calibrate	Kalibrovat podle tohoto otvoru
+q.HolesOk	otvorů v pořádku
+q.ChannelWidth	šířka kanálu
+q.NeedServer	Nastavte stroj serveru v hmi.cfg.
+f.hole_missing	otvor tam není
+f.hole_wrong_size	špatná velikost
+f.hole_off_centre	mimo střed
+f.hole_not_round	není kulatý
+f.hole_debris	otřepy nebo prach kolem
+f.hole_out_of_view	mimo záběr
+f.mill_no_channels	nejsou vidět žádné kanály
+f.mill_too_narrow	kanály příliš úzké
+f.mill_too_wide	kanály příliš široké
+f.mill_pinched	kanál se zužuje: hrozí zkrat
+f.mill_uneven	kanály nerovnoměrné
+f.image_too_dark	snímek příliš tmavý: více světla
+f.image_too_bright	snímek příliš světlý: méně světla
+f.image_low_contrast	snímek bez kontrastu
+f.image_blurry	snímek je rozostřený
+f.not_calibrated	nejdřív nastavte měřítko
+f.nothing_to_check	není zapnuta žádná kontrola
+f.no_expected_holes	v záběru není žádný otvor úlohy

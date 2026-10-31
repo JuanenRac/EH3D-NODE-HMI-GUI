@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.3] - Tools of the file, spindle limit of the server, resume and the job in two programs
+
 - **The gate keeps to the spindle:** a spindle order carries the turns it asks for (the new setting `spindle_rpm`, 12000 by default, is what the spindle button asks), and the gate never lets it ask for more than the lower of `spindle_max_rpm` and the top speed of the spindle the machine carries, as the server says it. With the new setting `spindle_over = clip` (the default) an order for more is cut to that speed and the screen says so; with `refuse` it is refused with a reason. The confirmation of the spindle shows the turns it will really get, a move is never cut and a stop is never held back. A laser or a pick and place machine still has no spindle: its order is refused and its screen has neither the button nor the choice.
 - **The tools of the file, and the spindle of the machine:** the job page reads the drilling or routing file that is chosen, shows its tools and how many holes or cuts each has, and a tap on a tool switches it off for the job (`skip_tools`); the page also shows the spindle the machine carries, as the server says it. This is the same code as EH3D-NODE-BUNGARD-HMI.
 - **A stopped job goes on:** when a job leaves the machine the screen asks the server how it ended; a job that was cancelled or failed is shown as stopped with the holes (cuts) it did, and a button sends the same file again with `skip` set to those already done, so only the rest is drilled or routed. The tools switched off stay off and the start goes through the gate like any other.

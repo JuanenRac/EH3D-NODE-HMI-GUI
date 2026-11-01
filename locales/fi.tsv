@@ -79,3 +79,5 @@ ui.Stopped	Pysäytetty
 ui.Next	Seuraava
 ui.ResumedFrom	Jatkettu työstä
 ui.ToolChanged	Työkalu vaihdettu
+ui.BoardTooBig	Piirilevy ei mahdu pöydälle
+ui.Failed	Epäonnistui

@@ -54,10 +54,12 @@ void show_fleet(const hmi::FleetView& fleet, const hmi::Settings& settings);
 /// Shows the quality check: the verdict of the last one, the ring of LEDs, and whether a check is running now.
 void show_quality(const hmi::QualityView& quality, const hmi::LightView& light, bool running, const hmi::Settings& settings);
 /// Shows what the chosen file holds: a chip for each tool (a tap switches it off or on), how many holes or cuts stay in the job, and the spindle of the machine.
-void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, const hmi::Settings& settings);
+/// Under the tools it says when the board does not fit the table (it does not block the job) and what the server noted about the job it made.
+void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, const hmi::JobAdvice& advice, const hmi::Settings& settings);
 /// Where the job is, for the job page: a job stopped part way (and whether it can go on from there), the holes (cuts) already done, and the program that comes next.
 struct FlowState {
     bool stopped = false;
+    bool failed = false;     // the stopped job failed (the server's reason is in `message`) instead of being cancelled
     bool can_resume = false;
     bool held = false;       // the job is held by the operator (pause): the button that lets it go on
     bool tool_wait = false;  // the job waits at a tool change: the button that answers it

@@ -26,6 +26,7 @@ enum class T : unsigned {
     SpindleCut, WhySpindleFast,
     Resume, Stopped, Next,
     ResumedFrom, ToolChanged,
+    BoardTooBig, Failed,
     Count
 };
 
@@ -75,6 +76,8 @@ inline const Row& text_row(T t) {
         {"Next", "Siguiente", "Successivo", "Weiter", "Suivant", "Seguinte", "下一个", "次"},
         {"Resumed from", "Reanudado desde", "Ripreso da", "Fortgesetzt von", "Repris de", "Retomado de", "接续自", "再開元"},
         {"Tool changed", "Herramienta cambiada", "Utensile cambiato", "Werkzeug gewechselt", "Outil changé", "Ferramenta trocada", "已换刀", "工具交換済み"},
+        {"The board does not fit the table", "La placa no cabe en la mesa", "La scheda non entra nel tavolo", "Die Platine passt nicht auf den Tisch", "La carte ne tient pas sur la table", "A placa não cabe na mesa", "电路板放不下工作台", "基板がテーブルに収まりません"},
+        {"Failed", "Fallido", "Fallito", "Fehlgeschlagen", "Échec", "Falhou", "失败", "失敗"},
     }};
     return rows[static_cast<std::size_t>(t)];
 }

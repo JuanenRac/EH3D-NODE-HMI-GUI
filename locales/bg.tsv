@@ -79,3 +79,5 @@ ui.Stopped	Спряно
 ui.Next	Следващо
 ui.ResumedFrom	Продължено от
 ui.ToolChanged	Инструментът е сменен
+ui.BoardTooBig	Платката не се побира на масата
+ui.Failed	Неуспешно

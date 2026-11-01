@@ -35,6 +35,8 @@ struct Settings {
     std::string server_machine;             // the machine of the server this screen controls
     std::string token;                      // write-only: never shown, never logged
     std::uint32_t poll_s = 3;               // how often the screen asks the server for the fleet, 1..60
+    std::uint32_t table_width_mm = 0;       // the table of the machine, for the warning of a board that does not fit: 0 = the one the server says, 0..5000
+    std::uint32_t table_depth_mm = 0;       // (the course of the machine less the offset); both are used only when the server does not say it
 
     // the safety switches; every default is the conservative one
     bool confirm_moves = true;              // a move or a spindle order asks for a confirmation on the screen
@@ -138,6 +140,10 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (machine_kind_from_text(val, k)) s.machine = k; else bad("not cnc, laser or pnp");
         } else if (key == "poll_s") {
             if (num(1, 60)) s.poll_s = n;
+        } else if (key == "table_width_mm") {
+            if (num(0, 5000)) s.table_width_mm = n;
+        } else if (key == "table_depth_mm") {
+            if (num(0, 5000)) s.table_depth_mm = n;
         } else if (key == "brightness_percent") {
             if (num(10, 100)) s.brightness_percent = static_cast<std::uint16_t>(n);
         } else if (key == "idle_dim_s") {

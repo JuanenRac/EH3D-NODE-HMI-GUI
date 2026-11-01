@@ -79,3 +79,5 @@ ui.Stopped	Gestopt
 ui.Next	Volgende
 ui.ResumedFrom	Hervat van
 ui.ToolChanged	Gereedschap gewisseld
+ui.BoardTooBig	De print past niet op de tafel
+ui.Failed	Mislukt

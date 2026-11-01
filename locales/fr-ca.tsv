@@ -3,3 +3,5 @@ ui.Settings	Paramètres
 ui.Home	Retour à l'origine
 ui.WhyVoiceOff	Les ordres vocaux sont désactivés dans les paramètres.
 ui.WhySpindle	La broche est désactivée dans les paramètres.
+ui.BoardTooBig	La carte ne tient pas sur la table
+ui.Failed	Échec

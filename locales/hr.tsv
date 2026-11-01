@@ -79,3 +79,5 @@ ui.Stopped	Zaustavljeno
 ui.Next	Sljedeće
 ui.ResumedFrom	Nastavljeno od
 ui.ToolChanged	Alat zamijenjen
+ui.BoardTooBig	Ploča se ne uklapa na stol
+ui.Failed	Neuspjelo

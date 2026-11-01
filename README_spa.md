@@ -30,7 +30,7 @@
 |---|---|
 | Versión | `0.0.4` |
 | Madurez | Andamiaje |
-| Pruebas | 7 programas de prueba en el ordenador (89807 comprobaciones contadas) |
+| Pruebas | 7 programas de prueba en el ordenador (92118 comprobaciones contadas) |
 | Pila tecnológica | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | En hardware real | No: el firmware no se ha compilado ni grabado y nada se ha conectado a una máquina |
 
@@ -45,7 +45,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Software | 🟠 | El proyecto ESP-IDF (ESP32-P4, LVGL 9, el fichero de ajustes en su propia partición) está escrito; no se ha compilado ni grabado. |
-| Pruebas | 🟢 | Pasan 7 programas de prueba en el ordenador (`ctest`): 89807 comprobaciones del fichero de ajustes, la compuerta, las órdenes y avisos por voz, los teclados, los avisos grabados, el cliente del servidor y los textos de las pantallas en ocho idiomas. |
+| Pruebas | 🟢 | Pasan 7 programas de prueba en el ordenador (`ctest`): 92118 comprobaciones del fichero de ajustes, la compuerta, las órdenes y avisos por voz, los teclados, los avisos grabados, el cliente del servidor y los textos de las pantallas en ocho idiomas. |
 | Reglas de seguridad | 🟡 | Todo movimiento y toda orden de husillo pasan por la compuerta: confirmación en la pantalla, pestillo de la parada por hardware que solo borra un reconocimiento en la pantalla cuando el pulsador está suelto, ningún movimiento con el enlace sin armar. Cubierto por pruebas; nunca probado con un pulsador de parada real. |
 | Voz | 🟡 | Las órdenes y avisos por voz se reconocen y se formulan en ocho idiomas y se prueban como texto; no se ha usado ningún micrófono ni altavoz. |
 | Pantallas | 🟠 | Las pantallas de máquina, trabajo (microSD), máquinas y estaciones y ajustes están escritas, en horizontal y en vertical, con el aspecto del programa de escritorio; la pestaña del visor sigue siendo una tarjeta vacía. Solo existe un dibujo del diseño, no una captura de un módulo. |
@@ -59,6 +59,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 * El **fichero de ajustes** `hmi.cfg`: todo valor afinado (idioma, brillo, el servidor, los interruptores de seguridad, la voz) es una línea de un fichero en su propia partición, nunca un número en el código; un valor fuera de rango se avisa y se queda el valor seguro por defecto.
 * La **voz**: avisos hablados (trabajo terminado, cambio de herramienta, error, enlace perdido, parada por hardware) y una lista corta y fija de órdenes por voz en ocho idiomas; las órdenes que solo detienen se entienden dentro de una frase, las que mueven o giran deben decirse enteras y piden siempre una confirmación.
 * Las **pantallas**: la máquina (movimiento manual, origen, husillo, inicio, parada), el trabajo, el visor, las máquinas y estaciones del servidor y los ajustes, en el orden y con los nombres del programa de escritorio; el botón de parada está siempre arriba.
+* La **placa frente a la mesa** y el **final de un trabajo**: al elegir en la tarjeta un fichero de taladro o de ruta, el tamaño de su caja se compara con la mesa de la máquina (el recorrido que da el servidor menos el desplazamiento, o `table_width_mm` y `table_depth_mm` de `hmi.cfg`); una placa que no cabe ni tumbada ni girada se avisa en la página del trabajo con su tamaño y lo que se pasa, y el trabajo sigue permitido (el servidor rechaza lo que cae fuera de la mesa). Un trabajo cancelado o fallido se muestra como tal con el motivo del servidor, nunca se toma por terminado (no suena el aviso de fin) y se conserva para seguir desde los taladros ya hechos; lo que el servidor anota de un trabajo que pide más de lo que da el husillo se muestra al crearlo.
 * El **módulo**: el Guition JC8012P4A1C (ESP32-P4 con 32 MB de RAM externa, pantalla táctil MIPI-DSI de 10,1 pulgadas y 800x1280, un ESP32-C6 para el Wi-Fi, el códec ES8311 con amplificador de altavoz y la entrada de micrófono ES7210). El panel de la unidad es el nuevo.
 * **En vertical o en horizontal:** el ajuste `orientation` (`auto`, `landscape`, `portrait`) gira la imagen del panel: en horizontal (1280 x 800) el trabajo, la vista en planta y el pad de movimiento van en tres columnas sobre la barra de posición, en vertical (800 x 1280) se apilan; el toque cae donde se toca la pantalla en ambos.
 * **La microSD y el servidor, como un solo flujo:** la tarjeta lista los ficheros de taladrado y fresado; la pantalla envía el fichero elegido a EH3D-SERVER como un trabajo que espera listo, el operador lo inicia por la compuerta, y el progreso, las paradas por cambio de herramienta y el final vuelven desde la flota en tiempo real, igual que en los programas de escritorio y el nodo. La respuesta del servidor para cada trabajo se guarda en la tarjeta.
@@ -176,6 +177,8 @@ Todo lo afinado es una línea de `hmi.cfg` (copia `hmi.cfg.example` a la partici
 | `token` | none | 8 - 64 characters | el token de acceso al servidor; solo escritura, nunca se muestra ni se registra |
 | `orientation` | `auto` | `auto landscape portrait` | en vertical o en horizontal; `auto` sigue cómo está montado el módulo |
 | `poll_s` | 3 | 1 - 60 | cada cuánto pide la pantalla la flota al servidor |
+| `table_width_mm` | 0 | 0 - 5000 | el ancho de la mesa de la máquina para el aviso de una placa que no cabe; 0 = el que dice el servidor (el recorrido menos el desplazamiento) |
+| `table_depth_mm` | 0 | 0 - 5000 | el fondo de la mesa; 0 = el que dice el servidor |
 
 ## 🚀 Inicio rápido
 
@@ -190,7 +193,7 @@ El firmware todavía no se ha compilado: cuando se compile, `idf.py set-target e
 
 ## 🧪 Pruebas
 
-Las pruebas en el ordenador (`build.bat` o `./build.sh`, y luego `ctest`) son dos programas y pasa todo: `test_hmi` (995 comprobaciones) del fichero de ajustes, la compuerta (la parada siempre pasa, pestillo de la parada por hardware, confirmación, tiempo límite y vuelta del reloj, reglas de voz, interruptores), las órdenes y avisos por voz y los textos de pantalla en ocho idiomas; y `test_workflow` (270 comprobaciones) de la orientación y el toque, los ficheros de la tarjeta (tipos, nombres seguros, orden), el lector de JSON, las peticiones y respuestas del servidor y el flujo de un trabajo desde la tarjeta hasta su final. Los otros dos programas cubren los teclados (`test_keyboard`, 231 comprobaciones: cada ajuste tiene su teclado, los rangos del teclado numérico son los del fichero de ajustes, los decimales, el signo, las flechas, el teclado completo de cada idioma, la mayúscula, los símbolos y la longitud) y los avisos grabados (`test_notices`, 266 comprobaciones: el ajuste, el fichero de cada idioma y género). Tres programas más: `test_machine` (55 comprobaciones: los tipos de máquina, la negativa del husillo y la frase en cada idioma), `test_quality` (911 comprobaciones: las peticiones, la lectura del informe, cada hallazgo) y `test_locales` (87079 comprobaciones: cada clave tiene texto en cada uno de los otros 29 idiomas, nada está vacío ni es demasiado largo, la escritura de cada idioma es la correcta, y todo carácter que pueda dibujarse está en el rango de las fuentes generadas).
+Las pruebas en el ordenador (`build.bat` o `./build.sh`, y luego `ctest`) son dos programas y pasa todo: `test_hmi` (1018 comprobaciones) del fichero de ajustes, la compuerta (la parada siempre pasa, pestillo de la parada por hardware, confirmación, tiempo límite y vuelta del reloj, reglas de voz, interruptores), las órdenes y avisos por voz y los textos de pantalla en ocho idiomas; y `test_workflow` (315 comprobaciones) de la orientación y el toque, los ficheros de la tarjeta (tipos, nombres seguros, orden), el lector de JSON, las peticiones y respuestas del servidor y el flujo de un trabajo desde la tarjeta hasta su final. Los otros dos programas cubren los teclados (`test_keyboard`, 231 comprobaciones: cada ajuste tiene su teclado, los rangos del teclado numérico son los del fichero de ajustes, los decimales, el signo, las flechas, el teclado completo de cada idioma, la mayúscula, los símbolos y la longitud) y los avisos grabados (`test_notices`, 266 comprobaciones: el ajuste, el fichero de cada idioma y género). Tres programas más: `test_machine` (55 comprobaciones: los tipos de máquina, la negativa del husillo y la frase en cada idioma), `test_quality` (911 comprobaciones: las peticiones, la lectura del informe, cada hallazgo) y `test_locales` (89322 comprobaciones: cada clave tiene texto en cada uno de los otros 29 idiomas, nada está vacío ni es demasiado largo, la escritura de cada idioma es la correcta, y todo carácter que pueda dibujarse está en el rango de las fuentes generadas).
 
 ## 🏗️ Compilación y publicación
 

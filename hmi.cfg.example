@@ -9,6 +9,8 @@ server_host =              # the EH3D server that moves the machine; empty = not
 server_port = 18200
 server_machine =
 poll_s = 3                 # how often the fleet is read, 1..60 seconds
+table_width_mm = 0         # the table of the machine, for the warning of a board that does not fit (0 = the one the server says: the course of the machine less the offset)
+table_depth_mm = 0         # used only when the server does not say it; 0..5000
 token =                    # write-only, 8..64 characters
 
 # the kind of machine: cnc (it has a spindle and the visual check of the board), laser or pnp (pick and place). The screen never starts a spindle on a laser or on a pick and place machine, and only a CNC machine has the page and the notices of the visual check

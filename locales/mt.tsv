@@ -79,3 +79,5 @@ ui.Stopped	Waqaf
 ui.Next	Li jmiss
 ui.ResumedFrom	Kontinwat minn
 ui.ToolChanged	Għodda mibdula
+ui.BoardTooBig	Il-bord ma jidħolx fuq il-mejda
+ui.Failed	Falla

@@ -79,3 +79,5 @@ ui.Stopped	Geldituta
 ui.Next	Hurrengoa
 ui.ResumedFrom	Hemendik jarraitua
 ui.ToolChanged	Erreminta aldatuta
+ui.BoardTooBig	Plaka ez da mahaian sartzen
+ui.Failed	Huts egin du

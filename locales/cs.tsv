@@ -79,3 +79,5 @@ ui.Stopped	Zastaveno
 ui.Next	Další
 ui.ResumedFrom	Navázáno na
 ui.ToolChanged	Nástroj vyměněn
+ui.BoardTooBig	Deska se nevejde na stůl
+ui.Failed	Selhalo

@@ -79,3 +79,5 @@ ui.Stopped	Зупинено
 ui.Next	Далі
 ui.ResumedFrom	Продовжено після
 ui.ToolChanged	Інструмент замінено
+ui.BoardTooBig	Плата не вміщується на стіл
+ui.Failed	Збій

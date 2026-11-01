@@ -53,6 +53,8 @@ inline const char* const kText_bg[kKeyCount] = {
     "Следващо",  // ui.Next
     "Продължено от",  // ui.ResumedFrom
     "Инструментът е сменен",  // ui.ToolChanged
+    "Платката не се побира на масата",  // ui.BoardTooBig
+    "Неуспешно",  // ui.Failed
     "Проверка на качеството на работата",  // q.Title
     "Светлинен пръстен",  // q.Light
     "Изкл.",  // q.LightOff
@@ -137,6 +139,8 @@ inline const char* const kText_hr[kKeyCount] = {
     "Sljedeće",  // ui.Next
     "Nastavljeno od",  // ui.ResumedFrom
     "Alat zamijenjen",  // ui.ToolChanged
+    "Ploča se ne uklapa na stol",  // ui.BoardTooBig
+    "Neuspjelo",  // ui.Failed
     "Provjera kvalitete rada",  // q.Title
     "Svjetlosni prsten",  // q.Light
     "Isklj.",  // q.LightOff
@@ -221,6 +225,8 @@ inline const char* const kText_cs[kKeyCount] = {
     "Další",  // ui.Next
     "Navázáno na",  // ui.ResumedFrom
     "Nástroj vyměněn",  // ui.ToolChanged
+    "Deska se nevejde na stůl",  // ui.BoardTooBig
+    "Selhalo",  // ui.Failed
     "Kontrola kvality práce",  // q.Title
     "Světelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -305,6 +311,8 @@ inline const char* const kText_da[kKeyCount] = {
     "Næste",  // ui.Next
     "Genoptaget fra",  // ui.ResumedFrom
     "Værktøj skiftet",  // ui.ToolChanged
+    "Printpladen kan ikke være på bordet",  // ui.BoardTooBig
+    "Mislykkedes",  // ui.Failed
     "Kvalitetskontrol af arbejdet",  // q.Title
     "Lysring",  // q.Light
     "Fra",  // q.LightOff
@@ -389,6 +397,8 @@ inline const char* const kText_nl[kKeyCount] = {
     "Volgende",  // ui.Next
     "Hervat van",  // ui.ResumedFrom
     "Gereedschap gewisseld",  // ui.ToolChanged
+    "De print past niet op de tafel",  // ui.BoardTooBig
+    "Mislukt",  // ui.Failed
     "Kwaliteitscontrole van het werk",  // q.Title
     "Lichtring",  // q.Light
     "Uit",  // q.LightOff
@@ -473,6 +483,8 @@ inline const char* const kText_et[kKeyCount] = {
     "Järgmine",  // ui.Next
     "Jätkatud tööst",  // ui.ResumedFrom
     "Tööriist vahetatud",  // ui.ToolChanged
+    "Plaat ei mahu lauale",  // ui.BoardTooBig
+    "Ebaõnnestus",  // ui.Failed
     "Töö kvaliteedikontroll",  // q.Title
     "Valgusrõngas",  // q.Light
     "Väljas",  // q.LightOff
@@ -557,6 +569,8 @@ inline const char* const kText_fi[kKeyCount] = {
     "Seuraava",  // ui.Next
     "Jatkettu työstä",  // ui.ResumedFrom
     "Työkalu vaihdettu",  // ui.ToolChanged
+    "Piirilevy ei mahdu pöydälle",  // ui.BoardTooBig
+    "Epäonnistui",  // ui.Failed
     "Työn laatutarkastus",  // q.Title
     "Valorengas",  // q.Light
     "Pois",  // q.LightOff
@@ -641,6 +655,8 @@ inline const char* const kText_el[kKeyCount] = {
     "Επόμενο",  // ui.Next
     "Συνέχεια από",  // ui.ResumedFrom
     "Το εργαλείο άλλαξε",  // ui.ToolChanged
+    "Η πλακέτα δεν χωράει στο τραπέζι",  // ui.BoardTooBig
+    "Απέτυχε",  // ui.Failed
     "Έλεγχος ποιότητας της εργασίας",  // q.Title
     "Δακτύλιος φωτός",  // q.Light
     "Κλειστό",  // q.LightOff
@@ -725,6 +741,8 @@ inline const char* const kText_hu[kKeyCount] = {
     "Következő",  // ui.Next
     "Folytatva innen",  // ui.ResumedFrom
     "Szerszám cserélve",  // ui.ToolChanged
+    "A panel nem fér rá az asztalra",  // ui.BoardTooBig
+    "Sikertelen",  // ui.Failed
     "A munka minőségellenőrzése",  // q.Title
     "Fénygyűrű",  // q.Light
     "Ki",  // q.LightOff
@@ -809,6 +827,8 @@ inline const char* const kText_ga[kKeyCount] = {
     "An chéad cheann eile",  // ui.Next
     "Atosaithe ó",  // ui.ResumedFrom
     "Uirlis athraithe",  // ui.ToolChanged
+    "Ní fheileann an clár don tábla",  // ui.BoardTooBig
+    "Theip air",  // ui.Failed
     "Seiceáil cáilíochta na hoibre",  // q.Title
     "Fáinne solais",  // q.Light
     "Múchta",  // q.LightOff
@@ -893,6 +913,8 @@ inline const char* const kText_lv[kKeyCount] = {
     "Nākamais",  // ui.Next
     "Turpināts no",  // ui.ResumedFrom
     "Instruments nomainīts",  // ui.ToolChanged
+    "Plate neietilpst galdā",  // ui.BoardTooBig
+    "Neizdevās",  // ui.Failed
     "Darba kvalitātes pārbaude",  // q.Title
     "Gaismas gredzens",  // q.Light
     "Izsl.",  // q.LightOff
@@ -977,6 +999,8 @@ inline const char* const kText_lt[kKeyCount] = {
     "Kitas",  // ui.Next
     "Tęsiama nuo",  // ui.ResumedFrom
     "Įrankis pakeistas",  // ui.ToolChanged
+    "Plokštė netelpa ant stalo",  // ui.BoardTooBig
+    "Nepavyko",  // ui.Failed
     "Darbo kokybės patikra",  // q.Title
     "Šviesos žiedas",  // q.Light
     "Išj.",  // q.LightOff
@@ -1061,6 +1085,8 @@ inline const char* const kText_mt[kKeyCount] = {
     "Li jmiss",  // ui.Next
     "Kontinwat minn",  // ui.ResumedFrom
     "Għodda mibdula",  // ui.ToolChanged
+    "Il-bord ma jidħolx fuq il-mejda",  // ui.BoardTooBig
+    "Falla",  // ui.Failed
     "Verifika tal-kwalità tax-xogħol",  // q.Title
     "Ċirku tad-dawl",  // q.Light
     "Mitfi",  // q.LightOff
@@ -1145,6 +1171,8 @@ inline const char* const kText_pl[kKeyCount] = {
     "Dalej",  // ui.Next
     "Wznowiono z",  // ui.ResumedFrom
     "Narzędzie wymienione",  // ui.ToolChanged
+    "Płytka nie mieści się na stole",  // ui.BoardTooBig
+    "Niepowodzenie",  // ui.Failed
     "Kontrola jakości wykonania",  // q.Title
     "Pierścień świetlny",  // q.Light
     "Wył.",  // q.LightOff
@@ -1229,6 +1257,8 @@ inline const char* const kText_ro[kKeyCount] = {
     "Următorul",  // ui.Next
     "Reluat de la",  // ui.ResumedFrom
     "Sculă schimbată",  // ui.ToolChanged
+    "Placa nu încape pe masă",  // ui.BoardTooBig
+    "Eșuat",  // ui.Failed
     "Verificarea calității lucrării",  // q.Title
     "Inel de lumină",  // q.Light
     "Oprit",  // q.LightOff
@@ -1313,6 +1343,8 @@ inline const char* const kText_sk[kKeyCount] = {
     "Ďalší",  // ui.Next
     "Pokračovanie z",  // ui.ResumedFrom
     "Nástroj vymenený",  // ui.ToolChanged
+    "Doska sa nezmestí na stôl",  // ui.BoardTooBig
+    "Zlyhalo",  // ui.Failed
     "Kontrola kvality práce",  // q.Title
     "Svetelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -1397,6 +1429,8 @@ inline const char* const kText_sl[kKeyCount] = {
     "Naslednji",  // ui.Next
     "Nadaljevano od",  // ui.ResumedFrom
     "Orodje zamenjano",  // ui.ToolChanged
+    "Plošča ne gre na mizo",  // ui.BoardTooBig
+    "Ni uspelo",  // ui.Failed
     "Kontrola kakovosti izdelka",  // q.Title
     "Svetlobni obroč",  // q.Light
     "Izklj.",  // q.LightOff
@@ -1481,6 +1515,8 @@ inline const char* const kText_sv[kKeyCount] = {
     "Nästa",  // ui.Next
     "Återupptaget från",  // ui.ResumedFrom
     "Verktyg bytt",  // ui.ToolChanged
+    "Kretskortet ryms inte på bordet",  // ui.BoardTooBig
+    "Misslyckades",  // ui.Failed
     "Kvalitetskontroll av arbetet",  // q.Title
     "Ljusring",  // q.Light
     "Av",  // q.LightOff
@@ -1565,6 +1601,8 @@ inline const char* const kText_no[kKeyCount] = {
     "Neste",  // ui.Next
     "Gjenopptatt fra",  // ui.ResumedFrom
     "Verktøy byttet",  // ui.ToolChanged
+    "Kretskortet passer ikke på bordet",  // ui.BoardTooBig
+    "Mislyktes",  // ui.Failed
     "Kvalitetskontroll av arbeidet",  // q.Title
     "Lysring",  // q.Light
     "Av",  // q.LightOff
@@ -1649,6 +1687,8 @@ inline const char* const kText_is[kKeyCount] = {
     "Næsta",  // ui.Next
     "Haldið áfram frá",  // ui.ResumedFrom
     "Verkfæri skipt",  // ui.ToolChanged
+    "Platan passar ekki á borðið",  // ui.BoardTooBig
+    "Mistókst",  // ui.Failed
     "Gæðaskoðun verksins",  // q.Title
     "Ljósahringur",  // q.Light
     "Af",  // q.LightOff
@@ -1733,6 +1773,8 @@ inline const char* const kText_uk[kKeyCount] = {
     "Далі",  // ui.Next
     "Продовжено після",  // ui.ResumedFrom
     "Інструмент замінено",  // ui.ToolChanged
+    "Плата не вміщується на стіл",  // ui.BoardTooBig
+    "Збій",  // ui.Failed
     "Контроль якості виконаної роботи",  // q.Title
     "Світлове кільце",  // q.Light
     "Вимк.",  // q.LightOff
@@ -1817,6 +1859,8 @@ inline const char* const kText_ru[kKeyCount] = {
     "Далее",  // ui.Next
     "Продолжено после",  // ui.ResumedFrom
     "Инструмент заменён",  // ui.ToolChanged
+    "Плата не помещается на стол",  // ui.BoardTooBig
+    "Сбой",  // ui.Failed
     "Контроль качества выполненной работы",  // q.Title
     "Световое кольцо",  // q.Light
     "Выкл.",  // q.LightOff
@@ -1901,6 +1945,8 @@ inline const char* const kText_sr[kKeyCount] = {
     "Следеће",  // ui.Next
     "Настављено од",  // ui.ResumedFrom
     "Алат је замењен",  // ui.ToolChanged
+    "Плоча не стаје на сто",  // ui.BoardTooBig
+    "Неуспешно",  // ui.Failed
     "Провера квалитета рада",  // q.Title
     "Светлосни прстен",  // q.Light
     "Искљ.",  // q.LightOff
@@ -1985,6 +2031,8 @@ inline const char* const kText_sq[kKeyCount] = {
     "Tjetri",  // ui.Next
     "Rifilluar nga",  // ui.ResumedFrom
     "Mjeti u ndërrua",  // ui.ToolChanged
+    "Pllaka nuk përshtatet në tavolinë",  // ui.BoardTooBig
+    "Dështoi",  // ui.Failed
     "Kontrolli i cilësisë së punës",  // q.Title
     "Unaza e dritës",  // q.Light
     "Fikur",  // q.LightOff
@@ -2069,6 +2117,8 @@ inline const char* const kText_ca[kKeyCount] = {
     "Següent",  // ui.Next
     "Represa des de",  // ui.ResumedFrom
     "Eina canviada",  // ui.ToolChanged
+    "La placa no cap a la taula",  // ui.BoardTooBig
+    "Fallit",  // ui.Failed
     "Verificació de qualitat de la feina",  // q.Title
     "Aro de llum",  // q.Light
     "Apagat",  // q.LightOff
@@ -2153,6 +2203,8 @@ inline const char* const kText_gl[kKeyCount] = {
     "Seguinte",  // ui.Next
     "Retomado desde",  // ui.ResumedFrom
     "Ferramenta cambiada",  // ui.ToolChanged
+    "A placa non cabe na mesa",  // ui.BoardTooBig
+    "Fallou",  // ui.Failed
     "Verificación de calidade do traballo",  // q.Title
     "Aro de luz",  // q.Light
     "Apagado",  // q.LightOff
@@ -2237,6 +2289,8 @@ inline const char* const kText_eu[kKeyCount] = {
     "Hurrengoa",  // ui.Next
     "Hemendik jarraitua",  // ui.ResumedFrom
     "Erreminta aldatuta",  // ui.ToolChanged
+    "Plaka ez da mahaian sartzen",  // ui.BoardTooBig
+    "Huts egin du",  // ui.Failed
     "Lanaren kalitate-egiaztapena",  // q.Title
     "Argi-eraztuna",  // q.Light
     "Itzalita",  // q.LightOff
@@ -2321,6 +2375,8 @@ inline const char* const kText_pt_br[kKeyCount] = {
     nullptr,  // ui.Next
     nullptr,  // ui.ResumedFrom
     nullptr,  // ui.ToolChanged
+    "A placa não cabe na mesa",  // ui.BoardTooBig
+    "Falhou",  // ui.Failed
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff
@@ -2405,6 +2461,8 @@ inline const char* const kText_fr_ca[kKeyCount] = {
     nullptr,  // ui.Next
     nullptr,  // ui.ResumedFrom
     nullptr,  // ui.ToolChanged
+    "La carte ne tient pas sur la table",  // ui.BoardTooBig
+    "Échec",  // ui.Failed
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff

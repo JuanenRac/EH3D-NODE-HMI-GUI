@@ -79,3 +79,5 @@ ui.Stopped	Oprit
 ui.Next	Următorul
 ui.ResumedFrom	Reluat de la
 ui.ToolChanged	Sculă schimbată
+ui.BoardTooBig	Placa nu încape pe masă
+ui.Failed	Eșuat

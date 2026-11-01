@@ -79,3 +79,5 @@ ui.Stopped	Stoppet
 ui.Next	Næste
 ui.ResumedFrom	Genoptaget fra
 ui.ToolChanged	Værktøj skiftet
+ui.BoardTooBig	Printpladen kan ikke være på bordet
+ui.Failed	Mislykkedes

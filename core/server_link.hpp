@@ -339,6 +339,95 @@ inline int spindle_ceiling(int settings_max_rpm, const SpindleView& s) {
     return settings_max_rpm < s.max_rpm ? settings_max_rpm : s.max_rpm;
 }
 
+/// The machine as the server holds it (`GET /machines/:id`): its configuration file is where the table (the course of the machine) is written.
+inline Request machine_request(const std::string& machine) { return {"GET", "/api/v1/machines/" + machine, ""}; }
+
+/// The table of the machine in mm: the course of the machine less the offset of the work, which is what a board has to fit in (the server refuses a hole outside it with
+/// `out_of_table`).
+struct TableSize {
+    double width = 0;
+    double depth = 0;
+    bool known() const { return width > 0 && depth > 0; }
+};
+
+namespace detail {
+/// A data line of a configuration file is `value   * comment`; the comment starts at a `*` that follows a blank (or starts the line) and is followed by a blank.
+inline std::string cfg_value(const std::string& raw) {
+    std::string line = raw;
+    bool prev_blank = true;
+    for (std::size_t i = 0; i < line.size(); ++i) {
+        const char c = line[i];
+        if (c == '*' && prev_blank && (i + 1 >= line.size() || line[i + 1] == ' ' || line[i + 1] == '\t' || line[i + 1] == '\r')) {
+            line.resize(i);
+            break;
+        }
+        prev_blank = c == ' ' || c == '\t' || c == '\r';
+    }
+    std::size_t b = line.find_first_not_of(" \t\r");
+    if (b == std::string::npos) return "";
+    std::size_t e = line.find_last_not_of(" \t\r");
+    return line.substr(b, e - b + 1);
+}
+}  // namespace detail
+
+/// The table from the answer of `machine_request`: the data lines of its `cfg` are the serial number, the version, the directory and the extension, then the values in
+/// order (scale 0-1, offset 2-3, course 4-5). False when the answer has no configuration or its lines are not those numbers.
+inline bool parse_machine_table(const std::string& body, TableSize& out) {
+    Json j;
+    if (!parse_json(body, j) || j.type != Json::Type::Object) return false;
+    const std::string cfg = j.str("cfg");
+    std::vector<std::string> data;
+    std::size_t pos = 0;
+    while (pos <= cfg.size() && data.size() < 12) {
+        std::size_t end = cfg.find('\n', pos);
+        if (end == std::string::npos) end = cfg.size();
+        const std::string v = detail::cfg_value(cfg.substr(pos, end - pos));
+        if (!v.empty()) data.push_back(v);
+        pos = end + 1;
+    }
+    if (data.size() < 4 + 6) return false;
+    auto number = [&](std::size_t i, double& v) {
+        char* e = nullptr;
+        v = std::strtod(data[4 + i].c_str(), &e);
+        return e != data[4 + i].c_str();
+    };
+    double ox = 0, oy = 0, cx = 0, cy = 0;
+    if (!number(2, ox) || !number(3, oy) || !number(4, cx) || !number(5, cy)) return false;
+    if (!(cx - ox > 0) || !(cy - oy > 0)) return false;
+    out.width = cx - ox;
+    out.depth = cy - oy;
+    return true;
+}
+
+/// What the server says about a job it has just made that the operator should know and that does not stop it: what the job asks for beyond the spindle the machine carries
+/// (when the machine's switch is on `warn`; on `reject` the job is refused instead). `code` is `rpm_above_max`, `rpm_below_min`, `feed_xy_above_max` or `feed_z_above_max`.
+struct SpindleNote {
+    std::string code;
+    int tool = 0;
+    long value = 0;
+    long limit = 0;
+};
+
+/// The notes of the answer to the creation of a job (`view.spindle_warnings`); empty when there are none or the text is not an answer of the server.
+inline std::vector<SpindleNote> parse_job_notes(const std::string& body) {
+    std::vector<SpindleNote> out;
+    Json j;
+    if (!parse_json(body, j) || j.type != Json::Type::Object) return out;
+    const Json* view = j.get("view");
+    const Json* list = view && view->type == Json::Type::Object ? view->get("spindle_warnings") : j.get("spindle_warnings");
+    if (!list || list->type != Json::Type::Array) return out;
+    for (const Json& w : list->a) {
+        if (w.type != Json::Type::Object || w.str("code").empty() || out.size() >= 16) continue;
+        SpindleNote n;
+        n.code = w.str("code");
+        n.tool = static_cast<int>(w.num("tool"));
+        n.value = static_cast<long>(w.num("value"));
+        n.limit = static_cast<long>(w.num("limit"));
+        out.push_back(n);
+    }
+    return out;
+}
+
 struct MachineRow {
     std::string id, name, station, state;  // state: idle, busy or waiting
     std::string job_name, job_id;

@@ -79,3 +79,5 @@ ui.Stopped	Ustavljeno
 ui.Next	Naslednji
 ui.ResumedFrom	Nadaljevano od
 ui.ToolChanged	Orodje zamenjano
+ui.BoardTooBig	Plošča ne gre na mizo
+ui.Failed	Ni uspelo

@@ -30,7 +30,7 @@
 |---|---|
 | Versione | `0.0.4` |
 | Maturità | Impalcatura |
-| Test | 7 programmi di test sul computer (89807 controlli contati) |
+| Test | 7 programmi di test sul computer (92118 controlli contati) |
 | Stack tecnologico | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Su hardware reale | No: il firmware non è stato compilato né scritto e nulla è stato collegato a una macchina |
 
@@ -45,7 +45,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Software | 🟠 | Il progetto ESP-IDF (ESP32-P4, LVGL 9, il file delle impostazioni in una partizione propria) è scritto; non è stato compilato né scritto sul chip. |
-| Test | 🟢 | 7 programmi di test sul computer passano (`ctest`): 89807 controlli sul file delle impostazioni, il varco, gli ordini e gli avvisi vocali, le tastiere, gli avvisi registrati, il client del server e i testi delle schermate in otto lingue. |
+| Test | 🟢 | 7 programmi di test sul computer passano (`ctest`): 92118 controlli sul file delle impostazioni, il varco, gli ordini e gli avvisi vocali, le tastiere, gli avvisi registrati, il client del server e i testi delle schermate in otto lingue. |
 | Regole di sicurezza | 🟡 | Ogni movimento e ogni ordine al mandrino passa dal varco: conferma sullo schermo, blocco dell'arresto hardware che solo una conferma sullo schermo toglie a pulsante rilasciato, nessun movimento con il collegamento non armato. Coperto da test; mai provato con un vero pulsante di arresto. |
 | Voce | 🟡 | Ordini e avvisi vocali sono riconosciuti e formulati in otto lingue e provati come testo; nessun microfono o altoparlante è stato usato. |
 | Schermate | 🟠 | Le schermate macchina, lavoro (microSD), macchine e stazioni e impostazioni sono scritte, in orizzontale e in verticale, con l'aspetto del programma desktop; la scheda della vista è ancora una scheda vuota. Esiste solo un disegno del layout, non una cattura di un modulo. |
@@ -59,6 +59,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 * Il **file delle impostazioni** `hmi.cfg`: ogni valore regolato (lingua, luminosità, il server, gli interruttori di sicurezza, la voce) è una riga di un file in una partizione propria, mai un numero nel codice; un valore fuori intervallo viene segnalato e resta il valore sicuro di default.
 * La **voce**: avvisi parlati (lavoro finito, cambio utensile, errore, collegamento perso, arresto hardware) e un breve elenco fisso di ordini vocali in otto lingue; gli ordini che fermano soltanto si capiscono dentro una frase, quelli che muovono o girano vanno detti per intero e chiedono sempre una conferma.
 * Le **schermate**: la macchina (spostamento, origine, mandrino, avvio, arresto), il lavoro, la vista, le macchine e stazioni del server e le impostazioni, nell'ordine e con i nomi del programma desktop; il pulsante di arresto è sempre in alto.
+* La **scheda rispetto al tavolo** e la **fine di un lavoro**: scegliendo sulla scheda un file di foratura o di percorso, la dimensione del suo riquadro viene confrontata con il tavolo della macchina (la corsa che indica il server meno lo scostamento, oppure `table_width_mm` e `table_depth_mm` di `hmi.cfg`); una scheda che non entra né distesa né ruotata viene segnalata nella pagina del lavoro con la sua dimensione e di quanto sporge, e il lavoro resta consentito (il server rifiuta ciò che cade fuori dal tavolo). Un lavoro annullato o fallito è mostrato come tale con il motivo del server, non è mai scambiato per concluso (nessun avviso di fine) e resta per riprendere dai fori già fatti; ciò che il server annota di un lavoro che chiede più di quanto dia il mandrino viene mostrato alla creazione.
 * Il **modulo**: il Guition JC8012P4A1C (ESP32-P4 con 32 MB di RAM esterna, display touch MIPI-DSI da 10,1 pollici 800x1280, un ESP32-C6 per il Wi-Fi, il codec ES8311 con amplificatore per altoparlante e l'ingresso microfono ES7210). Il pannello dell'unità è quello nuovo.
 * **In piedi o sdraiato:** l'impostazione `orientation` (`auto`, `landscape`, `portrait`) ruota l'immagine del pannello: in orizzontale (1280 x 800) il lavoro, la vista in pianta e il pad di spostamento stanno in tre colonne sopra la barra di posizione, in verticale (800 x 1280) si impilano; il tocco cade dove si tocca lo schermo in entrambi.
 * **La microSD e il server, come un solo flusso:** la scheda elenca i file di foratura e fresatura; lo schermo invia il file scelto a EH3D-SERVER come lavoro che aspetta pronto, l'operatore lo avvia dal varco, e l'avanzamento, le soste per il cambio utensile e la fine tornano dalla flotta in tempo reale, come nei programmi desktop e nel nodo. La risposta del server per ogni lavoro viene salvata sulla scheda.
@@ -176,6 +177,8 @@ Tutto ciò che si regola è una riga di `hmi.cfg` (copia `hmi.cfg.example` nella
 | `token` | none | 8 - 64 characters | il token di accesso al server; solo scrittura, mai mostrato né registrato |
 | `orientation` | `auto` | `auto landscape portrait` | in verticale o in orizzontale; `auto` segue come è montato il modulo |
 | `poll_s` | 3 | 1 - 60 | ogni quanto lo schermo chiede la flotta al server |
+| `table_width_mm` | 0 | 0 - 5000 | la larghezza del tavolo della macchina per l'avviso di una scheda che non entra; 0 = quella che dice il server (la corsa meno lo scostamento) |
+| `table_depth_mm` | 0 | 0 - 5000 | la profondità del tavolo; 0 = quella che dice il server |
 
 ## 🚀 Avvio rapido
 
@@ -190,7 +193,7 @@ Il firmware non è ancora stato compilato: quando lo sarà, `idf.py set-target e
 
 ## 🧪 Test
 
-I test sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono due programmi e passa tutto: `test_hmi` (995 controlli) su file delle impostazioni, varco (l'arresto passa sempre, blocco dell'arresto hardware, conferma, tempo limite e giro dell'orologio, regole vocali, interruttori), ordini e avvisi vocali e testi delle schermate in otto lingue; e `test_workflow` (270 controlli) su orientamento e tocco, file della scheda (tipi, nomi sicuri, ordinamento), lettore JSON, richieste e risposte del server e flusso di un lavoro dalla scheda alla fine. Gli altri due programmi coprono le tastiere (`test_keyboard`, 231 controlli: ogni impostazione ha la sua tastiera, gli intervalli del tastierino sono quelli del file delle impostazioni, i decimali, il segno, le frecce, la tastiera completa di ogni lingua, il maiuscolo, i simboli e la lunghezza) e gli avvisi registrati (`test_notices`, 266 controlli: l'impostazione, il file di ogni lingua e genere). Altri tre programmi: `test_machine` (55 controlli: i tipi di macchina, il rifiuto del mandrino e la frase in ogni lingua), `test_quality` (911 controlli: le richieste, la lettura del rapporto, ogni rilievo) e `test_locales` (87079 controlli: ogni chiave ha un testo in ciascuna delle altre 29 lingue, niente è vuoto o troppo lungo, la scrittura di ogni lingua è quella giusta, e ogni carattere disegnabile è nell'intervallo dei font generati).
+I test sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono due programmi e passa tutto: `test_hmi` (1018 controlli) su file delle impostazioni, varco (l'arresto passa sempre, blocco dell'arresto hardware, conferma, tempo limite e giro dell'orologio, regole vocali, interruttori), ordini e avvisi vocali e testi delle schermate in otto lingue; e `test_workflow` (315 controlli) su orientamento e tocco, file della scheda (tipi, nomi sicuri, ordinamento), lettore JSON, richieste e risposte del server e flusso di un lavoro dalla scheda alla fine. Gli altri due programmi coprono le tastiere (`test_keyboard`, 231 controlli: ogni impostazione ha la sua tastiera, gli intervalli del tastierino sono quelli del file delle impostazioni, i decimali, il segno, le frecce, la tastiera completa di ogni lingua, il maiuscolo, i simboli e la lunghezza) e gli avvisi registrati (`test_notices`, 266 controlli: l'impostazione, il file di ogni lingua e genere). Altri tre programmi: `test_machine` (55 controlli: i tipi di macchina, il rifiuto del mandrino e la frase in ogni lingua), `test_quality` (911 controlli: le richieste, la lettura del rapporto, ogni rilievo) e `test_locales` (89322 controlli: ogni chiave ha un testo in ciascuna delle altre 29 lingue, niente è vuoto o troppo lungo, la scrittura di ogni lingua è quella giusta, e ogni carattere disegnabile è nell'intervallo dei font generati).
 
 ## 🏗️ Compilazione e rilascio
 

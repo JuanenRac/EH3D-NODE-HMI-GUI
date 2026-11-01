@@ -79,3 +79,5 @@ ui.Stopped	Parado
 ui.Next	Seguinte
 ui.ResumedFrom	Retomado desde
 ui.ToolChanged	Ferramenta cambiada
+ui.BoardTooBig	A placa non cabe na mesa
+ui.Failed	Fallou

@@ -79,3 +79,5 @@ ui.Stopped	Sustabdyta
 ui.Next	Kitas
 ui.ResumedFrom	Tęsiama nuo
 ui.ToolChanged	Įrankis pakeistas
+ui.BoardTooBig	Plokštė netelpa ant stalo
+ui.Failed	Nepavyko

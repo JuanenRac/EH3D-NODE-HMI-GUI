@@ -559,7 +559,7 @@ void show_fleet(const hmi::FleetView& fleet, const hmi::Settings&) {
     }
 }
 
-void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, const hmi::Settings& s) {
+void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, const hmi::JobAdvice& advice, const hmi::Settings& s) {
     using hmi::T;
     if (g_tools_box == nullptr || g_job_summary == nullptr) return;
     lv_obj_clean(g_tools_box);
@@ -583,6 +583,26 @@ void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, con
         std::snprintf(line, sizeof line, "%s%s: %s %d-%d rpm", text.empty() ? "" : "\n", hmi::text(T::Spindle, s.language), spindle.kind.c_str(), spindle.min_rpm, spindle.max_rpm);
         text += line;
     }
+    // the board against the table of the machine: said only when it fits neither lying nor turned; nothing is blocked (the server refuses what lies outside the table)
+    if (advice.fit.kind == hmi::FitKind::TooBig) {
+        char line[200];
+        std::snprintf(line, sizeof line, "%s%s %s: %.0f x %.0f mm / %.0f x %.0f mm  (+%.0f / +%.0f mm)", text.empty() ? "" : "\n", LV_SYMBOL_WARNING,
+                      hmi::text(T::BoardTooBig, s.language), advice.board_w, advice.board_d, advice.table_w, advice.table_d, advice.fit.over_w, advice.fit.over_d);
+        text += line;
+    }
+    // what the job asks for beyond the spindle of the machine, as the server noted it when it made the job (the first four)
+    int shown = 0;
+    for (const hmi::SpindleNote& n : advice.notes) {
+        if (shown++ >= 4) break;
+        const char* what = "mm/min Z >";
+        if (n.code == "rpm_above_max") what = "rpm >";
+        else if (n.code == "rpm_below_min") what = "rpm <";
+        else if (n.code == "feed_xy_above_max") what = "mm/min XY >";
+        char line[200];
+        std::snprintf(line, sizeof line, "%s%s %s: %s %d  %ld %s %ld", text.empty() ? "" : "\n", LV_SYMBOL_WARNING, hmi::text(T::Spindle, s.language), hmi::text(T::Tool, s.language), n.tool,
+                      n.value, what, n.limit);
+        text += line;
+    }
     lv_label_set_text(g_job_summary, text.c_str());
 }
 
@@ -593,7 +613,7 @@ void show_flow(const FlowState& flow, const hmi::Settings& s) {
     std::string text;
     char line[160];
     if (flow.stopped) {
-        std::snprintf(line, sizeof line, "%s: %d/%d %s", hmi::text(T::Stopped, s.language), flow.skipped + flow.done, flow.skipped + flow.total, what);
+        std::snprintf(line, sizeof line, "%s: %d/%d %s", hmi::text(flow.failed ? T::Failed : T::Stopped, s.language), flow.skipped + flow.done, flow.skipped + flow.total, what);
         text = line;
         if (!flow.message.empty()) text += "\n" + flow.message;
     } else if (flow.skipped > 0) {

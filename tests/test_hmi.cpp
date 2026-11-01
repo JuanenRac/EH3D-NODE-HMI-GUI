@@ -66,6 +66,13 @@ static void settings_file() {
         Lang l;
         CHECK(lang_from_code(lang_code(static_cast<Lang>(i)), l) && l == static_cast<Lang>(i));
     }
+    // the table of the machine for the warning of a board that does not fit: none by default (the server's is used), or the one of the file
+    p.clear();
+    CHECK(d.table_width_mm == 0 && d.table_depth_mm == 0);
+    Settings t = parse_settings("table_width_mm = 495\ntable_depth_mm = 325\n", p);
+    CHECK(p.empty() && t.table_width_mm == 495 && t.table_depth_mm == 325);
+    Settings tb = parse_settings("table_width_mm = -5\ntable_depth_mm = 9000\n", p);
+    CHECK(p.size() == 2 && tb.table_width_mm == 0 && tb.table_depth_mm == 0);
 }
 
 static Settings ready_settings() {

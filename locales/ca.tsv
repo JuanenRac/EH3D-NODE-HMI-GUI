@@ -79,3 +79,5 @@ ui.Stopped	Aturat
 ui.Next	Següent
 ui.ResumedFrom	Represa des de
 ui.ToolChanged	Eina canviada
+ui.BoardTooBig	La placa no cap a la taula
+ui.Failed	Fallit

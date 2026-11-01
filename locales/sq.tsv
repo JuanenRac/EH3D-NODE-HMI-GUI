@@ -79,3 +79,5 @@ ui.Stopped	Ndalur
 ui.Next	Tjetri
 ui.ResumedFrom	Rifilluar nga
 ui.ToolChanged	Mjeti u ndërrua
+ui.BoardTooBig	Pllaka nuk përshtatet në tavolinë
+ui.Failed	Dështoi

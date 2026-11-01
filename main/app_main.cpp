@@ -51,6 +51,7 @@ static std::string g_note;
 static hmi::Workflow g_flow;
 static hmi::SpindleView g_spindle;  // the spindle of the machine, as the server says it (asked now and then)
 static bool g_spindle_new = false;
+static hmi::TableSize g_table;  // the table of the machine, as the server says it (asked with the spindle)
 
 // the quality check: what the server last said, the ring of LEDs, and what the operator chose for the next request
 static hmi::QualityView g_quality;
@@ -373,6 +374,15 @@ static void link_task(void*) {
                         g_spindle_new = true;
                         xSemaphoreGive(g_lock);
                     }
+                    // the table of the machine, for the warning of a board that does not fit
+                    hmi::Response mr;
+                    hmi::TableSize ts;
+                    if (srvlink::call(g_settings, hmi::machine_request(g_settings.server_machine), mr, error) && mr.status == 200 && hmi::parse_machine_table(mr.body, ts)) {
+                        xSemaphoreTake(g_lock, portMAX_DELAY);
+                        g_table = ts;
+                        g_spindle_new = true;
+                        xSemaphoreGive(g_lock);
+                    }
                 }
             } else {
                 xSemaphoreTake(g_lock, portMAX_DELAY);
@@ -390,6 +400,10 @@ static void refresh_job() {
     const hmi::SpindleView spindle = g_spindle;
     ui::FlowState flow;
     flow.stopped = g_flow.stage() == hmi::Stage::Stopped;
+    flow.failed = g_flow.outcome() == hmi::Outcome::Failed;
+    // the table: the server's, or the one of the settings when the server does not say it
+    const hmi::TableSize table = g_table.known() ? g_table : hmi::TableSize{static_cast<double>(g_settings.table_width_mm), static_cast<double>(g_settings.table_depth_mm)};
+    const hmi::JobAdvice advice = g_flow.advice(table);
     flow.can_resume = g_flow.can_resume();
     flow.route = g_flow.route();
     flow.gcode = g_flow.gcode();
@@ -402,7 +416,7 @@ static void refresh_job() {
     flow.held = g_flow.held();
     flow.tool_wait = g_flow.tool_wait();
     xSemaphoreGive(g_lock);
-    ui::show_job(tools, spindle, g_settings);
+    ui::show_job(tools, spindle, advice, g_settings);
     ui::show_flow(flow, g_settings);
 }
 
@@ -466,6 +480,7 @@ extern "C" void app_main() {
     hmi::Gate gate(g_settings);
     ui::State state;
     hmi::Stage last_stage = hmi::Stage::Nothing;
+    bool last_ended_well = false;
     for (;;) {
         bool wired = false, pressed = false;
         board::read_hardware_stop(wired, pressed);
@@ -643,16 +658,23 @@ extern "C" void app_main() {
         state.percent = g_flow.percent();
         // the machine counts as armed while the job of this screen runs or waits for the operator
         state.armed = g_flow.stage() == hmi::Stage::Running || g_flow.stage() == hmi::Stage::Waiting;
-        const bool over = g_flow.stage() == hmi::Stage::Finished || g_flow.stage() == hmi::Stage::Failed || g_flow.stage() == hmi::Stage::Stopped;
+        // over for good: finished well, or stopped or failed (kept to go on from). A job that left the machine and that the server has not been asked about is neither
+        const bool over = g_flow.settled();
+        const bool ended_well = g_flow.ended_well();
         const hmi::Stage stage_now = g_flow.stage();
         xSemaphoreGive(g_lock);
         if (over && g_remembered) memory_clear();
         // the notices of the job, once each time the stage changes into them
         bool stage_changed = false;
         if (stage_now != last_stage) {
-            if (stage_now == hmi::Stage::Finished) say(hmi::Cue::Finished);
             if (stage_now == hmi::Stage::Waiting) say(hmi::Cue::ToolChange);
             last_stage = stage_now;
+            stage_changed = true;
+        }
+        // the notice of the end only when the server said the job was done, not when it was cancelled or failed
+        if (ended_well != last_ended_well) {
+            if (ended_well) say(hmi::Cue::Finished);
+            last_ended_well = ended_well;
             stage_changed = true;
         }
         state.stop_wired = wired;

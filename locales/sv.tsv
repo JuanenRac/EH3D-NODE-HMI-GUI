@@ -79,3 +79,5 @@ ui.Stopped	Stoppad
 ui.Next	Nästa
 ui.ResumedFrom	Återupptaget från
 ui.ToolChanged	Verktyg bytt
+ui.BoardTooBig	Kretskortet ryms inte på bordet
+ui.Failed	Misslyckades

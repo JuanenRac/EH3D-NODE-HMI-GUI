@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.4` |
 | Maturity | Scaffolding |
-| Tests | 7 host test programs (89807 checks counted) |
+| Tests | 7 host test programs (92118 checks counted) |
 | Stack | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | On real hardware | No: the firmware has not been built or flashed, and nothing has been connected to a machine |
 
@@ -45,7 +45,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Software | 🟠 | The ESP-IDF project (ESP32-P4, LVGL 9, the settings file in its own partition) is written; it has not been built or flashed. |
-| Tests | 🟢 | 7 host test programs pass (`ctest`): 89807 checks in the settings file, the gate, the spoken orders and alerts, the keyboards, the recorded notices, the server client and the texts of the screens in eight languages. |
+| Tests | 🟢 | 7 host test programs pass (`ctest`): 92118 checks in the settings file, the gate, the spoken orders and alerts, the keyboards, the recorded notices, the server client and the texts of the screens in eight languages. |
 | Safety rules | 🟡 | Every move and spindle order goes through the gate: confirmation on the screen, hardware-stop latch that only an acknowledgement on the screen clears once the button is up, no move while the link is not armed. Covered by tests; never run with a real stop button. |
 | Voice | 🟡 | Spoken orders and alerts are recognised and phrased in eight languages and tested as text; no microphone or speaker has been used. |
 | Screens | 🟠 | The machine, job (microSD), machines-and-stations and settings screens are written, lying down and standing up, in the look of the desktop program; the viewer tab is still an empty card. Only a drawing of the layout exists, not a capture of a module. |
@@ -59,6 +59,7 @@ Each line is one part of this repository and the light says how far it is today.
 * The **settings file** `hmi.cfg`: every tuned value (language, brightness, the server, the safety switches, the voice) is a line of one file in its own partition, never a number in the code; a value out of range is reported and the safe default stays.
 * The **voice**: spoken alerts (job finished, tool change, error, link lost, hardware stop) and a short fixed list of spoken orders in eight languages; the orders that only halt are understood inside a sentence, the ones that move or spin must be said whole and always ask for a confirmation.
 * The **screens**: the machine (jog, home, spindle, start, stop), the job, the viewer, the machines and stations of the server and the settings, in the order and with the names of the desktop program; the stop button is always on top.
+* The **board against the table** and the **end of a job**: when a drilling or routing file is chosen on the card, the size of its box is compared with the table of the machine (the course the server reports less the offset, or `table_width_mm` and `table_depth_mm` of `hmi.cfg`); a board that fits neither lying nor turned is warned about on the job page with its size and by how much it goes over, and the job is still allowed (the server refuses what lies outside the table). A job that was cancelled or failed is shown as such with the reason of the server, is never taken for a finished one (no finished notice is played for it) and is kept to go on from the holes already done; what the server notes about a job that asks more than the spindle gives is shown when the job is made.
 * The **module**: the Guition JC8012P4A1C (ESP32-P4 with 32 MB of external RAM, a 10.1-inch 800x1280 MIPI-DSI touch display, an ESP32-C6 for Wi-Fi, the ES8311 codec with a speaker amplifier and the ES7210 microphone input). The panel of the unit is the new one.
 * **Standing up or lying down:** the setting `orientation` (`auto`, `landscape`, `portrait`) turns the picture of the panel: lying down (1280 x 800) the job, the plan view and the jog pad sit in three columns above the bar of the position, standing up (800 x 1280) they stack; a touch lands where the screen is touched in both.
 * **The microSD card and the server, as one flow:** the card lists the drilling and routing files; the screen sends the chosen file to EH3D-SERVER as a job that waits ready, the operator starts it through the gate, and the progress, the stops for a tool change and the end come back from the fleet in real time, the same as on the desktop programs and the node. The answer of the server for each job is saved on the card.
@@ -176,6 +177,8 @@ Everything tuned is a line of `hmi.cfg` (copy `hmi.cfg.example` to the `config` 
 | `token` | none | 8 - 64 characters | the access token of the server; write-only, never shown or logged |
 | `orientation` | `auto` | `auto landscape portrait` | standing up or lying down; `auto` follows the way the module is mounted |
 | `poll_s` | 3 | 1 - 60 | how often the screen asks the server for the fleet |
+| `table_width_mm` | 0 | 0 - 5000 | the width of the table of the machine for the warning of a board that does not fit; 0 = the one the server says (the course less the offset) |
+| `table_depth_mm` | 0 | 0 - 5000 | the depth of the table; 0 = the one the server says |
 
 ## 🚀 Quick start
 
@@ -190,7 +193,7 @@ The firmware has not been built yet: when it is, `idf.py set-target esp32p4 && i
 
 ## 🧪 Testing
 
-The host tests (`build.bat` or `./build.sh`, then `ctest`) are two programs and all of it passes: `test_hmi` (995 checks) on the settings file, the gate (stop always goes, hardware-stop latch, confirmation, timeout and clock wrap-around, voice rules, switches), the spoken orders and alerts and the screen texts in eight languages; and `test_workflow` (270 checks) on the orientation and the touch, the files of the card (kinds, safe names, sorting), the JSON reader, the requests and answers of the server, and the flow of a job from the card to its end. The other two programs cover the keyboards (`test_keyboard`, 231 checks: every setting has its keyboard, the ranges of the pad are the ones of the settings file, the decimals, the sign, the arrows, the full keyboard of each language, the shift, the symbols and the length) and the recorded notices (`test_notices`, 266 checks: the setting, the file of each language and gender). Three more programs: `test_machine` (55 checks: the kinds of machine, the spindle refusal and the sentence in every language), `test_quality` (911 checks: the requests, the reading of the report, every finding) and `test_locales` (87079 checks: every key has a text in each of the 29 other languages, nothing is empty or too long, the script of each language is the right one, and every character that any text can draw is in the range of the generated fonts).
+The host tests (`build.bat` or `./build.sh`, then `ctest`) are two programs and all of it passes: `test_hmi` (1018 checks) on the settings file, the gate (stop always goes, hardware-stop latch, confirmation, timeout and clock wrap-around, voice rules, switches), the spoken orders and alerts and the screen texts in eight languages; and `test_workflow` (315 checks) on the orientation and the touch, the files of the card (kinds, safe names, sorting), the JSON reader, the requests and answers of the server, and the flow of a job from the card to its end. The other two programs cover the keyboards (`test_keyboard`, 231 checks: every setting has its keyboard, the ranges of the pad are the ones of the settings file, the decimals, the sign, the arrows, the full keyboard of each language, the shift, the symbols and the length) and the recorded notices (`test_notices`, 266 checks: the setting, the file of each language and gender). Three more programs: `test_machine` (55 checks: the kinds of machine, the spindle refusal and the sentence in every language), `test_quality` (911 checks: the requests, the reading of the report, every finding) and `test_locales` (89322 checks: every key has a text in each of the 29 other languages, nothing is empty or too long, the script of each language is the right one, and every character that any text can draw is in the range of the generated fonts).
 
 ## 🏗️ Build & Release
 

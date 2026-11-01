@@ -79,3 +79,5 @@ ui.Stopped	Leállítva
 ui.Next	Következő
 ui.ResumedFrom	Folytatva innen
 ui.ToolChanged	Szerszám cserélve
+ui.BoardTooBig	A panel nem fér rá az asztalra
+ui.Failed	Sikertelen

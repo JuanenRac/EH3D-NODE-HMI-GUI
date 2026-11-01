@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.4` |
 | Reifegrad | Gerüst |
-| Tests | 7 Host-Testprogramme (89807 Prüfungen gezählt) |
+| Tests | 7 Host-Testprogramme (92118 Prüfungen gezählt) |
 | Technologie-Stack | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Auf echter Hardware | Nein: die Firmware wurde weder gebaut noch geflasht, und nichts wurde an eine Maschine angeschlossen |
 
@@ -45,7 +45,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Software | 🟠 | Das ESP-IDF-Projekt (ESP32-P4, LVGL 9, die Einstellungsdatei in einer eigenen Partition) ist geschrieben; es wurde weder gebaut noch geflasht. |
-| Tests | 🟢 | 7 Host-Testprogramme bestehen (`ctest`): 89807 Prüfungen zu Einstellungsdatei, Tor, gesprochenen Befehlen und Hinweisen, den Tastaturen, den aufgenommenen Hinweisen, dem Server-Client und den Bildschirmtexten in acht Sprachen. |
+| Tests | 🟢 | 7 Host-Testprogramme bestehen (`ctest`): 92118 Prüfungen zu Einstellungsdatei, Tor, gesprochenen Befehlen und Hinweisen, den Tastaturen, den aufgenommenen Hinweisen, dem Server-Client und den Bildschirmtexten in acht Sprachen. |
 | Sicherheitsregeln | 🟡 | Jede Bewegung und jeder Spindelbefehl läuft durch das Tor: Bestätigung auf dem Bildschirm, Hardware-Stopp-Sperre, die bei losgelassenem Taster nur eine Quittung auf dem Bildschirm löst, keine Bewegung bei nicht scharfer Verbindung. Durch Tests gedeckt; nie mit einem echten Stopp-Taster erprobt. |
 | Sprache | 🟡 | Gesprochene Befehle und Hinweise werden in acht Sprachen erkannt und formuliert und als Text getestet; es wurde kein Mikrofon und kein Lautsprecher benutzt. |
 | Bildschirme | 🟠 | Die Bildschirme Maschine, Auftrag (microSD), Maschinen und Stationen und Einstellungen sind geschrieben, im Quer- und im Hochformat, im Aussehen des Desktop-Programms; der Reiter Ansicht ist noch eine leere Karte. Es gibt nur eine Zeichnung des Layouts, keine Aufnahme eines Moduls. |
@@ -59,6 +59,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 * Die **Einstellungsdatei** `hmi.cfg`: jeder abgestimmte Wert (Sprache, Helligkeit, der Server, die Sicherheitsschalter, die Sprache) ist eine Zeile einer Datei in einer eigenen Partition, nie eine Zahl im Code; ein Wert außerhalb des Bereichs wird gemeldet und der sichere Standard bleibt.
 * Die **Sprache**: gesprochene Hinweise (Auftrag fertig, Werkzeugwechsel, Fehler, Verbindung verloren, Hardware-Stopp) und eine kurze feste Liste gesprochener Befehle in acht Sprachen; Befehle, die nur anhalten, werden auch in einem Satz verstanden, die zum Bewegen oder Drehen müssen vollständig gesagt werden und verlangen immer eine Bestätigung.
 * Die **Bildschirme**: die Maschine (Tippen, Referenz, Spindel, Start, Stopp), der Auftrag, die Ansicht, die Maschinen und Stationen des Servers und die Einstellungen, in der Reihenfolge und mit den Namen des Desktop-Programms; der Stopp-Knopf ist immer oben.
+* Die **Platine gegen den Tisch** und das **Ende eines Auftrags**: Wählt man auf der Karte eine Bohr- oder Fräsdatei, wird die Größe ihres Rahmens mit dem Tisch der Maschine verglichen (der Verfahrweg, den der Server meldet, abzüglich des Versatzes, oder `table_width_mm` und `table_depth_mm` aus `hmi.cfg`); eine Platine, die weder liegend noch gedreht passt, wird auf der Auftragsseite mit ihrer Größe und dem Überstand gemeldet, der Auftrag bleibt erlaubt (der Server lehnt ab, was außerhalb des Tisches liegt). Ein abgebrochener oder fehlgeschlagener Auftrag wird als solcher mit dem Grund des Servers gezeigt, nie für beendet gehalten (kein Endsignal) und bleibt erhalten, um ab den fertigen Bohrungen fortzufahren; was der Server zu einem Auftrag vermerkt, der mehr verlangt, als die Spindel gibt, wird beim Erstellen angezeigt.
 * Das **Modul**: das Guition JC8012P4A1C (ESP32-P4 mit 32 MB externem RAM, 10,1-Zoll-MIPI-DSI-Touchdisplay mit 800x1280, ein ESP32-C6 für WLAN, der Codec ES8311 mit Lautsprecherverstärker und der Mikrofoneingang ES7210). Das Panel der Einheit ist das neue.
 * **Hoch- oder Querformat:** die Einstellung `orientation` (`auto`, `landscape`, `portrait`) dreht das Bild des Panels: im Querformat (1280 x 800) stehen Auftrag, Draufsicht und Tipp-Pad in drei Spalten über der Positionsleiste, im Hochformat (800 x 1280) sind sie gestapelt; die Berührung trifft in beiden dort, wo der Bildschirm berührt wird.
 * **microSD und Server als ein Ablauf:** die Karte listet die Bohr- und Fräsdateien; der Bildschirm sendet die gewählte Datei als bereit wartenden Auftrag an EH3D-SERVER, der Bediener startet ihn über das Tor, und Fortschritt, Halte für den Werkzeugwechsel und das Ende kommen in Echtzeit aus der Flotte zurück, wie bei den Desktop-Programmen und dem Knoten. Die Antwort des Servers zu jedem Auftrag wird auf der Karte gespeichert.
@@ -176,6 +177,8 @@ Alles Abgestimmte ist eine Zeile in `hmi.cfg` (kopiere `hmi.cfg.example` in die 
 | `token` | none | 8 - 64 characters | das Zugriffstoken des Servers; nur schreibbar, nie angezeigt oder protokolliert |
 | `orientation` | `auto` | `auto landscape portrait` | Hoch- oder Querformat; `auto` folgt der Einbaulage des Moduls |
 | `poll_s` | 3 | 1 - 60 | wie oft der Bildschirm die Flotte beim Server abfragt |
+| `table_width_mm` | 0 | 0 - 5000 | die Breite des Tisches der Maschine für die Warnung vor einer Platine, die nicht passt; 0 = die, die der Server meldet (Verfahrweg abzüglich Versatz) |
+| `table_depth_mm` | 0 | 0 - 5000 | die Tiefe des Tisches; 0 = die, die der Server meldet |
 
 ## 🚀 Schnellstart
 
@@ -190,7 +193,7 @@ Die Firmware wurde noch nicht gebaut: wenn es so weit ist, erzeugt `idf.py set-t
 
 ## 🧪 Tests
 
-Die Host-Tests (`build.bat` oder `./build.sh`, dann `ctest`) sind zwei Programme und alles besteht: `test_hmi` (995 Prüfungen) zu Einstellungsdatei, Tor (Stopp geht immer, Hardware-Stopp-Sperre, Bestätigung, Zeitlimit und Uhrenüberlauf, Sprachregeln, Schalter), gesprochenen Befehlen und Hinweisen und Bildschirmtexten in acht Sprachen; und `test_workflow` (270 Prüfungen) zu Ausrichtung und Berührung, Dateien der Karte (Arten, sichere Namen, Sortierung), JSON-Leser, Anfragen und Antworten des Servers und dem Ablauf eines Auftrags von der Karte bis zum Ende. Die beiden anderen Programme decken die Tastaturen ab (`test_keyboard`, 231 Prüfungen: jede Einstellung hat ihre Tastatur, die Bereiche des Zahlenblocks sind die der Einstellungsdatei, die Nachkommastellen, das Vorzeichen, die Pfeile, die volle Tastatur jeder Sprache, die Umschaltung, die Symbole und die Länge) und die aufgenommenen Hinweise (`test_notices`, 266 Prüfungen: die Einstellung, die Datei jeder Sprache und jedes Geschlechts). Drei weitere Programme: `test_machine` (55 Prüfungen: die Maschinenarten, die Spindelablehnung und der Satz in jeder Sprache), `test_quality` (911 Prüfungen: die Anfragen, das Lesen des Berichts, jeder Befund) und `test_locales` (87079 Prüfungen: jeder Schlüssel hat in jeder der 29 anderen Sprachen einen Text, nichts ist leer oder zu lang, die Schrift jeder Sprache stimmt, und jedes darstellbare Zeichen liegt im Bereich der erzeugten Schriften).
+Die Host-Tests (`build.bat` oder `./build.sh`, dann `ctest`) sind zwei Programme und alles besteht: `test_hmi` (1018 Prüfungen) zu Einstellungsdatei, Tor (Stopp geht immer, Hardware-Stopp-Sperre, Bestätigung, Zeitlimit und Uhrenüberlauf, Sprachregeln, Schalter), gesprochenen Befehlen und Hinweisen und Bildschirmtexten in acht Sprachen; und `test_workflow` (315 Prüfungen) zu Ausrichtung und Berührung, Dateien der Karte (Arten, sichere Namen, Sortierung), JSON-Leser, Anfragen und Antworten des Servers und dem Ablauf eines Auftrags von der Karte bis zum Ende. Die beiden anderen Programme decken die Tastaturen ab (`test_keyboard`, 231 Prüfungen: jede Einstellung hat ihre Tastatur, die Bereiche des Zahlenblocks sind die der Einstellungsdatei, die Nachkommastellen, das Vorzeichen, die Pfeile, die volle Tastatur jeder Sprache, die Umschaltung, die Symbole und die Länge) und die aufgenommenen Hinweise (`test_notices`, 266 Prüfungen: die Einstellung, die Datei jeder Sprache und jedes Geschlechts). Drei weitere Programme: `test_machine` (55 Prüfungen: die Maschinenarten, die Spindelablehnung und der Satz in jeder Sprache), `test_quality` (911 Prüfungen: die Anfragen, das Lesen des Berichts, jeder Befund) und `test_locales` (89322 Prüfungen: jeder Schlüssel hat in jeder der 29 anderen Sprachen einen Text, nichts ist leer oder zu lang, die Schrift jeder Sprache stimmt, und jedes darstellbare Zeichen liegt im Bereich der erzeugten Schriften).
 
 ## 🏗️ Build und Veröffentlichung
 

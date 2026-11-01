@@ -79,3 +79,5 @@ ui.Stopped	Stoptha
 ui.Next	An chéad cheann eile
 ui.ResumedFrom	Atosaithe ó
 ui.ToolChanged	Uirlis athraithe
+ui.BoardTooBig	Ní fheileann an clár don tábla
+ui.Failed	Theip air

@@ -79,3 +79,5 @@ ui.Stopped	Apturēts
 ui.Next	Nākamais
 ui.ResumedFrom	Turpināts no
 ui.ToolChanged	Instruments nomainīts
+ui.BoardTooBig	Plate neietilpst galdā
+ui.Failed	Neizdevās

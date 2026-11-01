@@ -7,6 +7,8 @@ ui.WhyHardwareStop	A parada por hardware está acionada ou não reconhecida.
 ui.WhyVoiceOff	As ordens por voz estão desligadas nas configurações.
 ui.WhyNoStop	A entrada da parada por hardware não está ligada.
 ui.WhySpindle	O fuso está desligado nas configurações.
+ui.BoardTooBig	A placa não cabe na mesa
+ui.Failed	Falhou
 q.Checking	Verificando...
 q.NotChecked	Ainda não verificado
 q.HolesOk	furos ok

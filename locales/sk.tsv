@@ -79,3 +79,5 @@ ui.Stopped	Zastavené
 ui.Next	Ďalší
 ui.ResumedFrom	Pokračovanie z
 ui.ToolChanged	Nástroj vymenený
+ui.BoardTooBig	Doska sa nezmestí na stôl
+ui.Failed	Zlyhalo

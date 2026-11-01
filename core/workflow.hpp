@@ -18,6 +18,18 @@ namespace hmi {
 
 enum class Stage { Nothing, FileChosen, Ready, Running, Waiting, Finished, Failed, Stopped };
 
+/// How the job in turn ended, as the server says it (not as the machine happened to stop showing it): `None` while it is not known yet, which includes the moment after the
+/// job left the machine and before the server was asked. Only `Done` is a finished job; a job that was cancelled or failed did not do all its work.
+enum class Outcome { None, Done, Cancelled, Failed };
+
+/// What the screen shows next to the chosen file besides its tools: how the board lies on the table of the machine, and what the server noted about the job it made.
+struct JobAdvice {
+    Fit fit;                           // the board against the table (Unknown when either is not known)
+    double board_w = 0, board_d = 0;   // the size of the box of the file, mm
+    double table_w = 0, table_d = 0;   // the table, mm (0 when not known)
+    std::vector<SpindleNote> notes;    // what the job asks for beyond the spindle (the server made it anyway)
+};
+
 /// Whether the server makes the new job of a stopped one by itself (`POST /jobs/:id/resume-from`): not known until it was asked once; a server that answers 404 or 405 to
 /// the route is an old one and the screen goes on with the file it keeps.
 enum class ResumeApi { Unknown, Yes, No };
@@ -62,6 +74,20 @@ public:
         return true;
     }
 
+    /// The advice for the screen: the box of the file in turn against `table` (the table of the machine, or the one the settings give when the server does not say it) and
+    /// the notes of the server about the job made from it. It does not block anything: the server refuses a hole outside the table (`out_of_table`) by itself.
+    JobAdvice advice(const TableSize& table) const {
+        JobAdvice a;
+        const Box& b = slots_[cur_].sw.summary().box;
+        a.board_w = b.width();
+        a.board_d = b.depth();
+        a.table_w = table.width;
+        a.table_d = table.depth;
+        a.fit = fit_on_table(b, table.width, table.depth);
+        a.notes = notes_;
+        return a;
+    }
+
     /// The tool table that goes with the file just chosen (the same name with the extension of the table, read by the application when it exists).
     void set_tools(const std::string& text) { slots_[last_].tools = text; }
 
@@ -99,6 +125,7 @@ public:
             return false;
         }
         job_id_ = j.str("id");
+        notes_ = parse_job_notes(r.body);
         stage_ = Stage::Ready;
         return true;
     }
@@ -188,10 +215,12 @@ public:
         if (stage_ != Stage::Finished || r.status != 200 || !parse_job_report(r.body, j)) return false;
         if (j.state == "done") {
             reported_done_ = true;
+            outcome_ = Outcome::Done;
             return true;
         }
         if (j.state == "cancelled" || j.state == "failed") {
             stage_ = Stage::Stopped;
+            outcome_ = j.state == "failed" ? Outcome::Failed : Outcome::Cancelled;
             if (!slots_[cur_].loaded && !j.kind.empty()) {  // a job followed again after a reset: holes, cuts or lines
                 slots_[cur_].route = j.kind == "route";
                 slots_[cur_].gcode = j.kind == "gcode";
@@ -203,6 +232,15 @@ public:
         }
         return false;
     }
+
+    /// How the job in turn ended. `Done` only when the server said `done`; a job that left the machine and was not asked about yet is `None`, not finished.
+    Outcome outcome() const { return outcome_; }
+    /// True when the job in turn is over and the server said it did all its work: the notice of the end and the forgetting of the job wait for this.
+    bool ended_well() const { return stage_ == Stage::Finished && reported_done_; }
+    /// True when the end of the job is known for good: well (`ended_well`), or stopped or failed (the job is kept to go on from). False while the server has not been asked.
+    bool settled() const { return ended_well() || stage_ == Stage::Stopped || stage_ == Stage::Failed; }
+    /// The notes of the server about the job that was made (see `advice`).
+    const std::vector<SpindleNote>& notes() const { return notes_; }
 
     /// A job that was stopped can go on when it did some of its work and either the server makes the new job itself (it keeps the request, so a screen that was reset and
     /// has no file can go on too) or the file is still here to be sent again. Not when the server said there is nothing left to do.
@@ -238,6 +276,7 @@ public:
             slots_[cur_].skip += done_;
             reset_run();
             job_id_ = j.str("id");
+            notes_ = parse_job_notes(r.body);
             resumed_from_ = from;
             stage_ = Stage::Ready;
             return ResumeStep::Made;
@@ -339,6 +378,8 @@ private:
         no_work_ = false;
         resume_sent_ = false;
         resumed_from_.clear();
+        outcome_ = Outcome::None;
+        notes_.clear();
     }
 
     Stage stage_ = Stage::Nothing;
@@ -349,6 +390,8 @@ private:
     int percent_ = 0;
     int done_ = 0, total_ = 0;
     bool unreported_ = false, reported_done_ = false;
+    Outcome outcome_ = Outcome::None;
+    std::vector<SpindleNote> notes_;
     ResumeApi api_ = ResumeApi::Unknown;
     bool no_work_ = false, resume_sent_ = false;
 };

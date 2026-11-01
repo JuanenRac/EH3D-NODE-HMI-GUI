@@ -79,3 +79,5 @@ ui.Stopped	Zatrzymano
 ui.Next	Dalej
 ui.ResumedFrom	Wznowiono z
 ui.ToolChanged	Narzędzie wymienione
+ui.BoardTooBig	Płytka nie mieści się na stole
+ui.Failed	Niepowodzenie

@@ -79,3 +79,5 @@ ui.Stopped	Заустављено
 ui.Next	Следеће
 ui.ResumedFrom	Настављено од
 ui.ToolChanged	Алат је замењен
+ui.BoardTooBig	Плоча не стаје на сто
+ui.Failed	Неуспешно

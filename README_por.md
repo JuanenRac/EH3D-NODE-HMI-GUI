@@ -30,7 +30,7 @@
 |---|---|
 | Versão | `0.0.4` |
 | Maturidade | Estrutura inicial |
-| Testes | 7 programas de teste no computador (89807 verificações contadas) |
+| Testes | 7 programas de teste no computador (92118 verificações contadas) |
 | Tecnologias | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Em hardware real | Não: o firmware não foi compilado nem gravado e nada foi ligado a uma máquina |
 
@@ -45,7 +45,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Software | 🟠 | O projeto ESP-IDF (ESP32-P4, LVGL 9, o ficheiro de definições na sua própria partição) está escrito; não foi compilado nem gravado. |
-| Testes | 🟢 | Passam 7 programas de teste no computador (`ctest`): 89807 verificações do ficheiro de definições, da comporta, das ordens e avisos por voz, dos teclados, dos avisos gravados, do cliente do servidor e dos textos dos ecrãs em oito idiomas. |
+| Testes | 🟢 | Passam 7 programas de teste no computador (`ctest`): 92118 verificações do ficheiro de definições, da comporta, das ordens e avisos por voz, dos teclados, dos avisos gravados, do cliente do servidor e dos textos dos ecrãs em oito idiomas. |
 | Regras de segurança | 🟡 | Todo o movimento e toda a ordem do fuso passam pela comporta: confirmação no ecrã, trinco da paragem por hardware que só um reconhecimento no ecrã levanta com o botão solto, nenhum movimento com a ligação por armar. Coberto por testes; nunca experimentado com um botão de paragem real. |
 | Voz | 🟡 | As ordens e avisos por voz são reconhecidos e formulados em oito idiomas e testados como texto; não se usou nenhum microfone nem altifalante. |
 | Ecrãs | 🟠 | Os ecrãs máquina, trabalho (microSD), máquinas e estações e definições estão escritos, na horizontal e na vertical, com o aspeto do programa de secretária; o separador visor ainda é um cartão vazio. Só existe um desenho do esquema, não uma captura de um módulo. |
@@ -59,6 +59,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 * O **ficheiro de definições** `hmi.cfg`: todo o valor afinado (idioma, brilho, o servidor, os interruptores de segurança, a voz) é uma linha de um ficheiro na sua própria partição, nunca um número no código; um valor fora do intervalo é assinalado e fica o valor seguro por omissão.
 * A **voz**: avisos falados (trabalho terminado, mudança de ferramenta, erro, ligação perdida, paragem por hardware) e uma lista curta e fixa de ordens por voz em oito idiomas; as ordens que só param entendem-se dentro de uma frase, as que movem ou rodam têm de ser ditas inteiras e pedem sempre uma confirmação.
 * Os **ecrãs**: a máquina (movimento manual, origem, fuso, início, paragem), o trabalho, o visor, as máquinas e estações do servidor e as definições, pela ordem e com os nomes do programa de secretária; o botão de paragem está sempre no topo.
+* A **placa face à mesa** e o **fim de um trabalho**: ao escolher no cartão um ficheiro de furação ou de rota, o tamanho da sua caixa é comparado com a mesa da máquina (o curso que o servidor indica menos o desvio, ou `table_width_mm` e `table_depth_mm` de `hmi.cfg`); uma placa que não cabe nem deitada nem rodada é avisada na página do trabalho com o seu tamanho e o que excede, e o trabalho continua permitido (o servidor recusa o que cai fora da mesa). Um trabalho cancelado ou falhado é mostrado como tal com o motivo do servidor, nunca é tomado por terminado (não toca o aviso de fim) e é guardado para continuar a partir dos furos já feitos; o que o servidor anota de um trabalho que pede mais do que o fuso dá é mostrado ao criá-lo.
 * O **módulo**: o Guition JC8012P4A1C (ESP32-P4 com 32 MB de RAM externa, ecrã tátil MIPI-DSI de 10,1 polegadas e 800x1280, um ESP32-C6 para o Wi-Fi, o codec ES8311 com amplificador de altifalante e a entrada de microfone ES7210). O painel da unidade é o novo.
 * **Na vertical ou na horizontal:** a definição `orientation` (`auto`, `landscape`, `portrait`) roda a imagem do painel: na horizontal (1280 x 800) o trabalho, a vista em planta e o pad de movimento ficam em três colunas sobre a barra de posição, na vertical (800 x 1280) empilham-se; o toque cai onde se toca no ecrã em ambos.
 * **O microSD e o servidor, como um só fluxo:** o cartão lista os ficheiros de furação e fresagem; o ecrã envia o ficheiro escolhido ao EH3D-SERVER como um trabalho que espera pronto, o operador inicia-o pela comporta, e o progresso, as paragens para mudança de ferramenta e o fim voltam da frota em tempo real, tal como nos programas de secretária e no nó. A resposta do servidor a cada trabalho fica guardada no cartão.
@@ -176,6 +177,8 @@ Tudo o que é afinado é uma linha de `hmi.cfg` (copia `hmi.cfg.example` para a 
 | `token` | none | 8 - 64 characters | o token de acesso ao servidor; só de escrita, nunca mostrado nem registado |
 | `orientation` | `auto` | `auto landscape portrait` | vertical ou horizontal; `auto` segue a montagem do módulo |
 | `poll_s` | 3 | 1 - 60 | de quanto em quanto tempo o ecrã pede a frota ao servidor |
+| `table_width_mm` | 0 | 0 - 5000 | a largura da mesa da máquina para o aviso de uma placa que não cabe; 0 = a que o servidor indica (o curso menos o desvio) |
+| `table_depth_mm` | 0 | 0 - 5000 | a profundidade da mesa; 0 = a que o servidor indica |
 
 ## 🚀 Início rápido
 
@@ -190,7 +193,7 @@ O firmware ainda não foi compilado: quando for, `idf.py set-target esp32p4 && i
 
 ## 🧪 Testes
 
-Os testes no computador (`build.bat` ou `./build.sh`, e depois `ctest`) são dois programas e passa tudo: `test_hmi` (995 verificações) do ficheiro de definições, da comporta (a paragem passa sempre, trinco da paragem por hardware, confirmação, tempo limite e volta do relógio, regras de voz, interruptores), das ordens e avisos por voz e dos textos de ecrã em oito idiomas; e `test_workflow` (270 verificações) da orientação e do toque, dos ficheiros do cartão (tipos, nomes seguros, ordenação), do leitor de JSON, dos pedidos e respostas do servidor e do fluxo de um trabalho desde o cartão até ao fim. Os outros dois programas cobrem os teclados (`test_keyboard`, 231 verificações: cada definição tem o seu teclado, os intervalos do teclado numérico são os do ficheiro de definições, as casas decimais, o sinal, as setas, o teclado completo de cada idioma, a maiúscula, os símbolos e o comprimento) e os avisos gravados (`test_notices`, 266 verificações: a definição, o ficheiro de cada idioma e género). Mais três programas: `test_machine` (55 verificações: os tipos de máquina, a recusa do fuso e a frase em cada idioma), `test_quality` (911 verificações: os pedidos, a leitura do relatório, cada achado) e `test_locales` (87079 verificações: cada chave tem texto em cada um dos outros 29 idiomas, nada está vazio nem é demasiado longo, a escrita de cada idioma é a certa, e todo o carater desenhável está no intervalo dos tipos de letra gerados).
+Os testes no computador (`build.bat` ou `./build.sh`, e depois `ctest`) são dois programas e passa tudo: `test_hmi` (1018 verificações) do ficheiro de definições, da comporta (a paragem passa sempre, trinco da paragem por hardware, confirmação, tempo limite e volta do relógio, regras de voz, interruptores), das ordens e avisos por voz e dos textos de ecrã em oito idiomas; e `test_workflow` (315 verificações) da orientação e do toque, dos ficheiros do cartão (tipos, nomes seguros, ordenação), do leitor de JSON, dos pedidos e respostas do servidor e do fluxo de um trabalho desde o cartão até ao fim. Os outros dois programas cobrem os teclados (`test_keyboard`, 231 verificações: cada definição tem o seu teclado, os intervalos do teclado numérico são os do ficheiro de definições, as casas decimais, o sinal, as setas, o teclado completo de cada idioma, a maiúscula, os símbolos e o comprimento) e os avisos gravados (`test_notices`, 266 verificações: a definição, o ficheiro de cada idioma e género). Mais três programas: `test_machine` (55 verificações: os tipos de máquina, a recusa do fuso e a frase em cada idioma), `test_quality` (911 verificações: os pedidos, a leitura do relatório, cada achado) e `test_locales` (89322 verificações: cada chave tem texto em cada um dos outros 29 idiomas, nada está vazio nem é demasiado longo, a escrita de cada idioma é a certa, e todo o carater desenhável está no intervalo dos tipos de letra gerados).
 
 ## 🏗️ Compilação e publicação
 

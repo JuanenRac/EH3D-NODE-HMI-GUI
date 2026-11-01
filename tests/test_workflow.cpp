@@ -520,6 +520,131 @@ static void a_gcode_program_is_a_job_of_its_own() {
     CHECK(a.on_report(ok(200, "{\"state\":\"failed\",\"kind\":\"gcode\",\"items_done\":3,\"items_total\":9}")) && a.gcode() && a.can_resume());
 }
 
+static bool near_to(double a, double b) { return a - b < 0.001 && b - a < 0.001; }
+
+static void the_box_of_a_file_and_the_table() {
+    // a metric drilling file with points: the box is where the holes lie
+    FileSummary d = summarize_drill("M48\nMETRIC\nT1C0.8\n%\nT1\nX010.0Y020.0\nX110.5Y070.0\nM30\n");
+    CHECK(d.box.known && near_to(d.box.width(), 100.5) && near_to(d.box.depth(), 50.0));
+    // a Bungard file in whole thousandths of an inch: 2.050 in to 4.050 in is 50.8 mm; a coordinate left out holds the one before
+    FileSummary i = summarize_drill("INCH\nT1C0.03\nT1\nX02050Y01538\nX04050\nY02538\n");
+    CHECK(i.box.known && near_to(i.box.width(), 50.8) && near_to(i.box.depth(), 25.4));
+    // a file with no coordinates has no box
+    CHECK(!summarize_drill("M48\nT1C0.8\n%\nT1\nM30\n").box.known);
+    // a routing file: plotter steps, 40 to the millimetre; the moves of the pen up count too
+    FileSummary r = summarize_route("IN;SP1;PU400,800;PD2400,800,2400,2800;PU;SP2;PU2000,1000;PD2200,1200;PU;");
+    CHECK(r.box.known && near_to(r.box.min_x, 10) && near_to(r.box.max_x, 60) && near_to(r.box.min_y, 20) && near_to(r.box.max_y, 70));
+
+    // the board against the table: lying, turned, too big in both ways, unknown
+    Box b;
+    b.add(0, 0);
+    b.add(160, 100);
+    CHECK(fit_on_table(b, 495, 325).kind == FitKind::Fits);
+    Box big;
+    big.add(0, 0);
+    big.add(320, 480);
+    CHECK(fit_on_table(big, 495, 325).kind == FitKind::FitsTurned);
+    Box huge;
+    huge.add(0, 0);
+    huge.add(510, 1150);
+    Fit f = fit_on_table(huge, 495, 325);
+    CHECK(f.kind == FitKind::TooBig && near_to(f.over_w, 15) && near_to(f.over_d, 825));
+    Box wide;
+    wide.add(0, 0);
+    wide.add(520, 300);
+    f = fit_on_table(wide, 495, 325);
+    CHECK(f.kind == FitKind::TooBig && near_to(f.over_w, 25) && near_to(f.over_d, 0));
+    CHECK(fit_on_table(Box{}, 495, 325).kind == FitKind::Unknown);
+    CHECK(fit_on_table(b, 0, 325).kind == FitKind::Unknown);
+    CHECK(fit_on_table(wide, 600, 500).kind == FitKind::Fits);  // another table, another answer
+
+    // the table of the machine from the configuration file the server keeps: the course less the offset
+    const std::string machine =
+        "{\"id\":\"m1\",\"cfg\":\"SER1\\nV1.0\\nC:\\\\DATA\\n*.NCD\\n1.0000 * scale x\\n1.0000\\n05.00 * offset x\\n05.00\\n0500.00 * course x\\n0330.00\\n\"}";
+    TableSize t;
+    CHECK(machine_request("m1").path == "/api/v1/machines/m1" && machine_request("m1").method == "GET");
+    CHECK(parse_machine_table(machine, t) && t.known() && near_to(t.width, 495) && near_to(t.depth, 325));
+    CHECK(!parse_machine_table("{\"id\":\"m1\"}", t) && !parse_machine_table("[]", t) && !parse_machine_table("{\"cfg\":\"a\\nb\\n\"}", t));
+    CHECK(!parse_machine_table("{\"cfg\":\"a\\nb\\nc\\nd\\n1\\n1\\n0\\n0\\n0\\n0\\n\"}", t));  // a table of nothing is no table
+
+    // the screen's advice: the chosen file against the table, and nothing is refused
+    Workflow w;
+    std::string why;
+    CHECK(w.choose("board.ncd", "M48\nMETRIC\nT1C0.8\n%\nT1\nX0.0Y0.0\nX520.0Y300.0\nM30\n", why));
+    JobAdvice a = w.advice(t);
+    CHECK(a.fit.kind == FitKind::TooBig && near_to(a.board_w, 520) && near_to(a.board_d, 300) && near_to(a.table_w, 495) && near_to(a.fit.over_w, 25));
+    CHECK(w.create_request("m1").path == "/api/v1/machines/m1/jobs");  // the warning does not block the job
+    CHECK(w.advice(TableSize{}).fit.kind == FitKind::Unknown);
+    CHECK(w.choose("small.ncd", "M48\nMETRIC\nT1C0.8\n%\nT1\nX0.0Y0.0\nX20.0Y30.0\nM30\n", why));
+    CHECK(w.advice(t).fit.kind == FitKind::Fits);
+}
+
+static void a_stopped_or_failed_job_is_not_a_finished_one() {
+    const std::string drl = "M48\nMETRIC\nT1C0.8\n%\nT1\nX1Y1\nX2Y1\nX3Y3\nX4Y4\nM30\n";
+    std::string why;
+    auto leave = [&](Workflow& w) {
+        w.on_fleet(fleet_of("j1", "busy", 50, ""), "m1");
+        w.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    };
+
+    // gone from the machine, the server not asked yet: it is not finished, not stopped and not to be forgotten
+    Workflow w;
+    CHECK(w.choose("board.NCD", drl, why) && w.on_created(ok(201, "{\"id\":\"j1\"}"), why) && w.on_started(ok(200, "{}"), why));
+    leave(w);
+    CHECK(w.stage() == Stage::Finished && w.outcome() == Outcome::None && !w.ended_well() && !w.settled() && w.want_report());
+    // the link fails: still not finished
+    CHECK(!w.ended_well());
+
+    // cancelled: stopped, with the work done kept to go on from
+    CHECK(w.on_report(ok(200, "{\"state\":\"cancelled\",\"message\":\"stopped by the operator\",\"holes_done\":2,\"holes_total\":4}")));
+    CHECK(w.stage() == Stage::Stopped && w.outcome() == Outcome::Cancelled && !w.ended_well() && w.settled());
+    CHECK(w.can_resume() && w.done() == 2 && w.message() == "stopped by the operator" && !w.advance());
+
+    // failed: the reason of the server is kept, and the job can go on from the holes it did
+    Workflow f;
+    CHECK(f.choose("board.NCD", drl, why) && f.on_created(ok(201, "{\"id\":\"j1\"}"), why) && f.on_started(ok(200, "{}"), why));
+    leave(f);
+    CHECK(f.on_report(ok(200, "{\"state\":\"failed\",\"message\":\"the node lost the link\",\"holes_done\":1,\"holes_total\":4}")));
+    CHECK(f.stage() == Stage::Stopped && f.outcome() == Outcome::Failed && f.message() == "the node lost the link" && f.can_resume() && !f.ended_well() && f.settled());
+
+    // done: the only way to be finished
+    Workflow d;
+    CHECK(d.choose("board.NCD", drl, why) && d.on_created(ok(201, "{\"id\":\"j1\"}"), why) && d.on_started(ok(200, "{}"), why));
+    leave(d);
+    CHECK(d.on_report(ok(200, "{\"state\":\"done\",\"holes_done\":4,\"holes_total\":4}")));
+    CHECK(d.stage() == Stage::Finished && d.outcome() == Outcome::Done && d.ended_well() && d.settled());
+
+    // an answer that says neither: not finished either
+    Workflow o;
+    CHECK(o.choose("board.NCD", drl, why) && o.on_created(ok(201, "{\"id\":\"j1\"}"), why) && o.on_started(ok(200, "{}"), why));
+    leave(o);
+    CHECK(!o.on_report(ok(200, "{\"state\":\"running\"}")) && !o.ended_well() && !o.settled() && o.outcome() == Outcome::None);
+
+    // a new file forgets how the last job ended
+    CHECK(w.choose("other.NCD", drl, why) && w.outcome() == Outcome::None);
+}
+
+static void the_notes_of_the_server_about_a_job() {
+    std::string why;
+    Workflow w;
+    CHECK(w.choose("board.NCD", "M48\nMETRIC\nT1C0.8\n%\nT1\nX1Y1\nM30\n", why));
+    CHECK(w.advice(TableSize{}).notes.empty());
+    const std::string made =
+        "{\"id\":\"j9\",\"state\":\"ready\",\"view\":{\"kind\":\"drill\",\"spindle_warnings\":["
+        "{\"code\":\"rpm_above_max\",\"tool\":3,\"value\":30000,\"limit\":24000},"
+        "{\"code\":\"feed_z_above_max\",\"tool\":3,\"value\":900,\"limit\":600}]}}";
+    CHECK(w.on_created(ok(201, made), why) && w.stage() == Stage::Ready);
+    JobAdvice a = w.advice(TableSize{});
+    CHECK(a.notes.size() == 2 && a.notes[0].code == "rpm_above_max" && a.notes[0].tool == 3 && a.notes[0].value == 30000 && a.notes[0].limit == 24000);
+    CHECK(a.notes[1].code == "feed_z_above_max" && a.notes[1].value == 900 && a.notes[1].limit == 600);
+    // a job with none, damaged answers and answers that are not objects give none
+    CHECK(parse_job_notes("{\"id\":\"j\",\"view\":{\"spindle_warnings\":[]}}").empty());
+    CHECK(parse_job_notes("{\"id\":\"j\"}").empty() && parse_job_notes("not json").empty() && parse_job_notes("[]").empty());
+    CHECK(parse_job_notes("{\"view\":{\"spindle_warnings\":[{\"tool\":1},3,\"x\"]}}").empty());
+    // the notes belong to the job: a new file forgets them
+    CHECK(w.choose("next.NCD", "M48\nT1C0.8\n%\nT1\nX1Y1\nM30\n", why) && w.advice(TableSize{}).notes.empty());
+}
+
 int main() {
     orientation_rules();
     sd_files();
@@ -531,6 +656,9 @@ int main() {
     a_stopped_job_goes_on_through_the_server();
     a_job_is_held_and_a_stop_reaches_the_job_of_the_machine();
     a_gcode_program_is_a_job_of_its_own();
+    the_box_of_a_file_and_the_table();
+    a_stopped_or_failed_job_is_not_a_finished_one();
+    the_notes_of_the_server_about_a_job();
     std::printf("%d checks, %d failed\n", g_checks, g_failed);
     return g_failed == 0 ? 0 : 1;
 }

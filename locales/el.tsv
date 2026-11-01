@@ -79,3 +79,5 @@ ui.Stopped	Σταμάτησε
 ui.Next	Επόμενο
 ui.ResumedFrom	Συνέχεια από
 ui.ToolChanged	Το εργαλείο άλλαξε
+ui.BoardTooBig	Η πλακέτα δεν χωράει στο τραπέζι
+ui.Failed	Απέτυχε

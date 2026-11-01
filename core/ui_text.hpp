@@ -25,7 +25,7 @@ enum class T : unsigned {
     Holes, Cuts,
     SpindleCut, WhySpindleFast,
     Resume, Stopped, Next,
-    ResumedFrom,
+    ResumedFrom, ToolChanged,
     Count
 };
 
@@ -74,6 +74,7 @@ inline const Row& text_row(T t) {
         {"Stopped", "Parado", "Fermato", "Gestoppt", "Arrêté", "Parado", "已停止", "停止済み"},
         {"Next", "Siguiente", "Successivo", "Weiter", "Suivant", "Seguinte", "下一个", "次"},
         {"Resumed from", "Reanudado desde", "Ripreso da", "Fortgesetzt von", "Repris de", "Retomado de", "接续自", "再開元"},
+        {"Tool changed", "Herramienta cambiada", "Utensile cambiato", "Werkzeug gewechselt", "Outil changé", "Ferramenta trocada", "已换刀", "工具交換済み"},
     }};
     return rows[static_cast<std::size_t>(t)];
 }

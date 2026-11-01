@@ -5,6 +5,12 @@ All notable changes to this project are documented here.
 ## [Unreleased]
 
 - **The screen looks for the server on port 18200**, the port the server listens on, in the default and in `hmi.cfg.example` (it was 8080, so a configuration that only named the host never reached the server).
+- **Starting a job works:** the start of a job that is ready no longer waits for an armed link (a job is armed only once it runs, so the start was always refused). It has its own kind in the gate: it still needs the stop released and the hardware stop wired when the setting asks for it, and it asks for the confirmation like a move; the question is no longer dropped while the link is not armed. With the bench setting that turns the question off, the order now goes at once instead of doing nothing, and a start with no job ready says so before asking anything.
+- **Pause holds, it no longer cancels:** the pause button asks the server to hold the job (`POST /api/v1/jobs/:id/pause`) and a new button lets a held job go on (`/resume`); the pause is never held back by the gate. The server holds only G-code jobs, so for a drilling or routing job its reason is shown on the screen and the job keeps running.
+- **Tool change:** while a job waits at a tool change, a new button ("tool changed") answers it through the gate and sends the confirmation to the server.
+- **The stop goes first:** the stop has a task of its own, no longer a place in the queue behind other requests, with a short timeout and three tries; it cancels the job the fleet shows on the machine (also one started from another program or screen) and the own job when it is another one. If it could not be sent the screen says so. Pressing the hardware stop sends the same stop to the server, once for each press.
+- **Texts:** one new word (tool changed) in the 37 languages and the fonts built again for the characters they need. The spoken order for a pause is now a pause, and the one for a start is a start.
+- **Tests:** `test_hmi` grows with the start of a ready job through the gate (and its confirmation while the link is not armed), the pause that is never held back and the press of the hardware stop as an edge; `test_workflow` with the pause, the release of a held job, the tool change as the only thing `confirm` answers, and the requests of a stop (fleet job, own job, both, none). The firmware has not been rebuilt with this change.
 
 ## [0.0.4] - Resume a stopped job through the server
 

@@ -10,7 +10,7 @@ namespace {
 constexpr std::size_t kMaxAnswer = 256 * 1024;  // a fleet of a big workshop is far smaller
 }
 
-bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, std::string& error) {
+bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, std::string& error, int timeout_ms) {
     if (s.server_host.empty()) {
         error = "no server in the settings";
         return false;
@@ -20,7 +20,7 @@ bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, std
     cfg.port = s.server_port;
     cfg.path = r.path.c_str();
     cfg.transport_type = HTTP_TRANSPORT_OVER_TCP;
-    cfg.timeout_ms = 4000;
+    cfg.timeout_ms = timeout_ms;
     cfg.method = r.method == "POST" ? HTTP_METHOD_POST : HTTP_METHOD_GET;
     esp_http_client_handle_t c = esp_http_client_init(&cfg);
     if (c == nullptr) {

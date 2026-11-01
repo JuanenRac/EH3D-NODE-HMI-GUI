@@ -251,7 +251,7 @@ static void voice_orders() {
     CHECK(recognise("止めて", Lang::Ja) == Intent::Stop);
     CHECK(recognise("pause", Lang::En) == Intent::Pause);
     // in Chinese the word for stop is inside the word for pause: either way the order halts
-    CHECK(kind_of(recognise("暂停", Lang::Zh)) == Kind::Stop);
+    CHECK(kind_of(recognise("暂停", Lang::Zh)) == Kind::Stop || kind_of(recognise("暂停", Lang::Zh)) == Kind::Pause);
     CHECK(recognise("desliga o fuso", Lang::Pt) == Intent::SpindleOff);
 
     // what moves or spins must be said whole: inside a longer sentence it is no order
@@ -269,8 +269,8 @@ static void voice_orders() {
     CHECK(recognise("empieza el trabajo", Lang::En) == Intent::None);
 
     CHECK(kind_of(Intent::Stop) == Kind::Stop);
-    CHECK(kind_of(Intent::Pause) == Kind::Stop);
-    CHECK(kind_of(Intent::Start) == Kind::Motion);
+    CHECK(kind_of(Intent::Pause) == Kind::Pause);
+    CHECK(kind_of(Intent::Start) == Kind::Start);
     CHECK(kind_of(Intent::Home) == Kind::Motion);
     CHECK(kind_of(Intent::SpindleOn) == Kind::Spindle);
     CHECK(kind_of(Intent::Yes) == Kind::Info);
@@ -304,10 +304,63 @@ static void screen_texts() {
     CHECK(std::strlen(why_text(Why::None, Lang::En)) == 0);
 }
 
+static void the_start_the_pause_and_the_edge_of_the_stop() {
+    Settings s = ready_settings();
+    Gate g(s);
+    make_ready(g);
+    // a job that is ready is not armed yet: the start still asks, and the question survives the loop that tells the gate the link is not armed
+    g.link(false);
+    CHECK(g.request({Kind::Motion, "jog X +10"}, Origin::Touch, 0).why == Why::NotArmed);
+    Decision d = g.request({Kind::Start, "start job"}, Origin::Touch, 100);
+    CHECK(d.verdict == Verdict::NeedConfirm && g.pending());
+    g.link(false);
+    CHECK(g.pending());
+    Action out;
+    CHECK(g.confirm(Origin::Touch, 200, out) && out.kind == Kind::Start && out.what == "start job");
+    // without the confirmation of the bench the start goes at once
+    Settings bench = ready_settings();
+    bench.confirm_moves = false;
+    Gate gb(bench);
+    make_ready(gb);
+    gb.link(false);
+    CHECK(gb.request({Kind::Start, "start job"}, Origin::Touch, 0).verdict == Verdict::Run);
+    // the hardware stop still blocks the start, and a spoken start asks even when the setting does not
+    g.hardware_stop(true, true);
+    CHECK(g.request({Kind::Start, "start job"}, Origin::Touch, 0).why == Why::HardwareStop);
+    g.hardware_stop(true, false);
+    CHECK(g.acknowledge_release());
+    g.link(false);
+    CHECK(g.request({Kind::Start, "start job"}, Origin::Voice, 0).verdict == Verdict::NeedConfirm);
+    // a start is dropped when the confirmation comes after the stop was pressed
+    g.hardware_stop(true, true);
+    CHECK(!g.pending());
+
+    // a pause is never held back, even with the hardware stop latched, and it does not wait for a confirmation
+    Gate p(s);
+    CHECK(p.latched());
+    CHECK(p.request({Kind::Pause, "pause"}, Origin::Touch, 0).verdict == Verdict::Run);
+    make_ready(p);
+    CHECK(p.request({Kind::Pause, "pause"}, Origin::Touch, 0).verdict == Verdict::Run && !p.pending());
+
+    // the press of the hardware stop is an edge that the application takes once
+    Gate e(s);
+    e.hardware_stop(true, false);
+    CHECK(!e.take_stop_edge());
+    e.hardware_stop(true, true);
+    CHECK(e.take_stop_edge());
+    CHECK(!e.take_stop_edge());
+    e.hardware_stop(true, true);  // still held down: not a new press
+    CHECK(!e.take_stop_edge());
+    e.hardware_stop(true, false);
+    e.hardware_stop(true, true);
+    CHECK(e.take_stop_edge());
+}
+
 int main() {
     settings_file();
     gate_rules();
     gate_switches();
+    the_start_the_pause_and_the_edge_of_the_stop();
     spindle_over_the_limit();
     voice_orders();
     texts_are_complete();

@@ -444,6 +444,50 @@ static void a_stopped_job_goes_on_through_the_server() {
     CHECK(a2.on_resume_from(ok(404, ""), why) == ResumeStep::Refused && !why.empty() && a2.stage() == Stage::Stopped && !a2.can_resume());
 }
 
+static void a_job_is_held_and_a_stop_reaches_the_job_of_the_machine() {
+    Workflow w;
+    std::string why;
+    CHECK(w.choose("board.NCD", "M48\n", why));
+    CHECK(w.on_created(ok(201, "{\"id\":\"j42\"}"), why));
+    CHECK(w.pause_request().path.empty() && w.release_request().path.empty());  // nothing runs yet
+    CHECK(w.on_started(ok(200, "{}"), why));
+    // a pause holds the job on the server and never cancels it
+    CHECK(w.pause_request().path == "/api/v1/jobs/j42/pause" && w.pause_request().method == "POST");
+    CHECK(w.cancel_request().path == "/api/v1/jobs/j42/cancel");
+    w.on_fleet(fleet_of("j42", "waiting", 30, "hold"), "m1");
+    CHECK(w.stage() == Stage::Waiting && w.held() && !w.tool_wait());
+    CHECK(w.release_request().path == "/api/v1/jobs/j42/resume" && w.pause_request().path.empty());
+    CHECK(w.confirm_request().path.empty());  // a held job is not at a tool change
+    w.on_fleet(fleet_of("j42", "waiting", 30, "resume"), "m1");
+    CHECK(w.held() && w.release_request().path == "/api/v1/jobs/j42/resume");
+    w.on_fleet(fleet_of("j42", "busy", 31, ""), "m1");
+    CHECK(w.stage() == Stage::Running && !w.held() && w.release_request().path.empty());
+    // the tool change is answered with confirm, not with resume
+    w.on_fleet(fleet_of("j42", "waiting", 50, "tool_change"), "m1");
+    CHECK(w.tool_wait() && !w.held());
+    CHECK(w.confirm_request().path == "/api/v1/jobs/j42/confirm" && w.release_request().path.empty());
+
+    // the stop reaches the job the fleet shows on the machine, also when this screen did not start it
+    Workflow other;
+    CHECK(other.stop_requests(FleetView{}, "m1").empty());  // nothing known
+    FleetView desk = fleet_of("desk7", "busy", 10, "");
+    std::vector<Request> stops = other.stop_requests(desk, "m1");
+    CHECK(stops.size() == 1 && stops[0].path == "/api/v1/jobs/desk7/cancel");
+    CHECK(other.stop_requests(desk, "another").empty());
+    // both the job of the fleet and the own one when they differ; once when they are the same
+    stops = w.stop_requests(desk, "m1");
+    CHECK(stops.size() == 2 && stops[0].path == "/api/v1/jobs/desk7/cancel" && stops[1].path == "/api/v1/jobs/j42/cancel");
+    stops = w.stop_requests(fleet_of("j42", "busy", 50, ""), "m1");
+    CHECK(stops.size() == 1 && stops[0].path == "/api/v1/jobs/j42/cancel");
+    // an own job that the fleet has not shown yet is stopped too, and so is one that is only ready
+    stops = w.stop_requests(FleetView{}, "m1");
+    CHECK(stops.size() == 1 && stops[0].path == "/api/v1/jobs/j42/cancel");
+    Workflow ready;
+    CHECK(ready.choose("board.NCD", "M48\n", why) && ready.on_created(ok(201, "{\"id\":\"r1\"}"), why));
+    stops = ready.stop_requests(FleetView{}, "m1");
+    CHECK(stops.size() == 1 && stops[0].path == "/api/v1/jobs/r1/cancel");
+}
+
 int main() {
     orientation_rules();
     sd_files();
@@ -453,6 +497,7 @@ int main() {
     tools_of_a_file_and_the_spindle();
     a_stopped_job_goes_on_and_two_programs_follow_each_other();
     a_stopped_job_goes_on_through_the_server();
+    a_job_is_held_and_a_stop_reaches_the_job_of_the_machine();
     std::printf("%d checks, %d failed\n", g_checks, g_failed);
     return g_failed == 0 ? 0 : 1;
 }

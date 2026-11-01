@@ -78,3 +78,4 @@ ui.Resume	Jatka
 ui.Stopped	Pysäytetty
 ui.Next	Seuraava
 ui.ResumedFrom	Jatkettu työstä
+ui.ToolChanged	Työkalu vaihdettu

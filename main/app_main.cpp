@@ -36,10 +36,12 @@ static QueueHandle_t g_requests = nullptr;  // from the screens to the applicati
 static QueueHandle_t g_to_server = nullptr; // from the application task to the link task: ServerJob
 static QueueHandle_t g_say = nullptr;       // the notices to say: hmi::Cue
 static SemaphoreHandle_t g_lock = nullptr;  // guards what the link task shares: the fleet, the note, the workflow
+static TaskHandle_t g_stop_task = nullptr;  // the task that sends a stop to the server, apart from the queue of the link
+static std::vector<hmi::Request> g_stop_reqs;  // what it sends (guarded by g_lock)
 
 // what the link task is asked to do
 struct ServerJob {
-    enum class Do { Create, Start, Cancel, Confirm, ResumeFrom, Light, Inspect, Preset, Calibrate, Last } what = Do::Create;
+    enum class Do { Create, Start, Confirm, ResumeFrom, Pause, Release, Light, Inspect, Preset, Calibrate, Last } what = Do::Create;
 };
 
 static hmi::FleetView g_fleet;
@@ -212,6 +214,51 @@ static void quality_job(const ServerJob& job) {
     if (say_bad) say(hmi::Cue::CheckNotOk);
 }
 
+// The stop does not wait in the queue of the link, behind a file being sent or a reading of the fleet: it has a task of its own, short timeouts and three tries, and when the
+// server cannot be reached the note says so, so the operator knows to use the hardware stop. It cancels the job the fleet shows on the machine, whoever started it.
+static void stop_task(void*) {
+    for (;;) {
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        std::vector<hmi::Request> reqs;
+        xSemaphoreTake(g_lock, portMAX_DELAY);
+        reqs.swap(g_stop_reqs);
+        xSemaphoreGive(g_lock);
+        for (const hmi::Request& req : reqs) {
+            hmi::Response r;
+            std::string error;
+            bool reached = false;
+            for (int attempt = 0; attempt < 3 && !reached; ++attempt) reached = srvlink::call(g_settings, req, r, error, 1500);
+            if (!reached) set_note("STOP NOT SENT (" + error + "): use the hardware stop");
+            else if (r.status != 200 && r.status != 202 && r.status != 409) set_note("stop refused: " + hmi::error_line(r));  // 409: the job was no longer running
+            else set_note("stop sent");
+        }
+    }
+}
+
+// A stop from the touch screen, the voice or the hardware input: hands the cancel of the job of the machine to the stop task at once.
+static void request_stop() {
+    xSemaphoreTake(g_lock, portMAX_DELAY);
+    g_stop_reqs = g_flow.stop_requests(g_fleet, g_settings.server_machine);
+    const bool none = g_stop_reqs.empty();
+    xSemaphoreGive(g_lock);
+    if (none) set_note("stop: no job of the machine is known to stop");
+    else if (g_stop_task != nullptr) xTaskNotifyGive(g_stop_task);
+}
+
+// What the operator asked, once the gate lets it go: the job of the screen is started, held, let go on or answered at a tool change.
+static void run_action(const hmi::Action& go) {
+    ServerJob job;
+    if (go.what == "start job") job.what = ServerJob::Do::Start;
+    else if (go.what == "pause") job.what = ServerJob::Do::Pause;
+    else if (go.what == "resume job") job.what = ServerJob::Do::Release;
+    else if (go.what == "tool changed") job.what = ServerJob::Do::Confirm;
+    else {
+        set_note("this move needs the link to the node of the machine, which is not written yet");
+        return;
+    }
+    if (xQueueSend(g_to_server, &job, 0) != pdTRUE) set_note("the link is busy: ask again");
+}
+
 // The task of the link: asks for the fleet every `poll_s` seconds and does what the operator asked, one request at a time.
 static void link_task(void*) {
     TickType_t next_poll = 0;
@@ -229,9 +276,10 @@ static void link_task(void*) {
             switch (job.what) {
                 case ServerJob::Do::Create: req = g_flow.create_request(g_settings.server_machine); break;
                 case ServerJob::Do::Start: req = g_flow.start_request(); break;
-                case ServerJob::Do::Cancel: req = g_flow.cancel_request(); break;
                 case ServerJob::Do::Confirm: req = g_flow.confirm_request(); break;
                 case ServerJob::Do::ResumeFrom: req = g_flow.resume_request(); break;
+                case ServerJob::Do::Pause: req = g_flow.pause_request(); break;
+                case ServerJob::Do::Release: req = g_flow.release_request(); break;
                 // the quality check has its own function (quality_job): it never gets here
                 case ServerJob::Do::Light:
                 case ServerJob::Do::Inspect:
@@ -350,6 +398,8 @@ static void refresh_job() {
     flow.next = g_flow.next_name();
     flow.message = g_flow.message();
     flow.resumed_from = g_flow.resumed_from();
+    flow.held = g_flow.held();
+    flow.tool_wait = g_flow.tool_wait();
     xSemaphoreGive(g_lock);
     ui::show_job(tools, spindle, g_settings);
     ui::show_flow(flow, g_settings);
@@ -403,6 +453,7 @@ extern "C" void app_main() {
         }
     }
     xTaskCreate(link_task, "link", 8192, nullptr, 4, nullptr);
+    xTaskCreate(stop_task, "stop", 6144, nullptr, 6, &g_stop_task);  // above the link and the screen: a stop is not queued behind anything
     rebuild(false);
     if (hmi::controls_for(g_settings.machine).quality_check) {
         // the last check of the machine, so the screen shows what the desktop program found too
@@ -418,6 +469,7 @@ extern "C" void app_main() {
         bool wired = false, pressed = false;
         board::read_hardware_stop(wired, pressed);
         gate.hardware_stop(wired, pressed);
+        if (gate.take_stop_edge()) request_stop();  // the stop input pressed: the job of the machine is stopped on the server too
         gate.link(state.armed);  // `armed` follows the job of the server; until a job runs the gate refuses every move
         gate.tick(board::now_ms());
         {
@@ -442,21 +494,24 @@ extern "C" void app_main() {
                     hmi::Action go;
                     if (gate.confirm(hmi::Origin::Touch, board::now_ms(), go)) {
                         ESP_LOGI(TAG, "confirmed: %s", go.what.c_str());
-                        ServerJob job;
-                        job.what = go.what == "start job" ? ServerJob::Do::Start : ServerJob::Do::Confirm;
-                        if (go.what == "start job" || go.what == "tool changed") xQueueSend(g_to_server, &job, 0);
-                        else set_note("this move needs the link to the node of the machine, which is not written yet");
+                        run_action(go);
                     }
                     ui::ask(nullptr, g_settings);
                     break;
                 }
                 case ui::What::Action:
-                    if (r.action.kind == hmi::Kind::Stop) {
-                        ServerJob job;
-                        job.what = ServerJob::Do::Cancel;
-                        xQueueSend(g_to_server, &job, 0);  // a stop always goes: the job of the server is cancelled
-                    }
+                    if (r.action.kind == hmi::Kind::Stop) request_stop();  // a stop always goes, by the task of its own
                     {
+                        // a start with no job ready is answered here, before the gate asks anything
+                        if (r.action.kind == hmi::Kind::Start) {
+                            xSemaphoreTake(g_lock, portMAX_DELAY);
+                            const bool ready = !g_flow.start_request().path.empty();
+                            xSemaphoreGive(g_lock);
+                            if (!ready) {
+                                set_note("no job is ready to start: choose a file and send it first");
+                                break;
+                            }
+                        }
                         hmi::Decision d = gate.request(r.action, hmi::Origin::Touch, board::now_ms());
                         if (d.verdict == hmi::Verdict::NeedConfirm) {
                             // the confirmation shows the turns the spindle will really get; when they were cut the screen says so
@@ -464,8 +519,10 @@ extern "C" void app_main() {
                             if (d.clipped) set_note(std::string(hmi::text(hmi::T::SpindleCut, g_settings.language)) + ": " + std::to_string(d.asked_rpm) + " > " + std::to_string(d.rpm) + " rpm");
                         } else if (d.verdict == hmi::Verdict::Refused) {
                             ui::refused(d.why, g_settings);
-                        } else if (d.clipped) {
-                            set_note(std::string(hmi::text(hmi::T::SpindleCut, g_settings.language)) + ": " + std::to_string(d.asked_rpm) + " > " + std::to_string(d.rpm) + " rpm");
+                        } else {
+                            // the bench setting without the question: the order goes now (a stop and a question have nothing more to do)
+                            if (d.clipped) set_note(std::string(hmi::text(hmi::T::SpindleCut, g_settings.language)) + ": " + std::to_string(d.asked_rpm) + " > " + std::to_string(d.rpm) + " rpm");
+                            if (r.action.kind != hmi::Kind::Stop && r.action.kind != hmi::Kind::Info) run_action(r.action);
                         }
                     }
                     break;

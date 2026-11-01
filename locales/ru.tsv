@@ -78,3 +78,4 @@ ui.Resume	Продолжить
 ui.Stopped	Остановлено
 ui.Next	Далее
 ui.ResumedFrom	Продолжено после
+ui.ToolChanged	Инструмент заменён

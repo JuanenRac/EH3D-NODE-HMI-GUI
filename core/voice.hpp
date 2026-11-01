@@ -103,8 +103,10 @@ inline Intent recognise(const std::string& text, Lang lang) {
 /// What an order asks of the gate.
 inline Kind kind_of(Intent i) {
     switch (i) {
-        case Intent::Stop: case Intent::Pause: case Intent::SpindleOff: return Kind::Stop;
-        case Intent::Resume: case Intent::Start: case Intent::Home: return Kind::Motion;
+        case Intent::Stop: case Intent::SpindleOff: return Kind::Stop;
+        case Intent::Pause: return Kind::Pause;
+        case Intent::Start: return Kind::Start;
+        case Intent::Resume: case Intent::Home: return Kind::Motion;
         case Intent::SpindleOn: return Kind::Spindle;
         default: return Kind::Info;
     }

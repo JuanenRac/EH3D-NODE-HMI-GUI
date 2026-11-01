@@ -120,6 +120,7 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 ## ✨ Funcionalidades
 
 * **Uma paragem que não se esquece:** o botão de paragem está sempre no topo e funciona sempre; a paragem por hardware fica trancada e só um reconhecimento no ecrã, com o botão solto, a levanta.
+* **Pausa, retomar e troca de ferramenta:** o botão de pausa retém o trabalho no servidor (nunca o cancela) e um botão deixa-o continuar; numa troca de ferramenta, um botão responde depois de a ferramenta ser trocada. O servidor só retém trabalhos de G-code, por isso, para um trabalho de furação ou de fresagem, responde com o seu motivo, que o ecrã mostra. A paragem é enviada por uma tarefa própria, para o trabalho que o servidor mostra na máquina (também um lançado a partir do computador), com três tentativas e uma espera curta, e premir a paragem por hardware também a envia; se não puder ser enviada, o ecrã di-lo. Escrito e testado num computador; o firmware nunca correu num módulo.
 * **Confirmação antes do movimento:** um movimento ou uma ordem do fuso mostra o que vai fazer e espera um toque, com tempo limite; um novo pedido ou uma ligação perdida descarta-o.
 * **Oito idiomas, também por voz:** inglês, espanhol, italiano, alemão, francês, português de Portugal, chinês e japonês nos ecrãs, nos avisos falados e nas ordens por voz.
 * **Seguro por omissão:** cada interruptor de segurança tem a sua definição e começa na posição prudente: ordens por voz desligadas, confirmação por voz desligada, confirmação ligada, paragem por hardware exigida.

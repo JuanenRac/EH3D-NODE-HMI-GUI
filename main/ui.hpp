@@ -59,6 +59,8 @@ void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, con
 struct FlowState {
     bool stopped = false;
     bool can_resume = false;
+    bool held = false;       // the job is held by the operator (pause): the button that lets it go on
+    bool tool_wait = false;  // the job waits at a tool change: the button that answers it
     bool route = false;     // the program in turn is a routing one
     int done = 0;           // stopped: the holes (paths) the stopped job did
     int total = 0;          // stopped: the holes (paths) it had

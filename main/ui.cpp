@@ -47,6 +47,8 @@ lv_obj_t* g_job_summary = nullptr;
 lv_obj_t* g_tools_box = nullptr;
 lv_obj_t* g_flow_label = nullptr;
 lv_obj_t* g_resume_button = nullptr;
+lv_obj_t* g_continue_button = nullptr;
+lv_obj_t* g_toolchange_button = nullptr;
 lv_obj_t* g_over_label = nullptr;
 bool g_over_refuse = false;
 lv_obj_t* g_move_buttons[10] = {nullptr};
@@ -218,8 +220,10 @@ void on_refresh_card(lv_event_t*) { Request r; r.what = What::RefreshCard; send(
 
 const hmi::Action kJog[6] = {{hmi::Kind::Motion, "jog X -"}, {hmi::Kind::Motion, "jog X +"}, {hmi::Kind::Motion, "jog Y -"},
                              {hmi::Kind::Motion, "jog Y +"}, {hmi::Kind::Motion, "jog Z -"}, {hmi::Kind::Motion, "jog Z +"}};
-const hmi::Action kStart{hmi::Kind::Motion, "start job"};
-const hmi::Action kPause{hmi::Kind::Stop, "pause"};
+const hmi::Action kStart{hmi::Kind::Start, "start job"};
+const hmi::Action kPause{hmi::Kind::Pause, "pause"};
+const hmi::Action kContinue{hmi::Kind::Motion, "resume job"};
+const hmi::Action kToolChanged{hmi::Kind::Motion, "tool changed"};
 const hmi::Action kHome{hmi::Kind::Motion, "home"};
 hmi::Action g_spindle_action{hmi::Kind::Spindle, "spindle on", 0};  // the turns come from the setting `spindle_rpm`; the gate cuts them to what the spindle gives
 
@@ -329,6 +333,12 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
         std::snprintf(label, sizeof label, "%s  %s", LV_SYMBOL_PLAY, hmi::text(T::Resume, s.language));
         g_resume_button = button(side, label, on_resume, nullptr, kGo, 220, 64);
         lv_obj_add_flag(g_resume_button, LV_OBJ_FLAG_HIDDEN);
+        // a held job goes on, and a job at a tool change is answered, from the buttons that show only then
+        g_continue_button = button(side, label, on_action, const_cast<hmi::Action*>(&kContinue), kGo, 220, 64);
+        lv_obj_add_flag(g_continue_button, LV_OBJ_FLAG_HIDDEN);
+        std::snprintf(label, sizeof label, "%s  %s", LV_SYMBOL_OK, hmi::text(T::ToolChanged, s.language));
+        g_toolchange_button = button(side, label, on_action, const_cast<hmi::Action*>(&kToolChanged), kGo, 300, 64);
+        lv_obj_add_flag(g_toolchange_button, LV_OBJ_FLAG_HIDDEN);
     }
 
     // viewer: the plan of the chosen job
@@ -442,7 +452,7 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
     lv_obj_set_style_radius(stop, LV_RADIUS_CIRCLE, 0);
     lv_obj_set_style_border_width(stop, 6, 0);
     lv_obj_set_style_border_color(stop, kAmber, 0);
-    remember_move(icon_button(g_bar, LV_SYMBOL_PAUSE, on_action, const_cast<hmi::Action*>(&kPause), kHold, 150, 80));
+    icon_button(g_bar, LV_SYMBOL_PAUSE, on_action, const_cast<hmi::Action*>(&kPause), kHold, 150, 80);  // a pause is never dimmed: it only holds the job
     remember_move(icon_button(g_bar, LV_SYMBOL_PLAY, on_action, const_cast<hmi::Action*>(&kStart), kGo, 150, 80));
     icon_button(g_bar, LV_SYMBOL_STOP, on_stop, nullptr, kHalt, 150, 80);
     g_ack = button(g_bar, hmi::text(T::AckRelease, s.language), on_ack, nullptr, LV_COLOR_MAKE(0xf9, 0xa8, 0x25), 260, 80);
@@ -594,6 +604,10 @@ void show_flow(const FlowState& flow, const hmi::Settings& s) {
     if (!flow.next.empty()) text += std::string(text.empty() ? "" : "\n") + hmi::text(T::Next, s.language) + ": " + flow.next;
     lv_label_set_text(g_flow_label, text.c_str());
     if (flow.can_resume) lv_obj_remove_flag(g_resume_button, LV_OBJ_FLAG_HIDDEN); else lv_obj_add_flag(g_resume_button, LV_OBJ_FLAG_HIDDEN);
+    if (g_continue_button != nullptr) {
+        if (flow.held) lv_obj_remove_flag(g_continue_button, LV_OBJ_FLAG_HIDDEN); else lv_obj_add_flag(g_continue_button, LV_OBJ_FLAG_HIDDEN);
+        if (flow.tool_wait) lv_obj_remove_flag(g_toolchange_button, LV_OBJ_FLAG_HIDDEN); else lv_obj_add_flag(g_toolchange_button, LV_OBJ_FLAG_HIDDEN);
+    }
 }
 
 void show_card(const std::vector<hmi::Entry>& files, const hmi::Settings&) {

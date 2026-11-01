@@ -3,7 +3,9 @@
 // The gate between what the operator asks (a touch or a spoken order) and what the screen sends to the machine.
 //
 // The rules, all of them tested on the host:
-//  * a stop is never held back: from a touch or from the voice, in any state, it goes at once;
+//  * a stop is never held back: from a touch or from the voice, in any state, it goes at once; so is a pause, which only holds the job;
+//  * the press of the hardware stop is an edge the application takes once, to stop the job of the machine on the server;
+//  * the start of a job that is ready asks like a move, but it does not need the link to be armed (a job is armed only once it runs);
 //  * the hardware stop is a latch the screen cannot clear by itself: while the input is pressed, or until the operator has
 //    acknowledged its release on the screen, no move and no spindle order passes;
 //  * a move or a spindle order passes only when the link is armed, and (unless the bench setting turns it off for the touch) it first asks for a
@@ -23,7 +25,7 @@
 namespace hmi {
 
 enum class Origin { Touch, Voice };
-enum class Kind { Info, Motion, Spindle, Stop };
+enum class Kind { Info, Motion, Spindle, Stop, Pause, Start };
 
 struct Action {
     Kind kind = Kind::Info;
@@ -50,16 +52,24 @@ public:
     void hardware_stop(bool wired, bool pressed) {
         wired_ = wired;
         if (pressed) {
+            if (!pressed_) stop_edge_ = true;
             latched_ = true;
             drop();
         }
         pressed_ = pressed;
     }
 
+    /// True once each time the hardware stop is pressed (not while it is held down): the application then stops the job of the machine on the server at once.
+    bool take_stop_edge() {
+        const bool edge = stop_edge_;
+        stop_edge_ = false;
+        return edge;
+    }
+
     /// The link to the machine: armed means the program may move it. Losing the arming drops what waited.
     void link(bool armed) {
         armed_ = armed;
-        if (!armed) drop();
+        if (!armed && !(pending_ && action_.kind == Kind::Start)) drop();  // the start of a ready job waits for its answer while the link is not armed
     }
 
     /// The operator says on the screen that the stop was released and the machine may be used again. It works only once the button is up.
@@ -89,13 +99,17 @@ public:
             return {Verdict::Run, Why::None};
         }
         if (a.kind == Kind::Info) return {Verdict::Run, Why::None};
+        if (a.kind == Kind::Pause) {
+            drop();
+            return {Verdict::Run, Why::None};
+        }
         drop();
         if (latched_ || pressed_) return {Verdict::Refused, Why::HardwareStop};
         if (s_.hw_stop_required && !wired_) return {Verdict::Refused, Why::NoHardwareStop};
         if (from == Origin::Voice && !s_.voice_orders) return {Verdict::Refused, Why::VoiceOrdersOff};
         if (a.kind == Kind::Spindle && s_.spindle_max_rpm == 0) return {Verdict::Refused, Why::SpindleDisabled};
         if (a.kind == Kind::Spindle && !controls_for(s_.machine).spindle) return {Verdict::Refused, Why::NoSpindleHere};
-        if (!armed_) return {Verdict::Refused, Why::NotArmed};
+        if (!armed_ && a.kind != Kind::Start) return {Verdict::Refused, Why::NotArmed};
         Decision d;
         action_ = a;
         if (a.kind == Kind::Spindle && a.rpm > 0) {
@@ -128,7 +142,7 @@ public:
             return false;
         }
         if (from == Origin::Voice && !s_.voice_confirm) return false;
-        if (latched_ || pressed_ || !armed_) {
+        if (latched_ || pressed_ || (!armed_ && action_.kind != Kind::Start)) {
             drop();
             return false;
         }
@@ -152,6 +166,7 @@ private:
     bool pressed_ = false;
     bool latched_ = true;  // a screen that has just started has not seen the stop released yet
     bool armed_ = false;
+    bool stop_edge_ = false;
     int machine_max_rpm_ = 0;
     bool pending_ = false;
     Action action_;

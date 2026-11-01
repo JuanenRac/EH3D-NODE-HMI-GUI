@@ -8,6 +8,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "job_tools.hpp"
 #include "sdfiles.hpp"
@@ -101,8 +102,28 @@ public:
     /// The request that starts the job. Only a job that is ready can be started: the caller sends it after the gate has confirmed.
     Request start_request() const { return stage_ == Stage::Ready ? job_start_request(job_id_) : Request{}; }
     Request cancel_request() const { return (stage_ == Stage::Running || stage_ == Stage::Waiting || stage_ == Stage::Ready) ? job_cancel_request(job_id_) : Request{}; }
+    /// The requests of a stop: the job the fleet shows on the machine (also one that another program or screen started) and, when it is another one, the job of this screen
+    /// that is ready or running. Empty when no job is known. Cancelling is what every kind of job allows.
+    std::vector<Request> stop_requests(const FleetView& f, const std::string& machine) const {
+        std::vector<Request> out;
+        std::string on_machine;
+        for (const MachineRow& m : f.machines)
+            if (m.id == machine && !m.job_id.empty()) on_machine = m.job_id;
+        if (!on_machine.empty()) out.push_back(job_cancel_request(on_machine));
+        const Request own = cancel_request();
+        if (!own.path.empty() && job_id_ != on_machine) out.push_back(own);
+        return out;
+    }
+    /// Holds the running job (the server holds only G-code jobs: for a drilling or routing job it answers with the reason, which the screen shows; the job is never cancelled).
+    Request pause_request() const { return stage_ == Stage::Running ? job_pause_request(job_id_) : Request{}; }
+    /// True while the operator's hold keeps the job waiting (the server shows it waiting with a `hold` or `resume` pause), as opposed to a tool change.
+    bool held() const { return stage_ == Stage::Waiting && (pause_ == "hold" || pause_ == "resume"); }
+    /// True while the job waits for the operator at a tool change.
+    bool tool_wait() const { return stage_ == Stage::Waiting && !held(); }
+    /// The request that lets a held job go on.
+    Request release_request() const { return held() ? job_resume_request(job_id_) : Request{}; }
     /// The request that answers the dialog the job waits at (a tool change that the operator has done).
-    Request confirm_request() const { return stage_ == Stage::Waiting ? job_confirm_request(job_id_) : Request{}; }
+    Request confirm_request() const { return tool_wait() ? job_confirm_request(job_id_) : Request{}; }
 
     /// The answer of the server to the start: it is running, or it was refused (the machine is busy, the job is gone).
     bool on_started(const Response& r, std::string& why) {

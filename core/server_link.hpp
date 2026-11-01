@@ -240,6 +240,9 @@ inline Request job_report_request(const std::string& id) { return {"GET", "/api/
 inline Request job_start_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/start", "{}"}; }
 inline Request job_cancel_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/cancel", "{}"}; }
 inline Request job_confirm_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/confirm", "{}"}; }
+/// Holds a running job where it is (`POST /jobs/:id/pause`) and lets a held one go on (`POST /jobs/:id/resume`); the server holds only G-code jobs.
+inline Request job_pause_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/pause", "{}"}; }
+inline Request job_resume_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/resume", "{}"}; }
 /// Asks the server to make a new job, ready and not started, from the saved request of a stopped one (`POST /jobs/:id/resume-from`): it brings the `skip` forward
 /// by itself, so no file is sent. An old server has no such route (404 or 405).
 inline Request job_resume_from_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/resume-from", "{}"}; }

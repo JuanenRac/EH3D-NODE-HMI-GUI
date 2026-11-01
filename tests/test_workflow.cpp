@@ -488,6 +488,38 @@ static void a_job_is_held_and_a_stop_reaches_the_job_of_the_machine() {
     CHECK(stops.size() == 1 && stops[0].path == "/api/v1/jobs/r1/cancel");
 }
 
+static void a_gcode_program_is_a_job_of_its_own() {
+    Workflow w;
+    std::string why;
+    CHECK(kind_of_file("cut.nc") == FileKind::Gcode);
+    CHECK(w.choose("frame.nc", "G0 X1\nG1 X5 F100\n", why) && w.stage() == Stage::FileChosen && w.gcode() && !w.route());
+    CHECK(!w.nothing_to_do() && w.tool_switch().summary().tools.empty());
+    Request create = w.create_request("m1");
+    Json b;
+    CHECK(create.path == "/api/v1/machines/m1/jobs" && parse_json(create.body, b) && b.str("kind") == "gcode" && b.str("name") == "frame.nc");
+    CHECK(b.str("gcode") == "G0 X1\nG1 X5 F100\n" && b.get("skip") == nullptr);
+    CHECK(w.create_request("").path.empty());
+    CHECK(parse_json(job_gcode_request("m1", "a.nc", "G0 X1", 7).body, b) && b.get("skip") && b.get("skip")->n == 7);
+    CHECK(w.on_created(ok(201, "{\"id\":\"g1\"}"), why) && w.stage() == Stage::Ready);
+    CHECK(w.start_request().path == "/api/v1/jobs/g1/start");
+    CHECK(w.on_started(ok(200, "{}"), why));
+    // a stop of the program: the server counts lines and makes the new job itself; the screen has no file to send again
+    w.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(w.on_report(ok(200, "{\"state\":\"cancelled\",\"kind\":\"gcode\",\"items_done\":12,\"items_total\":40}")) && w.stage() == Stage::Stopped);
+    CHECK(w.done() == 12 && w.total() == 40 && w.can_resume() && !w.resume_request().path.empty());
+    CHECK(w.on_resume_from(ok(404, ""), why) == ResumeStep::Refused && !w.can_resume());  // an old server: no file fallback for a program
+    // a drilling or routing file after a program starts a new job, and a program after them too
+    CHECK(w.choose("board.NCD", "M48\n", why) && !w.gcode());
+    CHECK(w.choose("outline.plt", "IN;", why) && w.next_name().empty() == false);
+    CHECK(w.choose("frame.nc", "G0 X1\n", why) && w.gcode() && w.next_name().empty());
+    CHECK(w.choose("outline.plt", "IN;", why) && !w.gcode() && w.next_name().empty());
+    // a screen that followed the job again after a reset learns from the server that it is a program
+    Workflow a;
+    CHECK(a.adopt("g9", "frame.nc"));
+    a.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(a.on_report(ok(200, "{\"state\":\"failed\",\"kind\":\"gcode\",\"items_done\":3,\"items_total\":9}")) && a.gcode() && a.can_resume());
+}
+
 int main() {
     orientation_rules();
     sd_files();
@@ -498,6 +530,7 @@ int main() {
     a_stopped_job_goes_on_and_two_programs_follow_each_other();
     a_stopped_job_goes_on_through_the_server();
     a_job_is_held_and_a_stop_reaches_the_job_of_the_machine();
+    a_gcode_program_is_a_job_of_its_own();
     std::printf("%d checks, %d failed\n", g_checks, g_failed);
     return g_failed == 0 ? 0 : 1;
 }

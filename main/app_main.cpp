@@ -392,6 +392,7 @@ static void refresh_job() {
     flow.stopped = g_flow.stage() == hmi::Stage::Stopped;
     flow.can_resume = g_flow.can_resume();
     flow.route = g_flow.route();
+    flow.gcode = g_flow.gcode();
     flow.done = g_flow.done();
     flow.total = g_flow.total();
     flow.skipped = g_flow.skipped();
@@ -571,7 +572,7 @@ extern "C" void app_main() {
                         std::string base = r.file;
                         base.resize(base.rfind('.'));
                         std::string tools;
-                        board::sd_read(base + (hmi::kind_of_file(r.file) == hmi::FileKind::Route ? ".rtd" : ".dtd"), tools, 64 * 1024);
+                        if (hmi::kind_of_file(r.file) != hmi::FileKind::Gcode) board::sd_read(base + (hmi::kind_of_file(r.file) == hmi::FileKind::Route ? ".rtd" : ".dtd"), tools, 64 * 1024);
                         g_flow.set_tools(tools);
                     }
                     xSemaphoreGive(g_lock);

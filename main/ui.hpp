@@ -62,6 +62,7 @@ struct FlowState {
     bool held = false;       // the job is held by the operator (pause): the button that lets it go on
     bool tool_wait = false;  // the job waits at a tool change: the button that answers it
     bool route = false;     // the program in turn is a routing one
+    bool gcode = false;     // the program in turn is a G-code one: its counts are lines, shown without a unit
     int done = 0;           // stopped: the holes (paths) the stopped job did
     int total = 0;          // stopped: the holes (paths) it had
     int skipped = 0;        // the holes (paths) already done before the job in turn

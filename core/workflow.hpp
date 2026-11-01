@@ -31,15 +31,17 @@ public:
     /// file chosen one after the other are two programs of one job: the drilling goes first, the routing after it. Choosing a file once a job was sent starts again.
     bool choose(const std::string& name, const std::string& text, std::string& why) {
         FileKind k = kind_of_file(name);
-        if (k != FileKind::Drill && k != FileKind::Route) {
-            why = "only drilling and routing files can be sent as a job from the card";
+        if (k != FileKind::Drill && k != FileKind::Route && k != FileKind::Gcode) {
+            why = "only drilling, routing and G-code files can be sent as a job from the card";
             return false;
         }
         if (text.empty()) {
             why = "the file is empty";
             return false;
         }
-        if (stage_ != Stage::Nothing && stage_ != Stage::FileChosen) {
+        const bool gcode = k == FileKind::Gcode;
+        // a G-code program is a job of its own: it is never paired with a drilling or a routing file
+        if ((stage_ != Stage::Nothing && stage_ != Stage::FileChosen) || gcode || slots_[0].gcode) {
             slots_[0] = Slot{};
             slots_[1] = Slot{};
         }
@@ -48,9 +50,10 @@ public:
         s = Slot{};
         s.loaded = true;
         s.route = route;
+        s.gcode = gcode;
         s.name = name;
         s.text = text;
-        s.sw.reset(route ? summarize_route(text) : summarize_drill(text));  // every tool starts on
+        if (!gcode) s.sw.reset(route ? summarize_route(text) : summarize_drill(text));  // every tool starts on; a G-code program has no tools to switch
         last_ = route ? 1 : 0;
         cur_ = first_to_do();
         job_id_.clear();
@@ -72,6 +75,7 @@ public:
     Request create_request(const std::string& machine) const {
         const Slot& s = slots_[cur_];
         if (stage_ != Stage::FileChosen || machine.empty() || !s.loaded || s.sw.nothing_left()) return {};
+        if (s.gcode) return job_gcode_request(machine, s.name, s.text, s.skip);
         return job_request(machine, s.route, s.name, s.text, s.tools, s.sw.off(), s.skip);
     }
     /// True when the operator switched off every tool of the program in turn.
@@ -188,7 +192,10 @@ public:
         }
         if (j.state == "cancelled" || j.state == "failed") {
             stage_ = Stage::Stopped;
-            if (!slots_[cur_].loaded && !j.kind.empty()) slots_[cur_].route = j.kind == "route";  // a job followed again after a reset: holes or cuts
+            if (!slots_[cur_].loaded && !j.kind.empty()) {  // a job followed again after a reset: holes, cuts or lines
+                slots_[cur_].route = j.kind == "route";
+                slots_[cur_].gcode = j.kind == "gcode";
+            }
             done_ = j.holes_done;
             total_ = j.holes_total;
             message_ = j.message;
@@ -201,7 +208,7 @@ public:
     /// has no file can go on too) or the file is still here to be sent again. Not when the server said there is nothing left to do.
     bool can_resume() const {
         if (stage_ != Stage::Stopped || done_ <= 0 || no_work_) return false;
-        return resumes_by_server() || slots_[cur_].loaded;
+        return resumes_by_server() || (slots_[cur_].loaded && !slots_[cur_].gcode);  // the lines of a program are counted by the server: no file to send again
     }
     /// True when the way to go on is the server's: the job has an id and the server has not shown itself to be one without the route.
     bool resumes_by_server() const { return stage_ == Stage::Stopped && !job_id_.empty() && api_ != ResumeApi::No; }
@@ -251,7 +258,7 @@ public:
     /// The old way, for a server without the route: prepares the job to go on from the holes (paths) already done: the program in turn is ready to be sent again with `skip`;
     /// the tools switched off stay off. The application sends it, and the start goes through the gate as any other.
     bool resume(std::string& why) {
-        if (!can_resume() || !slots_[cur_].loaded) {
+        if (!can_resume() || !slots_[cur_].loaded || slots_[cur_].gcode) {
             why = "there is nothing to go on from";
             return false;
         }
@@ -283,6 +290,8 @@ public:
     }
     /// True when the program in turn is a routing one.
     bool route() const { return slots_[cur_].route; }
+    /// True when the program in turn is a G-code program (its counts are lines, not holes or cuts).
+    bool gcode() const { return slots_[cur_].gcode; }
     /// The holes (paths) already done before the job in turn, and the ones a stopped job did of the ones it had; for the screen.
     int skipped() const { return slots_[cur_].skip; }
     int done() const { return done_; }
@@ -307,6 +316,7 @@ private:
     struct Slot {
         bool loaded = false;
         bool route = false;
+        bool gcode = false;
         bool done = false;  // this program of the job has been done
         std::string name, text, tools;
         ToolSwitch sw;

@@ -267,10 +267,19 @@ inline Request job_request(const std::string& machine, bool route, const std::st
     return {"POST", "/api/v1/machines/" + machine + "/jobs", body};
 }
 
+/// A G-code job made of the text of a program of the card (`.nc`, `.gcode`, `.tap`): the server checks it against the machine (it refuses a machine that takes drilling and routing
+/// jobs only, a program it cannot read, or a spindle order beyond the spindle), plans it and keeps it ready. `skip` is the number of lines already done, for a job that goes on.
+inline Request job_gcode_request(const std::string& machine, const std::string& name, const std::string& program, int skip = 0) {
+    std::string body = std::string("{\"kind\":\"gcode\",\"name\":") + json_quote(name) + ",\"gcode\":" + json_quote(program);
+    if (skip > 0) body += ",\"skip\":" + std::to_string(skip);
+    body += "}";
+    return {"POST", "/api/v1/machines/" + machine + "/jobs", body};
+}
+
 /// How a job ended, as `GET /jobs/:id` says it: its state (`done`, `cancelled`, `failed`, ...), why, and the holes (the paths of a routing job) it did of the ones it had.
 struct JobReport {
     std::string state, message, kind;  // kind: `drill`, `route` or `gcode`
-    int holes_done = 0;
+    int holes_done = 0;  // for a G-code job: the lines done (`items_done`), when the server gives no holes
     int holes_total = 0;
 };
 
@@ -283,6 +292,10 @@ inline bool parse_job_report(const std::string& body, JobReport& out) {
     r.kind = j.str("kind");
     r.holes_done = static_cast<int>(j.num("holes_done"));
     r.holes_total = static_cast<int>(j.num("holes_total"));
+    if (r.kind == "gcode") {
+        r.holes_done = static_cast<int>(j.num("items_done"));
+        r.holes_total = static_cast<int>(j.num("items_total"));
+    }
     if (r.holes_done < 0) r.holes_done = 0;
     if (r.holes_total < r.holes_done) r.holes_total = r.holes_done;
     out = std::move(r);

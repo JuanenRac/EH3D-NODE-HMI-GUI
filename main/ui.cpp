@@ -589,7 +589,7 @@ void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, con
 void show_flow(const FlowState& flow, const hmi::Settings& s) {
     using hmi::T;
     if (g_flow_label == nullptr || g_resume_button == nullptr) return;
-    const char* what = hmi::text(flow.route ? T::Cuts : T::Holes, s.language);
+    const char* what = flow.gcode ? "" : hmi::text(flow.route ? T::Cuts : T::Holes, s.language);
     std::string text;
     char line[160];
     if (flow.stopped) {

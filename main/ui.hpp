@@ -65,6 +65,7 @@ struct FlowState {
     int skipped = 0;        // the holes (paths) already done before the job in turn
     std::string next;       // the name of the file of the program that comes next, empty when none
     std::string message;    // why the job stopped, as the server says it
+    std::string resumed_from;  // the id of the stopped job that the job in turn goes on from, empty when none
 };
 /// Shows where the job is: what a stopped job did and the button to go on from there, and the program that comes next.
 void show_flow(const FlowState& flow, const hmi::Settings& settings);

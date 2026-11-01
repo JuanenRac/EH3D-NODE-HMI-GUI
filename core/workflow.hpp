@@ -17,6 +17,13 @@ namespace hmi {
 
 enum class Stage { Nothing, FileChosen, Ready, Running, Waiting, Finished, Failed, Stopped };
 
+/// Whether the server makes the new job of a stopped one by itself (`POST /jobs/:id/resume-from`): not known until it was asked once; a server that answers 404 or 405 to
+/// the route is an old one and the screen goes on with the file it keeps.
+enum class ResumeApi { Unknown, Yes, No };
+/// What the answer of the server to `resume-from` came to: the new job is made (ready, waiting for the operator), the old way must be used (the screen sends the file it
+/// keeps again), or the job cannot go on (the reason is given).
+enum class ResumeStep { Made, Fallback, Refused };
+
 class Workflow {
 public:
     /// The operator chose a file of the card (its name and text). A file of another kind than a drilling or routing job is refused. A drilling file and a routing
@@ -108,8 +115,8 @@ public:
     }
 
     /// After a reset: follow the job that this screen had (its id and name come from `job_memory.hpp`). It counts as running until the next reading of the fleet says
-    /// what it is: still running or waiting, or over (the server no longer shows it on the machine). False when there is no id. The text of the file is not kept, so a
-    /// job followed this way cannot be resumed from here.
+    /// what it is: still running or waiting, or over (the server no longer shows it on the machine). False when there is no id. The text of the file is not kept, but the
+    /// server keeps the request of the job: one followed this way goes on through `resume-from` when the server has the route.
     bool adopt(const std::string& job_id, const std::string& name) {
         if (job_id.empty()) return false;
         slots_[0] = Slot{};
@@ -160,6 +167,7 @@ public:
         }
         if (j.state == "cancelled" || j.state == "failed") {
             stage_ = Stage::Stopped;
+            if (!slots_[cur_].loaded && !j.kind.empty()) slots_[cur_].route = j.kind == "route";  // a job followed again after a reset: holes or cuts
             done_ = j.holes_done;
             total_ = j.holes_total;
             message_ = j.message;
@@ -168,12 +176,61 @@ public:
         return false;
     }
 
-    /// A job that was stopped can go on: its file is still here and it did some of its work.
-    bool can_resume() const { return stage_ == Stage::Stopped && slots_[cur_].loaded && done_ > 0; }
-    /// Prepares the job to go on from the holes (paths) already done: the program in turn is ready to be sent again with `skip`; the tools switched off stay off. The
-    /// application sends it, and the start goes through the gate as any other.
+    /// A job that was stopped can go on when it did some of its work and either the server makes the new job itself (it keeps the request, so a screen that was reset and
+    /// has no file can go on too) or the file is still here to be sent again. Not when the server said there is nothing left to do.
+    bool can_resume() const {
+        if (stage_ != Stage::Stopped || done_ <= 0 || no_work_) return false;
+        return resumes_by_server() || slots_[cur_].loaded;
+    }
+    /// True when the way to go on is the server's: the job has an id and the server has not shown itself to be one without the route.
+    bool resumes_by_server() const { return stage_ == Stage::Stopped && !job_id_.empty() && api_ != ResumeApi::No; }
+    /// The request that asks the server to make the new job from the saved one, empty when it cannot be asked (not stopped, the server is an old one) or when it was just
+    /// asked and the answer has not come (a second touch does not make a second job). The answer goes to `on_resume_from`; when the request could not be sent `resume_failed`.
+    Request resume_request() {
+        if (!can_resume() || !resumes_by_server() || resume_sent_) return {};
+        resume_sent_ = true;
+        return job_resume_from_request(job_id_);
+    }
+    /// The request could not be sent (no link): it may be asked again.
+    void resume_failed() { resume_sent_ = false; }
+    /// The answer of the server to `resume_request`. `Made`: the job of the answer is ready, not started (the operator starts it, through the gate), and `resumed_from()` names
+    /// the one it goes on from. `Fallback`: the server is an old one (404 or 405 without the error of an unknown job) and the screen still has the file: the job is prepared as
+    /// `resume` does and the application sends it. `Refused`: `why` says it (the job is not stopped for the server, nothing is left, no file to fall back on...).
+    ResumeStep on_resume_from(const Response& r, std::string& why) {
+        resume_sent_ = false;
+        if (stage_ != Stage::Stopped) {
+            why = "the job is not stopped";
+            return ResumeStep::Refused;
+        }
+        Json j;
+        const bool parsed = parse_json(r.body, j) && j.type == Json::Type::Object;
+        if ((r.status == 200 || r.status == 201) && parsed && !j.str("id").empty()) {
+            api_ = ResumeApi::Yes;
+            const std::string from = j.str("resumed_from", job_id_);
+            slots_[cur_].skip += done_;
+            reset_run();
+            job_id_ = j.str("id");
+            resumed_from_ = from;
+            stage_ = Stage::Ready;
+            return ResumeStep::Made;
+        }
+        if ((r.status == 404 || r.status == 405) && !(parsed && j.str("error") == "unknown_job")) {
+            api_ = ResumeApi::No;
+            if (slots_[cur_].loaded && resume(why)) return ResumeStep::Fallback;
+            why = "the server is an old one and this screen has no file to send again";
+            return ResumeStep::Refused;
+        }
+        if (r.status == 422 && parsed && j.str("error") == "no_work") no_work_ = true;
+        why = error_line(r);
+        return ResumeStep::Refused;
+    }
+    /// The job that the job in turn goes on from (the id of the stopped job), empty when it is not the continuation of another.
+    const std::string& resumed_from() const { return resumed_from_; }
+
+    /// The old way, for a server without the route: prepares the job to go on from the holes (paths) already done: the program in turn is ready to be sent again with `skip`;
+    /// the tools switched off stay off. The application sends it, and the start goes through the gate as any other.
     bool resume(std::string& why) {
-        if (!can_resume()) {
+        if (!can_resume() || !slots_[cur_].loaded) {
             why = "there is nothing to go on from";
             return false;
         }
@@ -248,16 +305,21 @@ private:
         pause_.clear();
         unreported_ = false;
         reported_done_ = false;
+        no_work_ = false;
+        resume_sent_ = false;
+        resumed_from_.clear();
     }
 
     Stage stage_ = Stage::Nothing;
     Slot slots_[2];  // 0: the drilling program, 1: the routing one
     int cur_ = 0;    // the program in turn
     int last_ = 0;   // the program whose file was chosen last (it receives its tool table)
-    std::string job_id_, pause_, message_;
+    std::string job_id_, pause_, message_, resumed_from_;
     int percent_ = 0;
     int done_ = 0, total_ = 0;
     bool unreported_ = false, reported_done_ = false;
+    ResumeApi api_ = ResumeApi::Unknown;
+    bool no_work_ = false, resume_sent_ = false;
 };
 
 }  // namespace hmi

@@ -39,7 +39,7 @@ static SemaphoreHandle_t g_lock = nullptr;  // guards what the link task shares:
 
 // what the link task is asked to do
 struct ServerJob {
-    enum class Do { Create, Start, Cancel, Confirm, Light, Inspect, Preset, Calibrate, Last } what = Do::Create;
+    enum class Do { Create, Start, Cancel, Confirm, ResumeFrom, Light, Inspect, Preset, Calibrate, Last } what = Do::Create;
 };
 
 static hmi::FleetView g_fleet;
@@ -231,6 +231,7 @@ static void link_task(void*) {
                 case ServerJob::Do::Start: req = g_flow.start_request(); break;
                 case ServerJob::Do::Cancel: req = g_flow.cancel_request(); break;
                 case ServerJob::Do::Confirm: req = g_flow.confirm_request(); break;
+                case ServerJob::Do::ResumeFrom: req = g_flow.resume_request(); break;
                 // the quality check has its own function (quality_job): it never gets here
                 case ServerJob::Do::Light:
                 case ServerJob::Do::Inspect:
@@ -242,7 +243,26 @@ static void link_task(void*) {
             if (req.path.empty()) {
                 set_note("nothing to send: choose a file and set the machine of the server");
             } else if (!srvlink::call(g_settings, req, r, error)) {
+                if (job.what == ServerJob::Do::ResumeFrom) {
+                    xSemaphoreTake(g_lock, portMAX_DELAY);
+                    g_flow.resume_failed();
+                    xSemaphoreGive(g_lock);
+                }
                 set_note(error);
+            } else if (job.what == ServerJob::Do::ResumeFrom) {
+                // the server makes the new job from the request it kept; an old one has no such route and the screen sends the file it keeps
+                std::string why;
+                xSemaphoreTake(g_lock, portMAX_DELAY);
+                const hmi::ResumeStep step = g_flow.on_resume_from(r, why);
+                xSemaphoreGive(g_lock);
+                if (step == hmi::ResumeStep::Fallback) {
+                    ServerJob again;
+                    again.what = ServerJob::Do::Create;
+                    xQueueSend(g_to_server, &again, 0);
+                    set_note("the server is an old one: the file is sent again");
+                } else {
+                    set_note(step == hmi::ResumeStep::Made ? "going on from the holes already done: start it when ready" : why);
+                }
             } else {
                 std::string why;
                 xSemaphoreTake(g_lock, portMAX_DELAY);
@@ -329,6 +349,7 @@ static void refresh_job() {
     flow.skipped = g_flow.skipped();
     flow.next = g_flow.next_name();
     flow.message = g_flow.message();
+    flow.resumed_from = g_flow.resumed_from();
     xSemaphoreGive(g_lock);
     ui::show_job(tools, spindle, g_settings);
     ui::show_flow(flow, g_settings);
@@ -454,12 +475,13 @@ extern "C" void app_main() {
                 case ui::What::Resume: {
                     std::string why;
                     xSemaphoreTake(g_lock, portMAX_DELAY);
-                    const bool ok = g_flow.resume(why);
+                    // the server makes the new job from the request it kept (it works after a reset, with no file); an old server is answered with the file the screen keeps
+                    const bool by_server = g_flow.can_resume() && g_flow.resumes_by_server();
+                    const bool ok = by_server || g_flow.resume(why);
                     xSemaphoreGive(g_lock);
                     if (ok) {
-                        // the same file is sent again leaving out the holes (paths) already done; the start goes through the gate as any other
                         ServerJob job;
-                        job.what = ServerJob::Do::Create;
+                        job.what = by_server ? ServerJob::Do::ResumeFrom : ServerJob::Do::Create;
                         xQueueSend(g_to_server, &job, 0);
                         set_note("going on from the holes already done");
                         refresh_job();

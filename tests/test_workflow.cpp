@@ -317,11 +317,11 @@ static void a_stopped_job_goes_on_and_two_programs_follow_each_other() {
     CHECK(y.choose("board.NCD", drl, why) && y.on_created(ok(201, "{\"id\":\"j4\"}"), why) && y.on_started(ok(200, "{}"), why));
     y.on_fleet(fleet_of("", "idle", 0, ""), "m1");
     CHECK(!y.on_report(ok(502, "")) && y.stage() == Stage::Finished && !y.want_report() && !y.can_resume());
-    // a job followed again after a reset has no file: it cannot go on from here
+    // a job followed again after a reset has no file: it can only go on through the server (see the test of resume-from), not by sending a file again
     Workflow a;
     CHECK(a.adopt("j9", "board.NCD"));
     a.on_fleet(fleet_of("", "idle", 0, ""), "m1");
-    CHECK(a.on_report(ok(200, "{\"state\":\"cancelled\",\"holes_done\":3,\"holes_total\":4}")) && a.stage() == Stage::Stopped && !a.can_resume());
+    CHECK(a.on_report(ok(200, "{\"state\":\"cancelled\",\"holes_done\":3,\"holes_total\":4}")) && a.stage() == Stage::Stopped && a.can_resume() && a.resumes_by_server());
 
     // two programs: the drilling first whatever the order the files were chosen in, then the routing
     Workflow c;
@@ -358,6 +358,92 @@ static void a_stopped_job_goes_on_and_two_programs_follow_each_other() {
     CHECK(c.choose("another.NCD", drl, why) && c.next_name().empty() && !c.route() && c.skipped() == 0);
 }
 
+static void a_stopped_job_goes_on_through_the_server() {
+    const std::string drl = "M48\nMETRIC,TZ\nT1C0.8\nT2C1.0\n%\nT1\nX1Y1\nX2Y1\nT2\nX3Y3\nX4Y4\nT0\nM30\n";
+    std::string why;
+    Json b;
+    // the request is the route of the server, with no file in it
+    CHECK(job_resume_from_request("j1").method == "POST" && job_resume_from_request("j1").path == "/api/v1/jobs/j1/resume-from" && job_resume_from_request("j1").body == "{}");
+    JobReport jr;
+    CHECK(parse_job_report("{\"state\":\"cancelled\",\"kind\":\"route\",\"holes_done\":1,\"holes_total\":3}", jr) && jr.kind == "route");
+
+    // a job stopped after two holes: the server makes the new one, ready and not started, and says where it comes from
+    Workflow w;
+    CHECK(w.choose("board.NCD", drl, why) && w.on_created(ok(201, "{\"id\":\"j1\"}"), why) && w.on_started(ok(200, "{}"), why));
+    CHECK(w.resume_request().path.empty());  // it is not stopped yet
+    w.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(w.on_report(ok(200, "{\"state\":\"cancelled\",\"kind\":\"drill\",\"holes_done\":2,\"holes_total\":4}")) && w.can_resume() && w.resumes_by_server());
+    Request q = w.resume_request();
+    CHECK(q.method == "POST" && q.path == "/api/v1/jobs/j1/resume-from");
+    CHECK(w.resume_request().path.empty());  // a second touch does not ask again while the answer is awaited
+    CHECK(w.on_resume_from(ok(201, "{\"id\":\"j2\",\"state\":\"ready\",\"resumed_from\":\"j1\",\"kind\":\"drill\"}"), why) == ResumeStep::Made);
+    CHECK(w.stage() == Stage::Ready && w.job_id() == "j2" && w.resumed_from() == "j1" && w.skipped() == 2 && !w.can_resume());
+    CHECK(w.create_request("m1").path.empty());                         // nothing is sent again: the server has the file
+    CHECK(w.start_request().path == "/api/v1/jobs/j2/start");           // the operator starts it, through the gate; nothing starts by itself
+    CHECK(w.on_started(ok(200, "{}"), why) && w.stage() == Stage::Running);
+    // a second stop goes on from the job in turn, and the sums add up
+    w.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(w.on_report(ok(200, "{\"state\":\"failed\",\"holes_done\":1,\"holes_total\":2}")) && w.resume_request().path == "/api/v1/jobs/j2/resume-from");
+    CHECK(w.on_resume_from(ok(200, "{\"id\":\"j3\",\"resumed_from\":\"j2\"}"), why) == ResumeStep::Made && w.skipped() == 3 && w.resumed_from() == "j2" && w.job_id() == "j3");
+    // choosing another file forgets where the job came from
+    CHECK(w.choose("other.NCD", drl, why) && w.resumed_from().empty());
+
+    // the link did not get through: it may be asked again
+    Workflow n;
+    CHECK(n.choose("board.NCD", drl, why) && n.on_created(ok(201, "{\"id\":\"j4\"}"), why) && n.on_started(ok(200, "{}"), why));
+    n.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(n.on_report(ok(200, "{\"state\":\"cancelled\",\"holes_done\":1,\"holes_total\":4}")) && !n.resume_request().path.empty());
+    n.resume_failed();
+    CHECK(!n.resume_request().path.empty());
+
+    // 409 not_stopped: the server says the job is not stopped; the screen stays as it was and can ask again
+    CHECK(n.on_resume_from(ok(409, "{\"error\":\"not_stopped\",\"detail\":\"the job is running\"}"), why) == ResumeStep::Refused && why == "not_stopped: the job is running");
+    CHECK(n.stage() == Stage::Stopped && n.can_resume() && !n.resume_request().path.empty());
+    // 404 for a job the server no longer has is not an old server
+    CHECK(n.on_resume_from(ok(404, "{\"error\":\"unknown_job\"}"), why) == ResumeStep::Refused && n.resumes_by_server());
+    // 422 no_work: nothing is left to do, the button goes away
+    CHECK(n.on_resume_from(ok(422, "{\"error\":\"no_work\",\"detail\":\"every hole is done\"}"), why) == ResumeStep::Refused && why == "no_work: every hole is done");
+    CHECK(!n.can_resume() && n.resume_request().path.empty() && n.stage() == Stage::Stopped);
+    // an answer that is a success but has no job in it is not taken for one
+    Workflow m;
+    CHECK(m.choose("board.NCD", drl, why) && m.on_created(ok(201, "{\"id\":\"j5\"}"), why) && m.on_started(ok(200, "{}"), why));
+    m.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(m.on_report(ok(200, "{\"state\":\"cancelled\",\"holes_done\":1,\"holes_total\":4}")) && m.resume_request().path == "/api/v1/jobs/j5/resume-from");
+    CHECK(m.on_resume_from(ok(200, "{}"), why) == ResumeStep::Refused && m.stage() == Stage::Stopped && m.skipped() == 0);
+
+    // an old server (404 or 405 on the route): the screen falls back to sending the file it keeps, with the skip it works out
+    Workflow o;
+    CHECK(o.choose("board.NCD", drl, why) && o.on_created(ok(201, "{\"id\":\"j6\"}"), why) && o.on_started(ok(200, "{}"), why));
+    o.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(o.on_report(ok(200, "{\"state\":\"cancelled\",\"holes_done\":2,\"holes_total\":4}")) && !o.resume_request().path.empty());
+    CHECK(o.on_resume_from(ok(404, ""), why) == ResumeStep::Fallback);
+    CHECK(o.stage() == Stage::FileChosen && o.skipped() == 2 && parse_json(o.create_request("m1").body, b) && b.get("skip") && b.get("skip")->n == 2);
+    CHECK(o.on_created(ok(201, "{\"id\":\"j7\"}"), why) && o.on_started(ok(200, "{}"), why));
+    o.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(o.on_report(ok(200, "{\"state\":\"cancelled\",\"holes_done\":1,\"holes_total\":2}")));
+    CHECK(!o.resumes_by_server() && o.resume_request().path.empty() && o.can_resume());  // the screen remembers the server is an old one
+    CHECK(o.resume(why) && o.skipped() == 3);
+    Workflow o2;
+    CHECK(o2.choose("board.NCD", drl, why) && o2.on_created(ok(201, "{\"id\":\"j8\"}"), why) && o2.on_started(ok(200, "{}"), why));
+    o2.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(o2.on_report(ok(200, "{\"state\":\"failed\",\"holes_done\":1,\"holes_total\":4}")) && o2.resume_request().path == "/api/v1/jobs/j8/resume-from");
+    CHECK(o2.on_resume_from(ok(405, "Method Not Allowed"), why) == ResumeStep::Fallback && o2.stage() == Stage::FileChosen && o2.skipped() == 1);
+
+    // after a reset the screen has no file: with the new server it goes on all the same; with an old one it cannot
+    Workflow a;
+    CHECK(a.adopt("j9", "outline.PLT"));
+    a.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(a.on_report(ok(200, "{\"state\":\"cancelled\",\"kind\":\"route\",\"holes_done\":1,\"holes_total\":3}")) && a.route() && a.can_resume());
+    CHECK(a.resume_request().path == "/api/v1/jobs/j9/resume-from");
+    CHECK(a.on_resume_from(ok(200, "{\"id\":\"j10\",\"resumed_from\":\"j9\",\"kind\":\"route\"}"), why) == ResumeStep::Made);
+    CHECK(a.stage() == Stage::Ready && a.job_id() == "j10" && a.resumed_from() == "j9" && a.route() && a.skipped() == 1 && a.start_request().path == "/api/v1/jobs/j10/start");
+    Workflow a2;
+    CHECK(a2.adopt("j11", "board.NCD"));
+    a2.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(a2.on_report(ok(200, "{\"state\":\"failed\",\"holes_done\":2,\"holes_total\":4}")) && !a2.resume_request().path.empty());
+    CHECK(a2.on_resume_from(ok(404, ""), why) == ResumeStep::Refused && !why.empty() && a2.stage() == Stage::Stopped && !a2.can_resume());
+}
+
 int main() {
     orientation_rules();
     sd_files();
@@ -366,6 +452,7 @@ int main() {
     a_job_is_followed_again_after_a_reset();
     tools_of_a_file_and_the_spindle();
     a_stopped_job_goes_on_and_two_programs_follow_each_other();
+    a_stopped_job_goes_on_through_the_server();
     std::printf("%d checks, %d failed\n", g_checks, g_failed);
     return g_failed == 0 ? 0 : 1;
 }

@@ -85,14 +85,14 @@ static std::vector<Entry> all_texts(Lang l) {
 static bool count_is(std::size_t a, std::size_t b) { return a == b; }
 
 static void the_keys() {
-    CHECK(count_is(kKeyCount, 79));  // (the enums are tied to the counts by static_assert in ui_text.hpp and quality.hpp)
+    CHECK(count_is(kKeyCount, 80));  // (the enums are tied to the counts by static_assert in ui_text.hpp and quality.hpp)
     // the order of the names follows the enums: every name checked against the enum it stands for
     const char* ui[] = {"Viewer", "Job", "Machine", "Settings", "Fleet", "Start", "Pause", "Stop", "Home", "Confirm", "Cancel", "Armed", "NotArmed", "StopPressed", "AckRelease", "Language", "Voice",
                         "Brightness", "Volume", "JogX", "JogY", "JogZ", "Spindle", "AskMove", "AskSpindle", "WhyHardwareStop", "WhyNotArmed", "WhyVoiceOff", "WhyNoStop", "WhySpindle", "WhyNoSpindleHere", "Feed",
-                        "Progress", "Tool", "Jog", "Holes", "Cuts", "SpindleCut", "WhySpindleFast", "Resume", "Stopped", "Next"};
+                        "Progress", "Tool", "Jog", "Holes", "Cuts", "SpindleCut", "WhySpindleFast", "Resume", "Stopped", "Next", "ResumedFrom"};
     const T ui_enum[] = {T::Viewer, T::Job, T::Machine, T::Settings, T::Fleet, T::Start, T::Pause, T::Stop, T::Home, T::Confirm, T::Cancel, T::Armed, T::NotArmed, T::StopPressed, T::AckRelease,
                          T::Language, T::Voice, T::Brightness, T::Volume, T::JogX, T::JogY, T::JogZ, T::Spindle, T::AskMove, T::AskSpindle, T::WhyHardwareStop, T::WhyNotArmed, T::WhyVoiceOff,
-                         T::WhyNoStop, T::WhySpindle, T::WhyNoSpindleHere, T::Feed, T::Progress, T::Tool, T::Jog, T::Holes, T::Cuts, T::SpindleCut, T::WhySpindleFast, T::Resume, T::Stopped, T::Next};
+                         T::WhyNoStop, T::WhySpindle, T::WhyNoSpindleHere, T::Feed, T::Progress, T::Tool, T::Jog, T::Holes, T::Cuts, T::SpindleCut, T::WhySpindleFast, T::Resume, T::Stopped, T::Next, T::ResumedFrom};
     CHECK(count_is(sizeof ui / sizeof ui[0], kUiKeyCount));
     for (std::size_t i = 0; i < kUiKeyCount; ++i) {
         CHECK_MSG(static_cast<std::size_t>(ui_enum[i]) == i, "ui enum order at %zu", i);

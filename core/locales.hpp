@@ -11,7 +11,7 @@
 
 namespace hmi {
 
-constexpr std::size_t kUiKeyCount = 42;
+constexpr std::size_t kUiKeyCount = 43;
 constexpr std::size_t kQualityKeyCount = 19;
 constexpr std::size_t kFindingKeyCount = 18;
 constexpr std::size_t kKeyCount = kUiKeyCount + kQualityKeyCount + kFindingKeyCount;
@@ -20,7 +20,7 @@ constexpr std::size_t kKeyCount = kUiKeyCount + kQualityKeyCount + kFindingKeyCo
 inline constexpr const char* const kKeyNames[kKeyCount] = {
     "ui.Viewer", "ui.Job", "ui.Machine", "ui.Settings", "ui.Fleet", "ui.Start", "ui.Pause", "ui.Stop", "ui.Home", "ui.Confirm", "ui.Cancel", "ui.Armed", "ui.NotArmed",
     "ui.StopPressed", "ui.AckRelease", "ui.Language", "ui.Voice", "ui.Brightness", "ui.Volume", "ui.JogX", "ui.JogY", "ui.JogZ", "ui.Spindle", "ui.AskMove", "ui.AskSpindle",
-    "ui.WhyHardwareStop", "ui.WhyNotArmed", "ui.WhyVoiceOff", "ui.WhyNoStop", "ui.WhySpindle", "ui.WhyNoSpindleHere", "ui.Feed", "ui.Progress", "ui.Tool", "ui.Jog", "ui.Holes", "ui.Cuts", "ui.SpindleCut", "ui.WhySpindleFast", "ui.Resume", "ui.Stopped", "ui.Next",
+    "ui.WhyHardwareStop", "ui.WhyNotArmed", "ui.WhyVoiceOff", "ui.WhyNoStop", "ui.WhySpindle", "ui.WhyNoSpindleHere", "ui.Feed", "ui.Progress", "ui.Tool", "ui.Jog", "ui.Holes", "ui.Cuts", "ui.SpindleCut", "ui.WhySpindleFast", "ui.Resume", "ui.Stopped", "ui.Next", "ui.ResumedFrom",
     "q.Title", "q.Light", "q.LightOff", "q.CheckNow", "q.Checking", "q.VerdictOk", "q.VerdictNotOk", "q.VerdictUnknown", "q.NotChecked", "q.HoleWidth", "q.HoleNone", "q.Profile",
     "q.Standard", "q.FinePitch", "q.Prototype", "q.Calibrate", "q.HolesOk", "q.ChannelWidth", "q.NeedServer",
     "f.hole_missing", "f.hole_wrong_size", "f.hole_off_centre", "f.hole_not_round", "f.hole_debris", "f.hole_out_of_view", "f.mill_no_channels", "f.mill_too_narrow", "f.mill_too_wide",

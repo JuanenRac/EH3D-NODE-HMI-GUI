@@ -240,6 +240,9 @@ inline Request job_report_request(const std::string& id) { return {"GET", "/api/
 inline Request job_start_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/start", "{}"}; }
 inline Request job_cancel_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/cancel", "{}"}; }
 inline Request job_confirm_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/confirm", "{}"}; }
+/// Asks the server to make a new job, ready and not started, from the saved request of a stopped one (`POST /jobs/:id/resume-from`): it brings the `skip` forward
+/// by itself, so no file is sent. An old server has no such route (404 or 405).
+inline Request job_resume_from_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/resume-from", "{}"}; }
 
 /// A drilling or routing job made of the text of the file of the card (and its tool table when there is one); the server plans it and keeps
 /// it ready: nothing starts until `job_start_request` is sent, and that goes through the gate of the screen.
@@ -263,7 +266,7 @@ inline Request job_request(const std::string& machine, bool route, const std::st
 
 /// How a job ended, as `GET /jobs/:id` says it: its state (`done`, `cancelled`, `failed`, ...), why, and the holes (the paths of a routing job) it did of the ones it had.
 struct JobReport {
-    std::string state, message;
+    std::string state, message, kind;  // kind: `drill`, `route` or `gcode`
     int holes_done = 0;
     int holes_total = 0;
 };
@@ -274,6 +277,7 @@ inline bool parse_job_report(const std::string& body, JobReport& out) {
     JobReport r;
     r.state = j.str("state");
     r.message = j.str("message");
+    r.kind = j.str("kind");
     r.holes_done = static_cast<int>(j.num("holes_done"));
     r.holes_total = static_cast<int>(j.num("holes_total"));
     if (r.holes_done < 0) r.holes_done = 0;

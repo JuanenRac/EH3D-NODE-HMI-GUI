@@ -77,3 +77,4 @@ ui.WhySpindleFast	Komento pyytää enemmän kierroksia kuin kara antaa.
 ui.Resume	Jatka
 ui.Stopped	Pysäytetty
 ui.Next	Seuraava
+ui.ResumedFrom	Jatkettu työstä

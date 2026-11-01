@@ -100,7 +100,7 @@ static void server_client() {
     CHECK(json_quote("a\"b\\c\n") == "\"a\\\"b\\\\c\\n\"");
 
     // the requests
-    std::string w = wire(fleet_request(), "192.168.0.180:8080", "tok-1234");
+    std::string w = wire(fleet_request(), "192.168.0.180:18200", "tok-1234");
     CHECK(w.rfind("GET /api/v1/fleet HTTP/1.1\r\n", 0) == 0);
     CHECK(w.find("Authorization: Bearer tok-1234\r\n") != std::string::npos);
     CHECK(w.find("Content-Length") == std::string::npos);

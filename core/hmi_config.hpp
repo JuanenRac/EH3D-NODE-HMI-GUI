@@ -31,7 +31,7 @@ struct Settings {
 
     // where the machine is: the EH3D server (or the Bungard node) the screen controls
     std::string server_host;                // empty: nothing is controlled yet
-    std::uint16_t server_port = 8080;       // 1..65535
+    std::uint16_t server_port = 18200;      // 1..65535
     std::string server_machine;             // the machine of the server this screen controls
     std::string token;                      // write-only: never shown, never logged
     std::uint32_t poll_s = 3;               // how often the screen asks the server for the fleet, 1..60

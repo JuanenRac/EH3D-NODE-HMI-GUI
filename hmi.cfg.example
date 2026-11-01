@@ -5,8 +5,8 @@ orientation = auto         # auto, landscape (1280 x 800) or portrait (800 x 128
 brightness_percent = 80    # 10..100
 idle_dim_s = 120           # 0 never
 
-server_host =              # the EH3D server or node that moves the machine; empty = nothing is controlled
-server_port = 8080
+server_host =              # the EH3D server that moves the machine; empty = nothing is controlled
+server_port = 18200
 server_machine =
 poll_s = 3                 # how often the fleet is read, 1..60 seconds
 token =                    # write-only, 8..64 characters

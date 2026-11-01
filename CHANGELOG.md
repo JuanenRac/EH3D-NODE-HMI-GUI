@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The screen looks for the server on port 18200**, the port the server listens on, in the default and in `hmi.cfg.example` (it was 8080, so a configuration that only named the host never reached the server).
+
 ## [0.0.4] - Resume a stopped job through the server
 
 - **Going on after a stop through the server:** EH3D-SERVER keeps the request of every job and makes the new one itself (`POST /api/v1/jobs/:id/resume-from`, with `skip` brought forward and the tools off kept), so the screen asks for that instead of sending the file again (`job_resume_from_request`, `Workflow::resume_request` and `on_resume_from`). A job that was stopped goes on even after a reset of the screen (it follows the job again and has no file) and without the file on the card. The new job is only made ready (`resumed_from` is shown on the job page), it waits for the operator, and the start goes through the gate as any other, with the spindle turns cut to the limit. A server that does not have the route (404 or 405, but not the 404 of an unknown job) is remembered as an old one and is answered as before with the file the screen keeps; a refusal of the server (`409 not_stopped`, `422 no_work`) is shown with its reason, and a second touch while the answer is awaited does not make a second job. A job followed again after a reset now also knows from the server whether it was a drilling or a routing job (holes or cuts).

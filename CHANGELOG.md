@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.5] - Start, pause and stop that work, G-code, and warnings of the board and of the job
+
 - **A board larger than the table is warned about:** choosing a drilling or routing file on the card compares the size of its box (the holes, or the moves of the pen) with the table of the machine - the course that the server reports less the offset, read from the configuration file of the machine, or `table_width_mm` and `table_depth_mm` of `hmi.cfg` when the server does not say it - and a board that fits neither lying nor turned is warned about on the job page with its size and by how much it goes over. The job is not blocked: the server refuses what lies outside the table.
 - **A job that was cancelled or failed is not a finished job:** the screen says which of the two it was, with the reason of the server, never marks it as finished, plays no notice of the end for it and does not forget it before the server has said how it ended; it is kept to go on from the holes already done. A job that left the machine and whose end the server has not yet told is neither finished nor stopped.
 - **The notes of the server about a job are shown:** what a job asks for beyond the spindle of the machine (turns or feed above or below what it holds) is listed on the job page when the job is made.

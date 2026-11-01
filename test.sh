@@ -6,4 +6,4 @@ if [ -z "${PRETTY_RUN:-}" ] && [ -f "$(dirname "$0")/tools/pretty_run.py" ] && c
 fi
 # PRETTY_RUN_END
 cd "$(dirname "$0")" || exit 1
-py -3 tools/ci_validate.py
+if command -v python3 >/dev/null 2>&1; then python3 tools/ci_validate.py; else py -3 tools/ci_validate.py; fi

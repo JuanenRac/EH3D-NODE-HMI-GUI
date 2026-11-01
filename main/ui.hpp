@@ -11,6 +11,7 @@
 #include "../core/quality.hpp"
 #include "../core/sdfiles.hpp"
 #include "../core/server_link.hpp"
+#include "../core/workflow.hpp"
 
 namespace ui {
 

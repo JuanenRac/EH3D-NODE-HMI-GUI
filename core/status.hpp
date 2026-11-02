@@ -141,31 +141,31 @@ inline std::string link_note(Link s, const Settings& st, Lang l) {
 
 // ---- the notes of the application ---------------------------------------------------------------------------------------------------------------
 
-enum class Note { StopFail, StopRefused, StopSent, NoJobToStop, MoveNoLink, Busy, NothingToSend, OldServer, Ok, Following, NoJobReady, GoingOn, File, Unreadable, AllOff };
+enum class ScreenNote { StopFail, StopRefused, StopSent, NoJobToStop, MoveNoLink, Busy, NothingToSend, OldServer, Ok, Following, NoJobReady, GoingOn, File, Unreadable, AllOff };
 
-inline const char* note_text(Note n, Lang l) {
+inline const char* note_text(ScreenNote n, Lang l) {
     switch (n) {
-        case Note::StopFail: return text(T::NoteStopFail, l);
-        case Note::StopRefused: return text(T::NoteStopRefused, l);
-        case Note::StopSent: return text(T::NoteStopSent, l);
-        case Note::NoJobToStop: return text(T::NoteNoJobToStop, l);
-        case Note::MoveNoLink: return text(T::NoteMoveNoLink, l);
-        case Note::Busy: return text(T::NoteBusy, l);
-        case Note::NothingToSend: return text(T::NoteNothingToSend, l);
-        case Note::OldServer: return text(T::NoteOldServer, l);
-        case Note::Ok: return text(T::NoteOk, l);
-        case Note::Following: return text(T::NoteFollowing, l);
-        case Note::NoJobReady: return text(T::NoteNoJobReady, l);
-        case Note::GoingOn: return text(T::NoteGoingOn, l);
-        case Note::File: return text(T::NoteFile, l);
-        case Note::Unreadable: return text(T::NoteUnreadable, l);
-        case Note::AllOff: return text(T::NoteAllOff, l);
+        case ScreenNote::StopFail: return text(T::NoteStopFail, l);
+        case ScreenNote::StopRefused: return text(T::NoteStopRefused, l);
+        case ScreenNote::StopSent: return text(T::NoteStopSent, l);
+        case ScreenNote::NoJobToStop: return text(T::NoteNoJobToStop, l);
+        case ScreenNote::MoveNoLink: return text(T::NoteMoveNoLink, l);
+        case ScreenNote::Busy: return text(T::NoteBusy, l);
+        case ScreenNote::NothingToSend: return text(T::NoteNothingToSend, l);
+        case ScreenNote::OldServer: return text(T::NoteOldServer, l);
+        case ScreenNote::Ok: return text(T::NoteOk, l);
+        case ScreenNote::Following: return text(T::NoteFollowing, l);
+        case ScreenNote::NoJobReady: return text(T::NoteNoJobReady, l);
+        case ScreenNote::GoingOn: return text(T::NoteGoingOn, l);
+        case ScreenNote::File: return text(T::NoteFile, l);
+        case ScreenNote::Unreadable: return text(T::NoteUnreadable, l);
+        case ScreenNote::AllOff: return text(T::NoteAllOff, l);
     }
     return "";
 }
 
 /// A note with what goes with it (`File: name.ncd`, `Stop refused: unauthorized`); the detail is cut when it is empty.
-inline std::string note_with(Note n, const std::string& detail, Lang l) { return detail.empty() ? std::string(note_text(n, l)) : std::string(note_text(n, l)) + ": " + detail; }
+inline std::string note_with(ScreenNote n, const std::string& detail, Lang l) { return detail.empty() ? std::string(note_text(n, l)) : std::string(note_text(n, l)) + ": " + detail; }
 
 /// The reason the workflow gave, in the language of the operator; a reason that is the server's own words (or any other text) is shown as it is.
 inline std::string reason_text(const std::string& why, Lang l) {

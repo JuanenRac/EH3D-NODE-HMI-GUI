@@ -173,7 +173,7 @@ static void set_note(const std::string& s) {
 }
 
 // A note in the language of the operator (the texts are in core/status.hpp, never literals here).
-static void note(hmi::Note n, const std::string& detail = "") { set_note(hmi::note_with(n, detail, g_settings.language)); }
+static void note(hmi::ScreenNote n, const std::string& detail = "") { set_note(hmi::note_with(n, detail, g_settings.language)); }
 static std::string said(hmi::CallError e) { return hmi::call_error_text(e, g_settings, g_settings.language); }
 
 // What the screen says about hmi.cfg: it is missing, or the first line that could not be used and why.
@@ -240,7 +240,7 @@ static void quality_job(const ServerJob& job) {
             }
         }
         if (job.what == ServerJob::Do::Light && hmi::parse_light(r.body, l)) g_light = l;
-        if (job.what == ServerJob::Do::Preset || job.what == ServerJob::Do::Calibrate) g_note = hmi::note_text(hmi::Note::Ok, g_settings.language);
+        if (job.what == ServerJob::Do::Preset || job.what == ServerJob::Do::Calibrate) g_note = hmi::note_text(hmi::ScreenNote::Ok, g_settings.language);
         g_quality_new = true;
     } else if (job.what != ServerJob::Do::Last) {
         g_note = hmi::error_line(r);  // the screen that has never been checked has no last check: that is not an error to show
@@ -264,9 +264,9 @@ static void stop_task(void*) {
             hmi::CallError error = hmi::CallError::None;
             bool reached = false;
             for (int attempt = 0; attempt < 3 && !reached; ++attempt) reached = srvlink::call(g_settings, req, r, error, 1500);
-            if (!reached) note(hmi::Note::StopFail, said(error));
-            else if (r.status != 200 && r.status != 202 && r.status != 409) note(hmi::Note::StopRefused, hmi::error_line(r));  // 409: the job was no longer running
-            else note(hmi::Note::StopSent);
+            if (!reached) note(hmi::ScreenNote::StopFail, said(error));
+            else if (r.status != 200 && r.status != 202 && r.status != 409) note(hmi::ScreenNote::StopRefused, hmi::error_line(r));  // 409: the job was no longer running
+            else note(hmi::ScreenNote::StopSent);
         }
     }
 }
@@ -277,7 +277,7 @@ static void request_stop() {
     g_stop_reqs = g_flow.stop_requests(g_fleet, g_settings.server_machine);
     const bool none = g_stop_reqs.empty();
     xSemaphoreGive(g_lock);
-    if (none) note(hmi::Note::NoJobToStop);
+    if (none) note(hmi::ScreenNote::NoJobToStop);
     else if (g_stop_task != nullptr) xTaskNotifyGive(g_stop_task);
 }
 
@@ -289,10 +289,10 @@ static void run_action(const hmi::Action& go) {
     else if (go.what == "resume job") job.what = ServerJob::Do::Release;
     else if (go.what == "tool changed") job.what = ServerJob::Do::Confirm;
     else {
-        note(hmi::Note::MoveNoLink);
+        note(hmi::ScreenNote::MoveNoLink);
         return;
     }
-    if (xQueueSend(g_to_server, &job, 0) != pdTRUE) note(hmi::Note::Busy);
+    if (xQueueSend(g_to_server, &job, 0) != pdTRUE) note(hmi::ScreenNote::Busy);
 }
 
 // The task of the link: asks for the fleet every `poll_s` seconds and does what the operator asked, one request at a time.
@@ -325,7 +325,7 @@ static void link_task(void*) {
             }
             xSemaphoreGive(g_lock);
             if (req.path.empty()) {
-                note(hmi::Note::NothingToSend);
+                note(hmi::ScreenNote::NothingToSend);
             } else if (!srvlink::call(g_settings, req, r, error)) {
                 if (job.what == ServerJob::Do::ResumeFrom) {
                     xSemaphoreTake(g_lock, portMAX_DELAY);
@@ -343,9 +343,9 @@ static void link_task(void*) {
                     ServerJob again;
                     again.what = ServerJob::Do::Create;
                     xQueueSend(g_to_server, &again, 0);
-                    note(hmi::Note::OldServer);
+                    note(hmi::ScreenNote::OldServer);
                 } else {
-                    if (step == hmi::ResumeStep::Made) note(hmi::Note::GoingOn); else set_note(hmi::reason_text(why, g_settings.language));
+                    if (step == hmi::ResumeStep::Made) note(hmi::ScreenNote::GoingOn); else set_note(hmi::reason_text(why, g_settings.language));
                 }
             } else {
                 std::string why;
@@ -359,7 +359,7 @@ static void link_task(void*) {
                 const std::string job_id = g_flow.job_id();
                 xSemaphoreGive(g_lock);
                 if (ok && job.what == ServerJob::Do::Start) memory_save({job_id, g_settings.server_machine, name});
-                if (ok) note(hmi::Note::Ok); else set_note(hmi::reason_text(why, g_settings.language));
+                if (ok) note(hmi::ScreenNote::Ok); else set_note(hmi::reason_text(why, g_settings.language));
                 if (ok && job.what == ServerJob::Do::Create) {
                     // the answer of the server is kept on the card, without replacing an older report
                     const std::string file = hmi::free_name(base, "txt", [](const std::string& n) {
@@ -528,7 +528,7 @@ extern "C" void app_main() {
         hmi::JobMemory m;
         if (memory_load(m) && m.machine == g_settings.server_machine && g_flow.adopt(m.job_id, m.name)) {
             g_remembered = true;
-            note(hmi::Note::Following, m.name);
+            note(hmi::ScreenNote::Following, m.name);
         } else {
             memory_clear();  // what was kept is not for this machine, or it is damaged
         }
@@ -592,7 +592,7 @@ extern "C" void app_main() {
                             const bool ready = !g_flow.start_request().path.empty();
                             xSemaphoreGive(g_lock);
                             if (!ready) {
-                                note(hmi::Note::NoJobReady);
+                                note(hmi::ScreenNote::NoJobReady);
                                 break;
                             }
                         }
@@ -624,7 +624,7 @@ extern "C" void app_main() {
                         ServerJob job;
                         job.what = by_server ? ServerJob::Do::ResumeFrom : ServerJob::Do::Create;
                         xQueueSend(g_to_server, &job, 0);
-                        note(hmi::Note::GoingOn);
+                        note(hmi::ScreenNote::GoingOn);
                         refresh_job();
                     } else {
                         set_note(hmi::reason_text(why, g_settings.language));
@@ -659,7 +659,7 @@ extern "C" void app_main() {
                         g_flow.set_tools(tools);
                     }
                     xSemaphoreGive(g_lock);
-                    if (ok) note(hmi::Note::File, r.file); else if (why.empty()) note(hmi::Note::Unreadable); else set_note(hmi::reason_text(why, g_settings.language));
+                    if (ok) note(hmi::ScreenNote::File, r.file); else if (why.empty()) note(hmi::ScreenNote::Unreadable); else set_note(hmi::reason_text(why, g_settings.language));
                     if (ok) refresh_job();
                     break;
                 }
@@ -697,7 +697,7 @@ extern "C" void app_main() {
                         refresh_job();
                     }
                     if (nothing) {
-                        note(hmi::Note::AllOff);
+                        note(hmi::ScreenNote::AllOff);
                         break;
                     }
                     ServerJob job;

@@ -130,13 +130,13 @@ static void the_link() {
 }
 
 static void the_notes() {
-    const Note all[] = {Note::StopFail, Note::StopRefused, Note::StopSent, Note::NoJobToStop, Note::MoveNoLink, Note::Busy, Note::NothingToSend, Note::OldServer,
-                        Note::Ok, Note::Following, Note::NoJobReady, Note::GoingOn, Note::File, Note::Unreadable, Note::AllOff};
+    const ScreenNote all[] = {ScreenNote::StopFail, ScreenNote::StopRefused, ScreenNote::StopSent, ScreenNote::NoJobToStop, ScreenNote::MoveNoLink, ScreenNote::Busy, ScreenNote::NothingToSend, ScreenNote::OldServer,
+                        ScreenNote::Ok, ScreenNote::Following, ScreenNote::NoJobReady, ScreenNote::GoingOn, ScreenNote::File, ScreenNote::Unreadable, ScreenNote::AllOff};
     for (std::size_t i = 0; i < kLangCount; ++i) {
-        for (Note n : all) CHECK(std::strlen(note_text(n, static_cast<Lang>(i))) > 0);
+        for (ScreenNote n : all) CHECK(std::strlen(note_text(n, static_cast<Lang>(i))) > 0);
     }
-    CHECK(std::string(note_text(Note::StopSent, Lang::En)) == "Stop sent" && std::string(note_text(Note::StopSent, Lang::Es)) == "Paro enviado");
-    CHECK(note_with(Note::File, "board.ncd", Lang::En) == "File: board.ncd" && note_with(Note::StopSent, "", Lang::En) == "Stop sent");
+    CHECK(std::string(note_text(ScreenNote::StopSent, Lang::En)) == "Stop sent" && std::string(note_text(ScreenNote::StopSent, Lang::Es)) == "Paro enviado");
+    CHECK(note_with(ScreenNote::File, "board.ncd", Lang::En) == "File: board.ncd" && note_with(ScreenNote::StopSent, "", Lang::En) == "Stop sent");
     // the reasons of the workflow are translated, and the words of the server are left alone
     Workflow w;
     std::string why;

@@ -29,6 +29,7 @@ ui.WhyNotArmed	A máquina non está armada.
 ui.WhyVoiceOff	As ordes por voz están desactivadas nos axustes.
 ui.WhyNoStop	A entrada da parada por hardware non está cableada.
 ui.WhySpindle	O fuso está desactivado nos axustes.
+ui.WhyNoSpindleHere	Este tipo de máquina non ten un fuso que a pantalla poida arrancar.
 ui.Feed	Avance
 ui.Progress	Progreso
 ui.Tool	Ferramenta

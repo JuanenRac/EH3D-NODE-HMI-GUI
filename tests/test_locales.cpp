@@ -141,8 +141,6 @@ static bool short_label(std::size_t key) {
     return true;
 }
 
-static bool optional_key(std::size_t key) { return std::string(kKeyNames[key]) == "ui.WhyNoSpindleHere"; }
-
 static void every_text() {
     for (std::size_t i = kBaseLangCount; i < kLangCount; ++i) {
         const Lang l = static_cast<Lang>(i);
@@ -151,8 +149,7 @@ static void every_text() {
         for (std::size_t k = 0; k < kKeyCount; ++k) {
             const char* own = locale_text(l, k);
             if (own) ++translated_count;
-            // (the sentence for a machine without a spindle may still be missing: it is then shown in English)
-            if (!variant && !optional_key(k)) CHECK_MSG(own != nullptr, "%s lacks %s", lang_code(l), kKeyNames[k]);
+            if (!variant) CHECK_MSG(own != nullptr, "%s lacks %s", lang_code(l), kKeyNames[k]);
         }
         if (variant) CHECK_MSG(translated_count > 0 && translated_count < kKeyCount, "%s must hold only what changes", lang_code(l));
         for (const Entry& e : all_texts(l)) {

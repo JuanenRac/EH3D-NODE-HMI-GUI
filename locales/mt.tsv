@@ -29,6 +29,7 @@ ui.WhyNotArmed	Il-magna mhix armata.
 ui.WhyVoiceOff	L-ordnijiet bil-vuċi huma mitfija fis-settings.
 ui.WhyNoStop	L-input tal-istop tal-hardware mhuwiex imqabbad.
 ui.WhySpindle	L-ispindil huwa mitfi fis-settings.
+ui.WhyNoSpindleHere	Dan it-tip ta' magna m'għandux ispindil li l-iskrin jista' jibda.
 ui.Feed	Avvanz
 ui.Progress	Progress
 ui.Tool	Għodda

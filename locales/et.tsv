@@ -29,6 +29,7 @@ ui.WhyNotArmed	Masin ei ole valmis.
 ui.WhyVoiceOff	Häälkäsklused on seadetes välja lülitatud.
 ui.WhyNoStop	Raudvara stoppi sisend on ühendamata.
 ui.WhySpindle	Spindel on seadetes välja lülitatud.
+ui.WhyNoSpindleHere	Sellel masinatüübil pole spindlit, mida ekraan saaks käivitada.
 ui.Feed	Ettenihe
 ui.Progress	Edenemine
 ui.Tool	Tööriist

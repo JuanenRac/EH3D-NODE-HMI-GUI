@@ -29,6 +29,7 @@ ui.WhyNotArmed	Níl an meaisín armtha.
 ui.WhyVoiceOff	Tá orduithe cainte múchta sna socruithe.
 ui.WhyNoStop	Níl ionchur an stop crua-earraí cuibhrithe.
 ui.WhySpindle	Tá an fhearsaid múchta sna socruithe.
+ui.WhyNoSpindleHere	Níl fearsaid ag an gcineál meaisín seo a bhféadfadh an scáileán a thosú.
 ui.Feed	Beart
 ui.Progress	Dul chun cinn
 ui.Tool	Uirlis

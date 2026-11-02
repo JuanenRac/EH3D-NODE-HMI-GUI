@@ -39,7 +39,7 @@ inline const char* const kText_bg[kKeyCount] = {
     "Гласовите команди са изключени в настройките.",  // ui.WhyVoiceOff
     "Входът на хардуерния стоп не е свързан.",  // ui.WhyNoStop
     "Шпинделът е изключен в настройките.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Този вид машина няма шпиндел, който екранът да може да стартира.",  // ui.WhyNoSpindleHere
     "Подаване",  // ui.Feed
     "Напредък",  // ui.Progress
     "Инструмент",  // ui.Tool
@@ -125,7 +125,7 @@ inline const char* const kText_hr[kKeyCount] = {
     "Glasovne naredbe isključene su u postavkama.",  // ui.WhyVoiceOff
     "Ulaz hardverskog stopa nije spojen.",  // ui.WhyNoStop
     "Vreteno je isključeno u postavkama.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Ova vrsta stroja nema vreteno koje bi zaslon mogao pokrenuti.",  // ui.WhyNoSpindleHere
     "Posmak",  // ui.Feed
     "Napredak",  // ui.Progress
     "Alat",  // ui.Tool
@@ -211,7 +211,7 @@ inline const char* const kText_cs[kKeyCount] = {
     "Hlasové příkazy jsou v nastavení vypnuty.",  // ui.WhyVoiceOff
     "Vstup hardwarového stopu není zapojen.",  // ui.WhyNoStop
     "Vřeteno je v nastavení vypnuto.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Tento druh stroje nemá vřeteno, které by obrazovka mohla spustit.",  // ui.WhyNoSpindleHere
     "Posuv",  // ui.Feed
     "Průběh",  // ui.Progress
     "Nástroj",  // ui.Tool
@@ -297,7 +297,7 @@ inline const char* const kText_da[kKeyCount] = {
     "Stemmekommandoer er slået fra i indstillingerne.",  // ui.WhyVoiceOff
     "Hardwarestoppets indgang er ikke tilsluttet.",  // ui.WhyNoStop
     "Spindlen er slået fra i indstillingerne.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Denne type maskine har ingen spindel, som skærmen kan starte.",  // ui.WhyNoSpindleHere
     "Tilspænding",  // ui.Feed
     "Fremdrift",  // ui.Progress
     "Værktøj",  // ui.Tool
@@ -383,7 +383,7 @@ inline const char* const kText_nl[kKeyCount] = {
     "Spraakopdrachten staan uit in de instellingen.",  // ui.WhyVoiceOff
     "De ingang van de hardware-stop is niet aangesloten.",  // ui.WhyNoStop
     "De spindel is uitgeschakeld in de instellingen.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Dit type machine heeft geen spindel die het scherm kan starten.",  // ui.WhyNoSpindleHere
     "Voeding",  // ui.Feed
     "Voortgang",  // ui.Progress
     "Gereedschap",  // ui.Tool
@@ -469,7 +469,7 @@ inline const char* const kText_et[kKeyCount] = {
     "Häälkäsklused on seadetes välja lülitatud.",  // ui.WhyVoiceOff
     "Raudvara stoppi sisend on ühendamata.",  // ui.WhyNoStop
     "Spindel on seadetes välja lülitatud.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Sellel masinatüübil pole spindlit, mida ekraan saaks käivitada.",  // ui.WhyNoSpindleHere
     "Ettenihe",  // ui.Feed
     "Edenemine",  // ui.Progress
     "Tööriist",  // ui.Tool
@@ -555,7 +555,7 @@ inline const char* const kText_fi[kKeyCount] = {
     "Puhekomennot on poistettu käytöstä asetuksissa.",  // ui.WhyVoiceOff
     "Laitteistopysäytyksen tuloa ei ole kytketty.",  // ui.WhyNoStop
     "Kara on poistettu käytöstä asetuksissa.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Tällä konetyypillä ei ole karaa, jonka näyttö voisi käynnistää.",  // ui.WhyNoSpindleHere
     "Syöttö",  // ui.Feed
     "Eteneminen",  // ui.Progress
     "Työkalu",  // ui.Tool
@@ -641,7 +641,7 @@ inline const char* const kText_el[kKeyCount] = {
     "Οι φωνητικές εντολές είναι απενεργοποιημένες στις ρυθμίσεις.",  // ui.WhyVoiceOff
     "Η είσοδος του stop υλικού δεν είναι συνδεδεμένη.",  // ui.WhyNoStop
     "Ο άξονας είναι απενεργοποιημένος στις ρυθμίσεις.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Αυτός ο τύπος μηχανής δεν έχει άξονα που να μπορεί να εκκινήσει η οθόνη.",  // ui.WhyNoSpindleHere
     "Τροφοδοσία",  // ui.Feed
     "Πρόοδος",  // ui.Progress
     "Εργαλείο",  // ui.Tool
@@ -727,7 +727,7 @@ inline const char* const kText_hu[kKeyCount] = {
     "A hangparancsok ki vannak kapcsolva a beállításokban.",  // ui.WhyVoiceOff
     "A hardveres leállítás bemenete nincs bekötve.",  // ui.WhyNoStop
     "A főorsó ki van kapcsolva a beállításokban.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Ennek a géptípusnak nincs főorsója, amelyet a képernyő elindíthatna.",  // ui.WhyNoSpindleHere
     "Előtolás",  // ui.Feed
     "Előrehaladás",  // ui.Progress
     "Szerszám",  // ui.Tool
@@ -813,7 +813,7 @@ inline const char* const kText_ga[kKeyCount] = {
     "Tá orduithe cainte múchta sna socruithe.",  // ui.WhyVoiceOff
     "Níl ionchur an stop crua-earraí cuibhrithe.",  // ui.WhyNoStop
     "Tá an fhearsaid múchta sna socruithe.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Níl fearsaid ag an gcineál meaisín seo a bhféadfadh an scáileán a thosú.",  // ui.WhyNoSpindleHere
     "Beart",  // ui.Feed
     "Dul chun cinn",  // ui.Progress
     "Uirlis",  // ui.Tool
@@ -899,7 +899,7 @@ inline const char* const kText_lv[kKeyCount] = {
     "Balss komandas ir izslēgtas iestatījumos.",  // ui.WhyVoiceOff
     "Hardvera stop ieeja nav pieslēgta.",  // ui.WhyNoStop
     "Vārpsta ir izslēgta iestatījumos.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Šim iekārtas veidam nav vārpstas, ko ekrāns varētu iedarbināt.",  // ui.WhyNoSpindleHere
     "Padeve",  // ui.Feed
     "Progress",  // ui.Progress
     "Rīks",  // ui.Tool
@@ -985,7 +985,7 @@ inline const char* const kText_lt[kKeyCount] = {
     "Balso komandos nustatymuose išjungtos.",  // ui.WhyVoiceOff
     "Aparatinio stop įvestis neprijungta.",  // ui.WhyNoStop
     "Verpstė nustatymuose išjungta.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Šio tipo staklės neturi verpstės, kurią galėtų paleisti ekranas.",  // ui.WhyNoSpindleHere
     "Paduotis",  // ui.Feed
     "Eiga",  // ui.Progress
     "Įrankis",  // ui.Tool
@@ -1071,7 +1071,7 @@ inline const char* const kText_mt[kKeyCount] = {
     "L-ordnijiet bil-vuċi huma mitfija fis-settings.",  // ui.WhyVoiceOff
     "L-input tal-istop tal-hardware mhuwiex imqabbad.",  // ui.WhyNoStop
     "L-ispindil huwa mitfi fis-settings.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Dan it-tip ta' magna m'għandux ispindil li l-iskrin jista' jibda.",  // ui.WhyNoSpindleHere
     "Avvanz",  // ui.Feed
     "Progress",  // ui.Progress
     "Għodda",  // ui.Tool
@@ -1157,7 +1157,7 @@ inline const char* const kText_pl[kKeyCount] = {
     "Polecenia głosowe są wyłączone w ustawieniach.",  // ui.WhyVoiceOff
     "Wejście stopu sprzętowego nie jest podłączone.",  // ui.WhyNoStop
     "Wrzeciono jest wyłączone w ustawieniach.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Ten rodzaj maszyny nie ma wrzeciona, które ekran mógłby uruchomić.",  // ui.WhyNoSpindleHere
     "Posuw",  // ui.Feed
     "Postęp",  // ui.Progress
     "Narzędzie",  // ui.Tool
@@ -1243,7 +1243,7 @@ inline const char* const kText_ro[kKeyCount] = {
     "Comenzile vocale sunt dezactivate în setări.",  // ui.WhyVoiceOff
     "Intrarea opririi hardware nu este conectată.",  // ui.WhyNoStop
     "Axul principal este dezactivat în setări.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Acest tip de mașină nu are un ax principal pe care ecranul să-l poată porni.",  // ui.WhyNoSpindleHere
     "Avans",  // ui.Feed
     "Progres",  // ui.Progress
     "Sculă",  // ui.Tool
@@ -1329,7 +1329,7 @@ inline const char* const kText_sk[kKeyCount] = {
     "Hlasové príkazy sú v nastaveniach vypnuté.",  // ui.WhyVoiceOff
     "Vstup hardvérového stopu nie je zapojený.",  // ui.WhyNoStop
     "Vreteno je v nastaveniach vypnuté.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Tento druh stroja nemá vreteno, ktoré by mohla obrazovka spustiť.",  // ui.WhyNoSpindleHere
     "Posuv",  // ui.Feed
     "Priebeh",  // ui.Progress
     "Nástroj",  // ui.Tool
@@ -1415,7 +1415,7 @@ inline const char* const kText_sl[kKeyCount] = {
     "Glasovni ukazi so v nastavitvah izklopljeni.",  // ui.WhyVoiceOff
     "Vhod stopa ni priključen.",  // ui.WhyNoStop
     "Vreteno je v nastavitvah izklopljeno.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Ta vrsta stroja nima vretena, ki bi ga lahko zagnal zaslon.",  // ui.WhyNoSpindleHere
     "Podajanje",  // ui.Feed
     "Napredek",  // ui.Progress
     "Orodje",  // ui.Tool
@@ -1501,7 +1501,7 @@ inline const char* const kText_sv[kKeyCount] = {
     "Röstkommandon är avstängda i inställningarna.",  // ui.WhyVoiceOff
     "Hårdvarustoppets ingång är inte ansluten.",  // ui.WhyNoStop
     "Spindeln är avstängd i inställningarna.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Den här maskintypen har ingen spindel som skärmen kan starta.",  // ui.WhyNoSpindleHere
     "Matning",  // ui.Feed
     "Förlopp",  // ui.Progress
     "Verktyg",  // ui.Tool
@@ -1587,7 +1587,7 @@ inline const char* const kText_no[kKeyCount] = {
     "Talekommandoer er slått av i innstillingene.",  // ui.WhyVoiceOff
     "Inngangen for maskinvarestopp er ikke koblet til.",  // ui.WhyNoStop
     "Spindelen er slått av i innstillingene.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Denne maskintypen har ingen spindel som skjermen kan starte.",  // ui.WhyNoSpindleHere
     "Mating",  // ui.Feed
     "Fremdrift",  // ui.Progress
     "Verktøy",  // ui.Tool
@@ -1673,7 +1673,7 @@ inline const char* const kText_is[kKeyCount] = {
     "Raddskipanir eru óvirkar í stillingum.",  // ui.WhyVoiceOff
     "Inngangur vélbúnaðarstopps er ekki tengdur.",  // ui.WhyNoStop
     "Snældan er óvirk í stillingum.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Vélargerð þessi er ekki með snældu sem skjárinn getur ræst.",  // ui.WhyNoSpindleHere
     "Færsluhraði",  // ui.Feed
     "Framvinda",  // ui.Progress
     "Verkfæri",  // ui.Tool
@@ -1759,7 +1759,7 @@ inline const char* const kText_uk[kKeyCount] = {
     "Голосові команди вимкнено в налаштуваннях.",  // ui.WhyVoiceOff
     "Вхід апаратного стопу не підключено.",  // ui.WhyNoStop
     "Шпиндель вимкнено в налаштуваннях.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Цей тип верстата не має шпинделя, який екран міг би запустити.",  // ui.WhyNoSpindleHere
     "Подача",  // ui.Feed
     "Хід виконання",  // ui.Progress
     "Інструмент",  // ui.Tool
@@ -1845,7 +1845,7 @@ inline const char* const kText_ru[kKeyCount] = {
     "Голосовые команды выключены в настройках.",  // ui.WhyVoiceOff
     "Вход аппаратного стопа не подключён.",  // ui.WhyNoStop
     "Шпиндель выключен в настройках.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "У этого типа станка нет шпинделя, который экран мог бы запустить.",  // ui.WhyNoSpindleHere
     "Подача",  // ui.Feed
     "Ход выполнения",  // ui.Progress
     "Инструмент",  // ui.Tool
@@ -1931,7 +1931,7 @@ inline const char* const kText_sr[kKeyCount] = {
     "Гласовне команде су искључене у подешавањима.",  // ui.WhyVoiceOff
     "Улаз хардверског стопа није повезан.",  // ui.WhyNoStop
     "Вретено је искључено у подешавањима.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Ова врста машине нема вретено које екран може да покрене.",  // ui.WhyNoSpindleHere
     "Помак",  // ui.Feed
     "Напредак",  // ui.Progress
     "Алат",  // ui.Tool
@@ -2017,7 +2017,7 @@ inline const char* const kText_sq[kKeyCount] = {
     "Komandat zanore janë çaktivizuar te cilësimet.",  // ui.WhyVoiceOff
     "Hyrja e stopit harduerik nuk është e lidhur.",  // ui.WhyNoStop
     "Boshti është çaktivizuar te cilësimet.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Ky lloj makine nuk ka bosht që ekrani ta nisë.",  // ui.WhyNoSpindleHere
     "Avancimi",  // ui.Feed
     "Përparimi",  // ui.Progress
     "Mjeti",  // ui.Tool
@@ -2103,7 +2103,7 @@ inline const char* const kText_ca[kKeyCount] = {
     "Les ordres per veu estan desactivades als paràmetres.",  // ui.WhyVoiceOff
     "L'entrada de la parada de maquinari no està cablejada.",  // ui.WhyNoStop
     "El capçal està desactivat als paràmetres.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Aquest tipus de màquina no té cap capçal que la pantalla pugui engegar.",  // ui.WhyNoSpindleHere
     "Avanç",  // ui.Feed
     "Progrés",  // ui.Progress
     "Eina",  // ui.Tool
@@ -2189,7 +2189,7 @@ inline const char* const kText_gl[kKeyCount] = {
     "As ordes por voz están desactivadas nos axustes.",  // ui.WhyVoiceOff
     "A entrada da parada por hardware non está cableada.",  // ui.WhyNoStop
     "O fuso está desactivado nos axustes.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Este tipo de máquina non ten un fuso que a pantalla poida arrancar.",  // ui.WhyNoSpindleHere
     "Avance",  // ui.Feed
     "Progreso",  // ui.Progress
     "Ferramenta",  // ui.Tool
@@ -2275,7 +2275,7 @@ inline const char* const kText_eu[kKeyCount] = {
     "Ahots-aginduak itzalita daude ezarpenetan.",  // ui.WhyVoiceOff
     "Hardware-geldialdiaren sarrera ez dago kableatuta.",  // ui.WhyNoStop
     "Ardatza desgaituta dago ezarpenetan.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
+    "Makina mota honek ez dauka pantailak abiaraz dezakeen ardatzik.",  // ui.WhyNoSpindleHere
     "Aurrerapena",  // ui.Feed
     "Aurrerapena",  // ui.Progress
     "Erreminta",  // ui.Tool

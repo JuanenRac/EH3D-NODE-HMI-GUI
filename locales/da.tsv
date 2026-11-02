@@ -29,6 +29,7 @@ ui.WhyNotArmed	Maskinen er ikke klar.
 ui.WhyVoiceOff	Stemmekommandoer er slået fra i indstillingerne.
 ui.WhyNoStop	Hardwarestoppets indgang er ikke tilsluttet.
 ui.WhySpindle	Spindlen er slået fra i indstillingerne.
+ui.WhyNoSpindleHere	Denne type maskine har ingen spindel, som skærmen kan starte.
 ui.Feed	Tilspænding
 ui.Progress	Fremdrift
 ui.Tool	Værktøj

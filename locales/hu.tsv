@@ -29,6 +29,7 @@ ui.WhyNotArmed	A gép nincs élesítve.
 ui.WhyVoiceOff	A hangparancsok ki vannak kapcsolva a beállításokban.
 ui.WhyNoStop	A hardveres leállítás bemenete nincs bekötve.
 ui.WhySpindle	A főorsó ki van kapcsolva a beállításokban.
+ui.WhyNoSpindleHere	Ennek a géptípusnak nincs főorsója, amelyet a képernyő elindíthatna.
 ui.Feed	Előtolás
 ui.Progress	Előrehaladás
 ui.Tool	Szerszám

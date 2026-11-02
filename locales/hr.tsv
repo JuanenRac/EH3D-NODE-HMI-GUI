@@ -29,6 +29,7 @@ ui.WhyNotArmed	Stroj nije spreman.
 ui.WhyVoiceOff	Glasovne naredbe isključene su u postavkama.
 ui.WhyNoStop	Ulaz hardverskog stopa nije spojen.
 ui.WhySpindle	Vreteno je isključeno u postavkama.
+ui.WhyNoSpindleHere	Ova vrsta stroja nema vreteno koje bi zaslon mogao pokrenuti.
 ui.Feed	Posmak
 ui.Progress	Napredak
 ui.Tool	Alat

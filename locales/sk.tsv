@@ -29,6 +29,7 @@ ui.WhyNotArmed	Stroj nie je pripravený.
 ui.WhyVoiceOff	Hlasové príkazy sú v nastaveniach vypnuté.
 ui.WhyNoStop	Vstup hardvérového stopu nie je zapojený.
 ui.WhySpindle	Vreteno je v nastaveniach vypnuté.
+ui.WhyNoSpindleHere	Tento druh stroja nemá vreteno, ktoré by mohla obrazovka spustiť.
 ui.Feed	Posuv
 ui.Progress	Priebeh
 ui.Tool	Nástroj

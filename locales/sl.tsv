@@ -29,6 +29,7 @@ ui.WhyNotArmed	Stroj ni pripravljen.
 ui.WhyVoiceOff	Glasovni ukazi so v nastavitvah izklopljeni.
 ui.WhyNoStop	Vhod stopa ni priključen.
 ui.WhySpindle	Vreteno je v nastavitvah izklopljeno.
+ui.WhyNoSpindleHere	Ta vrsta stroja nima vretena, ki bi ga lahko zagnal zaslon.
 ui.Feed	Podajanje
 ui.Progress	Napredek
 ui.Tool	Orodje

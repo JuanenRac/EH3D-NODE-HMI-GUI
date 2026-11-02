@@ -24,8 +24,7 @@ BASE = ["en", "es", "it", "de", "fr", "pt", "zh", "ja"]
 # Files that hold text the screen draws (the literals of these files must be in the font as well).
 LITERAL_FILES = ["core/ui_text.hpp", "core/quality.hpp", "core/keyboard.hpp", "main/ui.cpp"]
 # Texts that must keep a word whatever the language says.
-# Keys a file may lack (the text is then shown in English): the sentence for a machine without a spindle, until it is translated.
-OPTIONAL_KEYS = {"ui.WhyNoSpindleHere"}
+OPTIONAL_KEYS: set[str] = set()
 MUST_KEEP = {"q.NeedServer": ["hmi.cfg"], "q.Checking": ["..."]}
 
 

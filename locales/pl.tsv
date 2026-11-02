@@ -29,6 +29,7 @@ ui.WhyNotArmed	Maszyna nie jest gotowa.
 ui.WhyVoiceOff	Polecenia głosowe są wyłączone w ustawieniach.
 ui.WhyNoStop	Wejście stopu sprzętowego nie jest podłączone.
 ui.WhySpindle	Wrzeciono jest wyłączone w ustawieniach.
+ui.WhyNoSpindleHere	Ten rodzaj maszyny nie ma wrzeciona, które ekran mógłby uruchomić.
 ui.Feed	Posuw
 ui.Progress	Postęp
 ui.Tool	Narzędzie

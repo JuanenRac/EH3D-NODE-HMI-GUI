@@ -29,6 +29,7 @@ ui.WhyNotArmed	Makina ez dago armatuta.
 ui.WhyVoiceOff	Ahots-aginduak itzalita daude ezarpenetan.
 ui.WhyNoStop	Hardware-geldialdiaren sarrera ez dago kableatuta.
 ui.WhySpindle	Ardatza desgaituta dago ezarpenetan.
+ui.WhyNoSpindleHere	Makina mota honek ez dauka pantailak abiaraz dezakeen ardatzik.
 ui.Feed	Aurrerapena
 ui.Progress	Aurrerapena
 ui.Tool	Erreminta

@@ -29,6 +29,7 @@ ui.WhyNotArmed	Mașina nu este pregătită.
 ui.WhyVoiceOff	Comenzile vocale sunt dezactivate în setări.
 ui.WhyNoStop	Intrarea opririi hardware nu este conectată.
 ui.WhySpindle	Axul principal este dezactivat în setări.
+ui.WhyNoSpindleHere	Acest tip de mașină nu are un ax principal pe care ecranul să-l poată porni.
 ui.Feed	Avans
 ui.Progress	Progres
 ui.Tool	Sculă

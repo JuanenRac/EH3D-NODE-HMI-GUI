@@ -29,6 +29,7 @@ ui.WhyNotArmed	Makina nuk është gati.
 ui.WhyVoiceOff	Komandat zanore janë çaktivizuar te cilësimet.
 ui.WhyNoStop	Hyrja e stopit harduerik nuk është e lidhur.
 ui.WhySpindle	Boshti është çaktivizuar te cilësimet.
+ui.WhyNoSpindleHere	Ky lloj makine nuk ka bosht që ekrani ta nisë.
 ui.Feed	Avancimi
 ui.Progress	Përparimi
 ui.Tool	Mjeti

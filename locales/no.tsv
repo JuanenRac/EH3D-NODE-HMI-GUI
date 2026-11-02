@@ -29,6 +29,7 @@ ui.WhyNotArmed	Maskinen er ikke klar.
 ui.WhyVoiceOff	Talekommandoer er slått av i innstillingene.
 ui.WhyNoStop	Inngangen for maskinvarestopp er ikke koblet til.
 ui.WhySpindle	Spindelen er slått av i innstillingene.
+ui.WhyNoSpindleHere	Denne maskintypen har ingen spindel som skjermen kan starte.
 ui.Feed	Mating
 ui.Progress	Fremdrift
 ui.Tool	Verktøy

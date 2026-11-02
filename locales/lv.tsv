@@ -29,6 +29,7 @@ ui.WhyNotArmed	Iekārta nav gatava.
 ui.WhyVoiceOff	Balss komandas ir izslēgtas iestatījumos.
 ui.WhyNoStop	Hardvera stop ieeja nav pieslēgta.
 ui.WhySpindle	Vārpsta ir izslēgta iestatījumos.
+ui.WhyNoSpindleHere	Šim iekārtas veidam nav vārpstas, ko ekrāns varētu iedarbināt.
 ui.Feed	Padeve
 ui.Progress	Progress
 ui.Tool	Rīks

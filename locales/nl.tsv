@@ -29,6 +29,7 @@ ui.WhyNotArmed	De machine is niet gereed.
 ui.WhyVoiceOff	Spraakopdrachten staan uit in de instellingen.
 ui.WhyNoStop	De ingang van de hardware-stop is niet aangesloten.
 ui.WhySpindle	De spindel is uitgeschakeld in de instellingen.
+ui.WhyNoSpindleHere	Dit type machine heeft geen spindel die het scherm kan starten.
 ui.Feed	Voeding
 ui.Progress	Voortgang
 ui.Tool	Gereedschap

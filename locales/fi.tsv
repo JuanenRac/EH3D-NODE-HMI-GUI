@@ -29,6 +29,7 @@ ui.WhyNotArmed	Kone ei ole valmis.
 ui.WhyVoiceOff	Puhekomennot on poistettu käytöstä asetuksissa.
 ui.WhyNoStop	Laitteistopysäytyksen tuloa ei ole kytketty.
 ui.WhySpindle	Kara on poistettu käytöstä asetuksissa.
+ui.WhyNoSpindleHere	Tällä konetyypillä ei ole karaa, jonka näyttö voisi käynnistää.
 ui.Feed	Syöttö
 ui.Progress	Eteneminen
 ui.Tool	Työkalu

@@ -29,6 +29,7 @@ ui.WhyNotArmed	Staklės neparuoštos.
 ui.WhyVoiceOff	Balso komandos nustatymuose išjungtos.
 ui.WhyNoStop	Aparatinio stop įvestis neprijungta.
 ui.WhySpindle	Verpstė nustatymuose išjungta.
+ui.WhyNoSpindleHere	Šio tipo staklės neturi verpstės, kurią galėtų paleisti ekranas.
 ui.Feed	Paduotis
 ui.Progress	Eiga
 ui.Tool	Įrankis

@@ -29,6 +29,7 @@ ui.WhyNotArmed	Vélin er ekki tilbúin.
 ui.WhyVoiceOff	Raddskipanir eru óvirkar í stillingum.
 ui.WhyNoStop	Inngangur vélbúnaðarstopps er ekki tengdur.
 ui.WhySpindle	Snældan er óvirk í stillingum.
+ui.WhyNoSpindleHere	Vélargerð þessi er ekki með snældu sem skjárinn getur ræst.
 ui.Feed	Færsluhraði
 ui.Progress	Framvinda
 ui.Tool	Verkfæri

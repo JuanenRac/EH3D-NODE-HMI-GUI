@@ -29,6 +29,7 @@ ui.WhyNotArmed	Maskinen är inte redo.
 ui.WhyVoiceOff	Röstkommandon är avstängda i inställningarna.
 ui.WhyNoStop	Hårdvarustoppets ingång är inte ansluten.
 ui.WhySpindle	Spindeln är avstängd i inställningarna.
+ui.WhyNoSpindleHere	Den här maskintypen har ingen spindel som skärmen kan starta.
 ui.Feed	Matning
 ui.Progress	Förlopp
 ui.Tool	Verktyg

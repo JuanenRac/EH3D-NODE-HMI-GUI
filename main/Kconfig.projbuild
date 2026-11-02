@@ -11,4 +11,12 @@ menu "EH3D HMI"
     config HMI_CONFIG_PATH
         string "Settings file in the config partition"
         default "/config/hmi.cfg"
+    config HMI_STACK_REPORT_S
+        int "Seconds between the reports of the stack each task has left (0: never)"
+        default 60
+        range 0 3600
+    config HMI_STACK_WARN_BYTES
+        int "Warn when a task has less stack than this left"
+        default 512
+        range 64 8192
 endmenu

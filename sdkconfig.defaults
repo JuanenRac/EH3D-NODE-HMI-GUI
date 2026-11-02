@@ -11,3 +11,17 @@ CONFIG_LV_COLOR_DEPTH_16=y
 CONFIG_LV_FONT_MONTSERRAT_16=y
 CONFIG_LV_FONT_MONTSERRAT_24=y
 CONFIG_COMPILER_OPTIMIZATION_SIZE=y
+
+# Robustness: a screen that stops answering must recover by itself, and a stack that is too small must show before it corrupts anything.
+# The task watchdog resets a stuck task and the idle tasks of both cores (they starve when something spins).
+CONFIG_ESP_TASK_WDT_EN=y
+CONFIG_ESP_TASK_WDT_INIT=y
+CONFIG_ESP_TASK_WDT_TIMEOUT_S=10
+CONFIG_ESP_TASK_WDT_PANIC=y
+CONFIG_ESP_TASK_WDT_CHECK_IDLE_TASK_CPU0=y
+CONFIG_ESP_TASK_WDT_CHECK_IDLE_TASK_CPU1=y
+# The task that runs app_main (the loop of the screens and the gate) has more than the 3.5 KB of the default.
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=12288
+# A task that overruns its stack stops the program with a message instead of corrupting memory; the stack each task has left is read from FreeRTOS and logged (main/app_main.cpp).
+CONFIG_FREERTOS_CHECK_STACKOVERFLOW_CANARY=y
+CONFIG_FREERTOS_USE_TRACE_FACILITY=y

@@ -37,6 +37,8 @@ static QueueHandle_t g_to_server = nullptr; // from the application task to the 
 static QueueHandle_t g_say = nullptr;       // the notices to say: hmi::Cue
 static SemaphoreHandle_t g_lock = nullptr;  // guards what the link task shares: the fleet, the note, the workflow
 static TaskHandle_t g_stop_task = nullptr;  // the task that sends a stop to the server, apart from the queue of the link
+static TaskHandle_t g_say_task = nullptr;   // the task of the notices
+static TaskHandle_t g_link_task = nullptr;  // the task of the link
 static std::vector<hmi::Request> g_stop_reqs;  // what it sends (guarded by g_lock)
 
 // what the link task is asked to do
@@ -420,6 +422,21 @@ static void refresh_job() {
     ui::show_flow(flow, g_settings);
 }
 
+// The stack each task has left, as the lowest it has ever been (bytes): logged now and then, and a warning when one is short, so an overflow shows on the bench before it corrupts memory.
+static void stack_report() {
+    struct Entry {
+        const char* name;
+        TaskHandle_t handle;
+    };
+    const Entry tasks[] = {{"main", xTaskGetCurrentTaskHandle()}, {"say", g_say_task}, {"link", g_link_task}, {"stop", g_stop_task}};
+    for (const Entry& t : tasks) {
+        if (t.handle == nullptr) continue;
+        const unsigned left = static_cast<unsigned>(uxTaskGetStackHighWaterMark(t.handle));
+        if (left < CONFIG_HMI_STACK_WARN_BYTES) ESP_LOGW(TAG, "task %s has only %u bytes of stack left", t.name, left);
+        else ESP_LOGI(TAG, "task %s: %u bytes of stack left", t.name, left);
+    }
+}
+
 static void rebuild(bool mounted_portrait) {
     const hmi::Layout layout = hmi::layout_for(g_settings.orientation, mounted_portrait);
     board::lvgl_lock();
@@ -455,7 +472,7 @@ extern "C" void app_main() {
     g_requests = xQueueCreate(8, sizeof(ui::Request));
     g_to_server = xQueueCreate(4, sizeof(ServerJob));
     g_say = xQueueCreate(4, sizeof(hmi::Cue));
-    xTaskCreate(say_task, "say", 8192, nullptr, 3, nullptr);
+    xTaskCreate(say_task, "say", 8192, nullptr, 3, &g_say_task);
     g_lock = xSemaphoreCreateMutex();
     // a job that was running when the screen went down: follow it again; the operator can leave it with the cancel button
     {
@@ -467,7 +484,7 @@ extern "C" void app_main() {
             memory_clear();  // what was kept is not for this machine, or it is damaged
         }
     }
-    xTaskCreate(link_task, "link", 8192, nullptr, 4, nullptr);
+    xTaskCreate(link_task, "link", 8192, nullptr, 4, &g_link_task);
     xTaskCreate(stop_task, "stop", 6144, nullptr, 6, &g_stop_task);  // above the link and the screen: a stop is not queued behind anything
     rebuild(false);
     if (hmi::controls_for(g_settings.machine).quality_check) {
@@ -481,6 +498,7 @@ extern "C" void app_main() {
     ui::State state;
     hmi::Stage last_stage = hmi::Stage::Nothing;
     bool last_ended_well = false;
+    std::uint32_t next_stack_report = board::now_ms() + 5000;
     for (;;) {
         bool wired = false, pressed = false;
         board::read_hardware_stop(wired, pressed);
@@ -687,6 +705,10 @@ extern "C" void app_main() {
         if (quality_new && hmi::controls_for(g_settings.machine).quality_check) ui::show_quality(quality, light, quality_running, g_settings);
         if (!gate.pending()) ui::ask(nullptr, g_settings);
         board::lvgl_unlock();
+        if (CONFIG_HMI_STACK_REPORT_S > 0 && static_cast<std::int32_t>(board::now_ms() - next_stack_report) >= 0) {
+            stack_report();
+            next_stack_report = board::now_ms() + CONFIG_HMI_STACK_REPORT_S * 1000u;
+        }
         vTaskDelay(pdMS_TO_TICKS(50));
     }
 }

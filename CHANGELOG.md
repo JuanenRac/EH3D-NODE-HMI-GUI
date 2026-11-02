@@ -3,6 +3,7 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+- **Three checks that nothing ran are removed from `tools/`:** `_doc_policy.py`, `_readme_parity.py` and `_tracked_names.py` were copies of the checks of another family that no workflow, script or document named, and their header said another family kept them in step. The checks that run are in `tools/ci_validate.py`.
 
 ## [0.0.6] - Screens that tell the operator what happens
 

@@ -11,6 +11,7 @@
 #include "../core/quality.hpp"
 #include "../core/sdfiles.hpp"
 #include "../core/server_link.hpp"
+#include "../core/status.hpp"
 #include "../core/workflow.hpp"
 
 namespace ui {
@@ -22,6 +23,9 @@ struct State {
     bool stop_latched = true;
     bool stop_wired = false;
     bool server_ok = false;
+    hmi::Link link = hmi::Link::Unknown;  // connected, no connection or another server
+    bool stale = false;                   // the data shown are older than `stale_after_s`
+    std::uint32_t age_s = 0;              // how old they are
     int percent = 0;
     std::string note;  // the line under the buttons: why something was refused, what the server answered
 };
@@ -46,12 +50,18 @@ struct Request {
 void build(const hmi::Settings& settings, const hmi::Layout& layout, void (*post)(const Request&));
 /// Shows the state (with the LVGL lock taken).
 void show(const State& state, const hmi::Settings& settings);
-/// Shows the question of the gate, or hides it when `action` is null.
-void ask(const hmi::Action* action, const hmi::Settings& settings);
+/// Shows the question of the gate with the order in the language of the operator and the seconds left before it aborts by itself, or hides it when `action` is null.
+void ask(const hmi::Action* action, const hmi::Settings& settings, std::uint32_t remaining_ms = 0);
+/// Updates the countdown of the question that is showing.
+void ask_tick(std::uint32_t remaining_ms, const hmi::Settings& settings);
+/// The version of the firmware, shown in the title bar and in the settings (set it before `build`).
+void set_version(const std::string& version);
+/// The line of the settings file that could not be used, or that hmi.cfg is missing (empty: all is well); it stays on the screen under the top bar.
+void show_config_issue(const std::string& text);
 /// Shows why the gate refused.
 void refused(hmi::Why why, const hmi::Settings& settings);
-/// Shows the machines of the server, each with its state and its job.
-void show_fleet(const hmi::FleetView& fleet, const hmi::Settings& settings);
+/// Shows the machines of the server, each with its state and its job; when the data are old each row says so.
+void show_fleet(const hmi::FleetView& fleet, const hmi::Settings& settings, bool stale = false);
 /// Shows the quality check: the verdict of the last one, the ring of LEDs, and whether a check is running now.
 void show_quality(const hmi::QualityView& quality, const hmi::LightView& light, bool running, const hmi::Settings& settings);
 /// Shows what the chosen file holds: a chip for each tool (a tap switches it off or on), how many holes or cuts stay in the job, and the spindle of the machine.

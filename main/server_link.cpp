@@ -8,11 +8,15 @@ namespace srvlink {
 
 namespace {
 constexpr std::size_t kMaxAnswer = 256 * 1024;  // a fleet of a big workshop is far smaller
+std::string g_client;                           // `name/version`, set once at the start
 }
 
-bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, std::string& error, int timeout_ms) {
+void set_client(const std::string& client) { g_client = client; }
+
+bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, hmi::CallError& error, int timeout_ms) {
+    error = hmi::CallError::None;
     if (s.server_host.empty()) {
-        error = "no server in the settings";
+        error = hmi::CallError::NoServer;
         return false;
     }
     esp_http_client_config_t cfg = {};
@@ -24,8 +28,12 @@ bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, std
     cfg.method = r.method == "POST" ? HTTP_METHOD_POST : HTTP_METHOD_GET;
     esp_http_client_handle_t c = esp_http_client_init(&cfg);
     if (c == nullptr) {
-        error = "cannot start the client";
+        error = hmi::CallError::Client;
         return false;
+    }
+    if (!g_client.empty()) {
+        esp_http_client_set_header(c, "User-Agent", g_client.c_str());
+        esp_http_client_set_header(c, "X-EH3D-Client", g_client.c_str());
     }
     if (!s.token.empty()) {
         const std::string bearer = "Bearer " + s.token;
@@ -43,21 +51,21 @@ bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, std
             ok = true;
             while ((n = esp_http_client_read(c, buf, sizeof buf)) > 0) {
                 if (out.body.size() + static_cast<std::size_t>(n) > kMaxAnswer) {
-                    error = "the answer is too long";
+                    error = hmi::CallError::TooLong;
                     ok = false;
                     break;
                 }
                 out.body.append(buf, static_cast<std::size_t>(n));
             }
             if (n < 0) {
-                error = "the connection broke";
+                error = hmi::CallError::Broke;
                 ok = false;
             }
         } else {
-            error = "cannot send the request";
+            error = hmi::CallError::Send;
         }
     } else {
-        error = "the server does not answer";
+        error = hmi::CallError::NoAnswer;
     }
     esp_http_client_close(c);
     esp_http_client_cleanup(c);

@@ -26,6 +26,8 @@ const lv_color_t kAmber = LV_COLOR_MAKE(0xff, 0xb3, 0x00);
 const lv_color_t kText = LV_COLOR_MAKE(0xf0, 0xe6, 0xd0);
 const lv_color_t kDim = LV_COLOR_MAKE(0xa8, 0x98, 0x78);
 const lv_color_t kSlate = LV_COLOR_MAKE(0x37, 0x47, 0x4f);
+const lv_color_t kBad = LV_COLOR_MAKE(0xff, 0x52, 0x52);
+const lv_color_t kOld = LV_COLOR_MAKE(0xe8, 0xa4, 0x20);
 
 void (*g_post)(const Request&) = nullptr;
 hmi::Layout g_layout;
@@ -35,6 +37,10 @@ lv_obj_t* g_pages[kPages] = {nullptr};
 lv_obj_t* g_tabs[kPages] = {nullptr};
 lv_obj_t* g_armed = nullptr;
 lv_obj_t* g_banner = nullptr;
+lv_obj_t* g_cfg_issue = nullptr;
+lv_obj_t* g_dialog_count = nullptr;
+std::string g_cfg_issue_text;  // kept so a rebuild of the screens shows it again
+std::string g_version;
 lv_obj_t* g_ack = nullptr;
 lv_obj_t* g_note = nullptr;
 lv_obj_t* g_bar = nullptr;
@@ -208,7 +214,7 @@ void on_resume(lv_event_t*) { Request r; r.what = What::Resume; send(r); }
 
 void on_spindle_over(lv_event_t*) {
     g_over_refuse = !g_over_refuse;
-    lv_label_set_text(lv_obj_get_child(g_over_label, 0), g_over_refuse ? "refuse" : "clip");
+    lv_label_set_text(lv_obj_get_child(g_over_label, 0), hmi::text(g_over_refuse ? hmi::T::OverRefuse : hmi::T::OverClip, g_q_lang));
     Request r;
     r.what = What::SetSpindleOver;
     r.refuse = g_over_refuse;
@@ -255,7 +261,7 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
     lv_obj_set_flex_flow(top, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(top, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_t* title = lv_label_create(top);
-    lv_label_set_text(title, "EH3D");
+    lv_label_set_text(title, g_version.empty() ? "EH3D" : (std::string("EH3D ") + g_version).c_str());
     lv_obj_set_style_text_color(title, kAmber, 0);
     const T names[5] = {T::Machine, T::Job, T::Viewer, T::Fleet, T::Settings};
     g_q_lang = s.language;
@@ -273,7 +279,15 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
     }
     g_armed = lv_label_create(top);
     g_banner = lv_label_create(top);
-    lv_obj_set_style_text_color(g_banner, LV_COLOR_MAKE(0xff, 0x52, 0x52), 0);
+    lv_obj_set_style_text_color(g_banner, kBad, 0);
+
+    // what is wrong with hmi.cfg (the line and why), kept under the top bar until the file is fixed and the screen restarted
+    g_cfg_issue = lv_label_create(scr);
+    lv_obj_set_width(g_cfg_issue, LV_PCT(100));
+    lv_label_set_long_mode(g_cfg_issue, LV_LABEL_LONG_WRAP);
+    lv_obj_set_style_text_color(g_cfg_issue, kBad, 0);
+    lv_label_set_text(g_cfg_issue, g_cfg_issue_text.c_str());
+    if (g_cfg_issue_text.empty()) lv_obj_add_flag(g_cfg_issue, LV_OBJ_FLAG_HIDDEN);
 
     // the pages share the middle of the screen; lying down the machine page is three columns, standing up one column
     lv_obj_t* body = lv_obj_create(scr);
@@ -355,16 +369,23 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
     lv_obj_t* set = card(g_pages[4], hmi::text(T::Settings, s.language));
     lv_obj_set_size(set, LV_PCT(100), LV_PCT(100));
     lv_obj_set_flex_flow(set, LV_FLEX_FLOW_ROW_WRAP);
-    const char* o_names[3] = {"auto", "landscape", "portrait"};
+    const T o_names[3] = {T::OrientAuto, T::OrientLandscape, T::OrientPortrait};
     for (int i = 0; i < 3; ++i) {
-        button(set, o_names[i], on_orientation, reinterpret_cast<void*>(static_cast<intptr_t>(i)), kSlate, 220, 80);
+        button(set, hmi::text(o_names[i], s.language), on_orientation, reinterpret_cast<void*>(static_cast<intptr_t>(i)), kSlate, 220, 80);
+    }
+    // the version of the firmware, so the operator can say which one runs
+    if (!g_version.empty()) {
+        lv_obj_t* fw = lv_label_create(set);
+        lv_obj_set_width(fw, LV_PCT(100));
+        lv_label_set_text(fw, hmi::firmware_label(g_version, s.language).c_str());
+        lv_obj_set_style_text_color(fw, kDim, 0);
     }
 
     // the spindle: an order for more turns than the spindle gives is cut to its top speed (clip) or refused (refuse); kept until the next start, hmi.cfg holds the lasting choice
     if (hmi::controls_for(s.machine).spindle) {
         lv_obj_t* box = card(set, hmi::text(T::Spindle, s.language));
         lv_obj_set_size(box, LV_PCT(100), LV_SIZE_CONTENT);
-        g_over_label = button(box, g_over_refuse ? "refuse" : "clip", on_spindle_over, nullptr, kSlate, 220, 64);
+        g_over_label = button(box, hmi::text(g_over_refuse ? T::OverRefuse : T::OverClip, s.language), on_spindle_over, nullptr, kSlate, 220, 64);
     }
 
     // the language: the thirty-seven languages, each named in itself, in a list that scrolls; the one in use is outlined
@@ -447,7 +468,7 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
     lv_obj_set_flex_flow(g_bar, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(g_bar, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_t* pos = lv_label_create(g_bar);
-    lv_label_set_text(pos, "X 19.5   Y 77.5   Z -0.4 mm");
+    lv_label_set_text(pos, "X --   Y --   Z --   mm");  // the position is not read from the machine yet: no invented numbers
     lv_obj_t* stop = icon_button(g_bar, LV_SYMBOL_WARNING, on_stop, nullptr, LV_COLOR_MAKE(0xc6, 0x28, 0x28), 130, 130);
     lv_obj_set_style_radius(stop, LV_RADIUS_CIRCLE, 0);
     lv_obj_set_style_border_width(stop, 6, 0);
@@ -466,6 +487,11 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
     lv_obj_center(g_dialog);
     g_dialog_text = lv_label_create(g_dialog);
     lv_obj_align(g_dialog_text, LV_ALIGN_TOP_MID, 0, 16);
+    lv_label_set_long_mode(g_dialog_text, LV_LABEL_LONG_WRAP);
+    lv_obj_set_width(g_dialog_text, 520);
+    g_dialog_count = lv_label_create(g_dialog);
+    lv_obj_align(g_dialog_count, LV_ALIGN_BOTTOM_MID, 0, -110);
+    lv_obj_set_style_text_color(g_dialog_count, kOld, 0);
     lv_obj_t* yes = icon_button(g_dialog, LV_SYMBOL_OK, on_confirm, nullptr, kGo, 220, 90);
     lv_obj_align(yes, LV_ALIGN_BOTTOM_LEFT, 8, -8);
     lv_obj_t* no = icon_button(g_dialog, LV_SYMBOL_CLOSE, on_cancel, nullptr, LV_COLOR_MAKE(0x54, 0x6e, 0x7a), 220, 90);
@@ -476,8 +502,9 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
 void show(const State& st, const hmi::Settings& s) {
     using hmi::T;
     char line[96];
-    std::snprintf(line, sizeof line, "%s   %s", hmi::text(st.armed ? T::Armed : T::NotArmed, s.language), st.server_ok ? "server" : "-");
+    std::snprintf(line, sizeof line, "%s   %s", hmi::text(st.armed ? T::Armed : T::NotArmed, s.language), hmi::link_label(st.link, st.stale, st.age_s, s.language).c_str());
     lv_label_set_text(g_armed, line);
+    lv_obj_set_style_text_color(g_armed, st.link == hmi::Link::Connected ? (st.stale ? kOld : kText) : (st.link == hmi::Link::Unknown ? kDim : kBad), 0);
     lv_label_set_text(g_banner, st.stop_pressed ? hmi::text(T::StopPressed, s.language) : "");
     if (st.stop_latched && !st.stop_pressed) lv_obj_remove_flag(g_ack, LV_OBJ_FLAG_HIDDEN); else lv_obj_add_flag(g_ack, LV_OBJ_FLAG_HIDDEN);
     // while the stop is pressed or not acknowledged the buttons that move are dimmed (the gate refuses them anyway)
@@ -488,16 +515,36 @@ void show(const State& st, const hmi::Settings& s) {
     if (!st.note.empty()) lv_label_set_text(g_note, st.note.c_str());
 }
 
-void ask(const hmi::Action* action, const hmi::Settings& s) {
+void ask(const hmi::Action* action, const hmi::Settings& s, std::uint32_t remaining_ms) {
     using hmi::T;
     if (action == nullptr) {
-        lv_obj_add_flag(g_dialog, LV_OBJ_FLAG_HIDDEN);
+        if (!lv_obj_has_flag(g_dialog, LV_OBJ_FLAG_HIDDEN)) lv_obj_add_flag(g_dialog, LV_OBJ_FLAG_HIDDEN);
         return;
     }
-    static char text[96];
-    lv_snprintf(text, sizeof text, "%s\n%s", hmi::text(action->kind == hmi::Kind::Spindle ? T::AskSpindle : T::AskMove, s.language), action->what.c_str());
+    // the question and the order in the language of the operator ("Stop the machine"), then the seconds left before it aborts by itself
+    static char text[256];
+    lv_snprintf(text, sizeof text, "%s\n%s", hmi::text(action->kind == hmi::Kind::Spindle ? T::AskSpindle : T::AskMove, s.language), hmi::order_text(*action, s.language).c_str());
     lv_label_set_text(g_dialog_text, text);
+    lv_label_set_text(g_dialog_count, hmi::countdown_text(remaining_ms, s.language).c_str());
     lv_obj_remove_flag(g_dialog, LV_OBJ_FLAG_HIDDEN);
+}
+
+void ask_tick(std::uint32_t remaining_ms, const hmi::Settings& s) {
+    if (g_dialog_count == nullptr || lv_obj_has_flag(g_dialog, LV_OBJ_FLAG_HIDDEN)) return;
+    static std::uint32_t shown = 0xFFFFFFFFu;
+    const std::uint32_t seconds = hmi::countdown_s(remaining_ms);
+    if (seconds == shown) return;  // the text changes once a second, not at every turn of the loop
+    shown = seconds;
+    lv_label_set_text(g_dialog_count, hmi::countdown_text(remaining_ms, s.language).c_str());
+}
+
+void set_version(const std::string& version) { g_version = version; }
+
+void show_config_issue(const std::string& text) {
+    g_cfg_issue_text = text;
+    if (g_cfg_issue == nullptr) return;
+    lv_label_set_text(g_cfg_issue, text.c_str());
+    if (text.empty()) lv_obj_add_flag(g_cfg_issue, LV_OBJ_FLAG_HIDDEN); else lv_obj_remove_flag(g_cfg_issue, LV_OBJ_FLAG_HIDDEN);
 }
 
 void refused(hmi::Why why, const hmi::Settings& s) { lv_label_set_text(g_note, hmi::why_text(why, s.language)); }
@@ -549,13 +596,15 @@ void show_quality(const hmi::QualityView& q, const hmi::LightView& light, bool r
     if (running) lv_obj_add_state(g_q_run, LV_STATE_DISABLED); else lv_obj_remove_state(g_q_run, LV_STATE_DISABLED);
 }
 
-void show_fleet(const hmi::FleetView& fleet, const hmi::Settings&) {
+void show_fleet(const hmi::FleetView& fleet, const hmi::Settings& s, bool stale) {
     lv_obj_clean(g_fleet_list);
+    const std::string old = stale ? "   " + hmi::stale_mark(s.language) : "";
     for (const auto& m : fleet.machines) {
-        char row[160];
-        if (m.percent >= 0) std::snprintf(row, sizeof row, "%s   %s   %s %d%%", m.name.c_str(), m.state.c_str(), m.job_name.c_str(), m.percent);
-        else std::snprintf(row, sizeof row, "%s   %s   (%d)", m.name.c_str(), m.state.c_str(), m.ready);
-        lv_list_add_button(g_fleet_list, nullptr, row);
+        char row[200];
+        if (m.percent >= 0) std::snprintf(row, sizeof row, "%s   %s   %s %d%%%s", m.name.c_str(), m.state.c_str(), m.job_name.c_str(), m.percent, old.c_str());
+        else std::snprintf(row, sizeof row, "%s   %s   (%d)%s", m.name.c_str(), m.state.c_str(), m.ready, old.c_str());
+        lv_obj_t* b = lv_list_add_button(g_fleet_list, nullptr, row);
+        if (stale) lv_obj_set_style_text_color(b, kOld, 0);  // an old value is never drawn like a current one
     }
 }
 

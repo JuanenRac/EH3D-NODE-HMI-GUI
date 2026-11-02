@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "esp_app_desc.h"
 #include "esp_log.h"
 #include "esp_spiffs.h"
 #include "nvs.h"
@@ -22,6 +23,7 @@
 #include "../core/orientation.hpp"
 #include "../core/quality.hpp"
 #include "../core/sdfiles.hpp"
+#include "../core/status.hpp"
 #include "../core/ui_text.hpp"
 #include "../core/voice.hpp"
 #include "../core/wav.hpp"
@@ -49,6 +51,12 @@ struct ServerJob {
 static hmi::FleetView g_fleet;
 static bool g_fleet_new = false;
 static bool g_server_ok = false;
+static hmi::LinkTracker g_link;                    // the state of the link and the age of the data (guarded by g_lock)
+static hmi::Link g_link_said = hmi::Link::Unknown; // the state the operator was last told about
+static hmi::Answer g_answer_said = hmi::Answer::Fresh;
+static std::string g_version;                      // the version of this firmware, shown on the screen
+static std::vector<hmi::Problem> g_problems;       // the lines of hmi.cfg that were not used
+static bool g_cfg_missing = false;                 // hmi.cfg is not there
 static std::string g_note;
 static hmi::Workflow g_flow;
 static hmi::SpindleView g_spindle;  // the spindle of the machine, as the server says it (asked now and then)
@@ -164,6 +172,31 @@ static void set_note(const std::string& s) {
     xSemaphoreGive(g_lock);
 }
 
+// A note in the language of the operator (the texts are in core/status.hpp, never literals here).
+static void note(hmi::Note n, const std::string& detail = "") { set_note(hmi::note_with(n, detail, g_settings.language)); }
+static std::string said(hmi::CallError e) { return hmi::call_error_text(e, g_settings, g_settings.language); }
+
+// What the screen says about hmi.cfg: it is missing, or the first line that could not be used and why.
+static std::string config_issue() {
+    if (g_cfg_missing) return hmi::text(hmi::T::CfgNoFile, g_settings.language);
+    return hmi::cfg_report(g_problems, g_settings.language);
+}
+
+// A reading of the fleet came back as `answer`: the link tracker takes it, and the operator is told once when the link changes into a state that is not connected (this is
+// also the check of the server at the start) or when the server refuses with its own error.
+static void link_update(hmi::Answer answer, bool machine_found, const hmi::Response& r) {
+    xSemaphoreTake(g_lock, portMAX_DELAY);
+    g_link.update(answer, machine_found, board::now_ms());
+    const hmi::Link now = g_link.state();
+    const bool changed = now != g_link_said;
+    const bool refused = answer == hmi::Answer::ServerError && g_answer_said != hmi::Answer::ServerError;
+    g_link_said = now;
+    g_answer_said = answer;
+    xSemaphoreGive(g_lock);
+    if (changed && now != hmi::Link::Connected) set_note(hmi::link_note(now, g_settings, g_settings.language));
+    else if (refused) set_note(hmi::error_line(r));
+}
+
 // A request of the quality check: the ring of LEDs, a check, a preset of the profile, the calibration of the scale, or the last check. Everything goes through the server of
 // the machine, which holds the token of the node of the drill head.
 static void quality_job(const ServerJob& job) {
@@ -188,13 +221,13 @@ static void quality_job(const ServerJob& job) {
         default: return;
     }
     hmi::Response r;
-    std::string error;
+    hmi::CallError error = hmi::CallError::None;
     const bool reached = srvlink::call(g_settings, req, r, error);
     xSemaphoreTake(g_lock, portMAX_DELAY);
     if (job.what == ServerJob::Do::Inspect) g_quality_running = false;
     bool say_ok = false, say_bad = false;
     if (!reached) {
-        g_note = error;
+        g_note = said(error);
     } else if (r.status == 200) {
         hmi::QualityView q;
         hmi::LightView l;
@@ -207,7 +240,7 @@ static void quality_job(const ServerJob& job) {
             }
         }
         if (job.what == ServerJob::Do::Light && hmi::parse_light(r.body, l)) g_light = l;
-        if (job.what == ServerJob::Do::Preset || job.what == ServerJob::Do::Calibrate) g_note = "ok";
+        if (job.what == ServerJob::Do::Preset || job.what == ServerJob::Do::Calibrate) g_note = hmi::note_text(hmi::Note::Ok, g_settings.language);
         g_quality_new = true;
     } else if (job.what != ServerJob::Do::Last) {
         g_note = hmi::error_line(r);  // the screen that has never been checked has no last check: that is not an error to show
@@ -228,12 +261,12 @@ static void stop_task(void*) {
         xSemaphoreGive(g_lock);
         for (const hmi::Request& req : reqs) {
             hmi::Response r;
-            std::string error;
+            hmi::CallError error = hmi::CallError::None;
             bool reached = false;
             for (int attempt = 0; attempt < 3 && !reached; ++attempt) reached = srvlink::call(g_settings, req, r, error, 1500);
-            if (!reached) set_note("STOP NOT SENT (" + error + "): use the hardware stop");
-            else if (r.status != 200 && r.status != 202 && r.status != 409) set_note("stop refused: " + hmi::error_line(r));  // 409: the job was no longer running
-            else set_note("stop sent");
+            if (!reached) note(hmi::Note::StopFail, said(error));
+            else if (r.status != 200 && r.status != 202 && r.status != 409) note(hmi::Note::StopRefused, hmi::error_line(r));  // 409: the job was no longer running
+            else note(hmi::Note::StopSent);
         }
     }
 }
@@ -244,7 +277,7 @@ static void request_stop() {
     g_stop_reqs = g_flow.stop_requests(g_fleet, g_settings.server_machine);
     const bool none = g_stop_reqs.empty();
     xSemaphoreGive(g_lock);
-    if (none) set_note("stop: no job of the machine is known to stop");
+    if (none) note(hmi::Note::NoJobToStop);
     else if (g_stop_task != nullptr) xTaskNotifyGive(g_stop_task);
 }
 
@@ -256,10 +289,10 @@ static void run_action(const hmi::Action& go) {
     else if (go.what == "resume job") job.what = ServerJob::Do::Release;
     else if (go.what == "tool changed") job.what = ServerJob::Do::Confirm;
     else {
-        set_note("this move needs the link to the node of the machine, which is not written yet");
+        note(hmi::Note::MoveNoLink);
         return;
     }
-    if (xQueueSend(g_to_server, &job, 0) != pdTRUE) set_note("the link is busy: ask again");
+    if (xQueueSend(g_to_server, &job, 0) != pdTRUE) note(hmi::Note::Busy);
 }
 
 // The task of the link: asks for the fleet every `poll_s` seconds and does what the operator asked, one request at a time.
@@ -269,7 +302,7 @@ static void link_task(void*) {
     for (;;) {
         ServerJob job;
         const bool asked = xQueueReceive(g_to_server, &job, pdMS_TO_TICKS(200)) == pdTRUE;
-        std::string error;
+        hmi::CallError error = hmi::CallError::None;
         hmi::Response r;
         if (asked && job.what >= ServerJob::Do::Light) {
             quality_job(job);
@@ -292,14 +325,14 @@ static void link_task(void*) {
             }
             xSemaphoreGive(g_lock);
             if (req.path.empty()) {
-                set_note("nothing to send: choose a file and set the machine of the server");
+                note(hmi::Note::NothingToSend);
             } else if (!srvlink::call(g_settings, req, r, error)) {
                 if (job.what == ServerJob::Do::ResumeFrom) {
                     xSemaphoreTake(g_lock, portMAX_DELAY);
                     g_flow.resume_failed();
                     xSemaphoreGive(g_lock);
                 }
-                set_note(error);
+                set_note(said(error));
             } else if (job.what == ServerJob::Do::ResumeFrom) {
                 // the server makes the new job from the request it kept; an old one has no such route and the screen sends the file it keeps
                 std::string why;
@@ -310,9 +343,9 @@ static void link_task(void*) {
                     ServerJob again;
                     again.what = ServerJob::Do::Create;
                     xQueueSend(g_to_server, &again, 0);
-                    set_note("the server is an old one: the file is sent again");
+                    note(hmi::Note::OldServer);
                 } else {
-                    set_note(step == hmi::ResumeStep::Made ? "going on from the holes already done: start it when ready" : why);
+                    if (step == hmi::ResumeStep::Made) note(hmi::Note::GoingOn); else set_note(hmi::reason_text(why, g_settings.language));
                 }
             } else {
                 std::string why;
@@ -326,7 +359,7 @@ static void link_task(void*) {
                 const std::string job_id = g_flow.job_id();
                 xSemaphoreGive(g_lock);
                 if (ok && job.what == ServerJob::Do::Start) memory_save({job_id, g_settings.server_machine, name});
-                set_note(ok ? "ok" : why);
+                if (ok) note(hmi::Note::Ok); else set_note(hmi::reason_text(why, g_settings.language));
                 if (ok && job.what == ServerJob::Do::Create) {
                     // the answer of the server is kept on the card, without replacing an older report
                     const std::string file = hmi::free_name(base, "txt", [](const std::string& n) {
@@ -341,7 +374,10 @@ static void link_task(void*) {
             next_poll = xTaskGetTickCount() + pdMS_TO_TICKS(g_settings.poll_s * 1000);
             hmi::Response fr;
             hmi::FleetView view;
-            if (srvlink::call(g_settings, hmi::fleet_request(), fr, error) && fr.status == 200 && hmi::parse_fleet(fr.body, view)) {
+            const bool reached = srvlink::call(g_settings, hmi::fleet_request(), fr, error);
+            const bool parsed = reached && fr.status == 200 && hmi::parse_fleet(fr.body, view);
+            link_update(hmi::classify_fleet(reached, fr, parsed), !parsed || hmi::fleet_has_machine(view, g_settings.server_machine), fr);
+            if (parsed) {
                 xSemaphoreTake(g_lock, portMAX_DELAY);
                 g_fleet = view;
                 g_fleet_new = true;
@@ -363,7 +399,7 @@ static void link_task(void*) {
                         ServerJob again;
                         again.what = ServerJob::Do::Create;
                         xQueueSend(g_to_server, &again, 0);
-                        set_note("next: " + next_name);
+                        set_note(std::string(hmi::text(hmi::T::Next, g_settings.language)) + ": " + next_name);
                     }
                 }
                 // the spindle of the machine: asked at the first reading and then every tenth
@@ -442,6 +478,7 @@ static void rebuild(bool mounted_portrait) {
     board::lvgl_lock();
     board::set_rotation(layout.rotation);
     ui::build(g_settings, layout, post);
+    ui::show_config_issue(config_issue());
     ui::show_card(board::sd_list(), g_settings);
     refresh_job();
     board::lvgl_unlock();
@@ -457,9 +494,21 @@ extern "C" void app_main() {
     }
     esp_vfs_spiffs_conf_t fs = {"/config", "config", 4, false};
     if (esp_vfs_spiffs_register(&fs) != ESP_OK) ESP_LOGW(TAG, "no config partition: the defaults are used");
-    std::vector<hmi::Problem> problems;
-    g_settings = hmi::parse_settings(read_file(CONFIG_HMI_CONFIG_PATH), problems);
-    for (const auto& p : problems) ESP_LOGW(TAG, "settings line %d (%s): %s", p.line, p.key.c_str(), p.what.c_str());
+    g_cfg_missing = [] {
+        FILE* f = std::fopen(CONFIG_HMI_CONFIG_PATH, "rb");
+        if (f == nullptr) return true;
+        std::fclose(f);
+        return false;
+    }();
+    g_settings = hmi::parse_settings(read_file(CONFIG_HMI_CONFIG_PATH), g_problems);
+    for (const auto& p : g_problems) ESP_LOGW(TAG, "settings line %d (%s): %s", p.line, p.key.c_str(), p.what.c_str());
+    {
+        // who this firmware is: shown on the screen and sent to the server in every request
+        const esp_app_desc_t* app = esp_app_get_description();
+        g_version = app->version;
+        srvlink::set_client(hmi::client_id(app->project_name, app->version));
+        ui::set_version(g_version);
+    }
 
     if (!board::display_start()) {
         ESP_LOGE(TAG, "the display does not start");
@@ -479,7 +528,7 @@ extern "C" void app_main() {
         hmi::JobMemory m;
         if (memory_load(m) && m.machine == g_settings.server_machine && g_flow.adopt(m.job_id, m.name)) {
             g_remembered = true;
-            set_note("following the job that was left running: " + m.name);
+            note(hmi::Note::Following, m.name);
         } else {
             memory_clear();  // what was kept is not for this machine, or it is damaged
         }
@@ -498,6 +547,7 @@ extern "C" void app_main() {
     ui::State state;
     hmi::Stage last_stage = hmi::Stage::Nothing;
     bool last_ended_well = false;
+    bool fleet_stale_shown = false;
     std::uint32_t next_stack_report = board::now_ms() + 5000;
     for (;;) {
         bool wired = false, pressed = false;
@@ -542,14 +592,14 @@ extern "C" void app_main() {
                             const bool ready = !g_flow.start_request().path.empty();
                             xSemaphoreGive(g_lock);
                             if (!ready) {
-                                set_note("no job is ready to start: choose a file and send it first");
+                                note(hmi::Note::NoJobReady);
                                 break;
                             }
                         }
                         hmi::Decision d = gate.request(r.action, hmi::Origin::Touch, board::now_ms());
                         if (d.verdict == hmi::Verdict::NeedConfirm) {
                             // the confirmation shows the turns the spindle will really get; when they were cut the screen says so
-                            ui::ask(&gate.pending_action(), g_settings);
+                            ui::ask(&gate.pending_action(), g_settings, gate.remaining_ms(board::now_ms()));
                             if (d.clipped) set_note(std::string(hmi::text(hmi::T::SpindleCut, g_settings.language)) + ": " + std::to_string(d.asked_rpm) + " > " + std::to_string(d.rpm) + " rpm");
                         } else if (d.verdict == hmi::Verdict::Refused) {
                             ui::refused(d.why, g_settings);
@@ -574,10 +624,10 @@ extern "C" void app_main() {
                         ServerJob job;
                         job.what = by_server ? ServerJob::Do::ResumeFrom : ServerJob::Do::Create;
                         xQueueSend(g_to_server, &job, 0);
-                        set_note("going on from the holes already done");
+                        note(hmi::Note::GoingOn);
                         refresh_job();
                     } else {
-                        set_note(why);
+                        set_note(hmi::reason_text(why, g_settings.language));
                     }
                     break;
                 }
@@ -609,7 +659,7 @@ extern "C" void app_main() {
                         g_flow.set_tools(tools);
                     }
                     xSemaphoreGive(g_lock);
-                    set_note(ok ? std::string("file: ") + r.file : (why.empty() ? "the file cannot be read" : why));
+                    if (ok) note(hmi::Note::File, r.file); else if (why.empty()) note(hmi::Note::Unreadable); else set_note(hmi::reason_text(why, g_settings.language));
                     if (ok) refresh_job();
                     break;
                 }
@@ -643,11 +693,11 @@ extern "C" void app_main() {
                     const bool nothing = g_flow.nothing_to_do();
                     xSemaphoreGive(g_lock);
                     if (moved_on) {
-                        set_note("next: " + moved_to);
+                        set_note(std::string(hmi::text(hmi::T::Next, g_settings.language)) + ": " + moved_to);
                         refresh_job();
                     }
                     if (nothing) {
-                        set_note("every tool of the file is switched off: nothing to send");
+                        note(hmi::Note::AllOff);
                         break;
                     }
                     ServerJob job;
@@ -672,6 +722,13 @@ extern "C" void app_main() {
         const bool quality_running = g_quality_running;
         g_quality_new = false;
         state.server_ok = g_server_ok;
+        {
+            // the link and the age of the data: an old value is never shown as a current one
+            const std::uint32_t now = board::now_ms();
+            state.link = g_link.state();
+            state.stale = g_link.stale(now, g_settings.stale_after_s);
+            state.age_s = g_link.age_s(now);
+        }
         state.note = g_note;
         state.percent = g_flow.percent();
         // the machine counts as armed while the job of this screen runs or waits for the operator
@@ -700,10 +757,12 @@ extern "C" void app_main() {
         state.stop_latched = gate.latched();
         board::lvgl_lock();
         ui::show(state, g_settings);
-        if (fleet_new) ui::show_fleet(fleet, g_settings);
+        if (fleet_new || state.stale != fleet_stale_shown) ui::show_fleet(fleet, g_settings, state.stale);
+        fleet_stale_shown = state.stale;
         if (spindle_new || stage_changed) refresh_job();
         if (quality_new && hmi::controls_for(g_settings.machine).quality_check) ui::show_quality(quality, light, quality_running, g_settings);
-        if (!gate.pending()) ui::ask(nullptr, g_settings);
+        if (gate.pending()) ui::ask_tick(gate.remaining_ms(board::now_ms()), g_settings);  // the countdown to the abort
+        else ui::ask(nullptr, g_settings);
         board::lvgl_unlock();
         if (CONFIG_HMI_STACK_REPORT_S > 0 && static_cast<std::int32_t>(board::now_ms() - next_stack_report) >= 0) {
             stack_report();

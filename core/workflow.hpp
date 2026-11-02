@@ -13,6 +13,7 @@
 #include "job_tools.hpp"
 #include "sdfiles.hpp"
 #include "server_link.hpp"
+#include "why_text.hpp"
 
 namespace hmi {
 
@@ -44,11 +45,11 @@ public:
     bool choose(const std::string& name, const std::string& text, std::string& why) {
         FileKind k = kind_of_file(name);
         if (k != FileKind::Drill && k != FileKind::Route && k != FileKind::Gcode) {
-            why = "only drilling, routing and G-code files can be sent as a job from the card";
+            why = reasons::kNotAJobFile;
             return false;
         }
         if (text.empty()) {
-            why = "the file is empty";
+            why = reasons::kEmptyFile;
             return false;
         }
         const bool gcode = k == FileKind::Gcode;
@@ -265,7 +266,7 @@ public:
     ResumeStep on_resume_from(const Response& r, std::string& why) {
         resume_sent_ = false;
         if (stage_ != Stage::Stopped) {
-            why = "the job is not stopped";
+            why = reasons::kNotStopped;
             return ResumeStep::Refused;
         }
         Json j;
@@ -284,7 +285,7 @@ public:
         if ((r.status == 404 || r.status == 405) && !(parsed && j.str("error") == "unknown_job")) {
             api_ = ResumeApi::No;
             if (slots_[cur_].loaded && resume(why)) return ResumeStep::Fallback;
-            why = "the server is an old one and this screen has no file to send again";
+            why = reasons::kOldServerNoFile;
             return ResumeStep::Refused;
         }
         if (r.status == 422 && parsed && j.str("error") == "no_work") no_work_ = true;
@@ -298,7 +299,7 @@ public:
     /// the tools switched off stay off. The application sends it, and the start goes through the gate as any other.
     bool resume(std::string& why) {
         if (!can_resume() || !slots_[cur_].loaded || slots_[cur_].gcode) {
-            why = "there is nothing to go on from";
+            why = reasons::kNothingToGoOn;
             return false;
         }
         slots_[cur_].skip += done_;

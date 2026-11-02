@@ -306,7 +306,7 @@ RULES = {
     "confirm_moves": _flag, "confirm_timeout_ms": _num(1000, 60000), "jog_max_mm": _num(1, 200),
     "spindle_max_rpm": _num(0, 65535), "spindle_rpm": _num(0, 65535),
     "spindle_over": lambda v: "" if v in ("clip", "refuse") else "not clip or refuse",
-    "hw_stop_required": _flag, "link_idle_ms": _num(200, 60000),
+    "hw_stop_required": _flag, "link_idle_ms": _num(200, 60000), "stale_after_s": _num(2, 3600),
     "voice_alerts": _flag, "voice_orders": _flag, "voice_confirm": _flag,
     "volume_percent": _num(0, 100), "mic_gain_percent": _num(0, 100),
     "sound_finish": _notice, "sound_tool_change": _notice, "sound_check_ok": _notice, "sound_check_bad": _notice,

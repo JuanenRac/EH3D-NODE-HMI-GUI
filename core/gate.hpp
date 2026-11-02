@@ -153,6 +153,13 @@ public:
 
     void cancel() { drop(); }
 
+    /// How long the waiting question still lives (0 when nothing waits or the time is over): the screen counts it down.
+    std::uint32_t remaining_ms(std::uint32_t now_ms) const {
+        if (!pending_) return 0;
+        const std::int32_t left = static_cast<std::int32_t>(deadline_ - now_ms);
+        return left > 0 ? static_cast<std::uint32_t>(left) : 0;
+    }
+
     /// Time passes: a request nobody confirmed in time is dropped.
     void tick(std::uint32_t now_ms) {
         if (pending_ && static_cast<std::int32_t>(now_ms - deadline_) > 0) drop();

@@ -42,6 +42,8 @@ spindle_over = clip
 hw_stop_required = on
 # 200..60000
 link_idle_ms = 3000
+# the data shown are marked old when the server has not updated them for this many seconds, 2..3600
+stale_after_s = 15
 
 # voice
 voice_alerts = on

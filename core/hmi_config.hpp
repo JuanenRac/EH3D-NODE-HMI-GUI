@@ -47,6 +47,7 @@ struct Settings {
     SpindleOver spindle_over = SpindleOver::Clip;  // clip: an order for more turns than the spindle gives is cut to its top speed and the screen says so; refuse: it is refused
     bool hw_stop_required = true;           // the screen controls the machine only while the hardware stop input is wired and released
     std::uint32_t link_idle_ms = 3000;      // the link is lost when the machine stays quiet this long, 200..60000
+    std::uint32_t stale_after_s = 15;       // the data shown (the fleet, the progress) are marked old when the server has not updated them for this long, 2..3600
 
     // voice
     bool voice_alerts = true;               // spoken alerts (the end of a job, a tool change, an error)
@@ -60,10 +61,14 @@ struct Settings {
     NoticeSetting sound_check_bad;          // and when it is not correct
 };
 
+/// Why a line of the settings file cannot be used: the screen says it in the language of the operator (the English `what` is for the log).
+enum class CfgReason { NotPair, Range, OnOff, Choice, Token, Unknown };
+
 struct Problem {
     int line = 0;
     std::string key;
     std::string what;
+    CfgReason reason = CfgReason::Unknown;
 };
 
 namespace detail {
@@ -109,22 +114,22 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
         if (line.empty() || line[0] == '#') continue;
         std::size_t eq = line.find('=');
         if (eq == std::string::npos) {
-            problems.push_back({line_no, line, "not a key = value line"});
+            problems.push_back({line_no, line, "not a key = value line", CfgReason::NotPair});
             continue;
         }
         std::string key = detail::trim(line.substr(0, eq));
         std::string val = detail::trim(line.substr(eq + 1));
         std::uint32_t n = 0;
         bool b = false;
-        auto bad = [&](const char* why) { problems.push_back({line_no, key, why}); };
+        auto bad = [&](const char* why, CfgReason reason = CfgReason::Choice) { problems.push_back({line_no, key, why, reason}); };
         auto num = [&](std::uint32_t lo, std::uint32_t hi) {
             if (detail::to_uint(val, lo, hi, n)) return true;
-            bad("out of range or not a number");
+            bad("out of range or not a number", CfgReason::Range);
             return false;
         };
         auto flag = [&]() {
             if (detail::to_bool(val, b)) return true;
-            bad("expected on or off");
+            bad("expected on or off", CfgReason::OnOff);
             return false;
         };
         if (key == "language") {
@@ -155,7 +160,7 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
         } else if (key == "server_machine") {
             s.server_machine = val;
         } else if (key == "token") {
-            if (val.empty() || (val.size() >= 8 && val.size() <= 64)) s.token = val; else bad("8 to 64 characters");
+            if (val.empty() || (val.size() >= 8 && val.size() <= 64)) s.token = val; else bad("8 to 64 characters", CfgReason::Token);
         } else if (key == "confirm_moves") {
             if (flag()) s.confirm_moves = b;
         } else if (key == "confirm_timeout_ms") {
@@ -174,6 +179,8 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (flag()) s.hw_stop_required = b;
         } else if (key == "link_idle_ms") {
             if (num(200, 60000)) s.link_idle_ms = n;
+        } else if (key == "stale_after_s") {
+            if (num(2, 3600)) s.stale_after_s = n;
         } else if (key == "voice_alerts") {
             if (flag()) s.voice_alerts = b;
         } else if (key == "voice_orders") {
@@ -193,7 +200,7 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
         } else if (key == "mic_gain_percent") {
             if (num(0, 100)) s.mic_gain_percent = static_cast<std::uint16_t>(n);
         } else {
-            bad("unknown key");
+            bad("unknown key", CfgReason::Unknown);
         }
     }
     return s;

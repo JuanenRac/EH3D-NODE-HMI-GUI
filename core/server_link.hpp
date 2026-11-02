@@ -195,9 +195,16 @@ struct Response {
     std::string body;
 };
 
-/// The request as the text that goes on the wire; the token of the screen goes as a bearer token.
-inline std::string wire(const Request& r, const std::string& host, const std::string& token) {
+/// Why a call to the server did not come back with an answer (the screen says it in the language of the operator: see status.hpp).
+enum class CallError { None, NoServer, Client, TooLong, Broke, Send, NoAnswer };
+
+/// Who the screen says it is in every request (`name/version`, for example `eh3d-node-hmi-gui/0.0.5`): the server can tell the screens apart in its log.
+inline std::string client_id(const std::string& name, const std::string& version) { return version.empty() ? name : name + "/" + version; }
+
+/// The request as the text that goes on the wire; the token of the screen goes as a bearer token, and `client` (see `client_id`) as User-Agent and X-EH3D-Client.
+inline std::string wire(const Request& r, const std::string& host, const std::string& token, const std::string& client = "") {
     std::string s = r.method + " " + r.path + " HTTP/1.1\r\nHost: " + host + "\r\nAuthorization: Bearer " + token + "\r\nConnection: close\r\n";
+    if (!client.empty()) s += "User-Agent: " + client + "\r\nX-EH3D-Client: " + client + "\r\n";
     if (!r.body.empty()) s += "Content-Type: application/json\r\nContent-Length: " + std::to_string(r.body.size()) + "\r\n";
     return s + "\r\n" + r.body;
 }

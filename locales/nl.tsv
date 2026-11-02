@@ -82,3 +82,55 @@ ui.ResumedFrom	Hervat van
 ui.ToolChanged	Gereedschap gewisseld
 ui.BoardTooBig	De print past niet op de tafel
 ui.Failed	Mislukt
+ui.OrdStart	Taak starten
+ui.OrdPause	Taak pauzeren
+ui.OrdResume	Taak hervatten
+ui.OrdToolChanged	Gereedschapswissel bevestigen
+ui.OrdHome	Machine naar de oorsprong brengen
+ui.OrdStop	Machine stoppen
+ui.CancelsIn	Annuleert over
+ui.LinkOk	Verbonden
+ui.LinkLost	Geen verbinding
+ui.LinkOther	Andere server
+ui.LinkOld	Oude gegevens
+ui.Firmware	Firmware
+ui.CfgLine	hmi.cfg, regel
+ui.CfgMore	meer
+ui.CfgNoFile	hmi.cfg niet gevonden: de standaardwaarden gelden
+ui.CfgNotPair	geen regel van de vorm sleutel = waarde
+ui.CfgRange	buiten bereik of geen getal
+ui.CfgOnOff	on of off verwacht
+ui.CfgChoice	waarde niet toegestaan
+ui.CfgToken	moet 8 tot 64 tekens hebben
+ui.CfgUnknown	onbekende sleutel
+ui.SrvNone	Geen server_host in hmi.cfg: er wordt niets bestuurd
+ui.SrvSilent	De server antwoordt niet
+ui.SrvOther	Het antwoord komt niet van een EH3D-server
+ui.NoteStopFail	STOP NIET VERZONDEN: gebruik de hardwarestop
+ui.NoteStopRefused	Stop geweigerd
+ui.NoteStopSent	Stop verzonden
+ui.NoteNoJobToStop	De machine heeft geen taak om te stoppen
+ui.NoteMoveNoLink	Deze beweging heeft de verbinding met de node nodig, die nog niet klaar is
+ui.NoteBusy	De verbinding is bezet: vraag opnieuw
+ui.NoteNothingToSend	Niets te verzenden: kies een bestand en de machine van de server
+ui.NoteOldServer	Oude server: het bestand wordt opnieuw verzonden
+ui.NoteOk	Klaar
+ui.NoteFollowing	De taak die bleef lopen wordt gevolgd
+ui.NoteNoJobReady	Geen taak klaar: kies eerst een bestand en verzend het
+ui.NoteGoingOn	Verder vanaf de reeds geboorde gaten
+ui.NoteFile	Bestand
+ui.NoteUnreadable	Het bestand kan niet worden gelezen
+ui.NoteAllOff	Alle gereedschappen staan uit: niets te verzenden
+ui.ErrClient	De netwerkclient kan niet starten
+ui.ErrTooLong	Het antwoord is te lang
+ui.ErrBroke	De verbinding is verbroken
+ui.ErrSend	Het verzoek kan niet worden verzonden
+ui.WfKind	Alleen boor-, frees- en G-codebestanden kunnen worden verzonden
+ui.WfEmpty	Het bestand is leeg
+ui.WfOldNoFile	Oude server en geen bestand om opnieuw te verzenden
+ui.WfNothing	Er is niets om vanaf verder te gaan
+ui.OrientAuto	Automatisch
+ui.OrientLandscape	Liggend
+ui.OrientPortrait	Staand
+ui.OverClip	Beperken tot het toptoerental
+ui.OverRefuse	Weigeren

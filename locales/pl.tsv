@@ -82,3 +82,55 @@ ui.ResumedFrom	Wznowiono z
 ui.ToolChanged	Narzędzie wymienione
 ui.BoardTooBig	Płytka nie mieści się na stole
 ui.Failed	Niepowodzenie
+ui.OrdStart	Uruchom zadanie
+ui.OrdPause	Wstrzymaj zadanie
+ui.OrdResume	Wznów zadanie
+ui.OrdToolChanged	Potwierdź wymianę narzędzia
+ui.OrdHome	Przejedź maszyną do punktu zerowego
+ui.OrdStop	Zatrzymaj maszynę
+ui.CancelsIn	Anulowanie za
+ui.LinkOk	Połączono
+ui.LinkLost	Brak połączenia
+ui.LinkOther	Inny serwer
+ui.LinkOld	Stare dane
+ui.Firmware	Oprogramowanie
+ui.CfgLine	hmi.cfg, wiersz
+ui.CfgMore	więcej
+ui.CfgNoFile	Nie znaleziono hmi.cfg: używane są wartości domyślne
+ui.CfgNotPair	to nie wiersz postaci klucz = wartość
+ui.CfgRange	poza zakresem lub nie jest liczbą
+ui.CfgOnOff	oczekiwano on lub off
+ui.CfgChoice	niedozwolona wartość
+ui.CfgToken	musi mieć od 8 do 64 znaków
+ui.CfgUnknown	nieznany klucz
+ui.SrvNone	Brak server_host w hmi.cfg: nic nie jest sterowane
+ui.SrvSilent	Serwer nie odpowiada
+ui.SrvOther	Odpowiedź nie pochodzi z serwera EH3D
+ui.NoteStopFail	ZATRZYMANIE NIE WYSŁANE: użyj sprzętowego stopu
+ui.NoteStopRefused	Zatrzymanie odrzucone
+ui.NoteStopSent	Zatrzymanie wysłane
+ui.NoteNoJobToStop	Maszyna nie ma zadania do zatrzymania
+ui.NoteMoveNoLink	Ten ruch wymaga połączenia z węzłem, które nie jest jeszcze gotowe
+ui.NoteBusy	Łącze jest zajęte: poproś ponownie
+ui.NoteNothingToSend	Nie ma czego wysłać: wybierz plik i maszynę serwera
+ui.NoteOldServer	Stary serwer: plik zostanie wysłany ponownie
+ui.NoteOk	Gotowe
+ui.NoteFollowing	Śledzenie zadania, które pozostało uruchomione
+ui.NoteNoJobReady	Żadne zadanie nie jest gotowe: najpierw wybierz plik i wyślij go
+ui.NoteGoingOn	Kontynuacja od otworów już wykonanych
+ui.NoteFile	Plik
+ui.NoteUnreadable	Nie można odczytać pliku
+ui.NoteAllOff	Wszystkie narzędzia są wyłączone: nie ma czego wysłać
+ui.ErrClient	Nie można uruchomić klienta sieciowego
+ui.ErrTooLong	Odpowiedź jest zbyt długa
+ui.ErrBroke	Połączenie zostało przerwane
+ui.ErrSend	Nie można wysłać żądania
+ui.WfKind	Można wysyłać tylko pliki wiercenia, frezowania i G-code
+ui.WfEmpty	Plik jest pusty
+ui.WfOldNoFile	Stary serwer i brak pliku do ponownego wysłania
+ui.WfNothing	Nie ma od czego kontynuować
+ui.OrientAuto	Automatycznie
+ui.OrientLandscape	Poziomo
+ui.OrientPortrait	Pionowo
+ui.OverClip	Ogranicz do prędkości maksymalnej
+ui.OverRefuse	Odrzuć

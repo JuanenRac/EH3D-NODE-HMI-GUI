@@ -82,3 +82,55 @@ ui.ResumedFrom	Retomado desde
 ui.ToolChanged	Ferramenta cambiada
 ui.BoardTooBig	A placa non cabe na mesa
 ui.Failed	Fallou
+ui.OrdStart	Iniciar o traballo
+ui.OrdPause	Pausar o traballo
+ui.OrdResume	Retomar o traballo
+ui.OrdToolChanged	Confirmar o cambio de ferramenta
+ui.OrdHome	Levar a máquina á orixe
+ui.OrdStop	Parar a máquina
+ui.CancelsIn	Cancélase en
+ui.LinkOk	Conectado
+ui.LinkLost	Sen conexión
+ui.LinkOther	Outro servidor
+ui.LinkOld	Datos antigos
+ui.Firmware	Firmware
+ui.CfgLine	hmi.cfg, liña
+ui.CfgMore	máis
+ui.CfgNoFile	Non se atopa hmi.cfg: úsanse os valores por defecto
+ui.CfgNotPair	non é unha liña clave = valor
+ui.CfgRange	fóra de rango ou non é un número
+ui.CfgOnOff	esperábase on ou off
+ui.CfgChoice	valor non permitido
+ui.CfgToken	debe ter de 8 a 64 caracteres
+ui.CfgUnknown	clave descoñecida
+ui.SrvNone	Falta server_host en hmi.cfg: non se controla nada
+ui.SrvSilent	O servidor non responde
+ui.SrvOther	A resposta non é dun servidor EH3D
+ui.NoteStopFail	PARADA NON ENVIADA: use a parada por hardware
+ui.NoteStopRefused	Parada rexeitada
+ui.NoteStopSent	Parada enviada
+ui.NoteNoJobToStop	A máquina non ten ningún traballo que parar
+ui.NoteMoveNoLink	Este movemento precisa a ligazón co nodo, que aínda non está lista
+ui.NoteBusy	A ligazón está ocupada: pídao outra vez
+ui.NoteNothingToSend	Nada que enviar: escolla un ficheiro e a máquina do servidor
+ui.NoteOldServer	Servidor antigo: o ficheiro envíase outra vez
+ui.NoteOk	Feito
+ui.NoteFollowing	Seguindo o traballo que quedou en marcha
+ui.NoteNoJobReady	Ningún traballo listo: escolla un ficheiro e envíeo primeiro
+ui.NoteGoingOn	Continuando desde os buratos xa feitos
+ui.NoteFile	Ficheiro
+ui.NoteUnreadable	Non se pode ler o ficheiro
+ui.NoteAllOff	Todas as ferramentas están desactivadas: nada que enviar
+ui.ErrClient	Non se pode iniciar o cliente de rede
+ui.ErrTooLong	A resposta é demasiado longa
+ui.ErrBroke	Cortouse a conexión
+ui.ErrSend	Non se pode enviar a petición
+ui.WfKind	Só se poden enviar ficheiros de furado, fresado e G-code
+ui.WfEmpty	O ficheiro está baleiro
+ui.WfOldNoFile	Servidor antigo e sen ficheiro para enviar outra vez
+ui.WfNothing	Non hai nada desde onde continuar
+ui.OrientAuto	Automática
+ui.OrientLandscape	Horizontal
+ui.OrientPortrait	Vertical
+ui.OverClip	Limitar á velocidade máxima
+ui.OverRefuse	Rexeitar

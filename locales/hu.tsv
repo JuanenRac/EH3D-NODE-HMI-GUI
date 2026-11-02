@@ -82,3 +82,55 @@ ui.ResumedFrom	Folytatva innen
 ui.ToolChanged	Szerszám cserélve
 ui.BoardTooBig	A panel nem fér rá az asztalra
 ui.Failed	Sikertelen
+ui.OrdStart	A munka indítása
+ui.OrdPause	A munka szüneteltetése
+ui.OrdResume	A munka folytatása
+ui.OrdToolChanged	Szerszámcsere megerősítése
+ui.OrdHome	A gép alaphelyzetbe állítása
+ui.OrdStop	A gép leállítása
+ui.CancelsIn	Megszakítás
+ui.LinkOk	Csatlakoztatva
+ui.LinkLost	Nincs kapcsolat
+ui.LinkOther	Másik kiszolgáló
+ui.LinkOld	Régi adatok
+ui.Firmware	Firmware
+ui.CfgLine	hmi.cfg, sor
+ui.CfgMore	további
+ui.CfgNoFile	A hmi.cfg nem található: az alapértékek érvényesek
+ui.CfgNotPair	nem kulcs = érték alakú sor
+ui.CfgRange	tartományon kívül van, vagy nem szám
+ui.CfgOnOff	on vagy off az elvárt
+ui.CfgChoice	nem megengedett érték
+ui.CfgToken	8 és 64 karakter között kell lennie
+ui.CfgUnknown	ismeretlen kulcs
+ui.SrvNone	A hmi.cfg-ben nincs server_host: semmi sincs vezérelve
+ui.SrvSilent	A kiszolgáló nem válaszol
+ui.SrvOther	A válasz nem EH3D-kiszolgálótól származik
+ui.NoteStopFail	A LEÁLLÍTÁS NEM LETT ELKÜLDVE: használja a hardveres leállítást
+ui.NoteStopRefused	A leállítást elutasították
+ui.NoteStopSent	A leállítás elküldve
+ui.NoteNoJobToStop	A gépnek nincs leállítandó munkája
+ui.NoteMoveNoLink	Ehhez a mozgáshoz a csomóponttal való kapcsolat kell, amely még nincs kész
+ui.NoteBusy	A kapcsolat foglalt: kérje újra
+ui.NoteNothingToSend	Nincs mit küldeni: válasszon fájlt és a kiszolgáló gépét
+ui.NoteOldServer	Régi kiszolgáló: a fájl újra elküldésre kerül
+ui.NoteOk	Kész
+ui.NoteFollowing	A futva maradt munka követése
+ui.NoteNoJobReady	Nincs kész munka: először válasszon fájlt és küldje el
+ui.NoteGoingOn	Folytatás a már elkészült furatoktól
+ui.NoteFile	Fájl
+ui.NoteUnreadable	A fájl nem olvasható
+ui.NoteAllOff	Minden szerszám ki van kapcsolva: nincs mit küldeni
+ui.ErrClient	A hálózati kliens nem indítható
+ui.ErrTooLong	A válasz túl hosszú
+ui.ErrBroke	A kapcsolat megszakadt
+ui.ErrSend	A kérés nem küldhető el
+ui.WfKind	Csak fúrási, marási és G-kód fájlok küldhetők
+ui.WfEmpty	A fájl üres
+ui.WfOldNoFile	Régi kiszolgáló, és nincs újra elküldhető fájl
+ui.WfNothing	Nincs honnan folytatni
+ui.OrientAuto	Automatikus
+ui.OrientLandscape	Fekvő
+ui.OrientPortrait	Álló
+ui.OverClip	Korlátozás a legnagyobb fordulatszámra
+ui.OverRefuse	Elutasítás

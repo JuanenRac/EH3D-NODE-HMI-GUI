@@ -82,3 +82,55 @@ ui.ResumedFrom	Jatkettu työstä
 ui.ToolChanged	Työkalu vaihdettu
 ui.BoardTooBig	Piirilevy ei mahdu pöydälle
 ui.Failed	Epäonnistui
+ui.OrdStart	Käynnistä työ
+ui.OrdPause	Keskeytä työ
+ui.OrdResume	Jatka työtä
+ui.OrdToolChanged	Vahvista työkalun vaihto
+ui.OrdHome	Vie kone nollapisteeseen
+ui.OrdStop	Pysäytä kone
+ui.CancelsIn	Peruuntuu
+ui.LinkOk	Yhdistetty
+ui.LinkLost	Ei yhteyttä
+ui.LinkOther	Toinen palvelin
+ui.LinkOld	Vanhat tiedot
+ui.Firmware	Laiteohjelmisto
+ui.CfgLine	hmi.cfg, rivi
+ui.CfgMore	lisää
+ui.CfgNoFile	hmi.cfg puuttuu: käytetään oletusarvoja
+ui.CfgNotPair	ei ole muotoa avain = arvo oleva rivi
+ui.CfgRange	alueen ulkopuolella tai ei ole luku
+ui.CfgOnOff	odotettiin on tai off
+ui.CfgChoice	arvo ei ole sallittu
+ui.CfgToken	pituuden on oltava 8-64 merkkiä
+ui.CfgUnknown	tuntematon avain
+ui.SrvNone	hmi.cfg:stä puuttuu server_host: mitään ei ohjata
+ui.SrvSilent	Palvelin ei vastaa
+ui.SrvOther	Vastaus ei ole EH3D-palvelimelta
+ui.NoteStopFail	PYSÄYTYSTÄ EI LÄHETETTY: käytä laitteistopysäytystä
+ui.NoteStopRefused	Pysäytys evättiin
+ui.NoteStopSent	Pysäytys lähetetty
+ui.NoteNoJobToStop	Koneella ei ole pysäytettävää työtä
+ui.NoteMoveNoLink	Tämä liike tarvitsee yhteyden solmuun, joka ei ole vielä valmis
+ui.NoteBusy	Yhteys on varattu: pyydä uudelleen
+ui.NoteNothingToSend	Ei mitään lähetettävää: valitse tiedosto ja palvelimen kone
+ui.NoteOldServer	Vanha palvelin: tiedosto lähetetään uudelleen
+ui.NoteOk	Valmis
+ui.NoteFollowing	Seurataan käyntiin jäänyttä työtä
+ui.NoteNoJobReady	Mikään työ ei ole valmis: valitse ensin tiedosto ja lähetä se
+ui.NoteGoingOn	Jatketaan jo tehdyistä rei'istä
+ui.NoteFile	Tiedosto
+ui.NoteUnreadable	Tiedostoa ei voi lukea
+ui.NoteAllOff	Kaikki työkalut on kytketty pois: ei mitään lähetettävää
+ui.ErrClient	Verkkoasiakasta ei voi käynnistää
+ui.ErrTooLong	Vastaus on liian pitkä
+ui.ErrBroke	Yhteys katkesi
+ui.ErrSend	Pyyntöä ei voi lähettää
+ui.WfKind	Vain poraus-, jyrsintä- ja G-koodi-tiedostoja voi lähettää
+ui.WfEmpty	Tiedosto on tyhjä
+ui.WfOldNoFile	Vanha palvelin eikä uudelleen lähetettävää tiedostoa
+ui.WfNothing	Ei ole mistä jatkaa
+ui.OrientAuto	Automaattinen
+ui.OrientLandscape	Vaaka
+ui.OrientPortrait	Pysty
+ui.OverClip	Rajoita huippunopeuteen
+ui.OverRefuse	Hylkää

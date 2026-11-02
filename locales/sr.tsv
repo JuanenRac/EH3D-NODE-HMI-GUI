@@ -82,3 +82,55 @@ ui.ResumedFrom	Настављено од
 ui.ToolChanged	Алат је замењен
 ui.BoardTooBig	Плоча не стаје на сто
 ui.Failed	Неуспешно
+ui.OrdStart	Покрени задатак
+ui.OrdPause	Паузирај задатак
+ui.OrdResume	Настави задатак
+ui.OrdToolChanged	Потврди замену алата
+ui.OrdHome	Врати машину у почетну тачку
+ui.OrdStop	Заустави машину
+ui.CancelsIn	Отказивање за
+ui.LinkOk	Повезано
+ui.LinkLost	Нема везе
+ui.LinkOther	Други сервер
+ui.LinkOld	Стари подаци
+ui.Firmware	Фирмвер
+ui.CfgLine	hmi.cfg, ред
+ui.CfgMore	још
+ui.CfgNoFile	hmi.cfg није пронађен: користе се подразумеване вредности
+ui.CfgNotPair	није ред облика кључ = вредност
+ui.CfgRange	ван опсега или није број
+ui.CfgOnOff	очекивано је on или off
+ui.CfgChoice	недозвољена вредност
+ui.CfgToken	мора имати од 8 до 64 знака
+ui.CfgUnknown	непознат кључ
+ui.SrvNone	У hmi.cfg нема server_host: ништа се не управља
+ui.SrvSilent	Сервер не одговара
+ui.SrvOther	Одговор није са EH3D сервера
+ui.NoteStopFail	ЗАУСТАВЉАЊЕ НИЈЕ ПОСЛАТО: користите хардверско заустављање
+ui.NoteStopRefused	Заустављање је одбијено
+ui.NoteStopSent	Заустављање је послато
+ui.NoteNoJobToStop	Машина нема задатак за заустављање
+ui.NoteMoveNoLink	Овом покрету је потребна веза са чвором, која још није спремна
+ui.NoteBusy	Веза је заузета: покушајте поново
+ui.NoteNothingToSend	Нема шта да се пошаље: изаберите датотеку и машину сервера
+ui.NoteOldServer	Стари сервер: датотека се шаље поново
+ui.NoteOk	Готово
+ui.NoteFollowing	Прати се задатак који је остао покренут
+ui.NoteNoJobReady	Нема спремног задатка: прво изаберите датотеку и пошаљите је
+ui.NoteGoingOn	Наставља се од већ избушених рупа
+ui.NoteFile	Датотека
+ui.NoteUnreadable	Датотека се не може прочитати
+ui.NoteAllOff	Сви алати су искључени: нема шта да се пошаље
+ui.ErrClient	Мрежни клијент се не може покренути
+ui.ErrTooLong	Одговор је предугачак
+ui.ErrBroke	Веза је прекинута
+ui.ErrSend	Захтев се не може послати
+ui.WfKind	Могу се слати само датотеке бушења, глодања и G-кода
+ui.WfEmpty	Датотека је празна
+ui.WfOldNoFile	Стари сервер и нема датотеке за поновно слање
+ui.WfNothing	Нема од чега да се настави
+ui.OrientAuto	Аутоматски
+ui.OrientLandscape	Водоравно
+ui.OrientPortrait	Усправно
+ui.OverClip	Ограничи на највећу брзину
+ui.OverRefuse	Одбиј

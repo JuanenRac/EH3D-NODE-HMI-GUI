@@ -82,3 +82,55 @@ ui.ResumedFrom	Hemendik jarraitua
 ui.ToolChanged	Erreminta aldatuta
 ui.BoardTooBig	Plaka ez da mahaian sartzen
 ui.Failed	Huts egin du
+ui.OrdStart	Hasi lana
+ui.OrdPause	Eten lana
+ui.OrdResume	Jarraitu lanarekin
+ui.OrdToolChanged	Berretsi erreminta-aldaketa
+ui.OrdHome	Eraman makina jatorrira
+ui.OrdStop	Gelditu makina
+ui.CancelsIn	Bertan behera geratuko da
+ui.LinkOk	Konektatuta
+ui.LinkLost	Konexiorik ez
+ui.LinkOther	Beste zerbitzari bat
+ui.LinkOld	Datu zaharrak
+ui.Firmware	Firmwarea
+ui.CfgLine	hmi.cfg, lerroa
+ui.CfgMore	gehiago
+ui.CfgNoFile	Ez da hmi.cfg aurkitu: lehenetsitako balioak erabiltzen dira
+ui.CfgNotPair	ez da gakoa = balioa motako lerroa
+ui.CfgRange	tartetik kanpo edo ez da zenbakia
+ui.CfgOnOff	on edo off espero zen
+ui.CfgChoice	balio ez-onartua
+ui.CfgToken	8 eta 64 karaktere artean izan behar ditu
+ui.CfgUnknown	gako ezezaguna
+ui.SrvNone	hmi.cfg-n ez dago server_host: ez da ezer kontrolatzen
+ui.SrvSilent	Zerbitzariak ez du erantzuten
+ui.SrvOther	Erantzuna ez dator EH3D zerbitzari batetik
+ui.NoteStopFail	GELDIALDIA EZ DA BIDALI: erabili hardware-geldialdia
+ui.NoteStopRefused	Geldialdia ukatu da
+ui.NoteStopSent	Geldialdia bidali da
+ui.NoteNoJobToStop	Makinak ez dauka geldituko duen lanik
+ui.NoteMoveNoLink	Mugimendu honek nodoarekiko esteka behar du, eta ez dago prest oraindik
+ui.NoteBusy	Esteka lanpetuta dago: eskatu berriro
+ui.NoteNothingToSend	Ez dago bidaltzeko ezer: aukeratu fitxategi bat eta zerbitzariaren makina
+ui.NoteOldServer	Zerbitzari zaharra: fitxategia berriro bidaltzen da
+ui.NoteOk	Eginda
+ui.NoteFollowing	Martxan geratu zen lana jarraitzen
+ui.NoteNoJobReady	Ez dago lanik prest: aukeratu fitxategi bat eta bidali lehenik
+ui.NoteGoingOn	Egindako zuloetatik jarraitzen
+ui.NoteFile	Fitxategia
+ui.NoteUnreadable	Ezin da fitxategia irakurri
+ui.NoteAllOff	Erreminta guztiak desaktibatuta daude: ez dago bidaltzeko ezer
+ui.ErrClient	Ezin da sareko bezeroa abiarazi
+ui.ErrTooLong	Erantzuna luzeegia da
+ui.ErrBroke	Konexioa eten da
+ui.ErrSend	Ezin da eskaera bidali
+ui.WfKind	Zulatze, fresatze eta G-code fitxategiak bakarrik bidal daitezke
+ui.WfEmpty	Fitxategia hutsik dago
+ui.WfOldNoFile	Zerbitzari zaharra eta berriro bidaltzeko fitxategirik ez
+ui.WfNothing	Ez dago nondik jarraitu
+ui.OrientAuto	Automatikoa
+ui.OrientLandscape	Horizontala
+ui.OrientPortrait	Bertikala
+ui.OverClip	Mugatu abiadura maximora
+ui.OverRefuse	Ukatu

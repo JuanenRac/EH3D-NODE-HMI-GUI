@@ -82,3 +82,55 @@ ui.ResumedFrom	Продовжено після
 ui.ToolChanged	Інструмент замінено
 ui.BoardTooBig	Плата не вміщується на стіл
 ui.Failed	Збій
+ui.OrdStart	Запустити завдання
+ui.OrdPause	Призупинити завдання
+ui.OrdResume	Продовжити завдання
+ui.OrdToolChanged	Підтвердити заміну інструмента
+ui.OrdHome	Повернути верстат у початок координат
+ui.OrdStop	Зупинити верстат
+ui.CancelsIn	Скасування через
+ui.LinkOk	Підключено
+ui.LinkLost	Немає зв'язку
+ui.LinkOther	Інший сервер
+ui.LinkOld	Застарілі дані
+ui.Firmware	Прошивка
+ui.CfgLine	hmi.cfg, рядок
+ui.CfgMore	ще
+ui.CfgNoFile	hmi.cfg не знайдено: використовуються типові значення
+ui.CfgNotPair	не рядок виду ключ = значення
+ui.CfgRange	поза діапазоном або не число
+ui.CfgOnOff	очікувалося on або off
+ui.CfgChoice	недопустиме значення
+ui.CfgToken	має бути від 8 до 64 символів
+ui.CfgUnknown	невідомий ключ
+ui.SrvNone	У hmi.cfg немає server_host: нічим не керую
+ui.SrvSilent	Сервер не відповідає
+ui.SrvOther	Відповідь не від сервера EH3D
+ui.NoteStopFail	СТОП НЕ НАДІСЛАНО: скористайтеся апаратним стопом
+ui.NoteStopRefused	Зупинку відхилено
+ui.NoteStopSent	Зупинку надіслано
+ui.NoteNoJobToStop	Верстат не має завдання для зупинки
+ui.NoteMoveNoLink	Для цього руху потрібен зв'язок із вузлом, який ще не готовий
+ui.NoteBusy	Канал зайнятий: повторіть запит
+ui.NoteNothingToSend	Нічого надсилати: виберіть файл і верстат сервера
+ui.NoteOldServer	Старий сервер: файл надсилається знову
+ui.NoteOk	Готово
+ui.NoteFollowing	Відстежується завдання, що залишилося в роботі
+ui.NoteNoJobReady	Немає готового завдання: спершу виберіть файл і надішліть його
+ui.NoteGoingOn	Продовження з уже просвердлених отворів
+ui.NoteFile	Файл
+ui.NoteUnreadable	Файл не вдається прочитати
+ui.NoteAllOff	Усі інструменти вимкнено: нічого надсилати
+ui.ErrClient	Не вдається запустити мережевий клієнт
+ui.ErrTooLong	Відповідь задовга
+ui.ErrBroke	З'єднання перервано
+ui.ErrSend	Не вдається надіслати запит
+ui.WfKind	Можна надсилати лише файли свердління, фрезерування та G-коду
+ui.WfEmpty	Файл порожній
+ui.WfOldNoFile	Старий сервер і немає файлу для повторного надсилання
+ui.WfNothing	Немає з чого продовжувати
+ui.OrientAuto	Автоматично
+ui.OrientLandscape	Альбомна
+ui.OrientPortrait	Книжкова
+ui.OverClip	Обмежити максимальною швидкістю
+ui.OverRefuse	Відхилити

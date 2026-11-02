@@ -82,3 +82,55 @@ ui.ResumedFrom	Turpināts no
 ui.ToolChanged	Instruments nomainīts
 ui.BoardTooBig	Plate neietilpst galdā
 ui.Failed	Neizdevās
+ui.OrdStart	Sākt darbu
+ui.OrdPause	Apturēt darbu
+ui.OrdResume	Turpināt darbu
+ui.OrdToolChanged	Apstiprināt instrumenta maiņu
+ui.OrdHome	Novest iekārtu sākumpunktā
+ui.OrdStop	Apturēt iekārtu
+ui.CancelsIn	Atcelšana pēc
+ui.LinkOk	Savienots
+ui.LinkLost	Nav savienojuma
+ui.LinkOther	Cits serveris
+ui.LinkOld	Vecie dati
+ui.Firmware	Programmaparatūra
+ui.CfgLine	hmi.cfg, rinda
+ui.CfgMore	vēl
+ui.CfgNoFile	hmi.cfg nav atrasts: tiek izmantotas noklusētās vērtības
+ui.CfgNotPair	nav rinda formā atslēga = vērtība
+ui.CfgRange	ārpus diapazona vai nav skaitlis
+ui.CfgOnOff	gaidīts on vai off
+ui.CfgChoice	nepieļaujama vērtība
+ui.CfgToken	jābūt no 8 līdz 64 rakstzīmēm
+ui.CfgUnknown	nezināma atslēga
+ui.SrvNone	hmi.cfg nav server_host: nekas netiek vadīts
+ui.SrvSilent	Serveris neatbild
+ui.SrvOther	Atbilde nav no EH3D servera
+ui.NoteStopFail	APTURĒŠANA NAV NOSŪTĪTA: izmantojiet aparatūras apturēšanu
+ui.NoteStopRefused	Apturēšana noraidīta
+ui.NoteStopSent	Apturēšana nosūtīta
+ui.NoteNoJobToStop	Iekārtai nav darba, ko apturēt
+ui.NoteMoveNoLink	Šai kustībai vajadzīgs savienojums ar mezglu, kas vēl nav gatavs
+ui.NoteBusy	Savienojums ir aizņemts: pieprasiet vēlreiz
+ui.NoteNothingToSend	Nav ko sūtīt: izvēlieties failu un servera iekārtu
+ui.NoteOldServer	Vecs serveris: fails tiek sūtīts vēlreiz
+ui.NoteOk	Gatavs
+ui.NoteFollowing	Tiek sekots darbam, kas palika izpildē
+ui.NoteNoJobReady	Nav gatava darba: vispirms izvēlieties failu un nosūtiet to
+ui.NoteGoingOn	Turpina no jau izurbtajiem caurumiem
+ui.NoteFile	Fails
+ui.NoteUnreadable	Failu nevar nolasīt
+ui.NoteAllOff	Visi instrumenti ir izslēgti: nav ko sūtīt
+ui.ErrClient	Tīkla klientu nevar startēt
+ui.ErrTooLong	Atbilde ir pārāk gara
+ui.ErrBroke	Savienojums pārtrūka
+ui.ErrSend	Pieprasījumu nevar nosūtīt
+ui.WfKind	Var sūtīt tikai urbšanas, frēzēšanas un G-koda failus
+ui.WfEmpty	Fails ir tukšs
+ui.WfOldNoFile	Vecs serveris un nav faila, ko sūtīt vēlreiz
+ui.WfNothing	Nav, no kā turpināt
+ui.OrientAuto	Automātiski
+ui.OrientLandscape	Gulošs
+ui.OrientPortrait	Stāvošs
+ui.OverClip	Ierobežot līdz maksimālajam ātrumam
+ui.OverRefuse	Noraidīt

@@ -82,3 +82,55 @@ ui.ResumedFrom	Atosaithe ó
 ui.ToolChanged	Uirlis athraithe
 ui.BoardTooBig	Ní fheileann an clár don tábla
 ui.Failed	Theip air
+ui.OrdStart	Tosaigh an obair
+ui.OrdPause	Cuir an obair ar sos
+ui.OrdResume	Lean leis an obair
+ui.OrdToolChanged	Deimhnigh athrú an uirlis
+ui.OrdHome	Tabhair an meaisín chuig an mbunphointe
+ui.OrdStop	Stop an meaisín
+ui.CancelsIn	Cealaítear i gceann
+ui.LinkOk	Ceangailte
+ui.LinkLost	Gan nasc
+ui.LinkOther	Freastalaí eile
+ui.LinkOld	Sean-sonraí
+ui.Firmware	Dochtearraí
+ui.CfgLine	hmi.cfg, líne
+ui.CfgMore	tuilleadh
+ui.CfgNoFile	Níor aimsíodh hmi.cfg: úsáidtear na réamhshocruithe
+ui.CfgNotPair	ní líne de chineál eochair = luach í
+ui.CfgRange	lasmuigh den raon nó ní uimhir é
+ui.CfgOnOff	bhíothas ag súil le on nó off
+ui.CfgChoice	luach nach bhfuil ceadaithe
+ui.CfgToken	caithfidh 8 go 64 carachtar a bheith ann
+ui.CfgUnknown	eochair anaithnid
+ui.SrvNone	Níl server_host i hmi.cfg: ní rialaítear aon rud
+ui.SrvSilent	Ní fhreagraíonn an freastalaí
+ui.SrvOther	Ní ó fhreastalaí EH3D an freagra
+ui.NoteStopFail	NÍOR SEOLADH AN STOP: úsáid an stop crua-earraí
+ui.NoteStopRefused	Diúltaíodh don stop
+ui.NoteStopSent	Seoladh an stop
+ui.NoteNoJobToStop	Níl aon obair den mheaisín le stopadh
+ui.NoteMoveNoLink	Teastaíonn an nasc leis an nód don ghluaiseacht seo, nach bhfuil réidh fós
+ui.NoteBusy	Tá an nasc gnóthach: iarr arís
+ui.NoteNothingToSend	Rud ar bith le seoladh: roghnaigh comhad agus meaisín an fhreastalaí
+ui.NoteOldServer	Sean-fhreastalaí: seoltar an comhad arís
+ui.NoteOk	Déanta
+ui.NoteFollowing	Ag leanúint na hoibre a d'fhan ag rith
+ui.NoteNoJobReady	Níl aon obair réidh: roghnaigh comhad agus seol é ar dtús
+ui.NoteGoingOn	Ag leanúint ó na poill a rinneadh cheana
+ui.NoteFile	Comhad
+ui.NoteUnreadable	Ní féidir an comhad a léamh
+ui.NoteAllOff	Tá gach uirlis múchta: rud ar bith le seoladh
+ui.ErrClient	Ní féidir an cliant líonra a thosú
+ui.ErrTooLong	Tá an freagra rófhada
+ui.ErrBroke	Briseadh an nasc
+ui.ErrSend	Ní féidir an iarraidh a sheoladh
+ui.WfKind	Is comhaid druileála, muilleála agus G-code amháin is féidir a sheoladh
+ui.WfEmpty	Tá an comhad folamh
+ui.WfOldNoFile	Sean-fhreastalaí agus gan comhad le seoladh arís
+ui.WfNothing	Níl áit ar bith le leanúint uaithi
+ui.OrientAuto	Uathoibríoch
+ui.OrientLandscape	Cothrománach
+ui.OrientPortrait	Ingearach
+ui.OverClip	Teorannaigh don luas uasta
+ui.OverRefuse	Diúltaigh

@@ -25,7 +25,7 @@ BASE = ["en", "es", "it", "de", "fr", "pt", "zh", "ja"]
 LITERAL_FILES = ["core/ui_text.hpp", "core/quality.hpp", "core/keyboard.hpp", "main/ui.cpp"]
 # Texts that must keep a word whatever the language says.
 OPTIONAL_KEYS: set[str] = set()
-MUST_KEEP = {"q.NeedServer": ["hmi.cfg"], "q.Checking": ["..."]}
+MUST_KEEP = {"q.NeedServer": ["hmi.cfg"], "q.Checking": ["..."], "ui.CfgLine": ["hmi.cfg"], "ui.CfgNoFile": ["hmi.cfg"], "ui.SrvNone": ["hmi.cfg", "server_host"]}
 
 
 def key_names() -> list[str]:
@@ -172,6 +172,8 @@ def problems() -> list[str]:
 
 
 def main() -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="backslashreplace")
     if "--check" in sys.argv:
         bad = problems()
         for b in bad:

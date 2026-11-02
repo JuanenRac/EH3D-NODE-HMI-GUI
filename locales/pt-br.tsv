@@ -24,3 +24,23 @@ f.image_too_bright	foto clara demais: menos luz
 f.image_blurry	foto fora de foco
 f.not_calibrated	defina primeiro a escala
 f.no_expected_holes	nenhum furo do trabalho visível
+ui.LinkOk	Conectado
+ui.LinkLost	Sem conexão
+ui.CfgNoFile	hmi.cfg não encontrado: usam-se os valores padrão
+ui.NoteStopFail	PARADA NÃO ENVIADA: use a parada por hardware
+ui.NoteStopRefused	Parada recusada
+ui.NoteStopSent	Parada enviada
+ui.NoteMoveNoLink	Este movimento precisa da conexão ao nó, que ainda não está pronta
+ui.NoteBusy	A conexão está ocupada: peça outra vez
+ui.NoteNothingToSend	Nada para enviar: escolha um arquivo e a máquina do servidor
+ui.NoteOldServer	Servidor antigo: o arquivo é enviado outra vez
+ui.NoteFollowing	Acompanhando o trabalho que ficou em curso
+ui.NoteNoJobReady	Nenhum trabalho pronto: escolha um arquivo e envie-o primeiro
+ui.NoteGoingOn	Continuando a partir dos furos já feitos
+ui.NoteFile	Arquivo
+ui.NoteUnreadable	Não é possível ler o arquivo
+ui.ErrTooLong	A resposta é muito longa
+ui.ErrBroke	A conexão foi interrompida
+ui.WfKind	Só é possível enviar arquivos de furação, fresagem e G-code
+ui.WfEmpty	O arquivo está vazio
+ui.WfOldNoFile	Servidor antigo e sem arquivo para enviar outra vez

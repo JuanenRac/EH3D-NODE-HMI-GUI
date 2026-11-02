@@ -82,3 +82,55 @@ ui.ResumedFrom	Reluat de la
 ui.ToolChanged	Sculă schimbată
 ui.BoardTooBig	Placa nu încape pe masă
 ui.Failed	Eșuat
+ui.OrdStart	Pornește lucrarea
+ui.OrdPause	Pune lucrarea în pauză
+ui.OrdResume	Reia lucrarea
+ui.OrdToolChanged	Confirmă schimbarea sculei
+ui.OrdHome	Du mașina la origine
+ui.OrdStop	Oprește mașina
+ui.CancelsIn	Se anulează în
+ui.LinkOk	Conectat
+ui.LinkLost	Fără conexiune
+ui.LinkOther	Alt server
+ui.LinkOld	Date vechi
+ui.Firmware	Firmware
+ui.CfgLine	hmi.cfg, linia
+ui.CfgMore	încă
+ui.CfgNoFile	hmi.cfg nu a fost găsit: se folosesc valorile implicite
+ui.CfgNotPair	nu este o linie de forma cheie = valoare
+ui.CfgRange	în afara intervalului sau nu este număr
+ui.CfgOnOff	se aștepta on sau off
+ui.CfgChoice	valoare nepermisă
+ui.CfgToken	trebuie să aibă între 8 și 64 de caractere
+ui.CfgUnknown	cheie necunoscută
+ui.SrvNone	Lipsește server_host din hmi.cfg: nu se controlează nimic
+ui.SrvSilent	Serverul nu răspunde
+ui.SrvOther	Răspunsul nu vine de la un server EH3D
+ui.NoteStopFail	OPRIREA NU A FOST TRIMISĂ: folosiți oprirea hardware
+ui.NoteStopRefused	Oprirea a fost refuzată
+ui.NoteStopSent	Oprirea a fost trimisă
+ui.NoteNoJobToStop	Mașina nu are nicio lucrare de oprit
+ui.NoteMoveNoLink	Această mișcare cere legătura cu nodul, care nu este încă gata
+ui.NoteBusy	Legătura este ocupată: cereți din nou
+ui.NoteNothingToSend	Nimic de trimis: alegeți un fișier și mașina serverului
+ui.NoteOldServer	Server vechi: fișierul se trimite din nou
+ui.NoteOk	Gata
+ui.NoteFollowing	Se urmărește lucrarea rămasă în execuție
+ui.NoteNoJobReady	Nicio lucrare nu este gata: alegeți mai întâi un fișier și trimiteți-l
+ui.NoteGoingOn	Se continuă de la găurile deja făcute
+ui.NoteFile	Fișier
+ui.NoteUnreadable	Fișierul nu poate fi citit
+ui.NoteAllOff	Toate sculele sunt oprite: nimic de trimis
+ui.ErrClient	Clientul de rețea nu poate porni
+ui.ErrTooLong	Răspunsul este prea lung
+ui.ErrBroke	Conexiunea s-a întrerupt
+ui.ErrSend	Cererea nu poate fi trimisă
+ui.WfKind	Se pot trimite doar fișiere de găurire, frezare și G-code
+ui.WfEmpty	Fișierul este gol
+ui.WfOldNoFile	Server vechi și niciun fișier de retrimis
+ui.WfNothing	Nu există de unde să se continue
+ui.OrientAuto	Automat
+ui.OrientLandscape	Orizontal
+ui.OrientPortrait	Vertical
+ui.OverClip	Limitează la viteza maximă
+ui.OverRefuse	Refuză

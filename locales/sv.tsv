@@ -82,3 +82,55 @@ ui.ResumedFrom	Återupptaget från
 ui.ToolChanged	Verktyg bytt
 ui.BoardTooBig	Kretskortet ryms inte på bordet
 ui.Failed	Misslyckades
+ui.OrdStart	Starta jobbet
+ui.OrdPause	Pausa jobbet
+ui.OrdResume	Fortsätt jobbet
+ui.OrdToolChanged	Bekräfta verktygsbytet
+ui.OrdHome	Kör maskinen till nollpunkten
+ui.OrdStop	Stoppa maskinen
+ui.CancelsIn	Avbryts om
+ui.LinkOk	Ansluten
+ui.LinkLost	Ingen anslutning
+ui.LinkOther	Annan server
+ui.LinkOld	Gamla data
+ui.Firmware	Firmware
+ui.CfgLine	hmi.cfg, rad
+ui.CfgMore	fler
+ui.CfgNoFile	hmi.cfg hittades inte: standardvärdena används
+ui.CfgNotPair	inte en rad av typen nyckel = värde
+ui.CfgRange	utanför intervallet eller inte ett tal
+ui.CfgOnOff	förväntade on eller off
+ui.CfgChoice	inte ett tillåtet värde
+ui.CfgToken	måste ha 8 till 64 tecken
+ui.CfgUnknown	okänd nyckel
+ui.SrvNone	Ingen server_host i hmi.cfg: inget styrs
+ui.SrvSilent	Servern svarar inte
+ui.SrvOther	Svaret kommer inte från en EH3D-server
+ui.NoteStopFail	STOPP INTE SKICKAT: använd hårdvarustoppet
+ui.NoteStopRefused	Stopp nekades
+ui.NoteStopSent	Stopp skickat
+ui.NoteNoJobToStop	Maskinen har inget jobb att stoppa
+ui.NoteMoveNoLink	Den här rörelsen behöver länken till noden, som inte är klar ännu
+ui.NoteBusy	Länken är upptagen: be om det igen
+ui.NoteNothingToSend	Inget att skicka: välj en fil och serverns maskin
+ui.NoteOldServer	Gammal server: filen skickas igen
+ui.NoteOk	Klart
+ui.NoteFollowing	Följer jobbet som blev kvar i gång
+ui.NoteNoJobReady	Inget jobb är klart: välj en fil och skicka den först
+ui.NoteGoingOn	Fortsätter från hålen som redan är gjorda
+ui.NoteFile	Fil
+ui.NoteUnreadable	Filen kan inte läsas
+ui.NoteAllOff	Alla verktyg är avstängda: inget att skicka
+ui.ErrClient	Nätverksklienten kan inte startas
+ui.ErrTooLong	Svaret är för långt
+ui.ErrBroke	Anslutningen bröts
+ui.ErrSend	Begäran kan inte skickas
+ui.WfKind	Bara bor-, fräs- och G-kodsfiler kan skickas
+ui.WfEmpty	Filen är tom
+ui.WfOldNoFile	Gammal server och ingen fil att skicka igen
+ui.WfNothing	Det finns inget att fortsätta från
+ui.OrientAuto	Automatisk
+ui.OrientLandscape	Liggande
+ui.OrientPortrait	Stående
+ui.OverClip	Begränsa till högsta varvtal
+ui.OverRefuse	Avvisa

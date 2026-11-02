@@ -82,3 +82,55 @@ ui.ResumedFrom	Pokračovanie z
 ui.ToolChanged	Nástroj vymenený
 ui.BoardTooBig	Doska sa nezmestí na stôl
 ui.Failed	Zlyhalo
+ui.OrdStart	Spustiť úlohu
+ui.OrdPause	Pozastaviť úlohu
+ui.OrdResume	Pokračovať v úlohe
+ui.OrdToolChanged	Potvrdiť výmenu nástroja
+ui.OrdHome	Presunúť stroj do základnej polohy
+ui.OrdStop	Zastaviť stroj
+ui.CancelsIn	Zrušenie o
+ui.LinkOk	Pripojené
+ui.LinkLost	Bez spojenia
+ui.LinkOther	Iný server
+ui.LinkOld	Staré údaje
+ui.Firmware	Firmvér
+ui.CfgLine	hmi.cfg, riadok
+ui.CfgMore	ďalšie
+ui.CfgNoFile	hmi.cfg sa nenašiel: použijú sa predvolené hodnoty
+ui.CfgNotPair	nie je riadok tvaru kľúč = hodnota
+ui.CfgRange	mimo rozsahu alebo nie je číslo
+ui.CfgOnOff	očakáva sa on alebo off
+ui.CfgChoice	neprípustná hodnota
+ui.CfgToken	musí mať 8 až 64 znakov
+ui.CfgUnknown	neznámy kľúč
+ui.SrvNone	V hmi.cfg chýba server_host: nič sa neovláda
+ui.SrvSilent	Server neodpovedá
+ui.SrvOther	Odpoveď nepochádza z EH3D servera
+ui.NoteStopFail	STOP NEBOL ODOSLANÝ: použite hardvérový stop
+ui.NoteStopRefused	Stop bol odmietnutý
+ui.NoteStopSent	Stop odoslaný
+ui.NoteNoJobToStop	Stroj nemá žiadnu úlohu na zastavenie
+ui.NoteMoveNoLink	Tento pohyb vyžaduje spojenie s uzlom, ktoré ešte nie je pripravené
+ui.NoteBusy	Spojenie je obsadené: požiadajte znova
+ui.NoteNothingToSend	Nie je čo odoslať: vyberte súbor a stroj servera
+ui.NoteOldServer	Starý server: súbor sa pošle znova
+ui.NoteOk	Hotovo
+ui.NoteFollowing	Sleduje sa úloha, ktorá zostala spustená
+ui.NoteNoJobReady	Žiadna úloha nie je pripravená: najprv vyberte súbor a odošlite ho
+ui.NoteGoingOn	Pokračuje sa od už vyvŕtaných otvorov
+ui.NoteFile	Súbor
+ui.NoteUnreadable	Súbor sa nedá prečítať
+ui.NoteAllOff	Všetky nástroje sú vypnuté: nie je čo odoslať
+ui.ErrClient	Sieťového klienta sa nepodarilo spustiť
+ui.ErrTooLong	Odpoveď je príliš dlhá
+ui.ErrBroke	Spojenie sa prerušilo
+ui.ErrSend	Požiadavku sa nepodarilo odoslať
+ui.WfKind	Odoslať možno len súbory vŕtania, frézovania a G-kódu
+ui.WfEmpty	Súbor je prázdny
+ui.WfOldNoFile	Starý server a žiadny súbor na opätovné odoslanie
+ui.WfNothing	Nie je odkiaľ pokračovať
+ui.OrientAuto	Automaticky
+ui.OrientLandscape	Na šírku
+ui.OrientPortrait	Na výšku
+ui.OverClip	Obmedziť na najvyššie otáčky
+ui.OverRefuse	Odmietnuť

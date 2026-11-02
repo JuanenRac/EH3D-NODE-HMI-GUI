@@ -82,3 +82,55 @@ ui.ResumedFrom	Represa des de
 ui.ToolChanged	Eina canviada
 ui.BoardTooBig	La placa no cap a la taula
 ui.Failed	Fallit
+ui.OrdStart	Inicia la feina
+ui.OrdPause	Pausa la feina
+ui.OrdResume	Represa la feina
+ui.OrdToolChanged	Confirma el canvi d'eina
+ui.OrdHome	Porta la màquina a l'origen
+ui.OrdStop	Atura la màquina
+ui.CancelsIn	Es cancel·la en
+ui.LinkOk	Connectat
+ui.LinkLost	Sense connexió
+ui.LinkOther	Un altre servidor
+ui.LinkOld	Dades antigues
+ui.Firmware	Firmware
+ui.CfgLine	hmi.cfg, línia
+ui.CfgMore	més
+ui.CfgNoFile	No es troba hmi.cfg: s'usen els valors per defecte
+ui.CfgNotPair	no és una línia clau = valor
+ui.CfgRange	fora de rang o no és un número
+ui.CfgOnOff	s'esperava on o off
+ui.CfgChoice	valor no permès
+ui.CfgToken	ha de tenir de 8 a 64 caràcters
+ui.CfgUnknown	clau desconeguda
+ui.SrvNone	Falta server_host a hmi.cfg: no es controla res
+ui.SrvSilent	El servidor no respon
+ui.SrvOther	La resposta no és d'un servidor EH3D
+ui.NoteStopFail	ATURADA NO ENVIADA: useu l'aturada per maquinari
+ui.NoteStopRefused	Aturada rebutjada
+ui.NoteStopSent	Aturada enviada
+ui.NoteNoJobToStop	La màquina no té cap feina per aturar
+ui.NoteMoveNoLink	Aquest moviment necessita l'enllaç amb el node, que encara no és a punt
+ui.NoteBusy	L'enllaç està ocupat: torneu-ho a demanar
+ui.NoteNothingToSend	Res a enviar: trieu un fitxer i la màquina del servidor
+ui.NoteOldServer	Servidor antic: el fitxer s'envia de nou
+ui.NoteOk	Fet
+ui.NoteFollowing	Seguint la feina que ha quedat en marxa
+ui.NoteNoJobReady	Cap feina a punt: trieu un fitxer i envieu-lo primer
+ui.NoteGoingOn	Continuant des dels forats ja fets
+ui.NoteFile	Fitxer
+ui.NoteUnreadable	No es pot llegir el fitxer
+ui.NoteAllOff	Totes les eines estan desactivades: res a enviar
+ui.ErrClient	No es pot iniciar el client de xarxa
+ui.ErrTooLong	La resposta és massa llarga
+ui.ErrBroke	S'ha tallat la connexió
+ui.ErrSend	No es pot enviar la petició
+ui.WfKind	Només es poden enviar fitxers de foradat, fresat i G-code
+ui.WfEmpty	El fitxer és buit
+ui.WfOldNoFile	Servidor antic i cap fitxer per tornar a enviar
+ui.WfNothing	No hi ha res des d'on continuar
+ui.OrientAuto	Automàtic
+ui.OrientLandscape	Horitzontal
+ui.OrientPortrait	Vertical
+ui.OverClip	Limita a la velocitat màxima
+ui.OverRefuse	Rebutja

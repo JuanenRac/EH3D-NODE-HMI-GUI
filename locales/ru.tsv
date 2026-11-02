@@ -82,3 +82,55 @@ ui.ResumedFrom	Продолжено после
 ui.ToolChanged	Инструмент заменён
 ui.BoardTooBig	Плата не помещается на стол
 ui.Failed	Сбой
+ui.OrdStart	Запустить задание
+ui.OrdPause	Приостановить задание
+ui.OrdResume	Продолжить задание
+ui.OrdToolChanged	Подтвердить смену инструмента
+ui.OrdHome	Вернуть станок в начало координат
+ui.OrdStop	Остановить станок
+ui.CancelsIn	Отмена через
+ui.LinkOk	Подключено
+ui.LinkLost	Нет связи
+ui.LinkOther	Другой сервер
+ui.LinkOld	Устаревшие данные
+ui.Firmware	Прошивка
+ui.CfgLine	hmi.cfg, строка
+ui.CfgMore	ещё
+ui.CfgNoFile	hmi.cfg не найден: используются значения по умолчанию
+ui.CfgNotPair	не строка вида ключ = значение
+ui.CfgRange	вне диапазона или не число
+ui.CfgOnOff	ожидалось on или off
+ui.CfgChoice	недопустимое значение
+ui.CfgToken	должно быть от 8 до 64 символов
+ui.CfgUnknown	неизвестный ключ
+ui.SrvNone	В hmi.cfg нет server_host: ничем не управляю
+ui.SrvSilent	Сервер не отвечает
+ui.SrvOther	Ответ не от сервера EH3D
+ui.NoteStopFail	СТОП НЕ ОТПРАВЛЕН: используйте аппаратный стоп
+ui.NoteStopRefused	Остановка отклонена
+ui.NoteStopSent	Остановка отправлена
+ui.NoteNoJobToStop	У станка нет задания для остановки
+ui.NoteMoveNoLink	Для этого движения нужна связь с узлом, которая ещё не готова
+ui.NoteBusy	Канал занят: повторите запрос
+ui.NoteNothingToSend	Нечего отправлять: выберите файл и станок сервера
+ui.NoteOldServer	Старый сервер: файл отправляется снова
+ui.NoteOk	Готово
+ui.NoteFollowing	Отслеживается задание, оставшееся в работе
+ui.NoteNoJobReady	Нет готового задания: сначала выберите файл и отправьте его
+ui.NoteGoingOn	Продолжение с уже просверленных отверстий
+ui.NoteFile	Файл
+ui.NoteUnreadable	Файл не удаётся прочитать
+ui.NoteAllOff	Все инструменты выключены: нечего отправлять
+ui.ErrClient	Не удаётся запустить сетевой клиент
+ui.ErrTooLong	Ответ слишком длинный
+ui.ErrBroke	Соединение прервано
+ui.ErrSend	Не удаётся отправить запрос
+ui.WfKind	Можно отправлять только файлы сверления, фрезеровки и G-кода
+ui.WfEmpty	Файл пуст
+ui.WfOldNoFile	Старый сервер и нет файла для повторной отправки
+ui.WfNothing	Не с чего продолжать
+ui.OrientAuto	Автоматически
+ui.OrientLandscape	Альбомная
+ui.OrientPortrait	Книжная
+ui.OverClip	Ограничить максимальной скоростью
+ui.OverRefuse	Отклонить

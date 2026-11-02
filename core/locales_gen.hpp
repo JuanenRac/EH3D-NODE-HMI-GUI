@@ -55,6 +55,58 @@ inline const char* const kText_bg[kKeyCount] = {
     "Инструментът е сменен",  // ui.ToolChanged
     "Платката не се побира на масата",  // ui.BoardTooBig
     "Неуспешно",  // ui.Failed
+    "Стартиране на задачата",  // ui.OrdStart
+    "Пауза на задачата",  // ui.OrdPause
+    "Продължаване на задачата",  // ui.OrdResume
+    "Потвърдете смяната на инструмента",  // ui.OrdToolChanged
+    "Връщане на машината в нулева точка",  // ui.OrdHome
+    "Спиране на машината",  // ui.OrdStop
+    "Отмяна след",  // ui.CancelsIn
+    "Свързано",  // ui.LinkOk
+    "Няма връзка",  // ui.LinkLost
+    "Друг сървър",  // ui.LinkOther
+    "Стари данни",  // ui.LinkOld
+    "Фърмуер",  // ui.Firmware
+    "hmi.cfg, ред",  // ui.CfgLine
+    "още",  // ui.CfgMore
+    "hmi.cfg не е намерен: използват се стойностите по подразбиране",  // ui.CfgNoFile
+    "не е ред от вида ключ = стойност",  // ui.CfgNotPair
+    "извън диапазона или не е число",  // ui.CfgRange
+    "очаква се on или off",  // ui.CfgOnOff
+    "недопустима стойност",  // ui.CfgChoice
+    "трябва да е от 8 до 64 знака",  // ui.CfgToken
+    "непознат ключ",  // ui.CfgUnknown
+    "Няма server_host в hmi.cfg: нищо не се управлява",  // ui.SrvNone
+    "Сървърът не отговаря",  // ui.SrvSilent
+    "Отговорът не е от EH3D сървър",  // ui.SrvOther
+    "СПИРАНЕТО НЕ Е ИЗПРАТЕНО: използвайте хардуерното спиране",  // ui.NoteStopFail
+    "Спирането е отказано",  // ui.NoteStopRefused
+    "Спирането е изпратено",  // ui.NoteStopSent
+    "Машината няма задача за спиране",  // ui.NoteNoJobToStop
+    "Това движение изисква връзка с възела, която още не е готова",  // ui.NoteMoveNoLink
+    "Връзката е заета: опитайте отново",  // ui.NoteBusy
+    "Няма какво да се изпрати: изберете файл и машина на сървъра",  // ui.NoteNothingToSend
+    "Стар сървър: файлът се изпраща отново",  // ui.NoteOldServer
+    "Готово",  // ui.NoteOk
+    "Следене на задачата, останала в ход",  // ui.NoteFollowing
+    "Няма готова задача: първо изберете файл и го изпратете",  // ui.NoteNoJobReady
+    "Продължаване от вече направените отвори",  // ui.NoteGoingOn
+    "Файл",  // ui.NoteFile
+    "Файлът не може да се прочете",  // ui.NoteUnreadable
+    "Всички инструменти са изключени: няма какво да се изпрати",  // ui.NoteAllOff
+    "Мрежовият клиент не може да се стартира",  // ui.ErrClient
+    "Отговорът е твърде дълъг",  // ui.ErrTooLong
+    "Връзката прекъсна",  // ui.ErrBroke
+    "Заявката не може да се изпрати",  // ui.ErrSend
+    "Могат да се изпращат само файлове за пробиване, фрезоване и G-код",  // ui.WfKind
+    "Файлът е празен",  // ui.WfEmpty
+    "Стар сървър и няма файл за повторно изпращане",  // ui.WfOldNoFile
+    "Няма откъде да се продължи",  // ui.WfNothing
+    "Автоматично",  // ui.OrientAuto
+    "Хоризонтално",  // ui.OrientLandscape
+    "Вертикално",  // ui.OrientPortrait
+    "Ограничаване до максималната скорост",  // ui.OverClip
+    "Отказ",  // ui.OverRefuse
     "Проверка на качеството на работата",  // q.Title
     "Светлинен пръстен",  // q.Light
     "Изкл.",  // q.LightOff
@@ -141,6 +193,58 @@ inline const char* const kText_hr[kKeyCount] = {
     "Alat zamijenjen",  // ui.ToolChanged
     "Ploča se ne uklapa na stol",  // ui.BoardTooBig
     "Neuspjelo",  // ui.Failed
+    "Pokreni zadatak",  // ui.OrdStart
+    "Pauziraj zadatak",  // ui.OrdPause
+    "Nastavi zadatak",  // ui.OrdResume
+    "Potvrdi zamjenu alata",  // ui.OrdToolChanged
+    "Vrati stroj u ishodište",  // ui.OrdHome
+    "Zaustavi stroj",  // ui.OrdStop
+    "Otkazivanje za",  // ui.CancelsIn
+    "Povezano",  // ui.LinkOk
+    "Nema veze",  // ui.LinkLost
+    "Drugi poslužitelj",  // ui.LinkOther
+    "Stari podaci",  // ui.LinkOld
+    "Firmver",  // ui.Firmware
+    "hmi.cfg, redak",  // ui.CfgLine
+    "još",  // ui.CfgMore
+    "hmi.cfg nije pronađen: koriste se zadane vrijednosti",  // ui.CfgNoFile
+    "nije redak oblika ključ = vrijednost",  // ui.CfgNotPair
+    "izvan raspona ili nije broj",  // ui.CfgRange
+    "očekivano on ili off",  // ui.CfgOnOff
+    "nedopuštena vrijednost",  // ui.CfgChoice
+    "mora imati od 8 do 64 znaka",  // ui.CfgToken
+    "nepoznat ključ",  // ui.CfgUnknown
+    "U hmi.cfg nema server_host: ništa se ne upravlja",  // ui.SrvNone
+    "Poslužitelj ne odgovara",  // ui.SrvSilent
+    "Odgovor nije s EH3D poslužitelja",  // ui.SrvOther
+    "ZAUSTAVLJANJE NIJE POSLANO: upotrijebite hardversko zaustavljanje",  // ui.NoteStopFail
+    "Zaustavljanje je odbijeno",  // ui.NoteStopRefused
+    "Zaustavljanje je poslano",  // ui.NoteStopSent
+    "Stroj nema zadatak za zaustavljanje",  // ui.NoteNoJobToStop
+    "Ovaj pokret traži vezu s čvorom, koja još nije spremna",  // ui.NoteMoveNoLink
+    "Veza je zauzeta: pokušajte ponovno",  // ui.NoteBusy
+    "Nema ničega za slanje: odaberite datoteku i stroj poslužitelja",  // ui.NoteNothingToSend
+    "Stari poslužitelj: datoteka se šalje ponovno",  // ui.NoteOldServer
+    "Gotovo",  // ui.NoteOk
+    "Prati se zadatak koji je ostao pokrenut",  // ui.NoteFollowing
+    "Nema spremnog zadatka: prvo odaberite datoteku i pošaljite je",  // ui.NoteNoJobReady
+    "Nastavlja se od već izbušenih rupa",  // ui.NoteGoingOn
+    "Datoteka",  // ui.NoteFile
+    "Datoteka se ne može pročitati",  // ui.NoteUnreadable
+    "Svi su alati isključeni: nema ničega za slanje",  // ui.NoteAllOff
+    "Mrežni klijent se ne može pokrenuti",  // ui.ErrClient
+    "Odgovor je predug",  // ui.ErrTooLong
+    "Veza je prekinuta",  // ui.ErrBroke
+    "Zahtjev se ne može poslati",  // ui.ErrSend
+    "Mogu se slati samo datoteke bušenja, glodanja i G-koda",  // ui.WfKind
+    "Datoteka je prazna",  // ui.WfEmpty
+    "Stari poslužitelj i nema datoteke za ponovno slanje",  // ui.WfOldNoFile
+    "Nema od čega nastaviti",  // ui.WfNothing
+    "Automatski",  // ui.OrientAuto
+    "Vodoravno",  // ui.OrientLandscape
+    "Okomito",  // ui.OrientPortrait
+    "Ograniči na najveću brzinu",  // ui.OverClip
+    "Odbij",  // ui.OverRefuse
     "Provjera kvalitete rada",  // q.Title
     "Svjetlosni prsten",  // q.Light
     "Isklj.",  // q.LightOff
@@ -227,6 +331,58 @@ inline const char* const kText_cs[kKeyCount] = {
     "Nástroj vyměněn",  // ui.ToolChanged
     "Deska se nevejde na stůl",  // ui.BoardTooBig
     "Selhalo",  // ui.Failed
+    "Spustit úlohu",  // ui.OrdStart
+    "Pozastavit úlohu",  // ui.OrdPause
+    "Pokračovat v úloze",  // ui.OrdResume
+    "Potvrdit výměnu nástroje",  // ui.OrdToolChanged
+    "Najet strojem do základní polohy",  // ui.OrdHome
+    "Zastavit stroj",  // ui.OrdStop
+    "Zrušení za",  // ui.CancelsIn
+    "Připojeno",  // ui.LinkOk
+    "Bez spojení",  // ui.LinkLost
+    "Jiný server",  // ui.LinkOther
+    "Stará data",  // ui.LinkOld
+    "Firmware",  // ui.Firmware
+    "hmi.cfg, řádek",  // ui.CfgLine
+    "další",  // ui.CfgMore
+    "hmi.cfg nenalezen: použijí se výchozí hodnoty",  // ui.CfgNoFile
+    "není řádek klíč = hodnota",  // ui.CfgNotPair
+    "mimo rozsah nebo není číslo",  // ui.CfgRange
+    "očekává se on nebo off",  // ui.CfgOnOff
+    "nepřípustná hodnota",  // ui.CfgChoice
+    "musí mít 8 až 64 znaků",  // ui.CfgToken
+    "neznámý klíč",  // ui.CfgUnknown
+    "V hmi.cfg chybí server_host: nic se neovládá",  // ui.SrvNone
+    "Server neodpovídá",  // ui.SrvSilent
+    "Odpověď nepochází z EH3D serveru",  // ui.SrvOther
+    "STOP NEBYL ODESLÁN: použijte hardwarový stop",  // ui.NoteStopFail
+    "Stop byl odmítnut",  // ui.NoteStopRefused
+    "Stop odeslán",  // ui.NoteStopSent
+    "Stroj nemá žádnou úlohu k zastavení",  // ui.NoteNoJobToStop
+    "Tento pohyb vyžaduje spojení s uzlem, které ještě není připraveno",  // ui.NoteMoveNoLink
+    "Spojení je obsazeno: požádejte znovu",  // ui.NoteBusy
+    "Není co odeslat: vyberte soubor a stroj serveru",  // ui.NoteNothingToSend
+    "Starý server: soubor se pošle znovu",  // ui.NoteOldServer
+    "Hotovo",  // ui.NoteOk
+    "Sledování úlohy, která zůstala spuštěná",  // ui.NoteFollowing
+    "Žádná úloha není připravena: nejdřív vyberte soubor a odešlete ho",  // ui.NoteNoJobReady
+    "Pokračuje se od již vyvrtaných děr",  // ui.NoteGoingOn
+    "Soubor",  // ui.NoteFile
+    "Soubor nelze přečíst",  // ui.NoteUnreadable
+    "Všechny nástroje jsou vypnuté: není co odeslat",  // ui.NoteAllOff
+    "Síťového klienta nelze spustit",  // ui.ErrClient
+    "Odpověď je příliš dlouhá",  // ui.ErrTooLong
+    "Spojení se přerušilo",  // ui.ErrBroke
+    "Požadavek nelze odeslat",  // ui.ErrSend
+    "Odeslat lze jen soubory vrtání, frézování a G-kódu",  // ui.WfKind
+    "Soubor je prázdný",  // ui.WfEmpty
+    "Starý server a žádný soubor k opětovnému odeslání",  // ui.WfOldNoFile
+    "Není odkud pokračovat",  // ui.WfNothing
+    "Automaticky",  // ui.OrientAuto
+    "Na šířku",  // ui.OrientLandscape
+    "Na výšku",  // ui.OrientPortrait
+    "Omezit na nejvyšší otáčky",  // ui.OverClip
+    "Odmítnout",  // ui.OverRefuse
     "Kontrola kvality práce",  // q.Title
     "Světelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -313,6 +469,58 @@ inline const char* const kText_da[kKeyCount] = {
     "Værktøj skiftet",  // ui.ToolChanged
     "Printpladen kan ikke være på bordet",  // ui.BoardTooBig
     "Mislykkedes",  // ui.Failed
+    "Start opgaven",  // ui.OrdStart
+    "Sæt opgaven på pause",  // ui.OrdPause
+    "Genoptag opgaven",  // ui.OrdResume
+    "Bekræft værktøjsskiftet",  // ui.OrdToolChanged
+    "Kør maskinen til nulpunkt",  // ui.OrdHome
+    "Stop maskinen",  // ui.OrdStop
+    "Annulleres om",  // ui.CancelsIn
+    "Forbundet",  // ui.LinkOk
+    "Ingen forbindelse",  // ui.LinkLost
+    "Anden server",  // ui.LinkOther
+    "Gamle data",  // ui.LinkOld
+    "Firmware",  // ui.Firmware
+    "hmi.cfg, linje",  // ui.CfgLine
+    "flere",  // ui.CfgMore
+    "hmi.cfg findes ikke: standardværdierne bruges",  // ui.CfgNoFile
+    "ikke en linje af typen nøgle = værdi",  // ui.CfgNotPair
+    "uden for området eller ikke et tal",  // ui.CfgRange
+    "forventede on eller off",  // ui.CfgOnOff
+    "ikke en tilladt værdi",  // ui.CfgChoice
+    "skal have 8 til 64 tegn",  // ui.CfgToken
+    "ukendt nøgle",  // ui.CfgUnknown
+    "Ingen server_host i hmi.cfg: intet styres",  // ui.SrvNone
+    "Serveren svarer ikke",  // ui.SrvSilent
+    "Svaret er ikke fra en EH3D-server",  // ui.SrvOther
+    "STOP IKKE SENDT: brug hardwarestoppet",  // ui.NoteStopFail
+    "Stop afvist",  // ui.NoteStopRefused
+    "Stop sendt",  // ui.NoteStopSent
+    "Maskinen har ingen opgave at stoppe",  // ui.NoteNoJobToStop
+    "Denne bevægelse kræver forbindelsen til noden, som endnu ikke er klar",  // ui.NoteMoveNoLink
+    "Forbindelsen er optaget: prøv igen",  // ui.NoteBusy
+    "Intet at sende: vælg en fil og serverens maskine",  // ui.NoteNothingToSend
+    "Gammel server: filen sendes igen",  // ui.NoteOldServer
+    "Færdig",  // ui.NoteOk
+    "Følger den opgave, der blev ved med at køre",  // ui.NoteFollowing
+    "Ingen opgave er klar: vælg en fil og send den først",  // ui.NoteNoJobReady
+    "Fortsætter fra de huller, der allerede er lavet",  // ui.NoteGoingOn
+    "Fil",  // ui.NoteFile
+    "Filen kan ikke læses",  // ui.NoteUnreadable
+    "Alle værktøjer er slået fra: intet at sende",  // ui.NoteAllOff
+    "Netværksklienten kan ikke startes",  // ui.ErrClient
+    "Svaret er for langt",  // ui.ErrTooLong
+    "Forbindelsen blev afbrudt",  // ui.ErrBroke
+    "Forespørgslen kan ikke sendes",  // ui.ErrSend
+    "Kun bore-, fræse- og G-kode-filer kan sendes",  // ui.WfKind
+    "Filen er tom",  // ui.WfEmpty
+    "Gammel server og ingen fil at sende igen",  // ui.WfOldNoFile
+    "Der er intet at fortsætte fra",  // ui.WfNothing
+    "Automatisk",  // ui.OrientAuto
+    "Liggende",  // ui.OrientLandscape
+    "Stående",  // ui.OrientPortrait
+    "Begræns til topomdrejninger",  // ui.OverClip
+    "Afvis",  // ui.OverRefuse
     "Kvalitetskontrol af arbejdet",  // q.Title
     "Lysring",  // q.Light
     "Fra",  // q.LightOff
@@ -399,6 +607,58 @@ inline const char* const kText_nl[kKeyCount] = {
     "Gereedschap gewisseld",  // ui.ToolChanged
     "De print past niet op de tafel",  // ui.BoardTooBig
     "Mislukt",  // ui.Failed
+    "Taak starten",  // ui.OrdStart
+    "Taak pauzeren",  // ui.OrdPause
+    "Taak hervatten",  // ui.OrdResume
+    "Gereedschapswissel bevestigen",  // ui.OrdToolChanged
+    "Machine naar de oorsprong brengen",  // ui.OrdHome
+    "Machine stoppen",  // ui.OrdStop
+    "Annuleert over",  // ui.CancelsIn
+    "Verbonden",  // ui.LinkOk
+    "Geen verbinding",  // ui.LinkLost
+    "Andere server",  // ui.LinkOther
+    "Oude gegevens",  // ui.LinkOld
+    "Firmware",  // ui.Firmware
+    "hmi.cfg, regel",  // ui.CfgLine
+    "meer",  // ui.CfgMore
+    "hmi.cfg niet gevonden: de standaardwaarden gelden",  // ui.CfgNoFile
+    "geen regel van de vorm sleutel = waarde",  // ui.CfgNotPair
+    "buiten bereik of geen getal",  // ui.CfgRange
+    "on of off verwacht",  // ui.CfgOnOff
+    "waarde niet toegestaan",  // ui.CfgChoice
+    "moet 8 tot 64 tekens hebben",  // ui.CfgToken
+    "onbekende sleutel",  // ui.CfgUnknown
+    "Geen server_host in hmi.cfg: er wordt niets bestuurd",  // ui.SrvNone
+    "De server antwoordt niet",  // ui.SrvSilent
+    "Het antwoord komt niet van een EH3D-server",  // ui.SrvOther
+    "STOP NIET VERZONDEN: gebruik de hardwarestop",  // ui.NoteStopFail
+    "Stop geweigerd",  // ui.NoteStopRefused
+    "Stop verzonden",  // ui.NoteStopSent
+    "De machine heeft geen taak om te stoppen",  // ui.NoteNoJobToStop
+    "Deze beweging heeft de verbinding met de node nodig, die nog niet klaar is",  // ui.NoteMoveNoLink
+    "De verbinding is bezet: vraag opnieuw",  // ui.NoteBusy
+    "Niets te verzenden: kies een bestand en de machine van de server",  // ui.NoteNothingToSend
+    "Oude server: het bestand wordt opnieuw verzonden",  // ui.NoteOldServer
+    "Klaar",  // ui.NoteOk
+    "De taak die bleef lopen wordt gevolgd",  // ui.NoteFollowing
+    "Geen taak klaar: kies eerst een bestand en verzend het",  // ui.NoteNoJobReady
+    "Verder vanaf de reeds geboorde gaten",  // ui.NoteGoingOn
+    "Bestand",  // ui.NoteFile
+    "Het bestand kan niet worden gelezen",  // ui.NoteUnreadable
+    "Alle gereedschappen staan uit: niets te verzenden",  // ui.NoteAllOff
+    "De netwerkclient kan niet starten",  // ui.ErrClient
+    "Het antwoord is te lang",  // ui.ErrTooLong
+    "De verbinding is verbroken",  // ui.ErrBroke
+    "Het verzoek kan niet worden verzonden",  // ui.ErrSend
+    "Alleen boor-, frees- en G-codebestanden kunnen worden verzonden",  // ui.WfKind
+    "Het bestand is leeg",  // ui.WfEmpty
+    "Oude server en geen bestand om opnieuw te verzenden",  // ui.WfOldNoFile
+    "Er is niets om vanaf verder te gaan",  // ui.WfNothing
+    "Automatisch",  // ui.OrientAuto
+    "Liggend",  // ui.OrientLandscape
+    "Staand",  // ui.OrientPortrait
+    "Beperken tot het toptoerental",  // ui.OverClip
+    "Weigeren",  // ui.OverRefuse
     "Kwaliteitscontrole van het werk",  // q.Title
     "Lichtring",  // q.Light
     "Uit",  // q.LightOff
@@ -485,6 +745,58 @@ inline const char* const kText_et[kKeyCount] = {
     "Tööriist vahetatud",  // ui.ToolChanged
     "Plaat ei mahu lauale",  // ui.BoardTooBig
     "Ebaõnnestus",  // ui.Failed
+    "Käivita töö",  // ui.OrdStart
+    "Peata töö ajutiselt",  // ui.OrdPause
+    "Jätka tööd",  // ui.OrdResume
+    "Kinnita tööriista vahetus",  // ui.OrdToolChanged
+    "Vii masin nullpunkti",  // ui.OrdHome
+    "Peata masin",  // ui.OrdStop
+    "Tühistub",  // ui.CancelsIn
+    "Ühendatud",  // ui.LinkOk
+    "Ühendus puudub",  // ui.LinkLost
+    "Teine server",  // ui.LinkOther
+    "Vanad andmed",  // ui.LinkOld
+    "Püsivara",  // ui.Firmware
+    "hmi.cfg, rida",  // ui.CfgLine
+    "veel",  // ui.CfgMore
+    "hmi.cfg puudub: kasutatakse vaikeväärtusi",  // ui.CfgNoFile
+    "ei ole rida kujul võti = väärtus",  // ui.CfgNotPair
+    "vahemikust väljas või pole arv",  // ui.CfgRange
+    "oodati on või off",  // ui.CfgOnOff
+    "lubamatu väärtus",  // ui.CfgChoice
+    "peab olema 8 kuni 64 märki",  // ui.CfgToken
+    "tundmatu võti",  // ui.CfgUnknown
+    "hmi.cfg-s puudub server_host: midagi ei juhita",  // ui.SrvNone
+    "Server ei vasta",  // ui.SrvSilent
+    "Vastus ei ole EH3D serverilt",  // ui.SrvOther
+    "PEATAMIST EI SAADETUD: kasuta riistvaralist peatust",  // ui.NoteStopFail
+    "Peatamine keelati",  // ui.NoteStopRefused
+    "Peatamine saadetud",  // ui.NoteStopSent
+    "Masinal pole peatatavat tööd",  // ui.NoteNoJobToStop
+    "See liigutus vajab ühendust sõlmega, mis pole veel valmis",  // ui.NoteMoveNoLink
+    "Ühendus on hõivatud: küsi uuesti",  // ui.NoteBusy
+    "Pole midagi saata: vali fail ja serveri masin",  // ui.NoteNothingToSend
+    "Vana server: fail saadetakse uuesti",  // ui.NoteOldServer
+    "Valmis",  // ui.NoteOk
+    "Jälgitakse tööd, mis jäi käima",  // ui.NoteFollowing
+    "Ühtegi tööd pole valmis: vali kõigepealt fail ja saada see",  // ui.NoteNoJobReady
+    "Jätkatakse juba tehtud aukudest",  // ui.NoteGoingOn
+    "Fail",  // ui.NoteFile
+    "Faili ei saa lugeda",  // ui.NoteUnreadable
+    "Kõik tööriistad on välja lülitatud: pole midagi saata",  // ui.NoteAllOff
+    "Võrgukliendi käivitamine ebaõnnestus",  // ui.ErrClient
+    "Vastus on liiga pikk",  // ui.ErrTooLong
+    "Ühendus katkes",  // ui.ErrBroke
+    "Päringut ei saa saata",  // ui.ErrSend
+    "Saata saab ainult puurimise, freesimise ja G-koodi faile",  // ui.WfKind
+    "Fail on tühi",  // ui.WfEmpty
+    "Vana server ja pole faili uuesti saatmiseks",  // ui.WfOldNoFile
+    "Pole kohta, kust jätkata",  // ui.WfNothing
+    "Automaatne",  // ui.OrientAuto
+    "Rõhtpaigutus",  // ui.OrientLandscape
+    "Püstpaigutus",  // ui.OrientPortrait
+    "Piira maksimaalse kiiruseni",  // ui.OverClip
+    "Keeldu",  // ui.OverRefuse
     "Töö kvaliteedikontroll",  // q.Title
     "Valgusrõngas",  // q.Light
     "Väljas",  // q.LightOff
@@ -571,6 +883,58 @@ inline const char* const kText_fi[kKeyCount] = {
     "Työkalu vaihdettu",  // ui.ToolChanged
     "Piirilevy ei mahdu pöydälle",  // ui.BoardTooBig
     "Epäonnistui",  // ui.Failed
+    "Käynnistä työ",  // ui.OrdStart
+    "Keskeytä työ",  // ui.OrdPause
+    "Jatka työtä",  // ui.OrdResume
+    "Vahvista työkalun vaihto",  // ui.OrdToolChanged
+    "Vie kone nollapisteeseen",  // ui.OrdHome
+    "Pysäytä kone",  // ui.OrdStop
+    "Peruuntuu",  // ui.CancelsIn
+    "Yhdistetty",  // ui.LinkOk
+    "Ei yhteyttä",  // ui.LinkLost
+    "Toinen palvelin",  // ui.LinkOther
+    "Vanhat tiedot",  // ui.LinkOld
+    "Laiteohjelmisto",  // ui.Firmware
+    "hmi.cfg, rivi",  // ui.CfgLine
+    "lisää",  // ui.CfgMore
+    "hmi.cfg puuttuu: käytetään oletusarvoja",  // ui.CfgNoFile
+    "ei ole muotoa avain = arvo oleva rivi",  // ui.CfgNotPair
+    "alueen ulkopuolella tai ei ole luku",  // ui.CfgRange
+    "odotettiin on tai off",  // ui.CfgOnOff
+    "arvo ei ole sallittu",  // ui.CfgChoice
+    "pituuden on oltava 8-64 merkkiä",  // ui.CfgToken
+    "tuntematon avain",  // ui.CfgUnknown
+    "hmi.cfg:stä puuttuu server_host: mitään ei ohjata",  // ui.SrvNone
+    "Palvelin ei vastaa",  // ui.SrvSilent
+    "Vastaus ei ole EH3D-palvelimelta",  // ui.SrvOther
+    "PYSÄYTYSTÄ EI LÄHETETTY: käytä laitteistopysäytystä",  // ui.NoteStopFail
+    "Pysäytys evättiin",  // ui.NoteStopRefused
+    "Pysäytys lähetetty",  // ui.NoteStopSent
+    "Koneella ei ole pysäytettävää työtä",  // ui.NoteNoJobToStop
+    "Tämä liike tarvitsee yhteyden solmuun, joka ei ole vielä valmis",  // ui.NoteMoveNoLink
+    "Yhteys on varattu: pyydä uudelleen",  // ui.NoteBusy
+    "Ei mitään lähetettävää: valitse tiedosto ja palvelimen kone",  // ui.NoteNothingToSend
+    "Vanha palvelin: tiedosto lähetetään uudelleen",  // ui.NoteOldServer
+    "Valmis",  // ui.NoteOk
+    "Seurataan käyntiin jäänyttä työtä",  // ui.NoteFollowing
+    "Mikään työ ei ole valmis: valitse ensin tiedosto ja lähetä se",  // ui.NoteNoJobReady
+    "Jatketaan jo tehdyistä rei'istä",  // ui.NoteGoingOn
+    "Tiedosto",  // ui.NoteFile
+    "Tiedostoa ei voi lukea",  // ui.NoteUnreadable
+    "Kaikki työkalut on kytketty pois: ei mitään lähetettävää",  // ui.NoteAllOff
+    "Verkkoasiakasta ei voi käynnistää",  // ui.ErrClient
+    "Vastaus on liian pitkä",  // ui.ErrTooLong
+    "Yhteys katkesi",  // ui.ErrBroke
+    "Pyyntöä ei voi lähettää",  // ui.ErrSend
+    "Vain poraus-, jyrsintä- ja G-koodi-tiedostoja voi lähettää",  // ui.WfKind
+    "Tiedosto on tyhjä",  // ui.WfEmpty
+    "Vanha palvelin eikä uudelleen lähetettävää tiedostoa",  // ui.WfOldNoFile
+    "Ei ole mistä jatkaa",  // ui.WfNothing
+    "Automaattinen",  // ui.OrientAuto
+    "Vaaka",  // ui.OrientLandscape
+    "Pysty",  // ui.OrientPortrait
+    "Rajoita huippunopeuteen",  // ui.OverClip
+    "Hylkää",  // ui.OverRefuse
     "Työn laatutarkastus",  // q.Title
     "Valorengas",  // q.Light
     "Pois",  // q.LightOff
@@ -657,6 +1021,58 @@ inline const char* const kText_el[kKeyCount] = {
     "Το εργαλείο άλλαξε",  // ui.ToolChanged
     "Η πλακέτα δεν χωράει στο τραπέζι",  // ui.BoardTooBig
     "Απέτυχε",  // ui.Failed
+    "Έναρξη εργασίας",  // ui.OrdStart
+    "Παύση εργασίας",  // ui.OrdPause
+    "Συνέχιση εργασίας",  // ui.OrdResume
+    "Επιβεβαίωση αλλαγής εργαλείου",  // ui.OrdToolChanged
+    "Επαναφορά του μηχανήματος στην αρχή",  // ui.OrdHome
+    "Διακοπή του μηχανήματος",  // ui.OrdStop
+    "Ακύρωση σε",  // ui.CancelsIn
+    "Συνδεδεμένο",  // ui.LinkOk
+    "Χωρίς σύνδεση",  // ui.LinkLost
+    "Άλλος διακομιστής",  // ui.LinkOther
+    "Παλιά δεδομένα",  // ui.LinkOld
+    "Υλικολογισμικό",  // ui.Firmware
+    "hmi.cfg, γραμμή",  // ui.CfgLine
+    "ακόμη",  // ui.CfgMore
+    "Το hmi.cfg δεν βρέθηκε: χρησιμοποιούνται οι προεπιλογές",  // ui.CfgNoFile
+    "δεν είναι γραμμή της μορφής κλειδί = τιμή",  // ui.CfgNotPair
+    "εκτός ορίων ή όχι αριθμός",  // ui.CfgRange
+    "αναμενόταν on ή off",  // ui.CfgOnOff
+    "μη επιτρεπτή τιμή",  // ui.CfgChoice
+    "πρέπει να έχει 8 έως 64 χαρακτήρες",  // ui.CfgToken
+    "άγνωστο κλειδί",  // ui.CfgUnknown
+    "Δεν υπάρχει server_host στο hmi.cfg: δεν ελέγχεται τίποτα",  // ui.SrvNone
+    "Ο διακομιστής δεν απαντά",  // ui.SrvSilent
+    "Η απάντηση δεν προέρχεται από διακομιστή EH3D",  // ui.SrvOther
+    "ΜΗ ΑΠΟΣΤΟΛΗ ΔΙΑΚΟΠΗΣ: χρησιμοποιήστε τη διακοπή υλικού",  // ui.NoteStopFail
+    "Η διακοπή απορρίφθηκε",  // ui.NoteStopRefused
+    "Η διακοπή στάλθηκε",  // ui.NoteStopSent
+    "Το μηχάνημα δεν έχει εργασία για διακοπή",  // ui.NoteNoJobToStop
+    "Αυτή η κίνηση απαιτεί τη σύνδεση με τον κόμβο, που δεν είναι έτοιμη ακόμη",  // ui.NoteMoveNoLink
+    "Η σύνδεση είναι απασχολημένη: ζητήστε ξανά",  // ui.NoteBusy
+    "Τίποτα για αποστολή: επιλέξτε αρχείο και το μηχάνημα του διακομιστή",  // ui.NoteNothingToSend
+    "Παλιός διακομιστής: το αρχείο στέλνεται ξανά",  // ui.NoteOldServer
+    "Έτοιμο",  // ui.NoteOk
+    "Παρακολούθηση της εργασίας που έμεινε σε εξέλιξη",  // ui.NoteFollowing
+    "Καμία εργασία δεν είναι έτοιμη: επιλέξτε πρώτα αρχείο και στείλτε το",  // ui.NoteNoJobReady
+    "Συνέχεια από τις οπές που έχουν ήδη γίνει",  // ui.NoteGoingOn
+    "Αρχείο",  // ui.NoteFile
+    "Το αρχείο δεν διαβάζεται",  // ui.NoteUnreadable
+    "Όλα τα εργαλεία είναι απενεργοποιημένα: τίποτα για αποστολή",  // ui.NoteAllOff
+    "Δεν είναι δυνατή η εκκίνηση του πελάτη δικτύου",  // ui.ErrClient
+    "Η απάντηση είναι πολύ μεγάλη",  // ui.ErrTooLong
+    "Η σύνδεση διακόπηκε",  // ui.ErrBroke
+    "Δεν είναι δυνατή η αποστολή του αιτήματος",  // ui.ErrSend
+    "Μπορούν να σταλούν μόνο αρχεία διάτρησης, φρεζαρίσματος και G-code",  // ui.WfKind
+    "Το αρχείο είναι κενό",  // ui.WfEmpty
+    "Παλιός διακομιστής και κανένα αρχείο για νέα αποστολή",  // ui.WfOldNoFile
+    "Δεν υπάρχει σημείο για συνέχεια",  // ui.WfNothing
+    "Αυτόματο",  // ui.OrientAuto
+    "Οριζόντια",  // ui.OrientLandscape
+    "Κάθετα",  // ui.OrientPortrait
+    "Περιορισμός στη μέγιστη ταχύτητα",  // ui.OverClip
+    "Απόρριψη",  // ui.OverRefuse
     "Έλεγχος ποιότητας της εργασίας",  // q.Title
     "Δακτύλιος φωτός",  // q.Light
     "Κλειστό",  // q.LightOff
@@ -743,6 +1159,58 @@ inline const char* const kText_hu[kKeyCount] = {
     "Szerszám cserélve",  // ui.ToolChanged
     "A panel nem fér rá az asztalra",  // ui.BoardTooBig
     "Sikertelen",  // ui.Failed
+    "A munka indítása",  // ui.OrdStart
+    "A munka szüneteltetése",  // ui.OrdPause
+    "A munka folytatása",  // ui.OrdResume
+    "Szerszámcsere megerősítése",  // ui.OrdToolChanged
+    "A gép alaphelyzetbe állítása",  // ui.OrdHome
+    "A gép leállítása",  // ui.OrdStop
+    "Megszakítás",  // ui.CancelsIn
+    "Csatlakoztatva",  // ui.LinkOk
+    "Nincs kapcsolat",  // ui.LinkLost
+    "Másik kiszolgáló",  // ui.LinkOther
+    "Régi adatok",  // ui.LinkOld
+    "Firmware",  // ui.Firmware
+    "hmi.cfg, sor",  // ui.CfgLine
+    "további",  // ui.CfgMore
+    "A hmi.cfg nem található: az alapértékek érvényesek",  // ui.CfgNoFile
+    "nem kulcs = érték alakú sor",  // ui.CfgNotPair
+    "tartományon kívül van, vagy nem szám",  // ui.CfgRange
+    "on vagy off az elvárt",  // ui.CfgOnOff
+    "nem megengedett érték",  // ui.CfgChoice
+    "8 és 64 karakter között kell lennie",  // ui.CfgToken
+    "ismeretlen kulcs",  // ui.CfgUnknown
+    "A hmi.cfg-ben nincs server_host: semmi sincs vezérelve",  // ui.SrvNone
+    "A kiszolgáló nem válaszol",  // ui.SrvSilent
+    "A válasz nem EH3D-kiszolgálótól származik",  // ui.SrvOther
+    "A LEÁLLÍTÁS NEM LETT ELKÜLDVE: használja a hardveres leállítást",  // ui.NoteStopFail
+    "A leállítást elutasították",  // ui.NoteStopRefused
+    "A leállítás elküldve",  // ui.NoteStopSent
+    "A gépnek nincs leállítandó munkája",  // ui.NoteNoJobToStop
+    "Ehhez a mozgáshoz a csomóponttal való kapcsolat kell, amely még nincs kész",  // ui.NoteMoveNoLink
+    "A kapcsolat foglalt: kérje újra",  // ui.NoteBusy
+    "Nincs mit küldeni: válasszon fájlt és a kiszolgáló gépét",  // ui.NoteNothingToSend
+    "Régi kiszolgáló: a fájl újra elküldésre kerül",  // ui.NoteOldServer
+    "Kész",  // ui.NoteOk
+    "A futva maradt munka követése",  // ui.NoteFollowing
+    "Nincs kész munka: először válasszon fájlt és küldje el",  // ui.NoteNoJobReady
+    "Folytatás a már elkészült furatoktól",  // ui.NoteGoingOn
+    "Fájl",  // ui.NoteFile
+    "A fájl nem olvasható",  // ui.NoteUnreadable
+    "Minden szerszám ki van kapcsolva: nincs mit küldeni",  // ui.NoteAllOff
+    "A hálózati kliens nem indítható",  // ui.ErrClient
+    "A válasz túl hosszú",  // ui.ErrTooLong
+    "A kapcsolat megszakadt",  // ui.ErrBroke
+    "A kérés nem küldhető el",  // ui.ErrSend
+    "Csak fúrási, marási és G-kód fájlok küldhetők",  // ui.WfKind
+    "A fájl üres",  // ui.WfEmpty
+    "Régi kiszolgáló, és nincs újra elküldhető fájl",  // ui.WfOldNoFile
+    "Nincs honnan folytatni",  // ui.WfNothing
+    "Automatikus",  // ui.OrientAuto
+    "Fekvő",  // ui.OrientLandscape
+    "Álló",  // ui.OrientPortrait
+    "Korlátozás a legnagyobb fordulatszámra",  // ui.OverClip
+    "Elutasítás",  // ui.OverRefuse
     "A munka minőségellenőrzése",  // q.Title
     "Fénygyűrű",  // q.Light
     "Ki",  // q.LightOff
@@ -829,6 +1297,58 @@ inline const char* const kText_ga[kKeyCount] = {
     "Uirlis athraithe",  // ui.ToolChanged
     "Ní fheileann an clár don tábla",  // ui.BoardTooBig
     "Theip air",  // ui.Failed
+    "Tosaigh an obair",  // ui.OrdStart
+    "Cuir an obair ar sos",  // ui.OrdPause
+    "Lean leis an obair",  // ui.OrdResume
+    "Deimhnigh athrú an uirlis",  // ui.OrdToolChanged
+    "Tabhair an meaisín chuig an mbunphointe",  // ui.OrdHome
+    "Stop an meaisín",  // ui.OrdStop
+    "Cealaítear i gceann",  // ui.CancelsIn
+    "Ceangailte",  // ui.LinkOk
+    "Gan nasc",  // ui.LinkLost
+    "Freastalaí eile",  // ui.LinkOther
+    "Sean-sonraí",  // ui.LinkOld
+    "Dochtearraí",  // ui.Firmware
+    "hmi.cfg, líne",  // ui.CfgLine
+    "tuilleadh",  // ui.CfgMore
+    "Níor aimsíodh hmi.cfg: úsáidtear na réamhshocruithe",  // ui.CfgNoFile
+    "ní líne de chineál eochair = luach í",  // ui.CfgNotPair
+    "lasmuigh den raon nó ní uimhir é",  // ui.CfgRange
+    "bhíothas ag súil le on nó off",  // ui.CfgOnOff
+    "luach nach bhfuil ceadaithe",  // ui.CfgChoice
+    "caithfidh 8 go 64 carachtar a bheith ann",  // ui.CfgToken
+    "eochair anaithnid",  // ui.CfgUnknown
+    "Níl server_host i hmi.cfg: ní rialaítear aon rud",  // ui.SrvNone
+    "Ní fhreagraíonn an freastalaí",  // ui.SrvSilent
+    "Ní ó fhreastalaí EH3D an freagra",  // ui.SrvOther
+    "NÍOR SEOLADH AN STOP: úsáid an stop crua-earraí",  // ui.NoteStopFail
+    "Diúltaíodh don stop",  // ui.NoteStopRefused
+    "Seoladh an stop",  // ui.NoteStopSent
+    "Níl aon obair den mheaisín le stopadh",  // ui.NoteNoJobToStop
+    "Teastaíonn an nasc leis an nód don ghluaiseacht seo, nach bhfuil réidh fós",  // ui.NoteMoveNoLink
+    "Tá an nasc gnóthach: iarr arís",  // ui.NoteBusy
+    "Rud ar bith le seoladh: roghnaigh comhad agus meaisín an fhreastalaí",  // ui.NoteNothingToSend
+    "Sean-fhreastalaí: seoltar an comhad arís",  // ui.NoteOldServer
+    "Déanta",  // ui.NoteOk
+    "Ag leanúint na hoibre a d'fhan ag rith",  // ui.NoteFollowing
+    "Níl aon obair réidh: roghnaigh comhad agus seol é ar dtús",  // ui.NoteNoJobReady
+    "Ag leanúint ó na poill a rinneadh cheana",  // ui.NoteGoingOn
+    "Comhad",  // ui.NoteFile
+    "Ní féidir an comhad a léamh",  // ui.NoteUnreadable
+    "Tá gach uirlis múchta: rud ar bith le seoladh",  // ui.NoteAllOff
+    "Ní féidir an cliant líonra a thosú",  // ui.ErrClient
+    "Tá an freagra rófhada",  // ui.ErrTooLong
+    "Briseadh an nasc",  // ui.ErrBroke
+    "Ní féidir an iarraidh a sheoladh",  // ui.ErrSend
+    "Is comhaid druileála, muilleála agus G-code amháin is féidir a sheoladh",  // ui.WfKind
+    "Tá an comhad folamh",  // ui.WfEmpty
+    "Sean-fhreastalaí agus gan comhad le seoladh arís",  // ui.WfOldNoFile
+    "Níl áit ar bith le leanúint uaithi",  // ui.WfNothing
+    "Uathoibríoch",  // ui.OrientAuto
+    "Cothrománach",  // ui.OrientLandscape
+    "Ingearach",  // ui.OrientPortrait
+    "Teorannaigh don luas uasta",  // ui.OverClip
+    "Diúltaigh",  // ui.OverRefuse
     "Seiceáil cáilíochta na hoibre",  // q.Title
     "Fáinne solais",  // q.Light
     "Múchta",  // q.LightOff
@@ -915,6 +1435,58 @@ inline const char* const kText_lv[kKeyCount] = {
     "Instruments nomainīts",  // ui.ToolChanged
     "Plate neietilpst galdā",  // ui.BoardTooBig
     "Neizdevās",  // ui.Failed
+    "Sākt darbu",  // ui.OrdStart
+    "Apturēt darbu",  // ui.OrdPause
+    "Turpināt darbu",  // ui.OrdResume
+    "Apstiprināt instrumenta maiņu",  // ui.OrdToolChanged
+    "Novest iekārtu sākumpunktā",  // ui.OrdHome
+    "Apturēt iekārtu",  // ui.OrdStop
+    "Atcelšana pēc",  // ui.CancelsIn
+    "Savienots",  // ui.LinkOk
+    "Nav savienojuma",  // ui.LinkLost
+    "Cits serveris",  // ui.LinkOther
+    "Vecie dati",  // ui.LinkOld
+    "Programmaparatūra",  // ui.Firmware
+    "hmi.cfg, rinda",  // ui.CfgLine
+    "vēl",  // ui.CfgMore
+    "hmi.cfg nav atrasts: tiek izmantotas noklusētās vērtības",  // ui.CfgNoFile
+    "nav rinda formā atslēga = vērtība",  // ui.CfgNotPair
+    "ārpus diapazona vai nav skaitlis",  // ui.CfgRange
+    "gaidīts on vai off",  // ui.CfgOnOff
+    "nepieļaujama vērtība",  // ui.CfgChoice
+    "jābūt no 8 līdz 64 rakstzīmēm",  // ui.CfgToken
+    "nezināma atslēga",  // ui.CfgUnknown
+    "hmi.cfg nav server_host: nekas netiek vadīts",  // ui.SrvNone
+    "Serveris neatbild",  // ui.SrvSilent
+    "Atbilde nav no EH3D servera",  // ui.SrvOther
+    "APTURĒŠANA NAV NOSŪTĪTA: izmantojiet aparatūras apturēšanu",  // ui.NoteStopFail
+    "Apturēšana noraidīta",  // ui.NoteStopRefused
+    "Apturēšana nosūtīta",  // ui.NoteStopSent
+    "Iekārtai nav darba, ko apturēt",  // ui.NoteNoJobToStop
+    "Šai kustībai vajadzīgs savienojums ar mezglu, kas vēl nav gatavs",  // ui.NoteMoveNoLink
+    "Savienojums ir aizņemts: pieprasiet vēlreiz",  // ui.NoteBusy
+    "Nav ko sūtīt: izvēlieties failu un servera iekārtu",  // ui.NoteNothingToSend
+    "Vecs serveris: fails tiek sūtīts vēlreiz",  // ui.NoteOldServer
+    "Gatavs",  // ui.NoteOk
+    "Tiek sekots darbam, kas palika izpildē",  // ui.NoteFollowing
+    "Nav gatava darba: vispirms izvēlieties failu un nosūtiet to",  // ui.NoteNoJobReady
+    "Turpina no jau izurbtajiem caurumiem",  // ui.NoteGoingOn
+    "Fails",  // ui.NoteFile
+    "Failu nevar nolasīt",  // ui.NoteUnreadable
+    "Visi instrumenti ir izslēgti: nav ko sūtīt",  // ui.NoteAllOff
+    "Tīkla klientu nevar startēt",  // ui.ErrClient
+    "Atbilde ir pārāk gara",  // ui.ErrTooLong
+    "Savienojums pārtrūka",  // ui.ErrBroke
+    "Pieprasījumu nevar nosūtīt",  // ui.ErrSend
+    "Var sūtīt tikai urbšanas, frēzēšanas un G-koda failus",  // ui.WfKind
+    "Fails ir tukšs",  // ui.WfEmpty
+    "Vecs serveris un nav faila, ko sūtīt vēlreiz",  // ui.WfOldNoFile
+    "Nav, no kā turpināt",  // ui.WfNothing
+    "Automātiski",  // ui.OrientAuto
+    "Gulošs",  // ui.OrientLandscape
+    "Stāvošs",  // ui.OrientPortrait
+    "Ierobežot līdz maksimālajam ātrumam",  // ui.OverClip
+    "Noraidīt",  // ui.OverRefuse
     "Darba kvalitātes pārbaude",  // q.Title
     "Gaismas gredzens",  // q.Light
     "Izsl.",  // q.LightOff
@@ -1001,6 +1573,58 @@ inline const char* const kText_lt[kKeyCount] = {
     "Įrankis pakeistas",  // ui.ToolChanged
     "Plokštė netelpa ant stalo",  // ui.BoardTooBig
     "Nepavyko",  // ui.Failed
+    "Pradėti darbą",  // ui.OrdStart
+    "Pristabdyti darbą",  // ui.OrdPause
+    "Tęsti darbą",  // ui.OrdResume
+    "Patvirtinti įrankio keitimą",  // ui.OrdToolChanged
+    "Nuvesti staklės į pradžios tašką",  // ui.OrdHome
+    "Sustabdyti stakles",  // ui.OrdStop
+    "Atšaukiama po",  // ui.CancelsIn
+    "Prisijungta",  // ui.LinkOk
+    "Nėra ryšio",  // ui.LinkLost
+    "Kitas serveris",  // ui.LinkOther
+    "Seni duomenys",  // ui.LinkOld
+    "Programinė įranga",  // ui.Firmware
+    "hmi.cfg, eilutė",  // ui.CfgLine
+    "daugiau",  // ui.CfgMore
+    "hmi.cfg nerastas: naudojamos numatytosios reikšmės",  // ui.CfgNoFile
+    "tai nėra eilutė raktas = reikšmė",  // ui.CfgNotPair
+    "už ribų arba ne skaičius",  // ui.CfgRange
+    "tikėtasi on arba off",  // ui.CfgOnOff
+    "neleistina reikšmė",  // ui.CfgChoice
+    "turi būti nuo 8 iki 64 simbolių",  // ui.CfgToken
+    "nežinomas raktas",  // ui.CfgUnknown
+    "hmi.cfg nėra server_host: niekas nevaldoma",  // ui.SrvNone
+    "Serveris neatsako",  // ui.SrvSilent
+    "Atsakymas ne iš EH3D serverio",  // ui.SrvOther
+    "SUSTABDYMAS NEIŠSIŲSTAS: naudokite aparatinį stabdymą",  // ui.NoteStopFail
+    "Sustabdymas atmestas",  // ui.NoteStopRefused
+    "Sustabdymas išsiųstas",  // ui.NoteStopSent
+    "Staklės neturi darbo, kurį reikėtų sustabdyti",  // ui.NoteNoJobToStop
+    "Šiam judesiui reikia ryšio su mazgu, kuris dar nepasiruošęs",  // ui.NoteMoveNoLink
+    "Ryšys užimtas: paprašykite dar kartą",  // ui.NoteBusy
+    "Nėra ką siųsti: pasirinkite failą ir serverio stakles",  // ui.NoteNothingToSend
+    "Senas serveris: failas siunčiamas iš naujo",  // ui.NoteOldServer
+    "Atlikta",  // ui.NoteOk
+    "Sekamas darbas, likęs vykdomas",  // ui.NoteFollowing
+    "Nėra paruošto darbo: pirmiausia pasirinkite failą ir jį išsiųskite",  // ui.NoteNoJobReady
+    "Tęsiama nuo jau išgręžtų skylių",  // ui.NoteGoingOn
+    "Failas",  // ui.NoteFile
+    "Failo nepavyksta perskaityti",  // ui.NoteUnreadable
+    "Visi įrankiai išjungti: nėra ką siųsti",  // ui.NoteAllOff
+    "Tinklo kliento paleisti nepavyksta",  // ui.ErrClient
+    "Atsakymas per ilgas",  // ui.ErrTooLong
+    "Ryšys nutrūko",  // ui.ErrBroke
+    "Užklausos išsiųsti nepavyksta",  // ui.ErrSend
+    "Galima siųsti tik gręžimo, frezavimo ir G-kodo failus",  // ui.WfKind
+    "Failas tuščias",  // ui.WfEmpty
+    "Senas serveris ir nėra failo siųsti iš naujo",  // ui.WfOldNoFile
+    "Nėra nuo ko tęsti",  // ui.WfNothing
+    "Automatinis",  // ui.OrientAuto
+    "Gulsčias",  // ui.OrientLandscape
+    "Stačias",  // ui.OrientPortrait
+    "Apriboti iki didžiausio greičio",  // ui.OverClip
+    "Atmesti",  // ui.OverRefuse
     "Darbo kokybės patikra",  // q.Title
     "Šviesos žiedas",  // q.Light
     "Išj.",  // q.LightOff
@@ -1087,6 +1711,58 @@ inline const char* const kText_mt[kKeyCount] = {
     "Għodda mibdula",  // ui.ToolChanged
     "Il-bord ma jidħolx fuq il-mejda",  // ui.BoardTooBig
     "Falla",  // ui.Failed
+    "Ibda x-xogħol",  // ui.OrdStart
+    "Waqqaf x-xogħol għal ftit",  // ui.OrdPause
+    "Kompli x-xogħol",  // ui.OrdResume
+    "Ikkonferma l-bidla tal-għodda",  // ui.OrdToolChanged
+    "Ibgħat il-magna lejn l-oriġini",  // ui.OrdHome
+    "Waqqaf il-magna",  // ui.OrdStop
+    "Jiġi kkanċellat fi",  // ui.CancelsIn
+    "Konness",  // ui.LinkOk
+    "L-ebda konnessjoni",  // ui.LinkLost
+    "Server ieħor",  // ui.LinkOther
+    "Dejta qadima",  // ui.LinkOld
+    "Firmware",  // ui.Firmware
+    "hmi.cfg, linja",  // ui.CfgLine
+    "aktar",  // ui.CfgMore
+    "Ma nstabx hmi.cfg: jintużaw il-valuri awtomatiċi",  // ui.CfgNoFile
+    "mhix linja tal-forma ċavetta = valur",  // ui.CfgNotPair
+    "barra mill-firxa jew mhux numru",  // ui.CfgRange
+    "kien mistenni on jew off",  // ui.CfgOnOff
+    "valur mhux permess",  // ui.CfgChoice
+    "jrid ikollu minn 8 sa 64 karattru",  // ui.CfgToken
+    "ċavetta mhux magħrufa",  // ui.CfgUnknown
+    "M'hemm l-ebda server_host f'hmi.cfg: ma jiġi kkontrollat xejn",  // ui.SrvNone
+    "Is-server ma jwieġeb",  // ui.SrvSilent
+    "It-tweġiba mhix minn server EH3D",  // ui.SrvOther
+    "L-ISTOP MA ĠIEX MIBGĦUT: uża l-istop tal-hardware",  // ui.NoteStopFail
+    "L-istop ġie miċħud",  // ui.NoteStopRefused
+    "L-istop intbagħat",  // ui.NoteStopSent
+    "Il-magna m'għandha l-ebda xogħol biex twaqqaf",  // ui.NoteNoJobToStop
+    "Din il-moviment teħtieġ il-konnessjoni man-node, li għadha mhix lesta",  // ui.NoteMoveNoLink
+    "Il-konnessjoni hija okkupata: itlob mill-ġdid",  // ui.NoteBusy
+    "M'hemm xejn x'tibgħat: agħżel fajl u l-magna tas-server",  // ui.NoteNothingToSend
+    "Server qadim: il-fajl jintbagħat mill-ġdid",  // ui.NoteOldServer
+    "Lest",  // ui.NoteOk
+    "Qed isegwi x-xogħol li baqa' għaddej",  // ui.NoteFollowing
+    "L-ebda xogħol lest: l-ewwel agħżel fajl u ibgħatu",  // ui.NoteNoJobReady
+    "Titkompla mit-toqob li saru diġà",  // ui.NoteGoingOn
+    "Fajl",  // ui.NoteFile
+    "Il-fajl ma jistax jinqara",  // ui.NoteUnreadable
+    "L-għodod kollha huma mitfija: m'hemm xejn x'tibgħat",  // ui.NoteAllOff
+    "Il-klijent tan-netwerk ma jistax jinbeda",  // ui.ErrClient
+    "It-tweġiba twila wisq",  // ui.ErrTooLong
+    "Il-konnessjoni nqatgħet",  // ui.ErrBroke
+    "It-talba ma tistax tintbagħat",  // ui.ErrSend
+    "Jistgħu jintbagħtu biss fajls tat-tqib, tat-tħanzir u tal-G-code",  // ui.WfKind
+    "Il-fajl huwa vojt",  // ui.WfEmpty
+    "Server qadim u l-ebda fajl biex jintbagħat mill-ġdid",  // ui.WfOldNoFile
+    "M'hemm xejn minn fejn tkompli",  // ui.WfNothing
+    "Awtomatiku",  // ui.OrientAuto
+    "Orizzontali",  // ui.OrientLandscape
+    "Vertikali",  // ui.OrientPortrait
+    "Illimita għall-ogħla veloċità",  // ui.OverClip
+    "Irrifjuta",  // ui.OverRefuse
     "Verifika tal-kwalità tax-xogħol",  // q.Title
     "Ċirku tad-dawl",  // q.Light
     "Mitfi",  // q.LightOff
@@ -1173,6 +1849,58 @@ inline const char* const kText_pl[kKeyCount] = {
     "Narzędzie wymienione",  // ui.ToolChanged
     "Płytka nie mieści się na stole",  // ui.BoardTooBig
     "Niepowodzenie",  // ui.Failed
+    "Uruchom zadanie",  // ui.OrdStart
+    "Wstrzymaj zadanie",  // ui.OrdPause
+    "Wznów zadanie",  // ui.OrdResume
+    "Potwierdź wymianę narzędzia",  // ui.OrdToolChanged
+    "Przejedź maszyną do punktu zerowego",  // ui.OrdHome
+    "Zatrzymaj maszynę",  // ui.OrdStop
+    "Anulowanie za",  // ui.CancelsIn
+    "Połączono",  // ui.LinkOk
+    "Brak połączenia",  // ui.LinkLost
+    "Inny serwer",  // ui.LinkOther
+    "Stare dane",  // ui.LinkOld
+    "Oprogramowanie",  // ui.Firmware
+    "hmi.cfg, wiersz",  // ui.CfgLine
+    "więcej",  // ui.CfgMore
+    "Nie znaleziono hmi.cfg: używane są wartości domyślne",  // ui.CfgNoFile
+    "to nie wiersz postaci klucz = wartość",  // ui.CfgNotPair
+    "poza zakresem lub nie jest liczbą",  // ui.CfgRange
+    "oczekiwano on lub off",  // ui.CfgOnOff
+    "niedozwolona wartość",  // ui.CfgChoice
+    "musi mieć od 8 do 64 znaków",  // ui.CfgToken
+    "nieznany klucz",  // ui.CfgUnknown
+    "Brak server_host w hmi.cfg: nic nie jest sterowane",  // ui.SrvNone
+    "Serwer nie odpowiada",  // ui.SrvSilent
+    "Odpowiedź nie pochodzi z serwera EH3D",  // ui.SrvOther
+    "ZATRZYMANIE NIE WYSŁANE: użyj sprzętowego stopu",  // ui.NoteStopFail
+    "Zatrzymanie odrzucone",  // ui.NoteStopRefused
+    "Zatrzymanie wysłane",  // ui.NoteStopSent
+    "Maszyna nie ma zadania do zatrzymania",  // ui.NoteNoJobToStop
+    "Ten ruch wymaga połączenia z węzłem, które nie jest jeszcze gotowe",  // ui.NoteMoveNoLink
+    "Łącze jest zajęte: poproś ponownie",  // ui.NoteBusy
+    "Nie ma czego wysłać: wybierz plik i maszynę serwera",  // ui.NoteNothingToSend
+    "Stary serwer: plik zostanie wysłany ponownie",  // ui.NoteOldServer
+    "Gotowe",  // ui.NoteOk
+    "Śledzenie zadania, które pozostało uruchomione",  // ui.NoteFollowing
+    "Żadne zadanie nie jest gotowe: najpierw wybierz plik i wyślij go",  // ui.NoteNoJobReady
+    "Kontynuacja od otworów już wykonanych",  // ui.NoteGoingOn
+    "Plik",  // ui.NoteFile
+    "Nie można odczytać pliku",  // ui.NoteUnreadable
+    "Wszystkie narzędzia są wyłączone: nie ma czego wysłać",  // ui.NoteAllOff
+    "Nie można uruchomić klienta sieciowego",  // ui.ErrClient
+    "Odpowiedź jest zbyt długa",  // ui.ErrTooLong
+    "Połączenie zostało przerwane",  // ui.ErrBroke
+    "Nie można wysłać żądania",  // ui.ErrSend
+    "Można wysyłać tylko pliki wiercenia, frezowania i G-code",  // ui.WfKind
+    "Plik jest pusty",  // ui.WfEmpty
+    "Stary serwer i brak pliku do ponownego wysłania",  // ui.WfOldNoFile
+    "Nie ma od czego kontynuować",  // ui.WfNothing
+    "Automatycznie",  // ui.OrientAuto
+    "Poziomo",  // ui.OrientLandscape
+    "Pionowo",  // ui.OrientPortrait
+    "Ogranicz do prędkości maksymalnej",  // ui.OverClip
+    "Odrzuć",  // ui.OverRefuse
     "Kontrola jakości wykonania",  // q.Title
     "Pierścień świetlny",  // q.Light
     "Wył.",  // q.LightOff
@@ -1259,6 +1987,58 @@ inline const char* const kText_ro[kKeyCount] = {
     "Sculă schimbată",  // ui.ToolChanged
     "Placa nu încape pe masă",  // ui.BoardTooBig
     "Eșuat",  // ui.Failed
+    "Pornește lucrarea",  // ui.OrdStart
+    "Pune lucrarea în pauză",  // ui.OrdPause
+    "Reia lucrarea",  // ui.OrdResume
+    "Confirmă schimbarea sculei",  // ui.OrdToolChanged
+    "Du mașina la origine",  // ui.OrdHome
+    "Oprește mașina",  // ui.OrdStop
+    "Se anulează în",  // ui.CancelsIn
+    "Conectat",  // ui.LinkOk
+    "Fără conexiune",  // ui.LinkLost
+    "Alt server",  // ui.LinkOther
+    "Date vechi",  // ui.LinkOld
+    "Firmware",  // ui.Firmware
+    "hmi.cfg, linia",  // ui.CfgLine
+    "încă",  // ui.CfgMore
+    "hmi.cfg nu a fost găsit: se folosesc valorile implicite",  // ui.CfgNoFile
+    "nu este o linie de forma cheie = valoare",  // ui.CfgNotPair
+    "în afara intervalului sau nu este număr",  // ui.CfgRange
+    "se aștepta on sau off",  // ui.CfgOnOff
+    "valoare nepermisă",  // ui.CfgChoice
+    "trebuie să aibă între 8 și 64 de caractere",  // ui.CfgToken
+    "cheie necunoscută",  // ui.CfgUnknown
+    "Lipsește server_host din hmi.cfg: nu se controlează nimic",  // ui.SrvNone
+    "Serverul nu răspunde",  // ui.SrvSilent
+    "Răspunsul nu vine de la un server EH3D",  // ui.SrvOther
+    "OPRIREA NU A FOST TRIMISĂ: folosiți oprirea hardware",  // ui.NoteStopFail
+    "Oprirea a fost refuzată",  // ui.NoteStopRefused
+    "Oprirea a fost trimisă",  // ui.NoteStopSent
+    "Mașina nu are nicio lucrare de oprit",  // ui.NoteNoJobToStop
+    "Această mișcare cere legătura cu nodul, care nu este încă gata",  // ui.NoteMoveNoLink
+    "Legătura este ocupată: cereți din nou",  // ui.NoteBusy
+    "Nimic de trimis: alegeți un fișier și mașina serverului",  // ui.NoteNothingToSend
+    "Server vechi: fișierul se trimite din nou",  // ui.NoteOldServer
+    "Gata",  // ui.NoteOk
+    "Se urmărește lucrarea rămasă în execuție",  // ui.NoteFollowing
+    "Nicio lucrare nu este gata: alegeți mai întâi un fișier și trimiteți-l",  // ui.NoteNoJobReady
+    "Se continuă de la găurile deja făcute",  // ui.NoteGoingOn
+    "Fișier",  // ui.NoteFile
+    "Fișierul nu poate fi citit",  // ui.NoteUnreadable
+    "Toate sculele sunt oprite: nimic de trimis",  // ui.NoteAllOff
+    "Clientul de rețea nu poate porni",  // ui.ErrClient
+    "Răspunsul este prea lung",  // ui.ErrTooLong
+    "Conexiunea s-a întrerupt",  // ui.ErrBroke
+    "Cererea nu poate fi trimisă",  // ui.ErrSend
+    "Se pot trimite doar fișiere de găurire, frezare și G-code",  // ui.WfKind
+    "Fișierul este gol",  // ui.WfEmpty
+    "Server vechi și niciun fișier de retrimis",  // ui.WfOldNoFile
+    "Nu există de unde să se continue",  // ui.WfNothing
+    "Automat",  // ui.OrientAuto
+    "Orizontal",  // ui.OrientLandscape
+    "Vertical",  // ui.OrientPortrait
+    "Limitează la viteza maximă",  // ui.OverClip
+    "Refuză",  // ui.OverRefuse
     "Verificarea calității lucrării",  // q.Title
     "Inel de lumină",  // q.Light
     "Oprit",  // q.LightOff
@@ -1345,6 +2125,58 @@ inline const char* const kText_sk[kKeyCount] = {
     "Nástroj vymenený",  // ui.ToolChanged
     "Doska sa nezmestí na stôl",  // ui.BoardTooBig
     "Zlyhalo",  // ui.Failed
+    "Spustiť úlohu",  // ui.OrdStart
+    "Pozastaviť úlohu",  // ui.OrdPause
+    "Pokračovať v úlohe",  // ui.OrdResume
+    "Potvrdiť výmenu nástroja",  // ui.OrdToolChanged
+    "Presunúť stroj do základnej polohy",  // ui.OrdHome
+    "Zastaviť stroj",  // ui.OrdStop
+    "Zrušenie o",  // ui.CancelsIn
+    "Pripojené",  // ui.LinkOk
+    "Bez spojenia",  // ui.LinkLost
+    "Iný server",  // ui.LinkOther
+    "Staré údaje",  // ui.LinkOld
+    "Firmvér",  // ui.Firmware
+    "hmi.cfg, riadok",  // ui.CfgLine
+    "ďalšie",  // ui.CfgMore
+    "hmi.cfg sa nenašiel: použijú sa predvolené hodnoty",  // ui.CfgNoFile
+    "nie je riadok tvaru kľúč = hodnota",  // ui.CfgNotPair
+    "mimo rozsahu alebo nie je číslo",  // ui.CfgRange
+    "očakáva sa on alebo off",  // ui.CfgOnOff
+    "neprípustná hodnota",  // ui.CfgChoice
+    "musí mať 8 až 64 znakov",  // ui.CfgToken
+    "neznámy kľúč",  // ui.CfgUnknown
+    "V hmi.cfg chýba server_host: nič sa neovláda",  // ui.SrvNone
+    "Server neodpovedá",  // ui.SrvSilent
+    "Odpoveď nepochádza z EH3D servera",  // ui.SrvOther
+    "STOP NEBOL ODOSLANÝ: použite hardvérový stop",  // ui.NoteStopFail
+    "Stop bol odmietnutý",  // ui.NoteStopRefused
+    "Stop odoslaný",  // ui.NoteStopSent
+    "Stroj nemá žiadnu úlohu na zastavenie",  // ui.NoteNoJobToStop
+    "Tento pohyb vyžaduje spojenie s uzlom, ktoré ešte nie je pripravené",  // ui.NoteMoveNoLink
+    "Spojenie je obsadené: požiadajte znova",  // ui.NoteBusy
+    "Nie je čo odoslať: vyberte súbor a stroj servera",  // ui.NoteNothingToSend
+    "Starý server: súbor sa pošle znova",  // ui.NoteOldServer
+    "Hotovo",  // ui.NoteOk
+    "Sleduje sa úloha, ktorá zostala spustená",  // ui.NoteFollowing
+    "Žiadna úloha nie je pripravená: najprv vyberte súbor a odošlite ho",  // ui.NoteNoJobReady
+    "Pokračuje sa od už vyvŕtaných otvorov",  // ui.NoteGoingOn
+    "Súbor",  // ui.NoteFile
+    "Súbor sa nedá prečítať",  // ui.NoteUnreadable
+    "Všetky nástroje sú vypnuté: nie je čo odoslať",  // ui.NoteAllOff
+    "Sieťového klienta sa nepodarilo spustiť",  // ui.ErrClient
+    "Odpoveď je príliš dlhá",  // ui.ErrTooLong
+    "Spojenie sa prerušilo",  // ui.ErrBroke
+    "Požiadavku sa nepodarilo odoslať",  // ui.ErrSend
+    "Odoslať možno len súbory vŕtania, frézovania a G-kódu",  // ui.WfKind
+    "Súbor je prázdny",  // ui.WfEmpty
+    "Starý server a žiadny súbor na opätovné odoslanie",  // ui.WfOldNoFile
+    "Nie je odkiaľ pokračovať",  // ui.WfNothing
+    "Automaticky",  // ui.OrientAuto
+    "Na šírku",  // ui.OrientLandscape
+    "Na výšku",  // ui.OrientPortrait
+    "Obmedziť na najvyššie otáčky",  // ui.OverClip
+    "Odmietnuť",  // ui.OverRefuse
     "Kontrola kvality práce",  // q.Title
     "Svetelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -1431,6 +2263,58 @@ inline const char* const kText_sl[kKeyCount] = {
     "Orodje zamenjano",  // ui.ToolChanged
     "Plošča ne gre na mizo",  // ui.BoardTooBig
     "Ni uspelo",  // ui.Failed
+    "Zaženi opravilo",  // ui.OrdStart
+    "Začasno ustavi opravilo",  // ui.OrdPause
+    "Nadaljuj opravilo",  // ui.OrdResume
+    "Potrdi zamenjavo orodja",  // ui.OrdToolChanged
+    "Pelji stroj v izhodišče",  // ui.OrdHome
+    "Ustavi stroj",  // ui.OrdStop
+    "Preklic čez",  // ui.CancelsIn
+    "Povezano",  // ui.LinkOk
+    "Ni povezave",  // ui.LinkLost
+    "Drug strežnik",  // ui.LinkOther
+    "Stari podatki",  // ui.LinkOld
+    "Strojna programska oprema",  // ui.Firmware
+    "hmi.cfg, vrstica",  // ui.CfgLine
+    "več",  // ui.CfgMore
+    "hmi.cfg ni najden: uporabljene so privzete vrednosti",  // ui.CfgNoFile
+    "ni vrstica oblike ključ = vrednost",  // ui.CfgNotPair
+    "izven območja ali ni število",  // ui.CfgRange
+    "pričakovano on ali off",  // ui.CfgOnOff
+    "nedovoljena vrednost",  // ui.CfgChoice
+    "mora imeti od 8 do 64 znakov",  // ui.CfgToken
+    "neznan ključ",  // ui.CfgUnknown
+    "V hmi.cfg ni server_host: nič se ne upravlja",  // ui.SrvNone
+    "Strežnik se ne odziva",  // ui.SrvSilent
+    "Odgovor ni od strežnika EH3D",  // ui.SrvOther
+    "USTAVITEV NI POSLANA: uporabite strojno ustavitev",  // ui.NoteStopFail
+    "Ustavitev zavrnjena",  // ui.NoteStopRefused
+    "Ustavitev poslana",  // ui.NoteStopSent
+    "Stroj nima opravila za ustavitev",  // ui.NoteNoJobToStop
+    "Ta gib potrebuje povezavo z vozliščem, ki še ni pripravljena",  // ui.NoteMoveNoLink
+    "Povezava je zasedena: poskusite znova",  // ui.NoteBusy
+    "Ni kaj poslati: izberite datoteko in stroj strežnika",  // ui.NoteNothingToSend
+    "Star strežnik: datoteka se pošlje znova",  // ui.NoteOldServer
+    "Opravljeno",  // ui.NoteOk
+    "Spremlja se opravilo, ki je ostalo v teku",  // ui.NoteFollowing
+    "Nobeno opravilo ni pripravljeno: najprej izberite datoteko in jo pošljite",  // ui.NoteNoJobReady
+    "Nadaljevanje od že izvrtanih lukenj",  // ui.NoteGoingOn
+    "Datoteka",  // ui.NoteFile
+    "Datoteke ni mogoče prebrati",  // ui.NoteUnreadable
+    "Vsa orodja so izklopljena: ni kaj poslati",  // ui.NoteAllOff
+    "Omrežnega odjemalca ni mogoče zagnati",  // ui.ErrClient
+    "Odgovor je predolg",  // ui.ErrTooLong
+    "Povezava je bila prekinjena",  // ui.ErrBroke
+    "Zahtevka ni mogoče poslati",  // ui.ErrSend
+    "Pošljete lahko samo datoteke za vrtanje, rezkanje in G-kodo",  // ui.WfKind
+    "Datoteka je prazna",  // ui.WfEmpty
+    "Star strežnik in ni datoteke za ponovno pošiljanje",  // ui.WfOldNoFile
+    "Ni od kod nadaljevati",  // ui.WfNothing
+    "Samodejno",  // ui.OrientAuto
+    "Ležeče",  // ui.OrientLandscape
+    "Pokončno",  // ui.OrientPortrait
+    "Omeji na najvišjo hitrost",  // ui.OverClip
+    "Zavrni",  // ui.OverRefuse
     "Kontrola kakovosti izdelka",  // q.Title
     "Svetlobni obroč",  // q.Light
     "Izklj.",  // q.LightOff
@@ -1517,6 +2401,58 @@ inline const char* const kText_sv[kKeyCount] = {
     "Verktyg bytt",  // ui.ToolChanged
     "Kretskortet ryms inte på bordet",  // ui.BoardTooBig
     "Misslyckades",  // ui.Failed
+    "Starta jobbet",  // ui.OrdStart
+    "Pausa jobbet",  // ui.OrdPause
+    "Fortsätt jobbet",  // ui.OrdResume
+    "Bekräfta verktygsbytet",  // ui.OrdToolChanged
+    "Kör maskinen till nollpunkten",  // ui.OrdHome
+    "Stoppa maskinen",  // ui.OrdStop
+    "Avbryts om",  // ui.CancelsIn
+    "Ansluten",  // ui.LinkOk
+    "Ingen anslutning",  // ui.LinkLost
+    "Annan server",  // ui.LinkOther
+    "Gamla data",  // ui.LinkOld
+    "Firmware",  // ui.Firmware
+    "hmi.cfg, rad",  // ui.CfgLine
+    "fler",  // ui.CfgMore
+    "hmi.cfg hittades inte: standardvärdena används",  // ui.CfgNoFile
+    "inte en rad av typen nyckel = värde",  // ui.CfgNotPair
+    "utanför intervallet eller inte ett tal",  // ui.CfgRange
+    "förväntade on eller off",  // ui.CfgOnOff
+    "inte ett tillåtet värde",  // ui.CfgChoice
+    "måste ha 8 till 64 tecken",  // ui.CfgToken
+    "okänd nyckel",  // ui.CfgUnknown
+    "Ingen server_host i hmi.cfg: inget styrs",  // ui.SrvNone
+    "Servern svarar inte",  // ui.SrvSilent
+    "Svaret kommer inte från en EH3D-server",  // ui.SrvOther
+    "STOPP INTE SKICKAT: använd hårdvarustoppet",  // ui.NoteStopFail
+    "Stopp nekades",  // ui.NoteStopRefused
+    "Stopp skickat",  // ui.NoteStopSent
+    "Maskinen har inget jobb att stoppa",  // ui.NoteNoJobToStop
+    "Den här rörelsen behöver länken till noden, som inte är klar ännu",  // ui.NoteMoveNoLink
+    "Länken är upptagen: be om det igen",  // ui.NoteBusy
+    "Inget att skicka: välj en fil och serverns maskin",  // ui.NoteNothingToSend
+    "Gammal server: filen skickas igen",  // ui.NoteOldServer
+    "Klart",  // ui.NoteOk
+    "Följer jobbet som blev kvar i gång",  // ui.NoteFollowing
+    "Inget jobb är klart: välj en fil och skicka den först",  // ui.NoteNoJobReady
+    "Fortsätter från hålen som redan är gjorda",  // ui.NoteGoingOn
+    "Fil",  // ui.NoteFile
+    "Filen kan inte läsas",  // ui.NoteUnreadable
+    "Alla verktyg är avstängda: inget att skicka",  // ui.NoteAllOff
+    "Nätverksklienten kan inte startas",  // ui.ErrClient
+    "Svaret är för långt",  // ui.ErrTooLong
+    "Anslutningen bröts",  // ui.ErrBroke
+    "Begäran kan inte skickas",  // ui.ErrSend
+    "Bara bor-, fräs- och G-kodsfiler kan skickas",  // ui.WfKind
+    "Filen är tom",  // ui.WfEmpty
+    "Gammal server och ingen fil att skicka igen",  // ui.WfOldNoFile
+    "Det finns inget att fortsätta från",  // ui.WfNothing
+    "Automatisk",  // ui.OrientAuto
+    "Liggande",  // ui.OrientLandscape
+    "Stående",  // ui.OrientPortrait
+    "Begränsa till högsta varvtal",  // ui.OverClip
+    "Avvisa",  // ui.OverRefuse
     "Kvalitetskontroll av arbetet",  // q.Title
     "Ljusring",  // q.Light
     "Av",  // q.LightOff
@@ -1603,6 +2539,58 @@ inline const char* const kText_no[kKeyCount] = {
     "Verktøy byttet",  // ui.ToolChanged
     "Kretskortet passer ikke på bordet",  // ui.BoardTooBig
     "Mislyktes",  // ui.Failed
+    "Start jobben",  // ui.OrdStart
+    "Sett jobben på pause",  // ui.OrdPause
+    "Fortsett jobben",  // ui.OrdResume
+    "Bekreft verktøybyttet",  // ui.OrdToolChanged
+    "Kjør maskinen til nullpunktet",  // ui.OrdHome
+    "Stopp maskinen",  // ui.OrdStop
+    "Avbrytes om",  // ui.CancelsIn
+    "Tilkoblet",  // ui.LinkOk
+    "Ingen forbindelse",  // ui.LinkLost
+    "Annen server",  // ui.LinkOther
+    "Gamle data",  // ui.LinkOld
+    "Firmware",  // ui.Firmware
+    "hmi.cfg, linje",  // ui.CfgLine
+    "flere",  // ui.CfgMore
+    "hmi.cfg ble ikke funnet: standardverdiene brukes",  // ui.CfgNoFile
+    "ikke en linje av typen nøkkel = verdi",  // ui.CfgNotPair
+    "utenfor området eller ikke et tall",  // ui.CfgRange
+    "forventet on eller off",  // ui.CfgOnOff
+    "ikke en tillatt verdi",  // ui.CfgChoice
+    "må ha 8 til 64 tegn",  // ui.CfgToken
+    "ukjent nøkkel",  // ui.CfgUnknown
+    "Ingen server_host i hmi.cfg: ingenting styres",  // ui.SrvNone
+    "Serveren svarer ikke",  // ui.SrvSilent
+    "Svaret er ikke fra en EH3D-server",  // ui.SrvOther
+    "STOPP IKKE SENDT: bruk maskinvarestoppen",  // ui.NoteStopFail
+    "Stopp avvist",  // ui.NoteStopRefused
+    "Stopp sendt",  // ui.NoteStopSent
+    "Maskinen har ingen jobb å stoppe",  // ui.NoteNoJobToStop
+    "Denne bevegelsen trenger forbindelsen til noden, som ikke er klar ennå",  // ui.NoteMoveNoLink
+    "Forbindelsen er opptatt: be om det igjen",  // ui.NoteBusy
+    "Ingenting å sende: velg en fil og serverens maskin",  // ui.NoteNothingToSend
+    "Gammel server: filen sendes på nytt",  // ui.NoteOldServer
+    "Ferdig",  // ui.NoteOk
+    "Følger jobben som ble stående på",  // ui.NoteFollowing
+    "Ingen jobb er klar: velg en fil og send den først",  // ui.NoteNoJobReady
+    "Fortsetter fra hullene som allerede er laget",  // ui.NoteGoingOn
+    "Fil",  // ui.NoteFile
+    "Filen kan ikke leses",  // ui.NoteUnreadable
+    "Alle verktøy er slått av: ingenting å sende",  // ui.NoteAllOff
+    "Nettverksklienten kan ikke startes",  // ui.ErrClient
+    "Svaret er for langt",  // ui.ErrTooLong
+    "Forbindelsen brøt sammen",  // ui.ErrBroke
+    "Forespørselen kan ikke sendes",  // ui.ErrSend
+    "Bare bore-, fres- og G-kode-filer kan sendes",  // ui.WfKind
+    "Filen er tom",  // ui.WfEmpty
+    "Gammel server og ingen fil å sende på nytt",  // ui.WfOldNoFile
+    "Det er ingenting å fortsette fra",  // ui.WfNothing
+    "Automatisk",  // ui.OrientAuto
+    "Liggende",  // ui.OrientLandscape
+    "Stående",  // ui.OrientPortrait
+    "Begrens til toppturtall",  // ui.OverClip
+    "Avvis",  // ui.OverRefuse
     "Kvalitetskontroll av arbeidet",  // q.Title
     "Lysring",  // q.Light
     "Av",  // q.LightOff
@@ -1689,6 +2677,58 @@ inline const char* const kText_is[kKeyCount] = {
     "Verkfæri skipt",  // ui.ToolChanged
     "Platan passar ekki á borðið",  // ui.BoardTooBig
     "Mistókst",  // ui.Failed
+    "Ræsa verkið",  // ui.OrdStart
+    "Gera hlé á verkinu",  // ui.OrdPause
+    "Halda verkinu áfram",  // ui.OrdResume
+    "Staðfesta verkfæraskipti",  // ui.OrdToolChanged
+    "Færa vélina í upphafsstöðu",  // ui.OrdHome
+    "Stöðva vélina",  // ui.OrdStop
+    "Hættir við eftir",  // ui.CancelsIn
+    "Tengt",  // ui.LinkOk
+    "Engin tenging",  // ui.LinkLost
+    "Annar þjónn",  // ui.LinkOther
+    "Gömul gögn",  // ui.LinkOld
+    "Fastbúnaður",  // ui.Firmware
+    "hmi.cfg, lína",  // ui.CfgLine
+    "fleiri",  // ui.CfgMore
+    "hmi.cfg fannst ekki: sjálfgefin gildi eru notuð",  // ui.CfgNoFile
+    "ekki lína af gerðinni lykill = gildi",  // ui.CfgNotPair
+    "utan marka eða ekki tala",  // ui.CfgRange
+    "bjóst við on eða off",  // ui.CfgOnOff
+    "óleyfilegt gildi",  // ui.CfgChoice
+    "verður að vera 8 til 64 stafir",  // ui.CfgToken
+    "óþekktur lykill",  // ui.CfgUnknown
+    "Enginn server_host í hmi.cfg: ekkert er stýrt",  // ui.SrvNone
+    "Þjónninn svarar ekki",  // ui.SrvSilent
+    "Svarið er ekki frá EH3D-þjóni",  // ui.SrvOther
+    "STÖÐVUN EKKI SEND: notaðu vélbúnaðarstöðvun",  // ui.NoteStopFail
+    "Stöðvun hafnað",  // ui.NoteStopRefused
+    "Stöðvun send",  // ui.NoteStopSent
+    "Vélin hefur ekkert verk til að stöðva",  // ui.NoteNoJobToStop
+    "Þessi hreyfing þarf tenginguna við hnútinn, sem er ekki tilbúin enn",  // ui.NoteMoveNoLink
+    "Tengingin er upptekin: biddu aftur",  // ui.NoteBusy
+    "Ekkert að senda: veldu skrá og vél þjónsins",  // ui.NoteNothingToSend
+    "Gamall þjónn: skráin er send aftur",  // ui.NoteOldServer
+    "Lokið",  // ui.NoteOk
+    "Fylgist með verkinu sem var skilið eftir í gangi",  // ui.NoteFollowing
+    "Ekkert verk er tilbúið: veldu skrá og sendu hana fyrst",  // ui.NoteNoJobReady
+    "Haldið áfram frá götunum sem þegar eru gerð",  // ui.NoteGoingOn
+    "Skrá",  // ui.NoteFile
+    "Ekki er hægt að lesa skrána",  // ui.NoteUnreadable
+    "Öll verkfæri eru slökkt: ekkert að senda",  // ui.NoteAllOff
+    "Ekki er hægt að ræsa netbiðlarann",  // ui.ErrClient
+    "Svarið er of langt",  // ui.ErrTooLong
+    "Tengingin rofnaði",  // ui.ErrBroke
+    "Ekki er hægt að senda beiðnina",  // ui.ErrSend
+    "Aðeins er hægt að senda borunar-, fræsingar- og G-kóða skrár",  // ui.WfKind
+    "Skráin er tóm",  // ui.WfEmpty
+    "Gamall þjónn og engin skrá til að senda aftur",  // ui.WfOldNoFile
+    "Það er ekkert til að halda áfram frá",  // ui.WfNothing
+    "Sjálfvirkt",  // ui.OrientAuto
+    "Lárétt",  // ui.OrientLandscape
+    "Lóðrétt",  // ui.OrientPortrait
+    "Takmarka við hámarkshraða",  // ui.OverClip
+    "Hafna",  // ui.OverRefuse
     "Gæðaskoðun verksins",  // q.Title
     "Ljósahringur",  // q.Light
     "Af",  // q.LightOff
@@ -1775,6 +2815,58 @@ inline const char* const kText_uk[kKeyCount] = {
     "Інструмент замінено",  // ui.ToolChanged
     "Плата не вміщується на стіл",  // ui.BoardTooBig
     "Збій",  // ui.Failed
+    "Запустити завдання",  // ui.OrdStart
+    "Призупинити завдання",  // ui.OrdPause
+    "Продовжити завдання",  // ui.OrdResume
+    "Підтвердити заміну інструмента",  // ui.OrdToolChanged
+    "Повернути верстат у початок координат",  // ui.OrdHome
+    "Зупинити верстат",  // ui.OrdStop
+    "Скасування через",  // ui.CancelsIn
+    "Підключено",  // ui.LinkOk
+    "Немає зв'язку",  // ui.LinkLost
+    "Інший сервер",  // ui.LinkOther
+    "Застарілі дані",  // ui.LinkOld
+    "Прошивка",  // ui.Firmware
+    "hmi.cfg, рядок",  // ui.CfgLine
+    "ще",  // ui.CfgMore
+    "hmi.cfg не знайдено: використовуються типові значення",  // ui.CfgNoFile
+    "не рядок виду ключ = значення",  // ui.CfgNotPair
+    "поза діапазоном або не число",  // ui.CfgRange
+    "очікувалося on або off",  // ui.CfgOnOff
+    "недопустиме значення",  // ui.CfgChoice
+    "має бути від 8 до 64 символів",  // ui.CfgToken
+    "невідомий ключ",  // ui.CfgUnknown
+    "У hmi.cfg немає server_host: нічим не керую",  // ui.SrvNone
+    "Сервер не відповідає",  // ui.SrvSilent
+    "Відповідь не від сервера EH3D",  // ui.SrvOther
+    "СТОП НЕ НАДІСЛАНО: скористайтеся апаратним стопом",  // ui.NoteStopFail
+    "Зупинку відхилено",  // ui.NoteStopRefused
+    "Зупинку надіслано",  // ui.NoteStopSent
+    "Верстат не має завдання для зупинки",  // ui.NoteNoJobToStop
+    "Для цього руху потрібен зв'язок із вузлом, який ще не готовий",  // ui.NoteMoveNoLink
+    "Канал зайнятий: повторіть запит",  // ui.NoteBusy
+    "Нічого надсилати: виберіть файл і верстат сервера",  // ui.NoteNothingToSend
+    "Старий сервер: файл надсилається знову",  // ui.NoteOldServer
+    "Готово",  // ui.NoteOk
+    "Відстежується завдання, що залишилося в роботі",  // ui.NoteFollowing
+    "Немає готового завдання: спершу виберіть файл і надішліть його",  // ui.NoteNoJobReady
+    "Продовження з уже просвердлених отворів",  // ui.NoteGoingOn
+    "Файл",  // ui.NoteFile
+    "Файл не вдається прочитати",  // ui.NoteUnreadable
+    "Усі інструменти вимкнено: нічого надсилати",  // ui.NoteAllOff
+    "Не вдається запустити мережевий клієнт",  // ui.ErrClient
+    "Відповідь задовга",  // ui.ErrTooLong
+    "З'єднання перервано",  // ui.ErrBroke
+    "Не вдається надіслати запит",  // ui.ErrSend
+    "Можна надсилати лише файли свердління, фрезерування та G-коду",  // ui.WfKind
+    "Файл порожній",  // ui.WfEmpty
+    "Старий сервер і немає файлу для повторного надсилання",  // ui.WfOldNoFile
+    "Немає з чого продовжувати",  // ui.WfNothing
+    "Автоматично",  // ui.OrientAuto
+    "Альбомна",  // ui.OrientLandscape
+    "Книжкова",  // ui.OrientPortrait
+    "Обмежити максимальною швидкістю",  // ui.OverClip
+    "Відхилити",  // ui.OverRefuse
     "Контроль якості виконаної роботи",  // q.Title
     "Світлове кільце",  // q.Light
     "Вимк.",  // q.LightOff
@@ -1861,6 +2953,58 @@ inline const char* const kText_ru[kKeyCount] = {
     "Инструмент заменён",  // ui.ToolChanged
     "Плата не помещается на стол",  // ui.BoardTooBig
     "Сбой",  // ui.Failed
+    "Запустить задание",  // ui.OrdStart
+    "Приостановить задание",  // ui.OrdPause
+    "Продолжить задание",  // ui.OrdResume
+    "Подтвердить смену инструмента",  // ui.OrdToolChanged
+    "Вернуть станок в начало координат",  // ui.OrdHome
+    "Остановить станок",  // ui.OrdStop
+    "Отмена через",  // ui.CancelsIn
+    "Подключено",  // ui.LinkOk
+    "Нет связи",  // ui.LinkLost
+    "Другой сервер",  // ui.LinkOther
+    "Устаревшие данные",  // ui.LinkOld
+    "Прошивка",  // ui.Firmware
+    "hmi.cfg, строка",  // ui.CfgLine
+    "ещё",  // ui.CfgMore
+    "hmi.cfg не найден: используются значения по умолчанию",  // ui.CfgNoFile
+    "не строка вида ключ = значение",  // ui.CfgNotPair
+    "вне диапазона или не число",  // ui.CfgRange
+    "ожидалось on или off",  // ui.CfgOnOff
+    "недопустимое значение",  // ui.CfgChoice
+    "должно быть от 8 до 64 символов",  // ui.CfgToken
+    "неизвестный ключ",  // ui.CfgUnknown
+    "В hmi.cfg нет server_host: ничем не управляю",  // ui.SrvNone
+    "Сервер не отвечает",  // ui.SrvSilent
+    "Ответ не от сервера EH3D",  // ui.SrvOther
+    "СТОП НЕ ОТПРАВЛЕН: используйте аппаратный стоп",  // ui.NoteStopFail
+    "Остановка отклонена",  // ui.NoteStopRefused
+    "Остановка отправлена",  // ui.NoteStopSent
+    "У станка нет задания для остановки",  // ui.NoteNoJobToStop
+    "Для этого движения нужна связь с узлом, которая ещё не готова",  // ui.NoteMoveNoLink
+    "Канал занят: повторите запрос",  // ui.NoteBusy
+    "Нечего отправлять: выберите файл и станок сервера",  // ui.NoteNothingToSend
+    "Старый сервер: файл отправляется снова",  // ui.NoteOldServer
+    "Готово",  // ui.NoteOk
+    "Отслеживается задание, оставшееся в работе",  // ui.NoteFollowing
+    "Нет готового задания: сначала выберите файл и отправьте его",  // ui.NoteNoJobReady
+    "Продолжение с уже просверленных отверстий",  // ui.NoteGoingOn
+    "Файл",  // ui.NoteFile
+    "Файл не удаётся прочитать",  // ui.NoteUnreadable
+    "Все инструменты выключены: нечего отправлять",  // ui.NoteAllOff
+    "Не удаётся запустить сетевой клиент",  // ui.ErrClient
+    "Ответ слишком длинный",  // ui.ErrTooLong
+    "Соединение прервано",  // ui.ErrBroke
+    "Не удаётся отправить запрос",  // ui.ErrSend
+    "Можно отправлять только файлы сверления, фрезеровки и G-кода",  // ui.WfKind
+    "Файл пуст",  // ui.WfEmpty
+    "Старый сервер и нет файла для повторной отправки",  // ui.WfOldNoFile
+    "Не с чего продолжать",  // ui.WfNothing
+    "Автоматически",  // ui.OrientAuto
+    "Альбомная",  // ui.OrientLandscape
+    "Книжная",  // ui.OrientPortrait
+    "Ограничить максимальной скоростью",  // ui.OverClip
+    "Отклонить",  // ui.OverRefuse
     "Контроль качества выполненной работы",  // q.Title
     "Световое кольцо",  // q.Light
     "Выкл.",  // q.LightOff
@@ -1947,6 +3091,58 @@ inline const char* const kText_sr[kKeyCount] = {
     "Алат је замењен",  // ui.ToolChanged
     "Плоча не стаје на сто",  // ui.BoardTooBig
     "Неуспешно",  // ui.Failed
+    "Покрени задатак",  // ui.OrdStart
+    "Паузирај задатак",  // ui.OrdPause
+    "Настави задатак",  // ui.OrdResume
+    "Потврди замену алата",  // ui.OrdToolChanged
+    "Врати машину у почетну тачку",  // ui.OrdHome
+    "Заустави машину",  // ui.OrdStop
+    "Отказивање за",  // ui.CancelsIn
+    "Повезано",  // ui.LinkOk
+    "Нема везе",  // ui.LinkLost
+    "Други сервер",  // ui.LinkOther
+    "Стари подаци",  // ui.LinkOld
+    "Фирмвер",  // ui.Firmware
+    "hmi.cfg, ред",  // ui.CfgLine
+    "још",  // ui.CfgMore
+    "hmi.cfg није пронађен: користе се подразумеване вредности",  // ui.CfgNoFile
+    "није ред облика кључ = вредност",  // ui.CfgNotPair
+    "ван опсега или није број",  // ui.CfgRange
+    "очекивано је on или off",  // ui.CfgOnOff
+    "недозвољена вредност",  // ui.CfgChoice
+    "мора имати од 8 до 64 знака",  // ui.CfgToken
+    "непознат кључ",  // ui.CfgUnknown
+    "У hmi.cfg нема server_host: ништа се не управља",  // ui.SrvNone
+    "Сервер не одговара",  // ui.SrvSilent
+    "Одговор није са EH3D сервера",  // ui.SrvOther
+    "ЗАУСТАВЉАЊЕ НИЈЕ ПОСЛАТО: користите хардверско заустављање",  // ui.NoteStopFail
+    "Заустављање је одбијено",  // ui.NoteStopRefused
+    "Заустављање је послато",  // ui.NoteStopSent
+    "Машина нема задатак за заустављање",  // ui.NoteNoJobToStop
+    "Овом покрету је потребна веза са чвором, која још није спремна",  // ui.NoteMoveNoLink
+    "Веза је заузета: покушајте поново",  // ui.NoteBusy
+    "Нема шта да се пошаље: изаберите датотеку и машину сервера",  // ui.NoteNothingToSend
+    "Стари сервер: датотека се шаље поново",  // ui.NoteOldServer
+    "Готово",  // ui.NoteOk
+    "Прати се задатак који је остао покренут",  // ui.NoteFollowing
+    "Нема спремног задатка: прво изаберите датотеку и пошаљите је",  // ui.NoteNoJobReady
+    "Наставља се од већ избушених рупа",  // ui.NoteGoingOn
+    "Датотека",  // ui.NoteFile
+    "Датотека се не може прочитати",  // ui.NoteUnreadable
+    "Сви алати су искључени: нема шта да се пошаље",  // ui.NoteAllOff
+    "Мрежни клијент се не може покренути",  // ui.ErrClient
+    "Одговор је предугачак",  // ui.ErrTooLong
+    "Веза је прекинута",  // ui.ErrBroke
+    "Захтев се не може послати",  // ui.ErrSend
+    "Могу се слати само датотеке бушења, глодања и G-кода",  // ui.WfKind
+    "Датотека је празна",  // ui.WfEmpty
+    "Стари сервер и нема датотеке за поновно слање",  // ui.WfOldNoFile
+    "Нема од чега да се настави",  // ui.WfNothing
+    "Аутоматски",  // ui.OrientAuto
+    "Водоравно",  // ui.OrientLandscape
+    "Усправно",  // ui.OrientPortrait
+    "Ограничи на највећу брзину",  // ui.OverClip
+    "Одбиј",  // ui.OverRefuse
     "Провера квалитета рада",  // q.Title
     "Светлосни прстен",  // q.Light
     "Искљ.",  // q.LightOff
@@ -2033,6 +3229,58 @@ inline const char* const kText_sq[kKeyCount] = {
     "Mjeti u ndërrua",  // ui.ToolChanged
     "Pllaka nuk përshtatet në tavolinë",  // ui.BoardTooBig
     "Dështoi",  // ui.Failed
+    "Nis punën",  // ui.OrdStart
+    "Pezullo punën",  // ui.OrdPause
+    "Vazhdo punën",  // ui.OrdResume
+    "Konfirmo ndërrimin e veglës",  // ui.OrdToolChanged
+    "Çoje makinën te origjina",  // ui.OrdHome
+    "Ndale makinën",  // ui.OrdStop
+    "Anulohet pas",  // ui.CancelsIn
+    "Lidhur",  // ui.LinkOk
+    "Pa lidhje",  // ui.LinkLost
+    "Server tjetër",  // ui.LinkOther
+    "Të dhëna të vjetra",  // ui.LinkOld
+    "Firmuer",  // ui.Firmware
+    "hmi.cfg, rreshti",  // ui.CfgLine
+    "më shumë",  // ui.CfgMore
+    "hmi.cfg nuk u gjet: përdoren vlerat e paracaktuara",  // ui.CfgNoFile
+    "nuk është rresht i formës çelës = vlerë",  // ui.CfgNotPair
+    "jashtë intervalit ose nuk është numër",  // ui.CfgRange
+    "pritej on ose off",  // ui.CfgOnOff
+    "vlerë e palejuar",  // ui.CfgChoice
+    "duhet të ketë nga 8 deri në 64 shenja",  // ui.CfgToken
+    "çelës i panjohur",  // ui.CfgUnknown
+    "Nuk ka server_host në hmi.cfg: asgjë nuk kontrollohet",  // ui.SrvNone
+    "Serveri nuk përgjigjet",  // ui.SrvSilent
+    "Përgjigjja nuk vjen nga një server EH3D",  // ui.SrvOther
+    "NDALIMI NUK U DËRGUA: përdorni ndalimin me harduer",  // ui.NoteStopFail
+    "Ndalimi u refuzua",  // ui.NoteStopRefused
+    "Ndalimi u dërgua",  // ui.NoteStopSent
+    "Makina nuk ka punë për t'u ndalur",  // ui.NoteNoJobToStop
+    "Kjo lëvizje kërkon lidhjen me nyjen, e cila nuk është gati ende",  // ui.NoteMoveNoLink
+    "Lidhja është e zënë: kërkojeni përsëri",  // ui.NoteBusy
+    "Nuk ka çfarë të dërgohet: zgjidhni një skedar dhe makinën e serverit",  // ui.NoteNothingToSend
+    "Server i vjetër: skedari dërgohet përsëri",  // ui.NoteOldServer
+    "U krye",  // ui.NoteOk
+    "Po ndiqet puna që mbeti në ecje",  // ui.NoteFollowing
+    "Asnjë punë nuk është gati: zgjidhni së pari një skedar dhe dërgojeni",  // ui.NoteNoJobReady
+    "Vazhdon nga vrimat që janë bërë tashmë",  // ui.NoteGoingOn
+    "Skedar",  // ui.NoteFile
+    "Skedari nuk mund të lexohet",  // ui.NoteUnreadable
+    "Të gjitha veglat janë të fikura: nuk ka çfarë të dërgohet",  // ui.NoteAllOff
+    "Klienti i rrjetit nuk mund të nisë",  // ui.ErrClient
+    "Përgjigjja është shumë e gjatë",  // ui.ErrTooLong
+    "Lidhja u ndërpre",  // ui.ErrBroke
+    "Kërkesa nuk mund të dërgohet",  // ui.ErrSend
+    "Mund të dërgohen vetëm skedarë shpimi, frezimi dhe G-code",  // ui.WfKind
+    "Skedari është bosh",  // ui.WfEmpty
+    "Server i vjetër dhe nuk ka skedar për ta dërguar përsëri",  // ui.WfOldNoFile
+    "Nuk ka nga të vazhdohet",  // ui.WfNothing
+    "Automatik",  // ui.OrientAuto
+    "Horizontal",  // ui.OrientLandscape
+    "Vertikal",  // ui.OrientPortrait
+    "Kufizo në shpejtësinë maksimale",  // ui.OverClip
+    "Refuzo",  // ui.OverRefuse
     "Kontrolli i cilësisë së punës",  // q.Title
     "Unaza e dritës",  // q.Light
     "Fikur",  // q.LightOff
@@ -2119,6 +3367,58 @@ inline const char* const kText_ca[kKeyCount] = {
     "Eina canviada",  // ui.ToolChanged
     "La placa no cap a la taula",  // ui.BoardTooBig
     "Fallit",  // ui.Failed
+    "Inicia la feina",  // ui.OrdStart
+    "Pausa la feina",  // ui.OrdPause
+    "Represa la feina",  // ui.OrdResume
+    "Confirma el canvi d'eina",  // ui.OrdToolChanged
+    "Porta la màquina a l'origen",  // ui.OrdHome
+    "Atura la màquina",  // ui.OrdStop
+    "Es cancel·la en",  // ui.CancelsIn
+    "Connectat",  // ui.LinkOk
+    "Sense connexió",  // ui.LinkLost
+    "Un altre servidor",  // ui.LinkOther
+    "Dades antigues",  // ui.LinkOld
+    "Firmware",  // ui.Firmware
+    "hmi.cfg, línia",  // ui.CfgLine
+    "més",  // ui.CfgMore
+    "No es troba hmi.cfg: s'usen els valors per defecte",  // ui.CfgNoFile
+    "no és una línia clau = valor",  // ui.CfgNotPair
+    "fora de rang o no és un número",  // ui.CfgRange
+    "s'esperava on o off",  // ui.CfgOnOff
+    "valor no permès",  // ui.CfgChoice
+    "ha de tenir de 8 a 64 caràcters",  // ui.CfgToken
+    "clau desconeguda",  // ui.CfgUnknown
+    "Falta server_host a hmi.cfg: no es controla res",  // ui.SrvNone
+    "El servidor no respon",  // ui.SrvSilent
+    "La resposta no és d'un servidor EH3D",  // ui.SrvOther
+    "ATURADA NO ENVIADA: useu l'aturada per maquinari",  // ui.NoteStopFail
+    "Aturada rebutjada",  // ui.NoteStopRefused
+    "Aturada enviada",  // ui.NoteStopSent
+    "La màquina no té cap feina per aturar",  // ui.NoteNoJobToStop
+    "Aquest moviment necessita l'enllaç amb el node, que encara no és a punt",  // ui.NoteMoveNoLink
+    "L'enllaç està ocupat: torneu-ho a demanar",  // ui.NoteBusy
+    "Res a enviar: trieu un fitxer i la màquina del servidor",  // ui.NoteNothingToSend
+    "Servidor antic: el fitxer s'envia de nou",  // ui.NoteOldServer
+    "Fet",  // ui.NoteOk
+    "Seguint la feina que ha quedat en marxa",  // ui.NoteFollowing
+    "Cap feina a punt: trieu un fitxer i envieu-lo primer",  // ui.NoteNoJobReady
+    "Continuant des dels forats ja fets",  // ui.NoteGoingOn
+    "Fitxer",  // ui.NoteFile
+    "No es pot llegir el fitxer",  // ui.NoteUnreadable
+    "Totes les eines estan desactivades: res a enviar",  // ui.NoteAllOff
+    "No es pot iniciar el client de xarxa",  // ui.ErrClient
+    "La resposta és massa llarga",  // ui.ErrTooLong
+    "S'ha tallat la connexió",  // ui.ErrBroke
+    "No es pot enviar la petició",  // ui.ErrSend
+    "Només es poden enviar fitxers de foradat, fresat i G-code",  // ui.WfKind
+    "El fitxer és buit",  // ui.WfEmpty
+    "Servidor antic i cap fitxer per tornar a enviar",  // ui.WfOldNoFile
+    "No hi ha res des d'on continuar",  // ui.WfNothing
+    "Automàtic",  // ui.OrientAuto
+    "Horitzontal",  // ui.OrientLandscape
+    "Vertical",  // ui.OrientPortrait
+    "Limita a la velocitat màxima",  // ui.OverClip
+    "Rebutja",  // ui.OverRefuse
     "Verificació de qualitat de la feina",  // q.Title
     "Aro de llum",  // q.Light
     "Apagat",  // q.LightOff
@@ -2205,6 +3505,58 @@ inline const char* const kText_gl[kKeyCount] = {
     "Ferramenta cambiada",  // ui.ToolChanged
     "A placa non cabe na mesa",  // ui.BoardTooBig
     "Fallou",  // ui.Failed
+    "Iniciar o traballo",  // ui.OrdStart
+    "Pausar o traballo",  // ui.OrdPause
+    "Retomar o traballo",  // ui.OrdResume
+    "Confirmar o cambio de ferramenta",  // ui.OrdToolChanged
+    "Levar a máquina á orixe",  // ui.OrdHome
+    "Parar a máquina",  // ui.OrdStop
+    "Cancélase en",  // ui.CancelsIn
+    "Conectado",  // ui.LinkOk
+    "Sen conexión",  // ui.LinkLost
+    "Outro servidor",  // ui.LinkOther
+    "Datos antigos",  // ui.LinkOld
+    "Firmware",  // ui.Firmware
+    "hmi.cfg, liña",  // ui.CfgLine
+    "máis",  // ui.CfgMore
+    "Non se atopa hmi.cfg: úsanse os valores por defecto",  // ui.CfgNoFile
+    "non é unha liña clave = valor",  // ui.CfgNotPair
+    "fóra de rango ou non é un número",  // ui.CfgRange
+    "esperábase on ou off",  // ui.CfgOnOff
+    "valor non permitido",  // ui.CfgChoice
+    "debe ter de 8 a 64 caracteres",  // ui.CfgToken
+    "clave descoñecida",  // ui.CfgUnknown
+    "Falta server_host en hmi.cfg: non se controla nada",  // ui.SrvNone
+    "O servidor non responde",  // ui.SrvSilent
+    "A resposta non é dun servidor EH3D",  // ui.SrvOther
+    "PARADA NON ENVIADA: use a parada por hardware",  // ui.NoteStopFail
+    "Parada rexeitada",  // ui.NoteStopRefused
+    "Parada enviada",  // ui.NoteStopSent
+    "A máquina non ten ningún traballo que parar",  // ui.NoteNoJobToStop
+    "Este movemento precisa a ligazón co nodo, que aínda non está lista",  // ui.NoteMoveNoLink
+    "A ligazón está ocupada: pídao outra vez",  // ui.NoteBusy
+    "Nada que enviar: escolla un ficheiro e a máquina do servidor",  // ui.NoteNothingToSend
+    "Servidor antigo: o ficheiro envíase outra vez",  // ui.NoteOldServer
+    "Feito",  // ui.NoteOk
+    "Seguindo o traballo que quedou en marcha",  // ui.NoteFollowing
+    "Ningún traballo listo: escolla un ficheiro e envíeo primeiro",  // ui.NoteNoJobReady
+    "Continuando desde os buratos xa feitos",  // ui.NoteGoingOn
+    "Ficheiro",  // ui.NoteFile
+    "Non se pode ler o ficheiro",  // ui.NoteUnreadable
+    "Todas as ferramentas están desactivadas: nada que enviar",  // ui.NoteAllOff
+    "Non se pode iniciar o cliente de rede",  // ui.ErrClient
+    "A resposta é demasiado longa",  // ui.ErrTooLong
+    "Cortouse a conexión",  // ui.ErrBroke
+    "Non se pode enviar a petición",  // ui.ErrSend
+    "Só se poden enviar ficheiros de furado, fresado e G-code",  // ui.WfKind
+    "O ficheiro está baleiro",  // ui.WfEmpty
+    "Servidor antigo e sen ficheiro para enviar outra vez",  // ui.WfOldNoFile
+    "Non hai nada desde onde continuar",  // ui.WfNothing
+    "Automática",  // ui.OrientAuto
+    "Horizontal",  // ui.OrientLandscape
+    "Vertical",  // ui.OrientPortrait
+    "Limitar á velocidade máxima",  // ui.OverClip
+    "Rexeitar",  // ui.OverRefuse
     "Verificación de calidade do traballo",  // q.Title
     "Aro de luz",  // q.Light
     "Apagado",  // q.LightOff
@@ -2291,6 +3643,58 @@ inline const char* const kText_eu[kKeyCount] = {
     "Erreminta aldatuta",  // ui.ToolChanged
     "Plaka ez da mahaian sartzen",  // ui.BoardTooBig
     "Huts egin du",  // ui.Failed
+    "Hasi lana",  // ui.OrdStart
+    "Eten lana",  // ui.OrdPause
+    "Jarraitu lanarekin",  // ui.OrdResume
+    "Berretsi erreminta-aldaketa",  // ui.OrdToolChanged
+    "Eraman makina jatorrira",  // ui.OrdHome
+    "Gelditu makina",  // ui.OrdStop
+    "Bertan behera geratuko da",  // ui.CancelsIn
+    "Konektatuta",  // ui.LinkOk
+    "Konexiorik ez",  // ui.LinkLost
+    "Beste zerbitzari bat",  // ui.LinkOther
+    "Datu zaharrak",  // ui.LinkOld
+    "Firmwarea",  // ui.Firmware
+    "hmi.cfg, lerroa",  // ui.CfgLine
+    "gehiago",  // ui.CfgMore
+    "Ez da hmi.cfg aurkitu: lehenetsitako balioak erabiltzen dira",  // ui.CfgNoFile
+    "ez da gakoa = balioa motako lerroa",  // ui.CfgNotPair
+    "tartetik kanpo edo ez da zenbakia",  // ui.CfgRange
+    "on edo off espero zen",  // ui.CfgOnOff
+    "balio ez-onartua",  // ui.CfgChoice
+    "8 eta 64 karaktere artean izan behar ditu",  // ui.CfgToken
+    "gako ezezaguna",  // ui.CfgUnknown
+    "hmi.cfg-n ez dago server_host: ez da ezer kontrolatzen",  // ui.SrvNone
+    "Zerbitzariak ez du erantzuten",  // ui.SrvSilent
+    "Erantzuna ez dator EH3D zerbitzari batetik",  // ui.SrvOther
+    "GELDIALDIA EZ DA BIDALI: erabili hardware-geldialdia",  // ui.NoteStopFail
+    "Geldialdia ukatu da",  // ui.NoteStopRefused
+    "Geldialdia bidali da",  // ui.NoteStopSent
+    "Makinak ez dauka geldituko duen lanik",  // ui.NoteNoJobToStop
+    "Mugimendu honek nodoarekiko esteka behar du, eta ez dago prest oraindik",  // ui.NoteMoveNoLink
+    "Esteka lanpetuta dago: eskatu berriro",  // ui.NoteBusy
+    "Ez dago bidaltzeko ezer: aukeratu fitxategi bat eta zerbitzariaren makina",  // ui.NoteNothingToSend
+    "Zerbitzari zaharra: fitxategia berriro bidaltzen da",  // ui.NoteOldServer
+    "Eginda",  // ui.NoteOk
+    "Martxan geratu zen lana jarraitzen",  // ui.NoteFollowing
+    "Ez dago lanik prest: aukeratu fitxategi bat eta bidali lehenik",  // ui.NoteNoJobReady
+    "Egindako zuloetatik jarraitzen",  // ui.NoteGoingOn
+    "Fitxategia",  // ui.NoteFile
+    "Ezin da fitxategia irakurri",  // ui.NoteUnreadable
+    "Erreminta guztiak desaktibatuta daude: ez dago bidaltzeko ezer",  // ui.NoteAllOff
+    "Ezin da sareko bezeroa abiarazi",  // ui.ErrClient
+    "Erantzuna luzeegia da",  // ui.ErrTooLong
+    "Konexioa eten da",  // ui.ErrBroke
+    "Ezin da eskaera bidali",  // ui.ErrSend
+    "Zulatze, fresatze eta G-code fitxategiak bakarrik bidal daitezke",  // ui.WfKind
+    "Fitxategia hutsik dago",  // ui.WfEmpty
+    "Zerbitzari zaharra eta berriro bidaltzeko fitxategirik ez",  // ui.WfOldNoFile
+    "Ez dago nondik jarraitu",  // ui.WfNothing
+    "Automatikoa",  // ui.OrientAuto
+    "Horizontala",  // ui.OrientLandscape
+    "Bertikala",  // ui.OrientPortrait
+    "Mugatu abiadura maximora",  // ui.OverClip
+    "Ukatu",  // ui.OverRefuse
     "Lanaren kalitate-egiaztapena",  // q.Title
     "Argi-eraztuna",  // q.Light
     "Itzalita",  // q.LightOff
@@ -2377,6 +3781,58 @@ inline const char* const kText_pt_br[kKeyCount] = {
     nullptr,  // ui.ToolChanged
     "A placa não cabe na mesa",  // ui.BoardTooBig
     "Falhou",  // ui.Failed
+    nullptr,  // ui.OrdStart
+    nullptr,  // ui.OrdPause
+    nullptr,  // ui.OrdResume
+    nullptr,  // ui.OrdToolChanged
+    nullptr,  // ui.OrdHome
+    nullptr,  // ui.OrdStop
+    nullptr,  // ui.CancelsIn
+    "Conectado",  // ui.LinkOk
+    "Sem conexão",  // ui.LinkLost
+    nullptr,  // ui.LinkOther
+    nullptr,  // ui.LinkOld
+    nullptr,  // ui.Firmware
+    nullptr,  // ui.CfgLine
+    nullptr,  // ui.CfgMore
+    "hmi.cfg não encontrado: usam-se os valores padrão",  // ui.CfgNoFile
+    nullptr,  // ui.CfgNotPair
+    nullptr,  // ui.CfgRange
+    nullptr,  // ui.CfgOnOff
+    nullptr,  // ui.CfgChoice
+    nullptr,  // ui.CfgToken
+    nullptr,  // ui.CfgUnknown
+    nullptr,  // ui.SrvNone
+    nullptr,  // ui.SrvSilent
+    nullptr,  // ui.SrvOther
+    "PARADA NÃO ENVIADA: use a parada por hardware",  // ui.NoteStopFail
+    "Parada recusada",  // ui.NoteStopRefused
+    "Parada enviada",  // ui.NoteStopSent
+    nullptr,  // ui.NoteNoJobToStop
+    "Este movimento precisa da conexão ao nó, que ainda não está pronta",  // ui.NoteMoveNoLink
+    "A conexão está ocupada: peça outra vez",  // ui.NoteBusy
+    "Nada para enviar: escolha um arquivo e a máquina do servidor",  // ui.NoteNothingToSend
+    "Servidor antigo: o arquivo é enviado outra vez",  // ui.NoteOldServer
+    nullptr,  // ui.NoteOk
+    "Acompanhando o trabalho que ficou em curso",  // ui.NoteFollowing
+    "Nenhum trabalho pronto: escolha um arquivo e envie-o primeiro",  // ui.NoteNoJobReady
+    "Continuando a partir dos furos já feitos",  // ui.NoteGoingOn
+    "Arquivo",  // ui.NoteFile
+    "Não é possível ler o arquivo",  // ui.NoteUnreadable
+    nullptr,  // ui.NoteAllOff
+    nullptr,  // ui.ErrClient
+    "A resposta é muito longa",  // ui.ErrTooLong
+    "A conexão foi interrompida",  // ui.ErrBroke
+    nullptr,  // ui.ErrSend
+    "Só é possível enviar arquivos de furação, fresagem e G-code",  // ui.WfKind
+    "O arquivo está vazio",  // ui.WfEmpty
+    "Servidor antigo e sem arquivo para enviar outra vez",  // ui.WfOldNoFile
+    nullptr,  // ui.WfNothing
+    nullptr,  // ui.OrientAuto
+    nullptr,  // ui.OrientLandscape
+    nullptr,  // ui.OrientPortrait
+    nullptr,  // ui.OverClip
+    nullptr,  // ui.OverRefuse
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff
@@ -2463,6 +3919,58 @@ inline const char* const kText_fr_ca[kKeyCount] = {
     nullptr,  // ui.ToolChanged
     "La carte ne tient pas sur la table",  // ui.BoardTooBig
     "Échec",  // ui.Failed
+    nullptr,  // ui.OrdStart
+    nullptr,  // ui.OrdPause
+    nullptr,  // ui.OrdResume
+    nullptr,  // ui.OrdToolChanged
+    nullptr,  // ui.OrdHome
+    nullptr,  // ui.OrdStop
+    nullptr,  // ui.CancelsIn
+    nullptr,  // ui.LinkOk
+    nullptr,  // ui.LinkLost
+    nullptr,  // ui.LinkOther
+    nullptr,  // ui.LinkOld
+    nullptr,  // ui.Firmware
+    nullptr,  // ui.CfgLine
+    nullptr,  // ui.CfgMore
+    nullptr,  // ui.CfgNoFile
+    nullptr,  // ui.CfgNotPair
+    nullptr,  // ui.CfgRange
+    nullptr,  // ui.CfgOnOff
+    nullptr,  // ui.CfgChoice
+    nullptr,  // ui.CfgToken
+    nullptr,  // ui.CfgUnknown
+    nullptr,  // ui.SrvNone
+    nullptr,  // ui.SrvSilent
+    nullptr,  // ui.SrvOther
+    nullptr,  // ui.NoteStopFail
+    nullptr,  // ui.NoteStopRefused
+    nullptr,  // ui.NoteStopSent
+    nullptr,  // ui.NoteNoJobToStop
+    nullptr,  // ui.NoteMoveNoLink
+    nullptr,  // ui.NoteBusy
+    nullptr,  // ui.NoteNothingToSend
+    nullptr,  // ui.NoteOldServer
+    nullptr,  // ui.NoteOk
+    nullptr,  // ui.NoteFollowing
+    nullptr,  // ui.NoteNoJobReady
+    nullptr,  // ui.NoteGoingOn
+    nullptr,  // ui.NoteFile
+    nullptr,  // ui.NoteUnreadable
+    nullptr,  // ui.NoteAllOff
+    nullptr,  // ui.ErrClient
+    nullptr,  // ui.ErrTooLong
+    nullptr,  // ui.ErrBroke
+    nullptr,  // ui.ErrSend
+    nullptr,  // ui.WfKind
+    nullptr,  // ui.WfEmpty
+    nullptr,  // ui.WfOldNoFile
+    nullptr,  // ui.WfNothing
+    nullptr,  // ui.OrientAuto
+    nullptr,  // ui.OrientLandscape
+    nullptr,  // ui.OrientPortrait
+    nullptr,  // ui.OverClip
+    nullptr,  // ui.OverRefuse
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff

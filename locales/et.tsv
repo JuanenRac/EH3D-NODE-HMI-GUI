@@ -82,3 +82,55 @@ ui.ResumedFrom	Jätkatud tööst
 ui.ToolChanged	Tööriist vahetatud
 ui.BoardTooBig	Plaat ei mahu lauale
 ui.Failed	Ebaõnnestus
+ui.OrdStart	Käivita töö
+ui.OrdPause	Peata töö ajutiselt
+ui.OrdResume	Jätka tööd
+ui.OrdToolChanged	Kinnita tööriista vahetus
+ui.OrdHome	Vii masin nullpunkti
+ui.OrdStop	Peata masin
+ui.CancelsIn	Tühistub
+ui.LinkOk	Ühendatud
+ui.LinkLost	Ühendus puudub
+ui.LinkOther	Teine server
+ui.LinkOld	Vanad andmed
+ui.Firmware	Püsivara
+ui.CfgLine	hmi.cfg, rida
+ui.CfgMore	veel
+ui.CfgNoFile	hmi.cfg puudub: kasutatakse vaikeväärtusi
+ui.CfgNotPair	ei ole rida kujul võti = väärtus
+ui.CfgRange	vahemikust väljas või pole arv
+ui.CfgOnOff	oodati on või off
+ui.CfgChoice	lubamatu väärtus
+ui.CfgToken	peab olema 8 kuni 64 märki
+ui.CfgUnknown	tundmatu võti
+ui.SrvNone	hmi.cfg-s puudub server_host: midagi ei juhita
+ui.SrvSilent	Server ei vasta
+ui.SrvOther	Vastus ei ole EH3D serverilt
+ui.NoteStopFail	PEATAMIST EI SAADETUD: kasuta riistvaralist peatust
+ui.NoteStopRefused	Peatamine keelati
+ui.NoteStopSent	Peatamine saadetud
+ui.NoteNoJobToStop	Masinal pole peatatavat tööd
+ui.NoteMoveNoLink	See liigutus vajab ühendust sõlmega, mis pole veel valmis
+ui.NoteBusy	Ühendus on hõivatud: küsi uuesti
+ui.NoteNothingToSend	Pole midagi saata: vali fail ja serveri masin
+ui.NoteOldServer	Vana server: fail saadetakse uuesti
+ui.NoteOk	Valmis
+ui.NoteFollowing	Jälgitakse tööd, mis jäi käima
+ui.NoteNoJobReady	Ühtegi tööd pole valmis: vali kõigepealt fail ja saada see
+ui.NoteGoingOn	Jätkatakse juba tehtud aukudest
+ui.NoteFile	Fail
+ui.NoteUnreadable	Faili ei saa lugeda
+ui.NoteAllOff	Kõik tööriistad on välja lülitatud: pole midagi saata
+ui.ErrClient	Võrgukliendi käivitamine ebaõnnestus
+ui.ErrTooLong	Vastus on liiga pikk
+ui.ErrBroke	Ühendus katkes
+ui.ErrSend	Päringut ei saa saata
+ui.WfKind	Saata saab ainult puurimise, freesimise ja G-koodi faile
+ui.WfEmpty	Fail on tühi
+ui.WfOldNoFile	Vana server ja pole faili uuesti saatmiseks
+ui.WfNothing	Pole kohta, kust jätkata
+ui.OrientAuto	Automaatne
+ui.OrientLandscape	Rõhtpaigutus
+ui.OrientPortrait	Püstpaigutus
+ui.OverClip	Piira maksimaalse kiiruseni
+ui.OverRefuse	Keeldu

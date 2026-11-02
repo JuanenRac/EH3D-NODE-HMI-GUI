@@ -82,3 +82,55 @@ ui.ResumedFrom	Navázáno na
 ui.ToolChanged	Nástroj vyměněn
 ui.BoardTooBig	Deska se nevejde na stůl
 ui.Failed	Selhalo
+ui.OrdStart	Spustit úlohu
+ui.OrdPause	Pozastavit úlohu
+ui.OrdResume	Pokračovat v úloze
+ui.OrdToolChanged	Potvrdit výměnu nástroje
+ui.OrdHome	Najet strojem do základní polohy
+ui.OrdStop	Zastavit stroj
+ui.CancelsIn	Zrušení za
+ui.LinkOk	Připojeno
+ui.LinkLost	Bez spojení
+ui.LinkOther	Jiný server
+ui.LinkOld	Stará data
+ui.Firmware	Firmware
+ui.CfgLine	hmi.cfg, řádek
+ui.CfgMore	další
+ui.CfgNoFile	hmi.cfg nenalezen: použijí se výchozí hodnoty
+ui.CfgNotPair	není řádek klíč = hodnota
+ui.CfgRange	mimo rozsah nebo není číslo
+ui.CfgOnOff	očekává se on nebo off
+ui.CfgChoice	nepřípustná hodnota
+ui.CfgToken	musí mít 8 až 64 znaků
+ui.CfgUnknown	neznámý klíč
+ui.SrvNone	V hmi.cfg chybí server_host: nic se neovládá
+ui.SrvSilent	Server neodpovídá
+ui.SrvOther	Odpověď nepochází z EH3D serveru
+ui.NoteStopFail	STOP NEBYL ODESLÁN: použijte hardwarový stop
+ui.NoteStopRefused	Stop byl odmítnut
+ui.NoteStopSent	Stop odeslán
+ui.NoteNoJobToStop	Stroj nemá žádnou úlohu k zastavení
+ui.NoteMoveNoLink	Tento pohyb vyžaduje spojení s uzlem, které ještě není připraveno
+ui.NoteBusy	Spojení je obsazeno: požádejte znovu
+ui.NoteNothingToSend	Není co odeslat: vyberte soubor a stroj serveru
+ui.NoteOldServer	Starý server: soubor se pošle znovu
+ui.NoteOk	Hotovo
+ui.NoteFollowing	Sledování úlohy, která zůstala spuštěná
+ui.NoteNoJobReady	Žádná úloha není připravena: nejdřív vyberte soubor a odešlete ho
+ui.NoteGoingOn	Pokračuje se od již vyvrtaných děr
+ui.NoteFile	Soubor
+ui.NoteUnreadable	Soubor nelze přečíst
+ui.NoteAllOff	Všechny nástroje jsou vypnuté: není co odeslat
+ui.ErrClient	Síťového klienta nelze spustit
+ui.ErrTooLong	Odpověď je příliš dlouhá
+ui.ErrBroke	Spojení se přerušilo
+ui.ErrSend	Požadavek nelze odeslat
+ui.WfKind	Odeslat lze jen soubory vrtání, frézování a G-kódu
+ui.WfEmpty	Soubor je prázdný
+ui.WfOldNoFile	Starý server a žádný soubor k opětovnému odeslání
+ui.WfNothing	Není odkud pokračovat
+ui.OrientAuto	Automaticky
+ui.OrientLandscape	Na šířku
+ui.OrientPortrait	Na výšku
+ui.OverClip	Omezit na nejvyšší otáčky
+ui.OverRefuse	Odmítnout

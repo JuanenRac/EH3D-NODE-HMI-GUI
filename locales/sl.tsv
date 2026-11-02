@@ -82,3 +82,55 @@ ui.ResumedFrom	Nadaljevano od
 ui.ToolChanged	Orodje zamenjano
 ui.BoardTooBig	Plošča ne gre na mizo
 ui.Failed	Ni uspelo
+ui.OrdStart	Zaženi opravilo
+ui.OrdPause	Začasno ustavi opravilo
+ui.OrdResume	Nadaljuj opravilo
+ui.OrdToolChanged	Potrdi zamenjavo orodja
+ui.OrdHome	Pelji stroj v izhodišče
+ui.OrdStop	Ustavi stroj
+ui.CancelsIn	Preklic čez
+ui.LinkOk	Povezano
+ui.LinkLost	Ni povezave
+ui.LinkOther	Drug strežnik
+ui.LinkOld	Stari podatki
+ui.Firmware	Strojna programska oprema
+ui.CfgLine	hmi.cfg, vrstica
+ui.CfgMore	več
+ui.CfgNoFile	hmi.cfg ni najden: uporabljene so privzete vrednosti
+ui.CfgNotPair	ni vrstica oblike ključ = vrednost
+ui.CfgRange	izven območja ali ni število
+ui.CfgOnOff	pričakovano on ali off
+ui.CfgChoice	nedovoljena vrednost
+ui.CfgToken	mora imeti od 8 do 64 znakov
+ui.CfgUnknown	neznan ključ
+ui.SrvNone	V hmi.cfg ni server_host: nič se ne upravlja
+ui.SrvSilent	Strežnik se ne odziva
+ui.SrvOther	Odgovor ni od strežnika EH3D
+ui.NoteStopFail	USTAVITEV NI POSLANA: uporabite strojno ustavitev
+ui.NoteStopRefused	Ustavitev zavrnjena
+ui.NoteStopSent	Ustavitev poslana
+ui.NoteNoJobToStop	Stroj nima opravila za ustavitev
+ui.NoteMoveNoLink	Ta gib potrebuje povezavo z vozliščem, ki še ni pripravljena
+ui.NoteBusy	Povezava je zasedena: poskusite znova
+ui.NoteNothingToSend	Ni kaj poslati: izberite datoteko in stroj strežnika
+ui.NoteOldServer	Star strežnik: datoteka se pošlje znova
+ui.NoteOk	Opravljeno
+ui.NoteFollowing	Spremlja se opravilo, ki je ostalo v teku
+ui.NoteNoJobReady	Nobeno opravilo ni pripravljeno: najprej izberite datoteko in jo pošljite
+ui.NoteGoingOn	Nadaljevanje od že izvrtanih lukenj
+ui.NoteFile	Datoteka
+ui.NoteUnreadable	Datoteke ni mogoče prebrati
+ui.NoteAllOff	Vsa orodja so izklopljena: ni kaj poslati
+ui.ErrClient	Omrežnega odjemalca ni mogoče zagnati
+ui.ErrTooLong	Odgovor je predolg
+ui.ErrBroke	Povezava je bila prekinjena
+ui.ErrSend	Zahtevka ni mogoče poslati
+ui.WfKind	Pošljete lahko samo datoteke za vrtanje, rezkanje in G-kodo
+ui.WfEmpty	Datoteka je prazna
+ui.WfOldNoFile	Star strežnik in ni datoteke za ponovno pošiljanje
+ui.WfNothing	Ni od kod nadaljevati
+ui.OrientAuto	Samodejno
+ui.OrientLandscape	Ležeče
+ui.OrientPortrait	Pokončno
+ui.OverClip	Omeji na najvišjo hitrost
+ui.OverRefuse	Zavrni

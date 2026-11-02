@@ -82,3 +82,55 @@ ui.ResumedFrom	Tęsiama nuo
 ui.ToolChanged	Įrankis pakeistas
 ui.BoardTooBig	Plokštė netelpa ant stalo
 ui.Failed	Nepavyko
+ui.OrdStart	Pradėti darbą
+ui.OrdPause	Pristabdyti darbą
+ui.OrdResume	Tęsti darbą
+ui.OrdToolChanged	Patvirtinti įrankio keitimą
+ui.OrdHome	Nuvesti staklės į pradžios tašką
+ui.OrdStop	Sustabdyti stakles
+ui.CancelsIn	Atšaukiama po
+ui.LinkOk	Prisijungta
+ui.LinkLost	Nėra ryšio
+ui.LinkOther	Kitas serveris
+ui.LinkOld	Seni duomenys
+ui.Firmware	Programinė įranga
+ui.CfgLine	hmi.cfg, eilutė
+ui.CfgMore	daugiau
+ui.CfgNoFile	hmi.cfg nerastas: naudojamos numatytosios reikšmės
+ui.CfgNotPair	tai nėra eilutė raktas = reikšmė
+ui.CfgRange	už ribų arba ne skaičius
+ui.CfgOnOff	tikėtasi on arba off
+ui.CfgChoice	neleistina reikšmė
+ui.CfgToken	turi būti nuo 8 iki 64 simbolių
+ui.CfgUnknown	nežinomas raktas
+ui.SrvNone	hmi.cfg nėra server_host: niekas nevaldoma
+ui.SrvSilent	Serveris neatsako
+ui.SrvOther	Atsakymas ne iš EH3D serverio
+ui.NoteStopFail	SUSTABDYMAS NEIŠSIŲSTAS: naudokite aparatinį stabdymą
+ui.NoteStopRefused	Sustabdymas atmestas
+ui.NoteStopSent	Sustabdymas išsiųstas
+ui.NoteNoJobToStop	Staklės neturi darbo, kurį reikėtų sustabdyti
+ui.NoteMoveNoLink	Šiam judesiui reikia ryšio su mazgu, kuris dar nepasiruošęs
+ui.NoteBusy	Ryšys užimtas: paprašykite dar kartą
+ui.NoteNothingToSend	Nėra ką siųsti: pasirinkite failą ir serverio stakles
+ui.NoteOldServer	Senas serveris: failas siunčiamas iš naujo
+ui.NoteOk	Atlikta
+ui.NoteFollowing	Sekamas darbas, likęs vykdomas
+ui.NoteNoJobReady	Nėra paruošto darbo: pirmiausia pasirinkite failą ir jį išsiųskite
+ui.NoteGoingOn	Tęsiama nuo jau išgręžtų skylių
+ui.NoteFile	Failas
+ui.NoteUnreadable	Failo nepavyksta perskaityti
+ui.NoteAllOff	Visi įrankiai išjungti: nėra ką siųsti
+ui.ErrClient	Tinklo kliento paleisti nepavyksta
+ui.ErrTooLong	Atsakymas per ilgas
+ui.ErrBroke	Ryšys nutrūko
+ui.ErrSend	Užklausos išsiųsti nepavyksta
+ui.WfKind	Galima siųsti tik gręžimo, frezavimo ir G-kodo failus
+ui.WfEmpty	Failas tuščias
+ui.WfOldNoFile	Senas serveris ir nėra failo siųsti iš naujo
+ui.WfNothing	Nėra nuo ko tęsti
+ui.OrientAuto	Automatinis
+ui.OrientLandscape	Gulsčias
+ui.OrientPortrait	Stačias
+ui.OverClip	Apriboti iki didžiausio greičio
+ui.OverRefuse	Atmesti

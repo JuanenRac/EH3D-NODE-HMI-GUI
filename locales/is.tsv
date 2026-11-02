@@ -82,3 +82,55 @@ ui.ResumedFrom	Haldið áfram frá
 ui.ToolChanged	Verkfæri skipt
 ui.BoardTooBig	Platan passar ekki á borðið
 ui.Failed	Mistókst
+ui.OrdStart	Ræsa verkið
+ui.OrdPause	Gera hlé á verkinu
+ui.OrdResume	Halda verkinu áfram
+ui.OrdToolChanged	Staðfesta verkfæraskipti
+ui.OrdHome	Færa vélina í upphafsstöðu
+ui.OrdStop	Stöðva vélina
+ui.CancelsIn	Hættir við eftir
+ui.LinkOk	Tengt
+ui.LinkLost	Engin tenging
+ui.LinkOther	Annar þjónn
+ui.LinkOld	Gömul gögn
+ui.Firmware	Fastbúnaður
+ui.CfgLine	hmi.cfg, lína
+ui.CfgMore	fleiri
+ui.CfgNoFile	hmi.cfg fannst ekki: sjálfgefin gildi eru notuð
+ui.CfgNotPair	ekki lína af gerðinni lykill = gildi
+ui.CfgRange	utan marka eða ekki tala
+ui.CfgOnOff	bjóst við on eða off
+ui.CfgChoice	óleyfilegt gildi
+ui.CfgToken	verður að vera 8 til 64 stafir
+ui.CfgUnknown	óþekktur lykill
+ui.SrvNone	Enginn server_host í hmi.cfg: ekkert er stýrt
+ui.SrvSilent	Þjónninn svarar ekki
+ui.SrvOther	Svarið er ekki frá EH3D-þjóni
+ui.NoteStopFail	STÖÐVUN EKKI SEND: notaðu vélbúnaðarstöðvun
+ui.NoteStopRefused	Stöðvun hafnað
+ui.NoteStopSent	Stöðvun send
+ui.NoteNoJobToStop	Vélin hefur ekkert verk til að stöðva
+ui.NoteMoveNoLink	Þessi hreyfing þarf tenginguna við hnútinn, sem er ekki tilbúin enn
+ui.NoteBusy	Tengingin er upptekin: biddu aftur
+ui.NoteNothingToSend	Ekkert að senda: veldu skrá og vél þjónsins
+ui.NoteOldServer	Gamall þjónn: skráin er send aftur
+ui.NoteOk	Lokið
+ui.NoteFollowing	Fylgist með verkinu sem var skilið eftir í gangi
+ui.NoteNoJobReady	Ekkert verk er tilbúið: veldu skrá og sendu hana fyrst
+ui.NoteGoingOn	Haldið áfram frá götunum sem þegar eru gerð
+ui.NoteFile	Skrá
+ui.NoteUnreadable	Ekki er hægt að lesa skrána
+ui.NoteAllOff	Öll verkfæri eru slökkt: ekkert að senda
+ui.ErrClient	Ekki er hægt að ræsa netbiðlarann
+ui.ErrTooLong	Svarið er of langt
+ui.ErrBroke	Tengingin rofnaði
+ui.ErrSend	Ekki er hægt að senda beiðnina
+ui.WfKind	Aðeins er hægt að senda borunar-, fræsingar- og G-kóða skrár
+ui.WfEmpty	Skráin er tóm
+ui.WfOldNoFile	Gamall þjónn og engin skrá til að senda aftur
+ui.WfNothing	Það er ekkert til að halda áfram frá
+ui.OrientAuto	Sjálfvirkt
+ui.OrientLandscape	Lárétt
+ui.OrientPortrait	Lóðrétt
+ui.OverClip	Takmarka við hámarkshraða
+ui.OverRefuse	Hafna

@@ -82,3 +82,55 @@ ui.ResumedFrom	Nastavljeno od
 ui.ToolChanged	Alat zamijenjen
 ui.BoardTooBig	Ploča se ne uklapa na stol
 ui.Failed	Neuspjelo
+ui.OrdStart	Pokreni zadatak
+ui.OrdPause	Pauziraj zadatak
+ui.OrdResume	Nastavi zadatak
+ui.OrdToolChanged	Potvrdi zamjenu alata
+ui.OrdHome	Vrati stroj u ishodište
+ui.OrdStop	Zaustavi stroj
+ui.CancelsIn	Otkazivanje za
+ui.LinkOk	Povezano
+ui.LinkLost	Nema veze
+ui.LinkOther	Drugi poslužitelj
+ui.LinkOld	Stari podaci
+ui.Firmware	Firmver
+ui.CfgLine	hmi.cfg, redak
+ui.CfgMore	još
+ui.CfgNoFile	hmi.cfg nije pronađen: koriste se zadane vrijednosti
+ui.CfgNotPair	nije redak oblika ključ = vrijednost
+ui.CfgRange	izvan raspona ili nije broj
+ui.CfgOnOff	očekivano on ili off
+ui.CfgChoice	nedopuštena vrijednost
+ui.CfgToken	mora imati od 8 do 64 znaka
+ui.CfgUnknown	nepoznat ključ
+ui.SrvNone	U hmi.cfg nema server_host: ništa se ne upravlja
+ui.SrvSilent	Poslužitelj ne odgovara
+ui.SrvOther	Odgovor nije s EH3D poslužitelja
+ui.NoteStopFail	ZAUSTAVLJANJE NIJE POSLANO: upotrijebite hardversko zaustavljanje
+ui.NoteStopRefused	Zaustavljanje je odbijeno
+ui.NoteStopSent	Zaustavljanje je poslano
+ui.NoteNoJobToStop	Stroj nema zadatak za zaustavljanje
+ui.NoteMoveNoLink	Ovaj pokret traži vezu s čvorom, koja još nije spremna
+ui.NoteBusy	Veza je zauzeta: pokušajte ponovno
+ui.NoteNothingToSend	Nema ničega za slanje: odaberite datoteku i stroj poslužitelja
+ui.NoteOldServer	Stari poslužitelj: datoteka se šalje ponovno
+ui.NoteOk	Gotovo
+ui.NoteFollowing	Prati se zadatak koji je ostao pokrenut
+ui.NoteNoJobReady	Nema spremnog zadatka: prvo odaberite datoteku i pošaljite je
+ui.NoteGoingOn	Nastavlja se od već izbušenih rupa
+ui.NoteFile	Datoteka
+ui.NoteUnreadable	Datoteka se ne može pročitati
+ui.NoteAllOff	Svi su alati isključeni: nema ničega za slanje
+ui.ErrClient	Mrežni klijent se ne može pokrenuti
+ui.ErrTooLong	Odgovor je predug
+ui.ErrBroke	Veza je prekinuta
+ui.ErrSend	Zahtjev se ne može poslati
+ui.WfKind	Mogu se slati samo datoteke bušenja, glodanja i G-koda
+ui.WfEmpty	Datoteka je prazna
+ui.WfOldNoFile	Stari poslužitelj i nema datoteke za ponovno slanje
+ui.WfNothing	Nema od čega nastaviti
+ui.OrientAuto	Automatski
+ui.OrientLandscape	Vodoravno
+ui.OrientPortrait	Okomito
+ui.OverClip	Ograniči na najveću brzinu
+ui.OverRefuse	Odbij

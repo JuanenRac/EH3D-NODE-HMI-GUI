@@ -82,3 +82,55 @@ ui.ResumedFrom	Συνέχεια από
 ui.ToolChanged	Το εργαλείο άλλαξε
 ui.BoardTooBig	Η πλακέτα δεν χωράει στο τραπέζι
 ui.Failed	Απέτυχε
+ui.OrdStart	Έναρξη εργασίας
+ui.OrdPause	Παύση εργασίας
+ui.OrdResume	Συνέχιση εργασίας
+ui.OrdToolChanged	Επιβεβαίωση αλλαγής εργαλείου
+ui.OrdHome	Επαναφορά του μηχανήματος στην αρχή
+ui.OrdStop	Διακοπή του μηχανήματος
+ui.CancelsIn	Ακύρωση σε
+ui.LinkOk	Συνδεδεμένο
+ui.LinkLost	Χωρίς σύνδεση
+ui.LinkOther	Άλλος διακομιστής
+ui.LinkOld	Παλιά δεδομένα
+ui.Firmware	Υλικολογισμικό
+ui.CfgLine	hmi.cfg, γραμμή
+ui.CfgMore	ακόμη
+ui.CfgNoFile	Το hmi.cfg δεν βρέθηκε: χρησιμοποιούνται οι προεπιλογές
+ui.CfgNotPair	δεν είναι γραμμή της μορφής κλειδί = τιμή
+ui.CfgRange	εκτός ορίων ή όχι αριθμός
+ui.CfgOnOff	αναμενόταν on ή off
+ui.CfgChoice	μη επιτρεπτή τιμή
+ui.CfgToken	πρέπει να έχει 8 έως 64 χαρακτήρες
+ui.CfgUnknown	άγνωστο κλειδί
+ui.SrvNone	Δεν υπάρχει server_host στο hmi.cfg: δεν ελέγχεται τίποτα
+ui.SrvSilent	Ο διακομιστής δεν απαντά
+ui.SrvOther	Η απάντηση δεν προέρχεται από διακομιστή EH3D
+ui.NoteStopFail	ΜΗ ΑΠΟΣΤΟΛΗ ΔΙΑΚΟΠΗΣ: χρησιμοποιήστε τη διακοπή υλικού
+ui.NoteStopRefused	Η διακοπή απορρίφθηκε
+ui.NoteStopSent	Η διακοπή στάλθηκε
+ui.NoteNoJobToStop	Το μηχάνημα δεν έχει εργασία για διακοπή
+ui.NoteMoveNoLink	Αυτή η κίνηση απαιτεί τη σύνδεση με τον κόμβο, που δεν είναι έτοιμη ακόμη
+ui.NoteBusy	Η σύνδεση είναι απασχολημένη: ζητήστε ξανά
+ui.NoteNothingToSend	Τίποτα για αποστολή: επιλέξτε αρχείο και το μηχάνημα του διακομιστή
+ui.NoteOldServer	Παλιός διακομιστής: το αρχείο στέλνεται ξανά
+ui.NoteOk	Έτοιμο
+ui.NoteFollowing	Παρακολούθηση της εργασίας που έμεινε σε εξέλιξη
+ui.NoteNoJobReady	Καμία εργασία δεν είναι έτοιμη: επιλέξτε πρώτα αρχείο και στείλτε το
+ui.NoteGoingOn	Συνέχεια από τις οπές που έχουν ήδη γίνει
+ui.NoteFile	Αρχείο
+ui.NoteUnreadable	Το αρχείο δεν διαβάζεται
+ui.NoteAllOff	Όλα τα εργαλεία είναι απενεργοποιημένα: τίποτα για αποστολή
+ui.ErrClient	Δεν είναι δυνατή η εκκίνηση του πελάτη δικτύου
+ui.ErrTooLong	Η απάντηση είναι πολύ μεγάλη
+ui.ErrBroke	Η σύνδεση διακόπηκε
+ui.ErrSend	Δεν είναι δυνατή η αποστολή του αιτήματος
+ui.WfKind	Μπορούν να σταλούν μόνο αρχεία διάτρησης, φρεζαρίσματος και G-code
+ui.WfEmpty	Το αρχείο είναι κενό
+ui.WfOldNoFile	Παλιός διακομιστής και κανένα αρχείο για νέα αποστολή
+ui.WfNothing	Δεν υπάρχει σημείο για συνέχεια
+ui.OrientAuto	Αυτόματο
+ui.OrientLandscape	Οριζόντια
+ui.OrientPortrait	Κάθετα
+ui.OverClip	Περιορισμός στη μέγιστη ταχύτητα
+ui.OverRefuse	Απόρριψη

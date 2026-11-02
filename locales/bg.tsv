@@ -82,3 +82,55 @@ ui.ResumedFrom	Продължено от
 ui.ToolChanged	Инструментът е сменен
 ui.BoardTooBig	Платката не се побира на масата
 ui.Failed	Неуспешно
+ui.OrdStart	Стартиране на задачата
+ui.OrdPause	Пауза на задачата
+ui.OrdResume	Продължаване на задачата
+ui.OrdToolChanged	Потвърдете смяната на инструмента
+ui.OrdHome	Връщане на машината в нулева точка
+ui.OrdStop	Спиране на машината
+ui.CancelsIn	Отмяна след
+ui.LinkOk	Свързано
+ui.LinkLost	Няма връзка
+ui.LinkOther	Друг сървър
+ui.LinkOld	Стари данни
+ui.Firmware	Фърмуер
+ui.CfgLine	hmi.cfg, ред
+ui.CfgMore	още
+ui.CfgNoFile	hmi.cfg не е намерен: използват се стойностите по подразбиране
+ui.CfgNotPair	не е ред от вида ключ = стойност
+ui.CfgRange	извън диапазона или не е число
+ui.CfgOnOff	очаква се on или off
+ui.CfgChoice	недопустима стойност
+ui.CfgToken	трябва да е от 8 до 64 знака
+ui.CfgUnknown	непознат ключ
+ui.SrvNone	Няма server_host в hmi.cfg: нищо не се управлява
+ui.SrvSilent	Сървърът не отговаря
+ui.SrvOther	Отговорът не е от EH3D сървър
+ui.NoteStopFail	СПИРАНЕТО НЕ Е ИЗПРАТЕНО: използвайте хардуерното спиране
+ui.NoteStopRefused	Спирането е отказано
+ui.NoteStopSent	Спирането е изпратено
+ui.NoteNoJobToStop	Машината няма задача за спиране
+ui.NoteMoveNoLink	Това движение изисква връзка с възела, която още не е готова
+ui.NoteBusy	Връзката е заета: опитайте отново
+ui.NoteNothingToSend	Няма какво да се изпрати: изберете файл и машина на сървъра
+ui.NoteOldServer	Стар сървър: файлът се изпраща отново
+ui.NoteOk	Готово
+ui.NoteFollowing	Следене на задачата, останала в ход
+ui.NoteNoJobReady	Няма готова задача: първо изберете файл и го изпратете
+ui.NoteGoingOn	Продължаване от вече направените отвори
+ui.NoteFile	Файл
+ui.NoteUnreadable	Файлът не може да се прочете
+ui.NoteAllOff	Всички инструменти са изключени: няма какво да се изпрати
+ui.ErrClient	Мрежовият клиент не може да се стартира
+ui.ErrTooLong	Отговорът е твърде дълъг
+ui.ErrBroke	Връзката прекъсна
+ui.ErrSend	Заявката не може да се изпрати
+ui.WfKind	Могат да се изпращат само файлове за пробиване, фрезоване и G-код
+ui.WfEmpty	Файлът е празен
+ui.WfOldNoFile	Стар сървър и няма файл за повторно изпращане
+ui.WfNothing	Няма откъде да се продължи
+ui.OrientAuto	Автоматично
+ui.OrientLandscape	Хоризонтално
+ui.OrientPortrait	Вертикално
+ui.OverClip	Ограничаване до максималната скорост
+ui.OverRefuse	Отказ

@@ -82,3 +82,55 @@ ui.ResumedFrom	Kontinwat minn
 ui.ToolChanged	Għodda mibdula
 ui.BoardTooBig	Il-bord ma jidħolx fuq il-mejda
 ui.Failed	Falla
+ui.OrdStart	Ibda x-xogħol
+ui.OrdPause	Waqqaf x-xogħol għal ftit
+ui.OrdResume	Kompli x-xogħol
+ui.OrdToolChanged	Ikkonferma l-bidla tal-għodda
+ui.OrdHome	Ibgħat il-magna lejn l-oriġini
+ui.OrdStop	Waqqaf il-magna
+ui.CancelsIn	Jiġi kkanċellat fi
+ui.LinkOk	Konness
+ui.LinkLost	L-ebda konnessjoni
+ui.LinkOther	Server ieħor
+ui.LinkOld	Dejta qadima
+ui.Firmware	Firmware
+ui.CfgLine	hmi.cfg, linja
+ui.CfgMore	aktar
+ui.CfgNoFile	Ma nstabx hmi.cfg: jintużaw il-valuri awtomatiċi
+ui.CfgNotPair	mhix linja tal-forma ċavetta = valur
+ui.CfgRange	barra mill-firxa jew mhux numru
+ui.CfgOnOff	kien mistenni on jew off
+ui.CfgChoice	valur mhux permess
+ui.CfgToken	jrid ikollu minn 8 sa 64 karattru
+ui.CfgUnknown	ċavetta mhux magħrufa
+ui.SrvNone	M'hemm l-ebda server_host f'hmi.cfg: ma jiġi kkontrollat xejn
+ui.SrvSilent	Is-server ma jwieġeb
+ui.SrvOther	It-tweġiba mhix minn server EH3D
+ui.NoteStopFail	L-ISTOP MA ĠIEX MIBGĦUT: uża l-istop tal-hardware
+ui.NoteStopRefused	L-istop ġie miċħud
+ui.NoteStopSent	L-istop intbagħat
+ui.NoteNoJobToStop	Il-magna m'għandha l-ebda xogħol biex twaqqaf
+ui.NoteMoveNoLink	Din il-moviment teħtieġ il-konnessjoni man-node, li għadha mhix lesta
+ui.NoteBusy	Il-konnessjoni hija okkupata: itlob mill-ġdid
+ui.NoteNothingToSend	M'hemm xejn x'tibgħat: agħżel fajl u l-magna tas-server
+ui.NoteOldServer	Server qadim: il-fajl jintbagħat mill-ġdid
+ui.NoteOk	Lest
+ui.NoteFollowing	Qed isegwi x-xogħol li baqa' għaddej
+ui.NoteNoJobReady	L-ebda xogħol lest: l-ewwel agħżel fajl u ibgħatu
+ui.NoteGoingOn	Titkompla mit-toqob li saru diġà
+ui.NoteFile	Fajl
+ui.NoteUnreadable	Il-fajl ma jistax jinqara
+ui.NoteAllOff	L-għodod kollha huma mitfija: m'hemm xejn x'tibgħat
+ui.ErrClient	Il-klijent tan-netwerk ma jistax jinbeda
+ui.ErrTooLong	It-tweġiba twila wisq
+ui.ErrBroke	Il-konnessjoni nqatgħet
+ui.ErrSend	It-talba ma tistax tintbagħat
+ui.WfKind	Jistgħu jintbagħtu biss fajls tat-tqib, tat-tħanzir u tal-G-code
+ui.WfEmpty	Il-fajl huwa vojt
+ui.WfOldNoFile	Server qadim u l-ebda fajl biex jintbagħat mill-ġdid
+ui.WfNothing	M'hemm xejn minn fejn tkompli
+ui.OrientAuto	Awtomatiku
+ui.OrientLandscape	Orizzontali
+ui.OrientPortrait	Vertikali
+ui.OverClip	Illimita għall-ogħla veloċità
+ui.OverRefuse	Irrifjuta

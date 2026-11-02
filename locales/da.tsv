@@ -82,3 +82,55 @@ ui.ResumedFrom	Genoptaget fra
 ui.ToolChanged	Værktøj skiftet
 ui.BoardTooBig	Printpladen kan ikke være på bordet
 ui.Failed	Mislykkedes
+ui.OrdStart	Start opgaven
+ui.OrdPause	Sæt opgaven på pause
+ui.OrdResume	Genoptag opgaven
+ui.OrdToolChanged	Bekræft værktøjsskiftet
+ui.OrdHome	Kør maskinen til nulpunkt
+ui.OrdStop	Stop maskinen
+ui.CancelsIn	Annulleres om
+ui.LinkOk	Forbundet
+ui.LinkLost	Ingen forbindelse
+ui.LinkOther	Anden server
+ui.LinkOld	Gamle data
+ui.Firmware	Firmware
+ui.CfgLine	hmi.cfg, linje
+ui.CfgMore	flere
+ui.CfgNoFile	hmi.cfg findes ikke: standardværdierne bruges
+ui.CfgNotPair	ikke en linje af typen nøgle = værdi
+ui.CfgRange	uden for området eller ikke et tal
+ui.CfgOnOff	forventede on eller off
+ui.CfgChoice	ikke en tilladt værdi
+ui.CfgToken	skal have 8 til 64 tegn
+ui.CfgUnknown	ukendt nøgle
+ui.SrvNone	Ingen server_host i hmi.cfg: intet styres
+ui.SrvSilent	Serveren svarer ikke
+ui.SrvOther	Svaret er ikke fra en EH3D-server
+ui.NoteStopFail	STOP IKKE SENDT: brug hardwarestoppet
+ui.NoteStopRefused	Stop afvist
+ui.NoteStopSent	Stop sendt
+ui.NoteNoJobToStop	Maskinen har ingen opgave at stoppe
+ui.NoteMoveNoLink	Denne bevægelse kræver forbindelsen til noden, som endnu ikke er klar
+ui.NoteBusy	Forbindelsen er optaget: prøv igen
+ui.NoteNothingToSend	Intet at sende: vælg en fil og serverens maskine
+ui.NoteOldServer	Gammel server: filen sendes igen
+ui.NoteOk	Færdig
+ui.NoteFollowing	Følger den opgave, der blev ved med at køre
+ui.NoteNoJobReady	Ingen opgave er klar: vælg en fil og send den først
+ui.NoteGoingOn	Fortsætter fra de huller, der allerede er lavet
+ui.NoteFile	Fil
+ui.NoteUnreadable	Filen kan ikke læses
+ui.NoteAllOff	Alle værktøjer er slået fra: intet at sende
+ui.ErrClient	Netværksklienten kan ikke startes
+ui.ErrTooLong	Svaret er for langt
+ui.ErrBroke	Forbindelsen blev afbrudt
+ui.ErrSend	Forespørgslen kan ikke sendes
+ui.WfKind	Kun bore-, fræse- og G-kode-filer kan sendes
+ui.WfEmpty	Filen er tom
+ui.WfOldNoFile	Gammel server og ingen fil at sende igen
+ui.WfNothing	Der er intet at fortsætte fra
+ui.OrientAuto	Automatisk
+ui.OrientLandscape	Liggende
+ui.OrientPortrait	Stående
+ui.OverClip	Begræns til topomdrejninger
+ui.OverRefuse	Afvis

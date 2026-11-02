@@ -85,14 +85,16 @@ static std::vector<Entry> all_texts(Lang l) {
 static bool count_is(std::size_t a, std::size_t b) { return a == b; }
 
 static void the_keys() {
-    CHECK(count_is(kKeyCount, 83));  // (the enums are tied to the counts by static_assert in ui_text.hpp and quality.hpp)
+    CHECK(count_is(kKeyCount, 135));  // (the enums are tied to the counts by static_assert in ui_text.hpp and quality.hpp)
     // the order of the names follows the enums: every name checked against the enum it stands for
     const char* ui[] = {"Viewer", "Job", "Machine", "Settings", "Fleet", "Start", "Pause", "Stop", "Home", "Confirm", "Cancel", "Armed", "NotArmed", "StopPressed", "AckRelease", "Language", "Voice",
                         "Brightness", "Volume", "JogX", "JogY", "JogZ", "Spindle", "AskMove", "AskSpindle", "WhyHardwareStop", "WhyNotArmed", "WhyVoiceOff", "WhyNoStop", "WhySpindle", "WhyNoSpindleHere", "Feed",
-                        "Progress", "Tool", "Jog", "Holes", "Cuts", "SpindleCut", "WhySpindleFast", "Resume", "Stopped", "Next", "ResumedFrom", "ToolChanged", "BoardTooBig", "Failed"};
+                        "Progress", "Tool", "Jog", "Holes", "Cuts", "SpindleCut", "WhySpindleFast", "Resume", "Stopped", "Next", "ResumedFrom", "ToolChanged", "BoardTooBig", "Failed",
+                        "OrdStart", "OrdPause", "OrdResume", "OrdToolChanged", "OrdHome", "OrdStop", "CancelsIn", "LinkOk", "LinkLost", "LinkOther", "LinkOld", "Firmware", "CfgLine", "CfgMore", "CfgNoFile", "CfgNotPair", "CfgRange", "CfgOnOff", "CfgChoice", "CfgToken", "CfgUnknown", "SrvNone", "SrvSilent", "SrvOther", "NoteStopFail", "NoteStopRefused", "NoteStopSent", "NoteNoJobToStop", "NoteMoveNoLink", "NoteBusy", "NoteNothingToSend", "NoteOldServer", "NoteOk", "NoteFollowing", "NoteNoJobReady", "NoteGoingOn", "NoteFile", "NoteUnreadable", "NoteAllOff", "ErrClient", "ErrTooLong", "ErrBroke", "ErrSend", "WfKind", "WfEmpty", "WfOldNoFile", "WfNothing", "OrientAuto", "OrientLandscape", "OrientPortrait", "OverClip", "OverRefuse"};
     const T ui_enum[] = {T::Viewer, T::Job, T::Machine, T::Settings, T::Fleet, T::Start, T::Pause, T::Stop, T::Home, T::Confirm, T::Cancel, T::Armed, T::NotArmed, T::StopPressed, T::AckRelease,
                          T::Language, T::Voice, T::Brightness, T::Volume, T::JogX, T::JogY, T::JogZ, T::Spindle, T::AskMove, T::AskSpindle, T::WhyHardwareStop, T::WhyNotArmed, T::WhyVoiceOff,
-                         T::WhyNoStop, T::WhySpindle, T::WhyNoSpindleHere, T::Feed, T::Progress, T::Tool, T::Jog, T::Holes, T::Cuts, T::SpindleCut, T::WhySpindleFast, T::Resume, T::Stopped, T::Next, T::ResumedFrom, T::ToolChanged, T::BoardTooBig, T::Failed};
+                         T::WhyNoStop, T::WhySpindle, T::WhyNoSpindleHere, T::Feed, T::Progress, T::Tool, T::Jog, T::Holes, T::Cuts, T::SpindleCut, T::WhySpindleFast, T::Resume, T::Stopped, T::Next, T::ResumedFrom, T::ToolChanged, T::BoardTooBig, T::Failed,
+                         T::OrdStart, T::OrdPause, T::OrdResume, T::OrdToolChanged, T::OrdHome, T::OrdStop, T::CancelsIn, T::LinkOk, T::LinkLost, T::LinkOther, T::LinkOld, T::Firmware, T::CfgLine, T::CfgMore, T::CfgNoFile, T::CfgNotPair, T::CfgRange, T::CfgOnOff, T::CfgChoice, T::CfgToken, T::CfgUnknown, T::SrvNone, T::SrvSilent, T::SrvOther, T::NoteStopFail, T::NoteStopRefused, T::NoteStopSent, T::NoteNoJobToStop, T::NoteMoveNoLink, T::NoteBusy, T::NoteNothingToSend, T::NoteOldServer, T::NoteOk, T::NoteFollowing, T::NoteNoJobReady, T::NoteGoingOn, T::NoteFile, T::NoteUnreadable, T::NoteAllOff, T::ErrClient, T::ErrTooLong, T::ErrBroke, T::ErrSend, T::WfKind, T::WfEmpty, T::WfOldNoFile, T::WfNothing, T::OrientAuto, T::OrientLandscape, T::OrientPortrait, T::OverClip, T::OverRefuse};
     CHECK(count_is(sizeof ui / sizeof ui[0], kUiKeyCount));
     for (std::size_t i = 0; i < kUiKeyCount; ++i) {
         CHECK_MSG(static_cast<std::size_t>(ui_enum[i]) == i, "ui enum order at %zu", i);
@@ -134,7 +136,8 @@ static void the_languages() {
 static bool short_label(std::size_t key) {
     const std::string name = kKeyNames[key];
     if (name.compare(0, 2, "f.") == 0) return false;
-    const char* sentences[] = {"ui.Why", "ui.Ask", "ui.StopPressed", "ui.AckRelease", "ui.SpindleCut", "ui.BoardTooBig", "q.NeedServer", "q.HoleWidth", "q.Title", "q.Calibrate"};  // (the last ones fill a whole line)
+    const char* sentences[] = {"ui.Why", "ui.Ask", "ui.StopPressed", "ui.AckRelease", "ui.SpindleCut", "ui.BoardTooBig", "q.NeedServer", "q.HoleWidth", "q.Title", "q.Calibrate",
+                              "ui.Ord", "ui.Cfg", "ui.Srv", "ui.Note", "ui.Err", "ui.Wf", "ui.Over", "ui.CancelsIn"};  // (the last ones fill a whole line)
     for (const char* s : sentences) {
         if (name.compare(0, std::strlen(s), s) == 0) return false;
     }

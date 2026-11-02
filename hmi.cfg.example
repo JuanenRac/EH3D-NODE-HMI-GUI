@@ -1,35 +1,54 @@
 # EH3D-NODE-HMI-GUI settings: copy to hmi.cfg in the config partition. Every value is optional; the defaults are the safe ones.
-language = en              # en es it de fr pt zh ja bg hr cs da nl et fi el hu ga lv lt mt pl ro sk sl sv no is uk ru sr sq ca gl eu pt-br fr-ca
+# en es it de fr pt zh ja bg hr cs da nl et fi el hu ga lv lt mt pl ro sk sl sv no is uk ru sr sq ca gl eu pt-br fr-ca
+language = en
 theme = forge
-orientation = auto         # auto, landscape (1280 x 800) or portrait (800 x 1280)
-brightness_percent = 80    # 10..100
-idle_dim_s = 120           # 0 never
+# auto, landscape (1280 x 800) or portrait (800 x 1280)
+orientation = auto
+# 10..100
+brightness_percent = 80
+# 0 never
+idle_dim_s = 120
 
-server_host =              # the EH3D server that moves the machine; empty = nothing is controlled
+# the EH3D server that moves the machine; empty = nothing is controlled
+server_host =
 server_port = 18200
 server_machine =
-poll_s = 3                 # how often the fleet is read, 1..60 seconds
-table_width_mm = 0         # the table of the machine, for the warning of a board that does not fit (0 = the one the server says: the course of the machine less the offset)
-table_depth_mm = 0         # used only when the server does not say it; 0..5000
-token =                    # write-only, 8..64 characters
+# how often the fleet is read, 1..60 seconds
+poll_s = 3
+# the table of the machine, for the warning of a board that does not fit (0 = the one the server says: the course of the machine less the offset)
+table_width_mm = 0
+# used only when the server does not say it; 0..5000
+table_depth_mm = 0
+# write-only, 8..64 characters
+token =
 
 # the kind of machine: cnc (it has a spindle and the visual check of the board), laser or pnp (pick and place). The screen never starts a spindle on a laser or on a pick and place machine, and only a CNC machine has the page and the notices of the visual check
 machine_kind = cnc
 
 # the safety switches (every default is the conservative one)
-confirm_moves = on         # a move or a spindle order asks for a confirmation on the screen
-confirm_timeout_ms = 8000  # 1000..60000
-jog_max_mm = 20            # 1..200
-spindle_max_rpm = 24000    # 0 = the screen never starts the spindle
-spindle_rpm = 12000        # the turns the spindle button asks for (0 = the speed the job says); the gate cuts it to what the spindle of the machine gives
-spindle_over = clip        # an order for more turns than the spindle gives: clip (cut to its top speed and say so) or refuse
-hw_stop_required = on      # control the machine only while the hardware stop input is wired and released
-link_idle_ms = 3000        # 200..60000
+# a move or a spindle order asks for a confirmation on the screen
+confirm_moves = on
+# 1000..60000
+confirm_timeout_ms = 8000
+# 1..200
+jog_max_mm = 20
+# 0 = the screen never starts the spindle
+spindle_max_rpm = 24000
+# the turns the spindle button asks for (0 = the speed the job says); the gate cuts it to what the spindle of the machine gives
+spindle_rpm = 12000
+# an order for more turns than the spindle gives: clip (cut to its top speed and say so) or refuse
+spindle_over = clip
+# control the machine only while the hardware stop input is wired and released
+hw_stop_required = on
+# 200..60000
+link_idle_ms = 3000
 
 # voice
 voice_alerts = on
-voice_orders = off         # spoken orders; a spoken order always asks for a confirmation
-voice_confirm = off        # on: a spoken "yes" confirms; off: only a touch does
+# spoken orders; a spoken order always asks for a confirmation
+voice_orders = off
+# on: a spoken "yes" confirms; off: only a touch does
+voice_confirm = off
 volume_percent = 60
 mic_gain_percent = 50
 

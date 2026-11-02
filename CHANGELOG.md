@@ -4,6 +4,10 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **A self-test for the day the screen meets the hardware:** `tools/selftest.py` checks `hmi.cfg.example` (or `--cfg FILE`) with the rules of the firmware, starts a toy server on port 18200 and checks that its answers are what the screen's parsers need; with `--server HOST:PORT` it asks a real server the same questions with GET only. It writes `selftest_hmi-gui_<time>.txt`, sends nothing to hardware and never prints the token. Its tests run in the CI.
+- **`docs/HARDWARE_CHECKLIST.md`:** the steps to do by hand on the screen, with what must happen and where to write the result.
+- **`hmi.cfg.example` is read by the screen:** the explanations moved to their own lines, because a comment after a value is part of the value and made the screen reject the line.
+
 ## [0.0.5] - Start, pause and stop that work, G-code, and warnings of the board and of the job
 
 - **A board larger than the table is warned about:** choosing a drilling or routing file on the card compares the size of its box (the holes, or the moves of the pen) with the table of the machine - the course that the server reports less the offset, read from the configuration file of the machine, or `table_width_mm` and `table_depth_mm` of `hmi.cfg` when the server does not say it - and a board that fits neither lying nor turned is warned about on the job page with its size and by how much it goes over. The job is not blocked: the server refuses what lies outside the table.

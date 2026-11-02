@@ -195,6 +195,8 @@ python -I tools/ci_validate.py
 
 主机测试（`build.bat` 或 `./build.sh`，然后 `ctest`）是两个程序，全部通过：`test_hmi`（1018 项检查）涵盖设置文件、闸门（停止始终放行、硬件急停锁存、确认、超时与时钟回绕、语音规则、开关）、八种语言的语音指令和提示以及界面文本；`test_workflow`（315 项检查）涵盖方向与触摸、卡上的文件（类型、安全文件名、排序）、JSON 读取器、服务器的请求与应答，以及作业从卡到结束的流程。 另外两个程序覆盖键盘（`test_keyboard`，231 项检查：每项设置都有自己的键盘、数字键盘的范围与设置文件一致、小数位、符号、箭头、每种语言的完整键盘、大写、符号层和长度）以及录制的提示（`test_notices`，266 项检查：设置、每种语言和性别的文件）。 另外三个程序：`test_machine`（55 项检查：机床类型、主轴拒绝及各语言的提示句）、`test_quality`（911 项检查：请求、报告的读取、每个发现）和 `test_locales`（89322 项检查：其余 29 种语言都有每个键的文本，没有空文本或过长文本，各语言的文字类型正确，且任何可绘制的字符都在生成字体的范围内）。
 
+屏幕接上硬件当天的自检：`python tools/selftest.py` 按固件的规则检查 `hmi.cfg.example`（或 `--cfg 文件`），并在 18200 端口启动一个玩具服务器，核对其应答是否符合屏幕的预期；加上 `--server 主机:端口` 则只用 GET 向真实服务器提出同样的问题。它不会向硬件发送任何东西。其测试在 CI 中运行（`python -I -m unittest discover -s tools -p "test_*.py"`）。屏幕上的手动步骤见 [docs/HARDWARE_CHECKLIST.md](docs/HARDWARE_CHECKLIST.md)。
+
 ## 🏗️ 构建与发布
 
 版本保存在 `eh3d.project.json` 中，每个版本在 [CHANGELOG.md](CHANGELOG.md) 中都有条目。`build.sh` / `build.bat` 编译并运行主机测试，`test.sh` / `test.bat` 运行仓库检查。固件在本仓库脚本之外、在可见窗口中编译，一次一个构建。

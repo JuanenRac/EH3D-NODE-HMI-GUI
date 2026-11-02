@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.6] - Screens that tell the operator what happens
+
 - **The sentence for a machine without a spindle is translated:** `ui.WhyNoSpindleHere` was missing from the 27 locale files and showed in English; it is now written in all of them, the exception for it is gone from `tools/make_locales.py` and `test_locales`, and a missing key in any language (the two variants excepted) fails `make_locales.py --check` and the new `tools/test_make_locales.py`.
 - **Robustness settings:** `sdkconfig.defaults` turns on the task watchdog (reset on a hang, both idle tasks watched), raises the stack of the main task above the default, and turns on the stack overflow canary and the FreeRTOS stack data. The firmware logs the stack each task has left (`HMI_STACK_REPORT_S`, `HMI_STACK_WARN_BYTES` in the menu) and warns when one is short. `tools/check_firmware_defaults.py` (with `tools/task_needs.py`) guards these settings and the stack of each task, and its tests run in the CI. Not built or run on a module; the stack numbers are to be tightened after a run on the board, and an old `sdkconfig` in a build folder must be deleted for the new defaults to apply.
 - **The screen says what is wrong with `hmi.cfg`:** a line that cannot be used is shown under the top bar (the line, the key and why, in the language of the operator, with how many more there are) instead of being ignored in silence, and a missing file says so. The reason of every problem is now a code (`CfgReason`) next to its English text for the log.

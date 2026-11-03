@@ -1,0 +1,118 @@
+# =============================================================================
+# EH3D-NODE-HMI-GUI - Watchdog for the manual firmware build (firmware-build.yml)
+# Copyright (C) 2026 JuanenRac (Electro Hobby 3D)
+# GPL-3.0-or-later - see LICENSE
+# =============================================================================
+# The notify job of the build cannot speak when a run stays queued, hangs, or its runner dies, because it never starts. This watchdog runs every hour (and by hand)
+# and looks at the runs of firmware-build.yml that are still queued or in progress: a run older than the limit in .github/build-watchdog.json ("max_minutes") is
+# stuck, and the issue "build-stuck" is opened (or updated) with the link of each run and how to cancel it. When none is stuck, the issue is closed. It builds
+# nothing and holds no secret. A scheduled workflow stops by itself after 60 days without activity in the repository: start it by hand once if it did.
+# By hand, "max_minutes" may be filled to try the watchdog with another limit for one run (empty = the file).
+
+name: Build watchdog
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      max_minutes:
+        description: "Limit in minutes for this run only (empty = .github/build-watchdog.json)"
+        type: string
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-watchdog
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    name: Look for stuck builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      issues: write
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      MAX_OVERRIDE: ${{ inputs.max_minutes }}
+    steps:
+      - name: Check out the configuration
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: .github
+          persist-credentials: false
+
+      - name: Open, update or close the issue build-stuck
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import datetime, json, os, subprocess, sys
+
+          repo = os.environ["GITHUB_REPOSITORY"]
+          summary = os.environ["GITHUB_STEP_SUMMARY"]
+          watch_run = f"{os.environ['GITHUB_SERVER_URL']}/{repo}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
+
+
+          def gh(*args, check=True):
+              result = subprocess.run(["gh", *args], capture_output=True, text=True)
+              if check and result.returncode != 0:
+                  raise RuntimeError("gh " + " ".join(args[:3]) + " failed: " + result.stderr.strip()[:300])
+              return result.stdout
+
+
+          def write_summary(text):
+              with open(summary, "a", encoding="utf-8") as handle:
+                  handle.write(text + "\n")
+
+
+          try:
+              config = json.load(open(".github/build-watchdog.json", encoding="utf-8"))
+              workflow = config["workflow"]
+              limit = (os.environ.get("MAX_OVERRIDE") or "").strip() or str(config["max_minutes"])
+              if not limit.isdigit() or not (1 <= int(limit) <= 100000):
+                  raise ValueError("max_minutes must be a whole number of minutes, got " + repr(limit))
+              limit = int(limit)
+              now = datetime.datetime.now(datetime.timezone.utc)
+              stuck = []
+              for state in ("queued", "in_progress"):
+                  runs = json.loads(gh("api", f"repos/{repo}/actions/workflows/{workflow}/runs?status={state}&per_page=100"))["workflow_runs"]
+                  for item in runs:
+                      begun = item["created_at"] if state == "queued" else (item.get("run_started_at") or item["created_at"])
+                      age = int((now - datetime.datetime.fromisoformat(begun.replace("Z", "+00:00"))).total_seconds() // 60)
+                      if age >= limit:
+                          stuck.append((item["id"], state, age, item["html_url"]))
+              number = gh("issue", "list", "--repo", repo, "--label", "build-stuck", "--state", "open", "--json", "number", "--jq", ".[0].number // empty").strip()
+              if stuck:
+                  lines = [f"- {url} ({state} for {age} minutes; cancel it with `gh run cancel {rid} -R {repo}` or the Cancel run button in that page)" for rid, state, age, url in stuck]
+                  body = "\n".join([
+                      f"{len(stuck)} run(s) of the firmware build have been queued or running for {limit} minutes or more and may be stuck:",
+                      "",
+                      *lines,
+                      "",
+                      "Cancel them, read why they hung (a runner that never came, a container pull, a step that waits) and start the build again. This issue closes by itself when none is stuck.",
+                      f"Seen by the watchdog: {watch_run}",
+                  ])
+                  print(f"::error::{len(stuck)} stuck firmware build(s): " + ", ".join(url for _, _, _, url in stuck))
+                  write_summary(f"### Stuck builds (limit {limit} minutes)\n" + "\n".join(lines))
+                  if number:
+                      gh("issue", "comment", number, "--repo", repo, "--body", body)
+                  else:
+                      gh("label", "create", "build-stuck", "--repo", repo, "--color", "D93F0B", "--description", "A build in GitHub Actions is queued or running for too long", check=False)
+                      gh("issue", "create", "--repo", repo, "--label", "build-stuck", "--title", "Build stuck", "--body", body)
+              else:
+                  write_summary(f"No stuck build (limit {limit} minutes).")
+                  if number:
+                      gh("issue", "close", number, "--repo", repo, "--comment", f"No build is stuck any more. Seen by the watchdog: {watch_run}")
+          except Exception as error:
+              text = f"{type(error).__name__}: {error}"
+              print(f"::error::the watchdog could not check the builds ({text})")
+              write_summary(f"### The watchdog failed\n\nCause: `{text}`")
+              sys.exit(1)
+          PY

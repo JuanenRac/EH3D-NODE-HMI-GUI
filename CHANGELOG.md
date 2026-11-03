@@ -3,6 +3,7 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+- **A watchdog for the manual build:** `.github/workflows/build-watchdog.yml` looks every hour for a build that stays queued or running longer than the limit in `.github/build-watchdog.json` and opens (or updates) an issue `build-stuck`, which it closes when no build is stuck.
 - **Firmware builds in GitHub Actions:** `.github/workflows/firmware-build.yml` (manual, owner only) builds the images in the pinned ESP-IDF container, writes `SHA256SUMS`, a build manifest and a provenance attestation, checks the version inside every image, opens an issue `build-failed` when it fails and prepares an unsigned draft release only after the owner approves it; the signature stays on the maintainer's computer. See `docs/BUILD.md`.
 - **Three checks that nothing ran are removed from `tools/`:** `_doc_policy.py`, `_readme_parity.py` and `_tracked_names.py` were copies of the checks of another family that no workflow, script or document named, and their header said another family kept them in step. The checks that run are in `tools/ci_validate.py`.
 - **More host tests:** the languages and their fall-backs, the sound files that an operator puts on the card, the job that is running, the turn of the panel and the files of the card.

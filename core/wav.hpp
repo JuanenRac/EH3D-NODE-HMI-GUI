@@ -52,7 +52,10 @@ inline bool parse_wav(const std::string& bytes, WavInfo& out) {
             out = info;
             return true;
         }
-        pos += 8 + static_cast<std::size_t>(size) + (size & 1);
+        // a chunk that ends past the end of the file leaves nothing more to look at (and on a 32-bit chip its size would wrap the position back onto itself)
+        const std::uint64_t next = static_cast<std::uint64_t>(pos) + 8 + size + (size & 1);
+        if (next > bytes.size()) break;
+        pos = static_cast<std::size_t>(next);
     }
     return false;
 }

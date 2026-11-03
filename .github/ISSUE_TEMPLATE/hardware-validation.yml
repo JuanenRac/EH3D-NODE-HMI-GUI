@@ -12,7 +12,7 @@ body:
     id: repository
     attributes:
       label: Affected repository
-      placeholder: EH3D-MOTIONCNC
+      placeholder: EH3D-PHOENIX-CNC
     validations:
       required: true
   - type: dropdown

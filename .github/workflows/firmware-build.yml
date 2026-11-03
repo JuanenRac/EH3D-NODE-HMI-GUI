@@ -1,0 +1,447 @@
+# =============================================================================
+# EH3D-NODE-HMI-GUI - Manual firmware build in the ESP-IDF container (build here, sign locally)
+# Copyright (C) 2026 JuanenRac (Electro Hobby 3D)
+# GPL-3.0-or-later - see LICENSE
+# =============================================================================
+# Started by hand only (workflow_dispatch): it never runs on a push or a pull request, because compiling a firmware image in the official ESP-IDF container takes
+# many minutes of GitHub Actions time. It builds the images of THIS repository for every board that has a sdkconfig.board.<board> file (or the one board that is asked for),
+# checks that every image carries the version of eh3d.project.json and that no secret is in the settings of the build, and uploads the images, SHA256SUMS and a build
+# manifest as one artifact, with a build-provenance attestation. Nothing secret is built into an image: the token, the network and the pins are settings of the node.
+#
+# It uses no signing key and signs nothing: the signature of a release image is a LOCAL step (the owner downloads the artifact, verifies the attestation and the hashes,
+# signs with the key of the owner and publishes the release). With dry_run on (the default) nothing but the artifact is made; with it off a DRAFT release with the unsigned
+# files is also prepared, by a separate job that needs the approval of the owner (environment "release").
+# A build that does not finish correctly (failed, cancelled, timed out or skipped without cause) writes the Job Summary, says which job and why, and opens (or updates)
+# the issue "build-failed"; a later good build closes it.
+#
+# Raise the version in eh3d.project.json BEFORE the build: the image must carry it, and the job fails if it does not.
+
+name: Firmware build (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: build and check only, no draft release"
+        type: boolean
+        required: true
+        default: true
+      board:
+        description: "Board (empty = every board of this repository: p4)"
+        type: string
+        required: false
+        default: ""
+      ref:
+        description: "Branch, tag or commit of this repository (it must be part of main)"
+        type: string
+        required: true
+        default: main
+
+permissions:
+  contents: read
+
+# One build per ref at a time, and a running build is never cancelled by a newer one (a half-done dry_run=false would leave a draft release behind).
+concurrency:
+  group: firmware-build-${{ inputs.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    name: Plan the build
+    if: ${{ github.actor == github.repository_owner }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      boards: ${{ steps.plan.outputs.boards }}
+      version: ${{ steps.plan.outputs.version }}
+      sha: ${{ steps.plan.outputs.sha }}
+    steps:
+      - name: Check the inputs
+        shell: bash
+        env:
+          BOARD: ${{ inputs.board }}
+          REF: ${{ inputs.ref }}
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          [ "$ACTOR" = "$OWNER" ] || { echo "::error::only the owner of the repository ($OWNER) may start this build, not $ACTOR"; exit 1; }
+          [[ "$BOARD" =~ ^[a-z0-9][a-z0-9-]{0,31}$ || -z "$BOARD" ]] || { echo "::error::the board must be lowercase letters, digits and dashes"; exit 1; }
+          [[ "$REF" =~ ^[A-Za-z0-9._/-]{1,100}$ ]] || { echo "::error::the ref has characters that a branch, tag or commit does not have"; exit 1; }
+
+      - name: Check out this repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ inputs.ref }}
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Make sure the commit belongs to the main branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          # only code that is already in main is built: a branch or a fork commit that is not in main is refused
+          git merge-base --is-ancestor HEAD refs/remotes/origin/main || { echo "::error::the commit $(git rev-parse --short HEAD) is not part of the main branch; merge it first"; exit 1; }
+
+      - name: Work out the boards and the version
+        id: plan
+        shell: bash
+        env:
+          BOARD: ${{ inputs.board }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import glob, json, os, sys
+          manifest = json.load(open("eh3d.project.json", encoding="utf-8"))
+          if manifest["name"] != "EH3D-NODE-HMI-GUI":
+              sys.exit("::error::eh3d.project.json names " + manifest["name"] + ", not EH3D-NODE-HMI-GUI")
+          available = sorted(path.split("sdkconfig.board.", 1)[1] for path in glob.glob("sdkconfig.board.*"))
+          board = os.environ["BOARD"]
+          if board and board not in available:
+              sys.exit("::error::no sdkconfig.board." + board + " in this repository (boards: " + ", ".join(available) + ")")
+          boards = [board] if board else available
+          if not boards:
+              sys.exit("::error::this repository has no sdkconfig.board.<board> file")
+          print("boards=" + json.dumps(boards))
+          print("version=" + manifest["version"])
+          PY
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build ${{ matrix.board }}
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      # ESP-IDF 5.5.5, pinned by digest (the version every EH3D firmware is built with); change tag and digest together
+      image: espressif/idf:v5.5.5@sha256:a9231d0697ab8f7517cc072e93b7c83e04907bfbfba80b6440d7dbbf90665cf2
+    strategy:
+      fail-fast: false
+      matrix:
+        board: ${{ fromJSON(needs.plan.outputs.boards) }}
+    env:
+      BOARD: ${{ matrix.board }}
+      VERSION: ${{ needs.plan.outputs.version }}
+      IDF_IMAGE: espressif/idf:v5.5.5@sha256:a9231d0697ab8f7517cc072e93b7c83e04907bfbfba80b6440d7dbbf90665cf2
+      IDF_CCACHE_ENABLE: "0"
+    steps:
+      - name: Check out the exact commit that was planned
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ needs.plan.outputs.sha }}
+          persist-credentials: false
+
+      - name: Make sure the build has no secret to take
+        shell: bash
+        run: |
+          set -euo pipefail
+          # secrets/ is git-ignored, so a checkout has none; this stops a future change that would commit one
+          if [ -d secrets ] && [ -n "$(ls -A secrets)" ]; then
+            echo "::error::secrets/ is in the repository; a public image must not be built with it"
+            exit 1
+          fi
+
+      - name: Build the image in the ESP-IDF container
+        shell: bash
+        run: |
+          set -eo pipefail
+          . "$IDF_PATH/export.sh" >/dev/null
+          set -u
+          # a clean checkout has no build directory and no sdkconfig, so no stale configuration can get in (the build is configured from the defaults files only)
+          build="build/$BOARD"
+          defaults="sdkconfig.defaults;sdkconfig.board.$BOARD"
+          idf.py -B "$build" -D "SDKCONFIG=$build/sdkconfig" -D "SDKCONFIG_DEFAULTS=$defaults" set-target esp32p4
+          idf.py -B "$build" -D "SDKCONFIG=$build/sdkconfig" -D "SDKCONFIG_DEFAULTS=$defaults" build
+          mkdir -p out
+          cp "$build/eh3d-node-hmi-gui.bin" "out/eh3d-node-hmi-gui-$VERSION-$BOARD-app.bin"
+          (cd "$build" && python -m esptool --chip esp32p4 merge_bin -o "$GITHUB_WORKSPACE/out/eh3d-node-hmi-gui-$VERSION-$BOARD-complete.bin" @flash_args)
+
+      - name: Check the version in the images and the settings of the build, and list the files
+        shell: bash
+        run: |
+          set -euo pipefail
+          app="out/eh3d-node-hmi-gui-$VERSION-$BOARD-app.bin"
+          complete="out/eh3d-node-hmi-gui-$VERSION-$BOARD-complete.bin"
+          [ -s "$app" ] || { echo "::error::$app was not made"; exit 1; }
+          [ -s "$complete" ] || { echo "::error::$complete was not made"; exit 1; }
+          grep -q '^CONFIG_IDF_TARGET="esp32p4"' "build/$BOARD/sdkconfig" || { echo "::error::the sdkconfig of the build is not for esp32p4"; exit 1; }
+          for image in "$app" "$complete"; do
+            if ! python3 - "$image" "$VERSION" <<'PY'
+          import re, sys
+          data = open(sys.argv[1], "rb").read()
+          sys.exit(0 if re.search(rb"(?<![0-9.])" + re.escape(sys.argv[2].encode()) + rb"(?![0-9])", data) else 1)
+          PY
+            then
+              echo "::error::$image does not carry the version $VERSION of eh3d.project.json (the version has to be raised BEFORE the build)"
+              exit 1
+            fi
+            echo "version $VERSION found in $image"
+          done
+          if grep -E '^CONFIG_[A-Z0-9_]*(SECRET|TOKEN|PASSWORD|PASSPHRASE|SETUP_CODE|PSK)[A-Z0-9_]*="[^"]+"' "build/$BOARD/sdkconfig" >/dev/null; then
+            echo "::error::build/$BOARD/sdkconfig carries a secret: a public image must not"
+            exit 1
+          fi
+          echo "no secret in build/$BOARD/sdkconfig"
+          {
+            echo "### $BOARD: EH3D-NODE-HMI-GUI $VERSION"
+            (cd out && sha256sum ./*.bin | sed 's/^/- /')
+            echo "- container: \`$IDF_IMAGE\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the images of this board
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: parts-${{ matrix.board }}
+          path: out/*.bin
+          if-no-files-found: error
+          retention-days: 7
+
+  collect:
+    name: Collect and attest
+    needs: [plan, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    env:
+      VERSION: ${{ needs.plan.outputs.version }}
+      SHA: ${{ needs.plan.outputs.sha }}
+      IDF_IMAGE: espressif/idf:v5.5.5@sha256:a9231d0697ab8f7517cc072e93b7c83e04907bfbfba80b6440d7dbbf90665cf2
+    steps:
+      - name: Download the images of every board
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: parts-*
+          merge-multiple: true
+          path: files
+
+      - name: Write SHA256SUMS and the build manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd files
+          sha256sum ./*.bin | sed 's#  \./#  #' > SHA256SUMS
+          python3 - <<'PY'
+          import json, os, re
+          version = os.environ["VERSION"]
+          pattern = re.compile(r"eh3d-node-hmi-gui-" + re.escape(version) + r"-(.+)-(app|complete)\.bin$")
+          files = []
+          for line in open("SHA256SUMS", encoding="utf-8"):
+              digest, name = line.strip().split("  ", 1)
+              match = pattern.match(name)
+              files.append({"name": name, "sha256": digest, "bytes": os.path.getsize(name), "board": match.group(1), "part": match.group(2)})
+          json.dump({
+              "schema": "eh3d-build/1", "repository": os.environ["GITHUB_REPOSITORY"], "project": "EH3D-NODE-HMI-GUI", "version": version,
+              "commit": os.environ["SHA"], "built_on": "github-actions", "run_id": os.environ["GITHUB_RUN_ID"],
+              "run_url": f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}",
+              "idf_image": os.environ["IDF_IMAGE"], "signed": False, "files": files,
+          }, open("build-manifest.json", "w", encoding="utf-8"), indent=2)
+          PY
+          cat SHA256SUMS
+
+      - name: Attest the provenance of the files
+        uses: actions/attest-build-provenance@43d14bc2b83dec42d39ecae14e916627a18bb661 # v3
+        with:
+          subject-path: |
+            files/*.bin
+            files/SHA256SUMS
+
+      - name: Upload the build
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: firmware-eh3d-node-hmi-gui-${{ needs.plan.outputs.version }}
+          path: files/*
+          if-no-files-found: error
+          retention-days: 30
+
+  verify:
+    name: Verify the artifact as a stranger would
+    needs: [plan, collect]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      attestations: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Download the build
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: firmware-eh3d-node-hmi-gui-${{ needs.plan.outputs.version }}
+          path: build
+
+      - name: Check hashes, manifest and attestation
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd build
+          sha256sum -c SHA256SUMS
+          python3 - <<'PY'
+          import json
+          manifest = json.load(open("build-manifest.json", encoding="utf-8"))
+          assert manifest["signed"] is False and manifest["files"], "unexpected manifest"
+          print("manifest ok:", manifest["project"], manifest["version"], len(manifest["files"]), "files")
+          PY
+          for file in ./*.bin SHA256SUMS; do
+            gh attestation verify "$file" --repo "$GITHUB_REPOSITORY" --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/firmware-build.yml" --source-digest "$GITHUB_SHA" >/dev/null
+            echo "attestation ok: $file"
+          done
+
+  draft:
+    name: Prepare the draft release (needs the approval of the owner)
+    if: ${{ !inputs.dry_run && github.actor == github.repository_owner }}
+    needs: [plan, collect, verify]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: release
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ needs.plan.outputs.version }}
+      SHA: ${{ needs.plan.outputs.sha }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      ACTOR: ${{ github.actor }}
+      OWNER: ${{ github.repository_owner }}
+    steps:
+      - name: Download the build
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: firmware-eh3d-node-hmi-gui-${{ needs.plan.outputs.version }}
+          path: files
+
+      - name: Prepare the draft release with the unsigned files
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ "$ACTOR" = "$OWNER" ] || { echo "::error::only the owner may prepare a release"; exit 1; }
+          tag="v$VERSION"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "::error::the release $tag already exists: raise the version before a new build"
+            exit 1
+          fi
+          gh release create "$tag" files/* --draft --target "$SHA" --title "${GITHUB_REPOSITORY#*/} $VERSION (unsigned build, to be signed locally)" \
+            --notes "Unsigned build made by GitHub Actions. It is signed and published by the owner after the attestation and the hashes are checked; do not install these files before that."
+          echo "- draft release \`$tag\` prepared with the unsigned files" >> "$GITHUB_STEP_SUMMARY"
+
+  notify:
+    name: Tell the owner (issue build-failed)
+    if: ${{ always() && github.actor == github.repository_owner }}
+    needs: [plan, build, collect, verify, draft]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NEEDS: ${{ toJSON(needs) }}
+      REF: ${{ inputs.ref }}
+      DRY_RUN: ${{ inputs.dry_run }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Open, update or close the issue build-failed
+        id: report
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, subprocess, sys
+
+          repo = os.environ["GITHUB_REPOSITORY"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+          run_url = os.environ["RUN_URL"]
+          summary = os.environ["GITHUB_STEP_SUMMARY"]
+          order = ["plan", "build", "collect", "verify", "draft"]
+
+
+          def gh(*args, check=True):
+              result = subprocess.run(["gh", *args], capture_output=True, text=True)
+              if check and result.returncode != 0:
+                  raise RuntimeError("gh " + " ".join(args[:3]) + " failed: " + result.stderr.strip()[:300])
+              return result.stdout
+
+
+          def write_summary(text):
+              with open(summary, "a", encoding="utf-8") as handle:
+                  handle.write(text + "\n")
+
+
+          try:
+              needs = json.loads(os.environ["NEEDS"])
+              results = {name: needs.get(name, {}).get("result", "missing") for name in order}
+              if os.environ.get("DRY_RUN") == "true" and results.get("draft") == "skipped":
+                  results["draft"] = "success"  # a dry run makes no draft on purpose
+              bad = {name: result for name, result in results.items() if result != "success"}
+              number = gh("issue", "list", "--repo", repo, "--label", "build-failed", "--state", "open", "--json", "number", "--jq", ".[0].number // empty").strip()
+              if bad:
+                  # what the API knows about each job: conclusion (failure, cancelled, timed_out, skipped), failed step, reason
+                  jobs = json.loads(gh("api", f"repos/{repo}/actions/runs/{run_id}/jobs?per_page=100"))["jobs"]
+                  lines = []
+                  causes = 0
+                  for job in jobs:
+                      if job["name"].startswith("Tell the owner"):
+                          continue
+                      conclusion = job.get("conclusion") or job.get("status")
+                      if conclusion in ("success", "skipped") and not any(s.get("conclusion") in ("failure", "cancelled", "timed_out") for s in job.get("steps", [])):
+                          continue
+                      step = next((s["name"] for s in job.get("steps", []) if s.get("conclusion") in ("failure", "cancelled", "timed_out")), None)
+                      reason = ""
+                      if conclusion != "skipped":
+                          causes += 1
+                          annotations = gh("api", f"repos/{repo}/check-runs/{job['id']}/annotations", check=False)
+                          try:
+                              messages = [a["message"] for a in json.loads(annotations or "[]") if a.get("annotation_level") in ("failure", "error")]
+                          except ValueError:
+                              messages = []
+                          if messages:
+                              reason = messages[0].strip().splitlines()[0][:300]
+                      what = {"failure": "failed", "cancelled": "was cancelled", "timed_out": "ran out of time", "skipped": "was skipped because an earlier job did not pass"}.get(conclusion, "ended as " + str(conclusion))
+                      line = f"- **{job['name']}** {what}"
+                      if step:
+                          line += f" (step: {step})"
+                      if reason:
+                          line += f": {reason}"
+                      line += f" - {job['html_url']}"
+                      lines.append(line)
+                  if causes == 0:
+                      lines.append("- no job reports a failure, but these ended without success: " + ", ".join(f"{n}={r}" for n, r in bad.items()) + " (a job was skipped without an earlier failure)")
+                  body = "\n".join([
+                      "The firmware build did not finish correctly.",
+                      "",
+                      f"Run: {run_url}",
+                      f"Ref: `{os.environ.get('REF', '')}`, dry run: {os.environ.get('DRY_RUN', '')}",
+                      "Results: " + ", ".join(f"{n}={r}" for n, r in results.items()),
+                      "",
+                      *lines,
+                      "",
+                      "Open the run, read the log of the job above, fix the cause and start the workflow again; a later good build closes this issue.",
+                  ])
+                  write_summary("### The build did not finish correctly\n" + "\n".join(lines))
+                  if number:
+                      gh("issue", "comment", number, "--repo", repo, "--body", body)
+                  else:
+                      gh("label", "create", "build-failed", "--repo", repo, "--color", "B60205", "--description", "A firmware build in GitHub Actions failed", check=False)
+                      gh("issue", "create", "--repo", repo, "--label", "build-failed", "--title", "Firmware build failed", "--body", body)
+                  print("::error::the firmware build did not finish correctly: " + ", ".join(f"{n}={r}" for n, r in bad.items()) + " - " + run_url)
+              else:
+                  write_summary("### The build passed")
+                  if number:
+                      gh("issue", "close", number, "--repo", repo, "--comment", f"A later build passed: {run_url}")
+          except Exception as error:  # the report itself failed: say so loudly, with the cause
+              text = f"{type(error).__name__}: {error}"
+              print(f"::error::the notify job could not report the state of the build ({text}). Check the run by hand: {run_url}")
+              write_summary(f"### The notify job failed\n\nIt could not open, update or close the issue build-failed.\n\nCause: `{text}`\n\nRun: {run_url}")
+              sys.exit(1)
+          PY
+
+      - name: Say it if this notify job itself failed
+        if: ${{ failure() }}
+        shell: bash
+        run: |
+          echo "::error::the notify job failed before it could report the build; open the run and read its summary: $RUN_URL"
+          echo "### The notify job failed, so the issue build-failed may be missing. Read the log above. Run: $RUN_URL" >> "$GITHUB_STEP_SUMMARY"

@@ -107,6 +107,17 @@ inline const char* const kText_bg[kKeyCount] = {
     "Вертикално",  // ui.OrientPortrait
     "Ограничаване до максималната скорост",  // ui.OverClip
     "Отказ",  // ui.OverRefuse
+    "Инструменти",  // ui.Tools
+    "Оставащо време",  // ui.TimeLeft
+    "Приблизително време",  // ui.EstTime
+    "Сменя инструментите сама",  // ui.AtcAuto
+    "Магазинът не е готов: сменете инструмента ръчно",  // ui.AtcByHand
+    "Поставете инструмента",  // ui.PutTool
+    "Работата е много малка",  // ui.WarnTiny
+    "Работата е далеч от ъгъла",  // ui.WarnFar
+    "Мащабът не е 1",  // ui.WarnScale
+    "Планът излиза извън хода на ос",  // ui.WarnCourse
+    "Работи задание: файлът не може да се сменя",  // ui.WfRunning
     "Проверка на качеството на работата",  // q.Title
     "Светлинен пръстен",  // q.Light
     "Изкл.",  // q.LightOff
@@ -245,6 +256,17 @@ inline const char* const kText_hr[kKeyCount] = {
     "Okomito",  // ui.OrientPortrait
     "Ograniči na najveću brzinu",  // ui.OverClip
     "Odbij",  // ui.OverRefuse
+    "Alati",  // ui.Tools
+    "Preostalo vrijeme",  // ui.TimeLeft
+    "Procijenjeno vrijeme",  // ui.EstTime
+    "Sam mijenja alate",  // ui.AtcAuto
+    "Traka s alatima nije spremna: promijenite alat ručno",  // ui.AtcByHand
+    "Umetnite alat",  // ui.PutTool
+    "Posao je sićušan",  // ui.WarnTiny
+    "Posao je daleko od kuta",  // ui.WarnFar
+    "Mjerilo nije 1",  // ui.WarnScale
+    "Plan prelazi hod osi",  // ui.WarnCourse
+    "Posao je u tijeku: datoteka se ne može promijeniti",  // ui.WfRunning
     "Provjera kvalitete rada",  // q.Title
     "Svjetlosni prsten",  // q.Light
     "Isklj.",  // q.LightOff
@@ -383,6 +405,17 @@ inline const char* const kText_cs[kKeyCount] = {
     "Na výšku",  // ui.OrientPortrait
     "Omezit na nejvyšší otáčky",  // ui.OverClip
     "Odmítnout",  // ui.OverRefuse
+    "Nástroje",  // ui.Tools
+    "Zbývající čas",  // ui.TimeLeft
+    "Odhadovaný čas",  // ui.EstTime
+    "Nástroje mění sám",  // ui.AtcAuto
+    "Zásobník není připraven: vyměňte nástroj ručně",  // ui.AtcByHand
+    "Vložte nástroj",  // ui.PutTool
+    "Práce je nepatrná",  // ui.WarnTiny
+    "Práce je daleko od rohu",  // ui.WarnFar
+    "Měřítko není 1",  // ui.WarnScale
+    "Plán přesahuje dráhu osy",  // ui.WarnCourse
+    "Úloha běží: soubor nelze změnit",  // ui.WfRunning
     "Kontrola kvality práce",  // q.Title
     "Světelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -521,6 +554,17 @@ inline const char* const kText_da[kKeyCount] = {
     "Stående",  // ui.OrientPortrait
     "Begræns til topomdrejninger",  // ui.OverClip
     "Afvis",  // ui.OverRefuse
+    "Værktøjer",  // ui.Tools
+    "Tid tilbage",  // ui.TimeLeft
+    "Anslået tid",  // ui.EstTime
+    "Skifter værktøjerne selv",  // ui.AtcAuto
+    "Værktøjsmagasinet er ikke klar: skift værktøjet i hånden",  // ui.AtcByHand
+    "Sæt værktøjet i",  // ui.PutTool
+    "Arbejdet er meget lille",  // ui.WarnTiny
+    "Arbejdet ligger langt fra hjørnet",  // ui.WarnFar
+    "Skalaen er ikke 1",  // ui.WarnScale
+    "Planen overskrider en akses vandring",  // ui.WarnCourse
+    "Et job kører: filen kan ikke skiftes",  // ui.WfRunning
     "Kvalitetskontrol af arbejdet",  // q.Title
     "Lysring",  // q.Light
     "Fra",  // q.LightOff
@@ -659,6 +703,17 @@ inline const char* const kText_nl[kKeyCount] = {
     "Staand",  // ui.OrientPortrait
     "Beperken tot het toptoerental",  // ui.OverClip
     "Weigeren",  // ui.OverRefuse
+    "Gereedschappen",  // ui.Tools
+    "Resterende tijd",  // ui.TimeLeft
+    "Geschatte tijd",  // ui.EstTime
+    "Wisselt de gereedschappen zelf",  // ui.AtcAuto
+    "Gereedschapsbalk niet klaar: wissel het gereedschap met de hand",  // ui.AtcByHand
+    "Plaats het gereedschap",  // ui.PutTool
+    "Het werk is piepklein",  // ui.WarnTiny
+    "Het werk ligt ver van de hoek",  // ui.WarnFar
+    "De schaal is niet 1",  // ui.WarnScale
+    "Het plan overschrijdt de slag van een as",  // ui.WarnCourse
+    "Een taak loopt: het bestand kan niet worden gewijzigd",  // ui.WfRunning
     "Kwaliteitscontrole van het werk",  // q.Title
     "Lichtring",  // q.Light
     "Uit",  // q.LightOff
@@ -797,6 +852,17 @@ inline const char* const kText_et[kKeyCount] = {
     "Püstpaigutus",  // ui.OrientPortrait
     "Piira maksimaalse kiiruseni",  // ui.OverClip
     "Keeldu",  // ui.OverRefuse
+    "Tööriistad",  // ui.Tools
+    "Järelejäänud aeg",  // ui.TimeLeft
+    "Hinnanguline aeg",  // ui.EstTime
+    "Vahetab tööriistu ise",  // ui.AtcAuto
+    "Tööriistariba pole valmis: vahetage tööriist käsitsi",  // ui.AtcByHand
+    "Pange tööriist sisse",  // ui.PutTool
+    "Töö on tilluke",  // ui.WarnTiny
+    "Töö on nurgast kaugel",  // ui.WarnFar
+    "Mõõtkava pole 1",  // ui.WarnScale
+    "Plaan ületab telje käigu",  // ui.WarnCourse
+    "Töö käib: faili ei saa vahetada",  // ui.WfRunning
     "Töö kvaliteedikontroll",  // q.Title
     "Valgusrõngas",  // q.Light
     "Väljas",  // q.LightOff
@@ -935,6 +1001,17 @@ inline const char* const kText_fi[kKeyCount] = {
     "Pysty",  // ui.OrientPortrait
     "Rajoita huippunopeuteen",  // ui.OverClip
     "Hylkää",  // ui.OverRefuse
+    "Työkalut",  // ui.Tools
+    "Aikaa jäljellä",  // ui.TimeLeft
+    "Arvioitu aika",  // ui.EstTime
+    "Vaihtaa työkalut itse",  // ui.AtcAuto
+    "Työkalupalkki ei ole valmis: vaihda työkalu käsin",  // ui.AtcByHand
+    "Aseta työkalu",  // ui.PutTool
+    "Työ on pieni",  // ui.WarnTiny
+    "Työ on kaukana kulmasta",  // ui.WarnFar
+    "Mittakaava ei ole 1",  // ui.WarnScale
+    "Suunnitelma ylittää akselin liikealueen",  // ui.WarnCourse
+    "Työ on käynnissä: tiedostoa ei voi vaihtaa",  // ui.WfRunning
     "Työn laatutarkastus",  // q.Title
     "Valorengas",  // q.Light
     "Pois",  // q.LightOff
@@ -1073,6 +1150,17 @@ inline const char* const kText_el[kKeyCount] = {
     "Κάθετα",  // ui.OrientPortrait
     "Περιορισμός στη μέγιστη ταχύτητα",  // ui.OverClip
     "Απόρριψη",  // ui.OverRefuse
+    "Εργαλεία",  // ui.Tools
+    "Χρόνος που απομένει",  // ui.TimeLeft
+    "Εκτιμώμενος χρόνος",  // ui.EstTime
+    "Αλλάζει μόνο του τα εργαλεία",  // ui.AtcAuto
+    "Η μπάρα εργαλείων δεν είναι έτοιμη: αλλάξτε το εργαλείο με το χέρι",  // ui.AtcByHand
+    "Τοποθετήστε το εργαλείο",  // ui.PutTool
+    "Η εργασία είναι πολύ μικρή",  // ui.WarnTiny
+    "Η εργασία είναι μακριά από τη γωνία",  // ui.WarnFar
+    "Η κλίμακα δεν είναι 1",  // ui.WarnScale
+    "Το σχέδιο ξεπερνά τη διαδρομή ενός άξονα",  // ui.WarnCourse
+    "Εκτελείται μια εργασία: το αρχείο δεν αλλάζει",  // ui.WfRunning
     "Έλεγχος ποιότητας της εργασίας",  // q.Title
     "Δακτύλιος φωτός",  // q.Light
     "Κλειστό",  // q.LightOff
@@ -1211,6 +1299,17 @@ inline const char* const kText_hu[kKeyCount] = {
     "Álló",  // ui.OrientPortrait
     "Korlátozás a legnagyobb fordulatszámra",  // ui.OverClip
     "Elutasítás",  // ui.OverRefuse
+    "Szerszámok",  // ui.Tools
+    "Hátralévő idő",  // ui.TimeLeft
+    "Becsült idő",  // ui.EstTime
+    "Maga cseréli a szerszámokat",  // ui.AtcAuto
+    "A szerszámtár nem kész: cserélje a szerszámot kézzel",  // ui.AtcByHand
+    "Tegye be a szerszámot",  // ui.PutTool
+    "A munka apró",  // ui.WarnTiny
+    "A munka messze van a saroktól",  // ui.WarnFar
+    "A méretarány nem 1",  // ui.WarnScale
+    "A terv túllépi egy tengely útját",  // ui.WarnCourse
+    "Munka fut: a fájl nem cserélhető",  // ui.WfRunning
     "A munka minőségellenőrzése",  // q.Title
     "Fénygyűrű",  // q.Light
     "Ki",  // q.LightOff
@@ -1349,6 +1448,17 @@ inline const char* const kText_ga[kKeyCount] = {
     "Ingearach",  // ui.OrientPortrait
     "Teorannaigh don luas uasta",  // ui.OverClip
     "Diúltaigh",  // ui.OverRefuse
+    "Uirlisí",  // ui.Tools
+    "Am fágtha",  // ui.TimeLeft
+    "Am measta",  // ui.EstTime
+    "Athraíonn sé na huirlisí leis féin",  // ui.AtcAuto
+    "Níl an barra uirlisí réidh: athraigh an uirlis de láimh",  // ui.AtcByHand
+    "Cuir isteach an uirlis",  // ui.PutTool
+    "Tá an obair an-bheag",  // ui.WarnTiny
+    "Tá an obair i bhfad ón gcúinne",  // ui.WarnFar
+    "Níl an scála 1",  // ui.WarnScale
+    "Téann an plean thar chúrsa aise",  // ui.WarnCourse
+    "Tá post ar siúl: ní féidir an comhad a athrú",  // ui.WfRunning
     "Seiceáil cáilíochta na hoibre",  // q.Title
     "Fáinne solais",  // q.Light
     "Múchta",  // q.LightOff
@@ -1487,6 +1597,17 @@ inline const char* const kText_lv[kKeyCount] = {
     "Stāvošs",  // ui.OrientPortrait
     "Ierobežot līdz maksimālajam ātrumam",  // ui.OverClip
     "Noraidīt",  // ui.OverRefuse
+    "Instrumenti",  // ui.Tools
+    "Atlikušais laiks",  // ui.TimeLeft
+    "Paredzamais laiks",  // ui.EstTime
+    "Pati maina instrumentus",  // ui.AtcAuto
+    "Instrumentu josla nav gatava: nomainiet instrumentu ar roku",  // ui.AtcByHand
+    "Ievietojiet instrumentu",  // ui.PutTool
+    "Darbs ir sīks",  // ui.WarnTiny
+    "Darbs ir tālu no stūra",  // ui.WarnFar
+    "Mērogs nav 1",  // ui.WarnScale
+    "Plāns pārsniedz ass gājienu",  // ui.WarnCourse
+    "Darbs darbojas: failu nevar mainīt",  // ui.WfRunning
     "Darba kvalitātes pārbaude",  // q.Title
     "Gaismas gredzens",  // q.Light
     "Izsl.",  // q.LightOff
@@ -1625,6 +1746,17 @@ inline const char* const kText_lt[kKeyCount] = {
     "Stačias",  // ui.OrientPortrait
     "Apriboti iki didžiausio greičio",  // ui.OverClip
     "Atmesti",  // ui.OverRefuse
+    "Įrankiai",  // ui.Tools
+    "Likęs laikas",  // ui.TimeLeft
+    "Numatomas laikas",  // ui.EstTime
+    "Pati keičia įrankius",  // ui.AtcAuto
+    "Įrankių juosta neparengta: pakeiskite įrankį rankomis",  // ui.AtcByHand
+    "Įdėkite įrankį",  // ui.PutTool
+    "Darbas labai mažas",  // ui.WarnTiny
+    "Darbas toli nuo kampo",  // ui.WarnFar
+    "Mastelis nėra 1",  // ui.WarnScale
+    "Planas viršija ašies eigą",  // ui.WarnCourse
+    "Vykdomas darbas: failo pakeisti negalima",  // ui.WfRunning
     "Darbo kokybės patikra",  // q.Title
     "Šviesos žiedas",  // q.Light
     "Išj.",  // q.LightOff
@@ -1763,6 +1895,17 @@ inline const char* const kText_mt[kKeyCount] = {
     "Vertikali",  // ui.OrientPortrait
     "Illimita għall-ogħla veloċità",  // ui.OverClip
     "Irrifjuta",  // ui.OverRefuse
+    "Għodod",  // ui.Tools
+    "Ħin li fadal",  // ui.TimeLeft
+    "Ħin stmat",  // ui.EstTime
+    "Tbiddel l-għodod waħedha",  // ui.AtcAuto
+    "Il-bar tal-għodod mhux lest: biddel l-għodda bl-idejn",  // ui.AtcByHand
+    "Poġġi l-għodda",  // ui.PutTool
+    "Ix-xogħol huwa żgħir ħafna",  // ui.WarnTiny
+    "Ix-xogħol huwa 'l bogħod mill-kantuniera",  // ui.WarnFar
+    "L-iskala mhijiex 1",  // ui.WarnScale
+    "Il-pjan jaqbeż il-korsa ta' assi",  // ui.WarnCourse
+    "Xogħol qed jaħdem: il-fajl ma jistax jinbidel",  // ui.WfRunning
     "Verifika tal-kwalità tax-xogħol",  // q.Title
     "Ċirku tad-dawl",  // q.Light
     "Mitfi",  // q.LightOff
@@ -1901,6 +2044,17 @@ inline const char* const kText_pl[kKeyCount] = {
     "Pionowo",  // ui.OrientPortrait
     "Ogranicz do prędkości maksymalnej",  // ui.OverClip
     "Odrzuć",  // ui.OverRefuse
+    "Narzędzia",  // ui.Tools
+    "Pozostały czas",  // ui.TimeLeft
+    "Szacowany czas",  // ui.EstTime
+    "Sama wymienia narzędzia",  // ui.AtcAuto
+    "Magazyn narzędzi nie jest gotowy: wymień narzędzie ręcznie",  // ui.AtcByHand
+    "Włóż narzędzie",  // ui.PutTool
+    "Praca jest malutka",  // ui.WarnTiny
+    "Praca jest daleko od rogu",  // ui.WarnFar
+    "Skala nie wynosi 1",  // ui.WarnScale
+    "Plan przekracza skok osi",  // ui.WarnCourse
+    "Zadanie trwa: nie można zmienić pliku",  // ui.WfRunning
     "Kontrola jakości wykonania",  // q.Title
     "Pierścień świetlny",  // q.Light
     "Wył.",  // q.LightOff
@@ -2039,6 +2193,17 @@ inline const char* const kText_ro[kKeyCount] = {
     "Vertical",  // ui.OrientPortrait
     "Limitează la viteza maximă",  // ui.OverClip
     "Refuză",  // ui.OverRefuse
+    "Scule",  // ui.Tools
+    "Timp rămas",  // ui.TimeLeft
+    "Timp estimat",  // ui.EstTime
+    "Își schimbă singură sculele",  // ui.AtcAuto
+    "Magazia de scule nu este pregătită: schimbați scula manual",  // ui.AtcByHand
+    "Introduceți scula",  // ui.PutTool
+    "Lucrarea este foarte mică",  // ui.WarnTiny
+    "Lucrarea este departe de colț",  // ui.WarnFar
+    "Scara nu este 1",  // ui.WarnScale
+    "Planul depășește cursa unei axe",  // ui.WarnCourse
+    "O lucrare rulează: fișierul nu poate fi schimbat",  // ui.WfRunning
     "Verificarea calității lucrării",  // q.Title
     "Inel de lumină",  // q.Light
     "Oprit",  // q.LightOff
@@ -2177,6 +2342,17 @@ inline const char* const kText_sk[kKeyCount] = {
     "Na výšku",  // ui.OrientPortrait
     "Obmedziť na najvyššie otáčky",  // ui.OverClip
     "Odmietnuť",  // ui.OverRefuse
+    "Nástroje",  // ui.Tools
+    "Zostávajúci čas",  // ui.TimeLeft
+    "Odhadovaný čas",  // ui.EstTime
+    "Nástroje mení sám",  // ui.AtcAuto
+    "Zásobník nie je pripravený: vymeňte nástroj ručne",  // ui.AtcByHand
+    "Vložte nástroj",  // ui.PutTool
+    "Práca je drobná",  // ui.WarnTiny
+    "Práca je ďaleko od rohu",  // ui.WarnFar
+    "Mierka nie je 1",  // ui.WarnScale
+    "Plán presahuje dráhu osi",  // ui.WarnCourse
+    "Úloha beží: súbor nemožno zmeniť",  // ui.WfRunning
     "Kontrola kvality práce",  // q.Title
     "Svetelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -2315,6 +2491,17 @@ inline const char* const kText_sl[kKeyCount] = {
     "Pokončno",  // ui.OrientPortrait
     "Omeji na najvišjo hitrost",  // ui.OverClip
     "Zavrni",  // ui.OverRefuse
+    "Orodja",  // ui.Tools
+    "Preostali čas",  // ui.TimeLeft
+    "Ocenjeni čas",  // ui.EstTime
+    "Sam menja orodja",  // ui.AtcAuto
+    "Vrstica orodij ni pripravljena: zamenjajte orodje ročno",  // ui.AtcByHand
+    "Vstavite orodje",  // ui.PutTool
+    "Delo je drobno",  // ui.WarnTiny
+    "Delo je daleč od kota",  // ui.WarnFar
+    "Merilo ni 1",  // ui.WarnScale
+    "Načrt presega hod osi",  // ui.WarnCourse
+    "Delo teče: datoteke ni mogoče zamenjati",  // ui.WfRunning
     "Kontrola kakovosti izdelka",  // q.Title
     "Svetlobni obroč",  // q.Light
     "Izklj.",  // q.LightOff
@@ -2453,6 +2640,17 @@ inline const char* const kText_sv[kKeyCount] = {
     "Stående",  // ui.OrientPortrait
     "Begränsa till högsta varvtal",  // ui.OverClip
     "Avvisa",  // ui.OverRefuse
+    "Verktyg",  // ui.Tools
+    "Återstående tid",  // ui.TimeLeft
+    "Beräknad tid",  // ui.EstTime
+    "Byter verktyg själv",  // ui.AtcAuto
+    "Verktygsmagasinet är inte klart: byt verktyg för hand",  // ui.AtcByHand
+    "Sätt i verktyget",  // ui.PutTool
+    "Arbetet är pyttelitet",  // ui.WarnTiny
+    "Arbetet ligger långt från hörnet",  // ui.WarnFar
+    "Skalan är inte 1",  // ui.WarnScale
+    "Planen överskrider en axels rörelse",  // ui.WarnCourse
+    "Ett jobb pågår: filen kan inte bytas",  // ui.WfRunning
     "Kvalitetskontroll av arbetet",  // q.Title
     "Ljusring",  // q.Light
     "Av",  // q.LightOff
@@ -2591,6 +2789,17 @@ inline const char* const kText_no[kKeyCount] = {
     "Stående",  // ui.OrientPortrait
     "Begrens til toppturtall",  // ui.OverClip
     "Avvis",  // ui.OverRefuse
+    "Verktøy",  // ui.Tools
+    "Gjenstående tid",  // ui.TimeLeft
+    "Beregnet tid",  // ui.EstTime
+    "Bytter verktøy selv",  // ui.AtcAuto
+    "Verktøymagasinet er ikke klart: bytt verktøy for hånd",  // ui.AtcByHand
+    "Sett i verktøyet",  // ui.PutTool
+    "Arbeidet er bitte lite",  // ui.WarnTiny
+    "Arbeidet ligger langt fra hjørnet",  // ui.WarnFar
+    "Skalaen er ikke 1",  // ui.WarnScale
+    "Planen overskrider en akses slag",  // ui.WarnCourse
+    "En jobb kjører: filen kan ikke byttes",  // ui.WfRunning
     "Kvalitetskontroll av arbeidet",  // q.Title
     "Lysring",  // q.Light
     "Av",  // q.LightOff
@@ -2729,6 +2938,17 @@ inline const char* const kText_is[kKeyCount] = {
     "Lóðrétt",  // ui.OrientPortrait
     "Takmarka við hámarkshraða",  // ui.OverClip
     "Hafna",  // ui.OverRefuse
+    "Verkfæri",  // ui.Tools
+    "Tími eftir",  // ui.TimeLeft
+    "Áætlaður tími",  // ui.EstTime
+    "Skiptir sjálf um verkfæri",  // ui.AtcAuto
+    "Verkfærastikan er ekki tilbúin: skiptu um verkfæri í höndunum",  // ui.AtcByHand
+    "Settu verkfærið í",  // ui.PutTool
+    "Verkið er örlítið",  // ui.WarnTiny
+    "Verkið er langt frá horninu",  // ui.WarnFar
+    "Kvarðinn er ekki 1",  // ui.WarnScale
+    "Áætlunin fer yfir slag áss",  // ui.WarnCourse
+    "Verk er í gangi: ekki er hægt að skipta um skrá",  // ui.WfRunning
     "Gæðaskoðun verksins",  // q.Title
     "Ljósahringur",  // q.Light
     "Af",  // q.LightOff
@@ -2867,6 +3087,17 @@ inline const char* const kText_uk[kKeyCount] = {
     "Книжкова",  // ui.OrientPortrait
     "Обмежити максимальною швидкістю",  // ui.OverClip
     "Відхилити",  // ui.OverRefuse
+    "Інструменти",  // ui.Tools
+    "Залишилось часу",  // ui.TimeLeft
+    "Розрахунковий час",  // ui.EstTime
+    "Сама змінює інструменти",  // ui.AtcAuto
+    "Магазин інструментів не готовий: змініть інструмент вручну",  // ui.AtcByHand
+    "Встановіть інструмент",  // ui.PutTool
+    "Робота дуже мала",  // ui.WarnTiny
+    "Робота далеко від кута",  // ui.WarnFar
+    "Масштаб не дорівнює 1",  // ui.WarnScale
+    "План виходить за хід осі",  // ui.WarnCourse
+    "Завдання виконується: файл не можна змінити",  // ui.WfRunning
     "Контроль якості виконаної роботи",  // q.Title
     "Світлове кільце",  // q.Light
     "Вимк.",  // q.LightOff
@@ -3005,6 +3236,17 @@ inline const char* const kText_ru[kKeyCount] = {
     "Книжная",  // ui.OrientPortrait
     "Ограничить максимальной скоростью",  // ui.OverClip
     "Отклонить",  // ui.OverRefuse
+    "Инструменты",  // ui.Tools
+    "Осталось времени",  // ui.TimeLeft
+    "Расчётное время",  // ui.EstTime
+    "Сама меняет инструменты",  // ui.AtcAuto
+    "Магазин инструментов не готов: смените инструмент вручную",  // ui.AtcByHand
+    "Установите инструмент",  // ui.PutTool
+    "Работа очень мала",  // ui.WarnTiny
+    "Работа далеко от угла",  // ui.WarnFar
+    "Масштаб не равен 1",  // ui.WarnScale
+    "План выходит за ход оси",  // ui.WarnCourse
+    "Задание выполняется: файл нельзя сменить",  // ui.WfRunning
     "Контроль качества выполненной работы",  // q.Title
     "Световое кольцо",  // q.Light
     "Выкл.",  // q.LightOff
@@ -3143,6 +3385,17 @@ inline const char* const kText_sr[kKeyCount] = {
     "Усправно",  // ui.OrientPortrait
     "Ограничи на највећу брзину",  // ui.OverClip
     "Одбиј",  // ui.OverRefuse
+    "Алати",  // ui.Tools
+    "Преостало време",  // ui.TimeLeft
+    "Процењено време",  // ui.EstTime
+    "Сама мења алате",  // ui.AtcAuto
+    "Касета са алатима није спремна: промените алат ручно",  // ui.AtcByHand
+    "Уметните алат",  // ui.PutTool
+    "Посао је ситан",  // ui.WarnTiny
+    "Посао је далеко од угла",  // ui.WarnFar
+    "Размера није 1",  // ui.WarnScale
+    "План прелази ход осе",  // ui.WarnCourse
+    "Посао је у току: датотека се не може променити",  // ui.WfRunning
     "Провера квалитета рада",  // q.Title
     "Светлосни прстен",  // q.Light
     "Искљ.",  // q.LightOff
@@ -3281,6 +3534,17 @@ inline const char* const kText_sq[kKeyCount] = {
     "Vertikal",  // ui.OrientPortrait
     "Kufizo në shpejtësinë maksimale",  // ui.OverClip
     "Refuzo",  // ui.OverRefuse
+    "Mjetet",  // ui.Tools
+    "Koha e mbetur",  // ui.TimeLeft
+    "Koha e vlerësuar",  // ui.EstTime
+    "I ndërron vetë mjetet",  // ui.AtcAuto
+    "Shiriti i mjeteve nuk është gati: ndërroni mjetin me dorë",  // ui.AtcByHand
+    "Vendosni mjetin",  // ui.PutTool
+    "Puna është shumë e vogël",  // ui.WarnTiny
+    "Puna është larg këndit",  // ui.WarnFar
+    "Shkalla nuk është 1",  // ui.WarnScale
+    "Plani e kalon rrugën e një aksi",  // ui.WarnCourse
+    "Një punë është në ecuri: skedari nuk mund të ndryshohet",  // ui.WfRunning
     "Kontrolli i cilësisë së punës",  // q.Title
     "Unaza e dritës",  // q.Light
     "Fikur",  // q.LightOff
@@ -3419,6 +3683,17 @@ inline const char* const kText_ca[kKeyCount] = {
     "Vertical",  // ui.OrientPortrait
     "Limita a la velocitat màxima",  // ui.OverClip
     "Rebutja",  // ui.OverRefuse
+    "Eines",  // ui.Tools
+    "Temps restant",  // ui.TimeLeft
+    "Temps estimat",  // ui.EstTime
+    "Canvia les eines per ella mateixa",  // ui.AtcAuto
+    "Barra d'eines no preparada: canvieu l'eina a mà",  // ui.AtcByHand
+    "Poseu l'eina",  // ui.PutTool
+    "El treball és minúscul",  // ui.WarnTiny
+    "El treball és lluny de la cantonada",  // ui.WarnFar
+    "L'escala no és 1",  // ui.WarnScale
+    "El pla supera el recorregut d'un eix",  // ui.WarnCourse
+    "Hi ha un treball en marxa: no es pot canviar el fitxer",  // ui.WfRunning
     "Verificació de qualitat de la feina",  // q.Title
     "Aro de llum",  // q.Light
     "Apagat",  // q.LightOff
@@ -3557,6 +3832,17 @@ inline const char* const kText_gl[kKeyCount] = {
     "Vertical",  // ui.OrientPortrait
     "Limitar á velocidade máxima",  // ui.OverClip
     "Rexeitar",  // ui.OverRefuse
+    "Ferramentas",  // ui.Tools
+    "Tempo restante",  // ui.TimeLeft
+    "Tempo estimado",  // ui.EstTime
+    "Cambia as ferramentas soa",  // ui.AtcAuto
+    "A barra de ferramentas non está lista: cambie a ferramenta a man",  // ui.AtcByHand
+    "Poña a ferramenta",  // ui.PutTool
+    "O traballo é minúsculo",  // ui.WarnTiny
+    "O traballo está lonxe da esquina",  // ui.WarnFar
+    "A escala non é 1",  // ui.WarnScale
+    "O plan supera o percorrido dun eixe",  // ui.WarnCourse
+    "Hai un traballo en marcha: non se pode cambiar o ficheiro",  // ui.WfRunning
     "Verificación de calidade do traballo",  // q.Title
     "Aro de luz",  // q.Light
     "Apagado",  // q.LightOff
@@ -3695,6 +3981,17 @@ inline const char* const kText_eu[kKeyCount] = {
     "Bertikala",  // ui.OrientPortrait
     "Mugatu abiadura maximora",  // ui.OverClip
     "Ukatu",  // ui.OverRefuse
+    "Tresnak",  // ui.Tools
+    "Geratzen den denbora",  // ui.TimeLeft
+    "Aurreikusitako denbora",  // ui.EstTime
+    "Tresnak bere kabuz aldatzen ditu",  // ui.AtcAuto
+    "Tresna-barra ez dago prest: aldatu tresna eskuz",  // ui.AtcByHand
+    "Jarri tresna",  // ui.PutTool
+    "Lana oso txikia da",  // ui.WarnTiny
+    "Lana izkinatik urrun dago",  // ui.WarnFar
+    "Eskala ez da 1",  // ui.WarnScale
+    "Planak ardatz baten ibilbidea gainditzen du",  // ui.WarnCourse
+    "Lan bat martxan dago: ezin da fitxategia aldatu",  // ui.WfRunning
     "Lanaren kalitate-egiaztapena",  // q.Title
     "Argi-eraztuna",  // q.Light
     "Itzalita",  // q.LightOff
@@ -3833,6 +4130,17 @@ inline const char* const kText_pt_br[kKeyCount] = {
     nullptr,  // ui.OrientPortrait
     nullptr,  // ui.OverClip
     nullptr,  // ui.OverRefuse
+    nullptr,  // ui.Tools
+    nullptr,  // ui.TimeLeft
+    nullptr,  // ui.EstTime
+    nullptr,  // ui.AtcAuto
+    "Barra de ferramentas não preparada: troque a ferramenta manualmente",  // ui.AtcByHand
+    nullptr,  // ui.PutTool
+    nullptr,  // ui.WarnTiny
+    nullptr,  // ui.WarnFar
+    nullptr,  // ui.WarnScale
+    nullptr,  // ui.WarnCourse
+    "Há um trabalho em andamento: não é possível trocar o arquivo",  // ui.WfRunning
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff
@@ -3971,6 +4279,17 @@ inline const char* const kText_fr_ca[kKeyCount] = {
     nullptr,  // ui.OrientPortrait
     nullptr,  // ui.OverClip
     nullptr,  // ui.OverRefuse
+    nullptr,  // ui.Tools
+    nullptr,  // ui.TimeLeft
+    nullptr,  // ui.EstTime
+    nullptr,  // ui.AtcAuto
+    nullptr,  // ui.AtcByHand
+    nullptr,  // ui.PutTool
+    nullptr,  // ui.WarnTiny
+    nullptr,  // ui.WarnFar
+    nullptr,  // ui.WarnScale
+    nullptr,  // ui.WarnCourse
+    nullptr,  // ui.WfRunning
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff

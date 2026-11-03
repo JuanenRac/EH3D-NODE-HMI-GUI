@@ -134,3 +134,14 @@ ui.OrientLandscape	Альбомная
 ui.OrientPortrait	Книжная
 ui.OverClip	Ограничить максимальной скоростью
 ui.OverRefuse	Отклонить
+ui.Tools	Инструменты
+ui.TimeLeft	Осталось времени
+ui.EstTime	Расчётное время
+ui.AtcAuto	Сама меняет инструменты
+ui.AtcByHand	Магазин инструментов не готов: смените инструмент вручную
+ui.PutTool	Установите инструмент
+ui.WarnTiny	Работа очень мала
+ui.WarnFar	Работа далеко от угла
+ui.WarnScale	Масштаб не равен 1
+ui.WarnCourse	План выходит за ход оси
+ui.WfRunning	Задание выполняется: файл нельзя сменить

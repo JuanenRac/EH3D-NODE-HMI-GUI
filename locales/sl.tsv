@@ -134,3 +134,14 @@ ui.OrientLandscape	Ležeče
 ui.OrientPortrait	Pokončno
 ui.OverClip	Omeji na najvišjo hitrost
 ui.OverRefuse	Zavrni
+ui.Tools	Orodja
+ui.TimeLeft	Preostali čas
+ui.EstTime	Ocenjeni čas
+ui.AtcAuto	Sam menja orodja
+ui.AtcByHand	Vrstica orodij ni pripravljena: zamenjajte orodje ročno
+ui.PutTool	Vstavite orodje
+ui.WarnTiny	Delo je drobno
+ui.WarnFar	Delo je daleč od kota
+ui.WarnScale	Merilo ni 1
+ui.WarnCourse	Načrt presega hod osi
+ui.WfRunning	Delo teče: datoteke ni mogoče zamenjati

@@ -134,3 +134,14 @@ ui.OrientLandscape	Horizontal
 ui.OrientPortrait	Vertikal
 ui.OverClip	Kufizo në shpejtësinë maksimale
 ui.OverRefuse	Refuzo
+ui.Tools	Mjetet
+ui.TimeLeft	Koha e mbetur
+ui.EstTime	Koha e vlerësuar
+ui.AtcAuto	I ndërron vetë mjetet
+ui.AtcByHand	Shiriti i mjeteve nuk është gati: ndërroni mjetin me dorë
+ui.PutTool	Vendosni mjetin
+ui.WarnTiny	Puna është shumë e vogël
+ui.WarnFar	Puna është larg këndit
+ui.WarnScale	Shkalla nuk është 1
+ui.WarnCourse	Plani e kalon rrugën e një aksi
+ui.WfRunning	Një punë është në ecuri: skedari nuk mund të ndryshohet

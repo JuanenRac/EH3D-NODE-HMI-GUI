@@ -134,3 +134,14 @@ ui.OrientLandscape	Gulošs
 ui.OrientPortrait	Stāvošs
 ui.OverClip	Ierobežot līdz maksimālajam ātrumam
 ui.OverRefuse	Noraidīt
+ui.Tools	Instrumenti
+ui.TimeLeft	Atlikušais laiks
+ui.EstTime	Paredzamais laiks
+ui.AtcAuto	Pati maina instrumentus
+ui.AtcByHand	Instrumentu josla nav gatava: nomainiet instrumentu ar roku
+ui.PutTool	Ievietojiet instrumentu
+ui.WarnTiny	Darbs ir sīks
+ui.WarnFar	Darbs ir tālu no stūra
+ui.WarnScale	Mērogs nav 1
+ui.WarnCourse	Plāns pārsniedz ass gājienu
+ui.WfRunning	Darbs darbojas: failu nevar mainīt

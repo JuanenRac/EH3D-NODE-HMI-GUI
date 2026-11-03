@@ -28,6 +28,7 @@ enum class T : unsigned {
     ResumedFrom, ToolChanged,
     BoardTooBig, Failed,
     OrdStart, OrdPause, OrdResume, OrdToolChanged, OrdHome, OrdStop, CancelsIn, LinkOk, LinkLost, LinkOther, LinkOld, Firmware, CfgLine, CfgMore, CfgNoFile, CfgNotPair, CfgRange, CfgOnOff, CfgChoice, CfgToken, CfgUnknown, SrvNone, SrvSilent, SrvOther, NoteStopFail, NoteStopRefused, NoteStopSent, NoteNoJobToStop, NoteMoveNoLink, NoteBusy, NoteNothingToSend, NoteOldServer, NoteOk, NoteFollowing, NoteNoJobReady, NoteGoingOn, NoteFile, NoteUnreadable, NoteAllOff, ErrClient, ErrTooLong, ErrBroke, ErrSend, WfKind, WfEmpty, WfOldNoFile, WfNothing, OrientAuto, OrientLandscape, OrientPortrait, OverClip, OverRefuse,
+    Tools, TimeLeft, EstTime, AtcAuto, AtcByHand, PutTool, WarnTiny, WarnFar, WarnScale, WarnCourse, WfRunning,
     Count
 };
 
@@ -131,6 +132,17 @@ inline const Row& text_row(T t) {
         {"Portrait", "Vertical", "Verticale", "Hochformat", "Portrait", "Vertical", "竖屏", "縦向き"},
         {"Cut to top speed", "Recortar a la velocidad máxima", "Riduci alla velocità massima", "Auf Höchstdrehzahl kürzen", "Ramener à la vitesse maximale", "Limitar à velocidade máxima", "限制到最高转速", "最高回転数に制限"},
         {"Refuse", "Rechazar", "Rifiuta", "Ablehnen", "Refuser", "Recusar", "拒绝", "拒否"},
+        {"Tools", "Herramientas", "Utensili", "Werkzeuge", "Outils", "Ferramentas", "刀具", "工具"},
+        {"Time left", "Tiempo restante", "Tempo rimasto", "Restzeit", "Temps restant", "Tempo restante", "剩余时间", "残り時間"},
+        {"Estimated time", "Tiempo estimado", "Tempo stimato", "Geschätzte Zeit", "Temps estimé", "Tempo estimado", "预计时间", "推定時間"},
+        {"Changes the tools by itself", "Cambia las herramientas sola", "Cambia gli utensili da sola", "Wechselt die Werkzeuge selbst", "Change les outils elle-même", "Troca as ferramentas sozinha", "自动换刀", "工具を自動交換"},
+        {"Tool bar not ready: change the tool by hand", "Barra de herramientas sin preparar: cambie la herramienta a mano", "Barra utensili non pronta: cambiare l'utensile a mano", "Werkzeugleiste nicht bereit: Werkzeug von Hand wechseln", "Barre d'outils non prête : changez l'outil à la main", "Barra de ferramentas por preparar: troque a ferramenta à mão", "刀具架未就绪：请手动换刀", "ツールバーが未設定です：手動で工具を交換してください"},
+        {"Put in the tool", "Ponga la herramienta", "Inserire l'utensile", "Werkzeug einsetzen", "Mettez l'outil", "Coloque a ferramenta", "请装入刀具", "工具を取り付けてください"},
+        {"The work is tiny", "El trabajo es diminuto", "Il lavoro è minuscolo", "Die Arbeit ist winzig", "Le travail est minuscule", "O trabalho é minúsculo", "工件极小", "加工範囲が極端に小さいです"},
+        {"The work is far from the corner", "El trabajo está lejos de la esquina", "Il lavoro è lontano dall'angolo", "Die Arbeit liegt weit von der Ecke", "Le travail est loin du coin", "O trabalho está longe do canto", "工件远离原点角", "加工位置が角から遠く離れています"},
+        {"The scale is not 1", "La escala no es 1", "La scala non è 1", "Der Maßstab ist nicht 1", "L'échelle n'est pas 1", "A escala não é 1", "缩放比例不是 1", "倍率が 1 ではありません"},
+        {"The plan goes past the course of an axis", "El plan pasa del recorrido de un eje", "Il piano supera la corsa di un asse", "Der Plan überschreitet den Verfahrweg einer Achse", "Le plan dépasse la course d'un axe", "O plano ultrapassa o curso de um eixo", "计划超出某个轴的行程", "計画が軸の可動範囲を超えます"},
+        {"A job is running: the file cannot be changed", "Hay un trabajo en marcha: no se puede cambiar el archivo", "Un lavoro è in corso: il file non si può cambiare", "Ein Auftrag läuft: die Datei kann nicht gewechselt werden", "Un travail est en cours : le fichier ne peut pas être changé", "Há um trabalho em curso: não é possível mudar o ficheiro", "作业正在运行：无法更换文件", "ジョブ実行中：ファイルは変更できません"},
     }};
     return rows[static_cast<std::size_t>(t)];
 }

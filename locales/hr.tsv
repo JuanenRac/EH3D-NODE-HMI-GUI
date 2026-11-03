@@ -134,3 +134,14 @@ ui.OrientLandscape	Vodoravno
 ui.OrientPortrait	Okomito
 ui.OverClip	Ograniči na najveću brzinu
 ui.OverRefuse	Odbij
+ui.Tools	Alati
+ui.TimeLeft	Preostalo vrijeme
+ui.EstTime	Procijenjeno vrijeme
+ui.AtcAuto	Sam mijenja alate
+ui.AtcByHand	Traka s alatima nije spremna: promijenite alat ručno
+ui.PutTool	Umetnite alat
+ui.WarnTiny	Posao je sićušan
+ui.WarnFar	Posao je daleko od kuta
+ui.WarnScale	Mjerilo nije 1
+ui.WarnCourse	Plan prelazi hod osi
+ui.WfRunning	Posao je u tijeku: datoteka se ne može promijeniti

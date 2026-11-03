@@ -134,3 +134,14 @@ ui.OrientLandscape	Водоравно
 ui.OrientPortrait	Усправно
 ui.OverClip	Ограничи на највећу брзину
 ui.OverRefuse	Одбиј
+ui.Tools	Алати
+ui.TimeLeft	Преостало време
+ui.EstTime	Процењено време
+ui.AtcAuto	Сама мења алате
+ui.AtcByHand	Касета са алатима није спремна: промените алат ручно
+ui.PutTool	Уметните алат
+ui.WarnTiny	Посао је ситан
+ui.WarnFar	Посао је далеко од угла
+ui.WarnScale	Размера није 1
+ui.WarnCourse	План прелази ход осе
+ui.WfRunning	Посао је у току: датотека се не може променити

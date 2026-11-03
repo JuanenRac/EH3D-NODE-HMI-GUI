@@ -134,3 +134,14 @@ ui.OrientLandscape	Fekvő
 ui.OrientPortrait	Álló
 ui.OverClip	Korlátozás a legnagyobb fordulatszámra
 ui.OverRefuse	Elutasítás
+ui.Tools	Szerszámok
+ui.TimeLeft	Hátralévő idő
+ui.EstTime	Becsült idő
+ui.AtcAuto	Maga cseréli a szerszámokat
+ui.AtcByHand	A szerszámtár nem kész: cserélje a szerszámot kézzel
+ui.PutTool	Tegye be a szerszámot
+ui.WarnTiny	A munka apró
+ui.WarnFar	A munka messze van a saroktól
+ui.WarnScale	A méretarány nem 1
+ui.WarnCourse	A terv túllépi egy tengely útját
+ui.WfRunning	Munka fut: a fájl nem cserélhető

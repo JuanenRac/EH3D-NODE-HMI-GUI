@@ -134,3 +134,14 @@ ui.OrientLandscape	Liggande
 ui.OrientPortrait	Stående
 ui.OverClip	Begränsa till högsta varvtal
 ui.OverRefuse	Avvisa
+ui.Tools	Verktyg
+ui.TimeLeft	Återstående tid
+ui.EstTime	Beräknad tid
+ui.AtcAuto	Byter verktyg själv
+ui.AtcByHand	Verktygsmagasinet är inte klart: byt verktyg för hand
+ui.PutTool	Sätt i verktyget
+ui.WarnTiny	Arbetet är pyttelitet
+ui.WarnFar	Arbetet ligger långt från hörnet
+ui.WarnScale	Skalan är inte 1
+ui.WarnCourse	Planen överskrider en axels rörelse
+ui.WfRunning	Ett jobb pågår: filen kan inte bytas

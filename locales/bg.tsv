@@ -134,3 +134,14 @@ ui.OrientLandscape	Хоризонтално
 ui.OrientPortrait	Вертикално
 ui.OverClip	Ограничаване до максималната скорост
 ui.OverRefuse	Отказ
+ui.Tools	Инструменти
+ui.TimeLeft	Оставащо време
+ui.EstTime	Приблизително време
+ui.AtcAuto	Сменя инструментите сама
+ui.AtcByHand	Магазинът не е готов: сменете инструмента ръчно
+ui.PutTool	Поставете инструмента
+ui.WarnTiny	Работата е много малка
+ui.WarnFar	Работата е далеч от ъгъла
+ui.WarnScale	Мащабът не е 1
+ui.WarnCourse	Планът излиза извън хода на ос
+ui.WfRunning	Работи задание: файлът не може да се сменя

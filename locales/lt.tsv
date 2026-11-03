@@ -134,3 +134,14 @@ ui.OrientLandscape	Gulsčias
 ui.OrientPortrait	Stačias
 ui.OverClip	Apriboti iki didžiausio greičio
 ui.OverRefuse	Atmesti
+ui.Tools	Įrankiai
+ui.TimeLeft	Likęs laikas
+ui.EstTime	Numatomas laikas
+ui.AtcAuto	Pati keičia įrankius
+ui.AtcByHand	Įrankių juosta neparengta: pakeiskite įrankį rankomis
+ui.PutTool	Įdėkite įrankį
+ui.WarnTiny	Darbas labai mažas
+ui.WarnFar	Darbas toli nuo kampo
+ui.WarnScale	Mastelis nėra 1
+ui.WarnCourse	Planas viršija ašies eigą
+ui.WfRunning	Vykdomas darbas: failo pakeisti negalima

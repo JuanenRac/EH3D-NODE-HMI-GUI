@@ -134,3 +134,14 @@ ui.OrientLandscape	Na šířku
 ui.OrientPortrait	Na výšku
 ui.OverClip	Omezit na nejvyšší otáčky
 ui.OverRefuse	Odmítnout
+ui.Tools	Nástroje
+ui.TimeLeft	Zbývající čas
+ui.EstTime	Odhadovaný čas
+ui.AtcAuto	Nástroje mění sám
+ui.AtcByHand	Zásobník není připraven: vyměňte nástroj ručně
+ui.PutTool	Vložte nástroj
+ui.WarnTiny	Práce je nepatrná
+ui.WarnFar	Práce je daleko od rohu
+ui.WarnScale	Měřítko není 1
+ui.WarnCourse	Plán přesahuje dráhu osy
+ui.WfRunning	Úloha běží: soubor nelze změnit

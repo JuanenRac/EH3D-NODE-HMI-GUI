@@ -134,3 +134,14 @@ ui.OrientLandscape	Horizontala
 ui.OrientPortrait	Bertikala
 ui.OverClip	Mugatu abiadura maximora
 ui.OverRefuse	Ukatu
+ui.Tools	Tresnak
+ui.TimeLeft	Geratzen den denbora
+ui.EstTime	Aurreikusitako denbora
+ui.AtcAuto	Tresnak bere kabuz aldatzen ditu
+ui.AtcByHand	Tresna-barra ez dago prest: aldatu tresna eskuz
+ui.PutTool	Jarri tresna
+ui.WarnTiny	Lana oso txikia da
+ui.WarnFar	Lana izkinatik urrun dago
+ui.WarnScale	Eskala ez da 1
+ui.WarnCourse	Planak ardatz baten ibilbidea gainditzen du
+ui.WfRunning	Lan bat martxan dago: ezin da fitxategia aldatu

@@ -11,7 +11,7 @@
 
 namespace hmi {
 
-constexpr std::size_t kUiKeyCount = 98;
+constexpr std::size_t kUiKeyCount = 109;
 constexpr std::size_t kQualityKeyCount = 19;
 constexpr std::size_t kFindingKeyCount = 18;
 constexpr std::size_t kKeyCount = kUiKeyCount + kQualityKeyCount + kFindingKeyCount;
@@ -22,6 +22,7 @@ inline constexpr const char* const kKeyNames[kKeyCount] = {
     "ui.StopPressed", "ui.AckRelease", "ui.Language", "ui.Voice", "ui.Brightness", "ui.Volume", "ui.JogX", "ui.JogY", "ui.JogZ", "ui.Spindle", "ui.AskMove", "ui.AskSpindle",
     "ui.WhyHardwareStop", "ui.WhyNotArmed", "ui.WhyVoiceOff", "ui.WhyNoStop", "ui.WhySpindle", "ui.WhyNoSpindleHere", "ui.Feed", "ui.Progress", "ui.Tool", "ui.Jog", "ui.Holes", "ui.Cuts", "ui.SpindleCut", "ui.WhySpindleFast", "ui.Resume", "ui.Stopped", "ui.Next", "ui.ResumedFrom", "ui.ToolChanged", "ui.BoardTooBig", "ui.Failed",
     "ui.OrdStart", "ui.OrdPause", "ui.OrdResume", "ui.OrdToolChanged", "ui.OrdHome", "ui.OrdStop", "ui.CancelsIn", "ui.LinkOk", "ui.LinkLost", "ui.LinkOther", "ui.LinkOld", "ui.Firmware", "ui.CfgLine", "ui.CfgMore", "ui.CfgNoFile", "ui.CfgNotPair", "ui.CfgRange", "ui.CfgOnOff", "ui.CfgChoice", "ui.CfgToken", "ui.CfgUnknown", "ui.SrvNone", "ui.SrvSilent", "ui.SrvOther", "ui.NoteStopFail", "ui.NoteStopRefused", "ui.NoteStopSent", "ui.NoteNoJobToStop", "ui.NoteMoveNoLink", "ui.NoteBusy", "ui.NoteNothingToSend", "ui.NoteOldServer", "ui.NoteOk", "ui.NoteFollowing", "ui.NoteNoJobReady", "ui.NoteGoingOn", "ui.NoteFile", "ui.NoteUnreadable", "ui.NoteAllOff", "ui.ErrClient", "ui.ErrTooLong", "ui.ErrBroke", "ui.ErrSend", "ui.WfKind", "ui.WfEmpty", "ui.WfOldNoFile", "ui.WfNothing", "ui.OrientAuto", "ui.OrientLandscape", "ui.OrientPortrait", "ui.OverClip", "ui.OverRefuse",
+    "ui.Tools", "ui.TimeLeft", "ui.EstTime", "ui.AtcAuto", "ui.AtcByHand", "ui.PutTool", "ui.WarnTiny", "ui.WarnFar", "ui.WarnScale", "ui.WarnCourse", "ui.WfRunning",
     "q.Title", "q.Light", "q.LightOff", "q.CheckNow", "q.Checking", "q.VerdictOk", "q.VerdictNotOk", "q.VerdictUnknown", "q.NotChecked", "q.HoleWidth", "q.HoleNone", "q.Profile",
     "q.Standard", "q.FinePitch", "q.Prototype", "q.Calibrate", "q.HolesOk", "q.ChannelWidth", "q.NeedServer",
     "f.hole_missing", "f.hole_wrong_size", "f.hole_off_centre", "f.hole_not_round", "f.hole_debris", "f.hole_out_of_view", "f.mill_no_channels", "f.mill_too_narrow", "f.mill_too_wide",

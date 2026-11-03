@@ -134,3 +134,14 @@ ui.OrientLandscape	Poziomo
 ui.OrientPortrait	Pionowo
 ui.OverClip	Ogranicz do prędkości maksymalnej
 ui.OverRefuse	Odrzuć
+ui.Tools	Narzędzia
+ui.TimeLeft	Pozostały czas
+ui.EstTime	Szacowany czas
+ui.AtcAuto	Sama wymienia narzędzia
+ui.AtcByHand	Magazyn narzędzi nie jest gotowy: wymień narzędzie ręcznie
+ui.PutTool	Włóż narzędzie
+ui.WarnTiny	Praca jest malutka
+ui.WarnFar	Praca jest daleko od rogu
+ui.WarnScale	Skala nie wynosi 1
+ui.WarnCourse	Plan przekracza skok osi
+ui.WfRunning	Zadanie trwa: nie można zmienić pliku

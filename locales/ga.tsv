@@ -134,3 +134,14 @@ ui.OrientLandscape	Cothrománach
 ui.OrientPortrait	Ingearach
 ui.OverClip	Teorannaigh don luas uasta
 ui.OverRefuse	Diúltaigh
+ui.Tools	Uirlisí
+ui.TimeLeft	Am fágtha
+ui.EstTime	Am measta
+ui.AtcAuto	Athraíonn sé na huirlisí leis féin
+ui.AtcByHand	Níl an barra uirlisí réidh: athraigh an uirlis de láimh
+ui.PutTool	Cuir isteach an uirlis
+ui.WarnTiny	Tá an obair an-bheag
+ui.WarnFar	Tá an obair i bhfad ón gcúinne
+ui.WarnScale	Níl an scála 1
+ui.WarnCourse	Téann an plean thar chúrsa aise
+ui.WfRunning	Tá post ar siúl: ní féidir an comhad a athrú

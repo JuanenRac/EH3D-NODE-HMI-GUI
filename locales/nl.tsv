@@ -134,3 +134,14 @@ ui.OrientLandscape	Liggend
 ui.OrientPortrait	Staand
 ui.OverClip	Beperken tot het toptoerental
 ui.OverRefuse	Weigeren
+ui.Tools	Gereedschappen
+ui.TimeLeft	Resterende tijd
+ui.EstTime	Geschatte tijd
+ui.AtcAuto	Wisselt de gereedschappen zelf
+ui.AtcByHand	Gereedschapsbalk niet klaar: wissel het gereedschap met de hand
+ui.PutTool	Plaats het gereedschap
+ui.WarnTiny	Het werk is piepklein
+ui.WarnFar	Het werk ligt ver van de hoek
+ui.WarnScale	De schaal is niet 1
+ui.WarnCourse	Het plan overschrijdt de slag van een as
+ui.WfRunning	Een taak loopt: het bestand kan niet worden gewijzigd

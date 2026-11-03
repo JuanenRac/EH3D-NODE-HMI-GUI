@@ -134,3 +134,14 @@ ui.OrientLandscape	Horizontal
 ui.OrientPortrait	Vertical
 ui.OverClip	Limitar á velocidade máxima
 ui.OverRefuse	Rexeitar
+ui.Tools	Ferramentas
+ui.TimeLeft	Tempo restante
+ui.EstTime	Tempo estimado
+ui.AtcAuto	Cambia as ferramentas soa
+ui.AtcByHand	A barra de ferramentas non está lista: cambie a ferramenta a man
+ui.PutTool	Poña a ferramenta
+ui.WarnTiny	O traballo é minúsculo
+ui.WarnFar	O traballo está lonxe da esquina
+ui.WarnScale	A escala non é 1
+ui.WarnCourse	O plan supera o percorrido dun eixe
+ui.WfRunning	Hai un traballo en marcha: non se pode cambiar o ficheiro

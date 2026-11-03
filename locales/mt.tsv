@@ -134,3 +134,14 @@ ui.OrientLandscape	Orizzontali
 ui.OrientPortrait	Vertikali
 ui.OverClip	Illimita għall-ogħla veloċità
 ui.OverRefuse	Irrifjuta
+ui.Tools	Għodod
+ui.TimeLeft	Ħin li fadal
+ui.EstTime	Ħin stmat
+ui.AtcAuto	Tbiddel l-għodod waħedha
+ui.AtcByHand	Il-bar tal-għodod mhux lest: biddel l-għodda bl-idejn
+ui.PutTool	Poġġi l-għodda
+ui.WarnTiny	Ix-xogħol huwa żgħir ħafna
+ui.WarnFar	Ix-xogħol huwa 'l bogħod mill-kantuniera
+ui.WarnScale	L-iskala mhijiex 1
+ui.WarnCourse	Il-pjan jaqbeż il-korsa ta' assi
+ui.WfRunning	Xogħol qed jaħdem: il-fajl ma jistax jinbidel

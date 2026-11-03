@@ -134,3 +134,14 @@ ui.OrientLandscape	Orizontal
 ui.OrientPortrait	Vertical
 ui.OverClip	Limitează la viteza maximă
 ui.OverRefuse	Refuză
+ui.Tools	Scule
+ui.TimeLeft	Timp rămas
+ui.EstTime	Timp estimat
+ui.AtcAuto	Își schimbă singură sculele
+ui.AtcByHand	Magazia de scule nu este pregătită: schimbați scula manual
+ui.PutTool	Introduceți scula
+ui.WarnTiny	Lucrarea este foarte mică
+ui.WarnFar	Lucrarea este departe de colț
+ui.WarnScale	Scara nu este 1
+ui.WarnCourse	Planul depășește cursa unei axe
+ui.WfRunning	O lucrare rulează: fișierul nu poate fi schimbat

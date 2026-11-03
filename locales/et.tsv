@@ -134,3 +134,14 @@ ui.OrientLandscape	Rõhtpaigutus
 ui.OrientPortrait	Püstpaigutus
 ui.OverClip	Piira maksimaalse kiiruseni
 ui.OverRefuse	Keeldu
+ui.Tools	Tööriistad
+ui.TimeLeft	Järelejäänud aeg
+ui.EstTime	Hinnanguline aeg
+ui.AtcAuto	Vahetab tööriistu ise
+ui.AtcByHand	Tööriistariba pole valmis: vahetage tööriist käsitsi
+ui.PutTool	Pange tööriist sisse
+ui.WarnTiny	Töö on tilluke
+ui.WarnFar	Töö on nurgast kaugel
+ui.WarnScale	Mõõtkava pole 1
+ui.WarnCourse	Plaan ületab telje käigu
+ui.WfRunning	Töö käib: faili ei saa vahetada

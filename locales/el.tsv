@@ -134,3 +134,14 @@ ui.OrientLandscape	Οριζόντια
 ui.OrientPortrait	Κάθετα
 ui.OverClip	Περιορισμός στη μέγιστη ταχύτητα
 ui.OverRefuse	Απόρριψη
+ui.Tools	Εργαλεία
+ui.TimeLeft	Χρόνος που απομένει
+ui.EstTime	Εκτιμώμενος χρόνος
+ui.AtcAuto	Αλλάζει μόνο του τα εργαλεία
+ui.AtcByHand	Η μπάρα εργαλείων δεν είναι έτοιμη: αλλάξτε το εργαλείο με το χέρι
+ui.PutTool	Τοποθετήστε το εργαλείο
+ui.WarnTiny	Η εργασία είναι πολύ μικρή
+ui.WarnFar	Η εργασία είναι μακριά από τη γωνία
+ui.WarnScale	Η κλίμακα δεν είναι 1
+ui.WarnCourse	Το σχέδιο ξεπερνά τη διαδρομή ενός άξονα
+ui.WfRunning	Εκτελείται μια εργασία: το αρχείο δεν αλλάζει

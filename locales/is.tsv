@@ -134,3 +134,14 @@ ui.OrientLandscape	Lárétt
 ui.OrientPortrait	Lóðrétt
 ui.OverClip	Takmarka við hámarkshraða
 ui.OverRefuse	Hafna
+ui.Tools	Verkfæri
+ui.TimeLeft	Tími eftir
+ui.EstTime	Áætlaður tími
+ui.AtcAuto	Skiptir sjálf um verkfæri
+ui.AtcByHand	Verkfærastikan er ekki tilbúin: skiptu um verkfæri í höndunum
+ui.PutTool	Settu verkfærið í
+ui.WarnTiny	Verkið er örlítið
+ui.WarnFar	Verkið er langt frá horninu
+ui.WarnScale	Kvarðinn er ekki 1
+ui.WarnCourse	Áætlunin fer yfir slag áss
+ui.WfRunning	Verk er í gangi: ekki er hægt að skipta um skrá

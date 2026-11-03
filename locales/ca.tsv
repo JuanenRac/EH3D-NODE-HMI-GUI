@@ -134,3 +134,14 @@ ui.OrientLandscape	Horitzontal
 ui.OrientPortrait	Vertical
 ui.OverClip	Limita a la velocitat màxima
 ui.OverRefuse	Rebutja
+ui.Tools	Eines
+ui.TimeLeft	Temps restant
+ui.EstTime	Temps estimat
+ui.AtcAuto	Canvia les eines per ella mateixa
+ui.AtcByHand	Barra d'eines no preparada: canvieu l'eina a mà
+ui.PutTool	Poseu l'eina
+ui.WarnTiny	El treball és minúscul
+ui.WarnFar	El treball és lluny de la cantonada
+ui.WarnScale	L'escala no és 1
+ui.WarnCourse	El pla supera el recorregut d'un eix
+ui.WfRunning	Hi ha un treball en marxa: no es pot canviar el fitxer

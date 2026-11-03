@@ -134,3 +134,14 @@ ui.OrientLandscape	Vaaka
 ui.OrientPortrait	Pysty
 ui.OverClip	Rajoita huippunopeuteen
 ui.OverRefuse	Hylkää
+ui.Tools	Työkalut
+ui.TimeLeft	Aikaa jäljellä
+ui.EstTime	Arvioitu aika
+ui.AtcAuto	Vaihtaa työkalut itse
+ui.AtcByHand	Työkalupalkki ei ole valmis: vaihda työkalu käsin
+ui.PutTool	Aseta työkalu
+ui.WarnTiny	Työ on pieni
+ui.WarnFar	Työ on kaukana kulmasta
+ui.WarnScale	Mittakaava ei ole 1
+ui.WarnCourse	Suunnitelma ylittää akselin liikealueen
+ui.WfRunning	Työ on käynnissä: tiedostoa ei voi vaihtaa

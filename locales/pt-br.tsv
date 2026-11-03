@@ -44,3 +44,5 @@ ui.ErrBroke	A conexão foi interrompida
 ui.WfKind	Só é possível enviar arquivos de furação, fresagem e G-code
 ui.WfEmpty	O arquivo está vazio
 ui.WfOldNoFile	Servidor antigo e sem arquivo para enviar outra vez
+ui.AtcByHand	Barra de ferramentas não preparada: troque a ferramenta manualmente
+ui.WfRunning	Há um trabalho em andamento: não é possível trocar o arquivo

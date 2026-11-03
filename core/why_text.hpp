@@ -12,6 +12,7 @@ inline constexpr const char* kEmptyFile = "the file is empty";
 inline constexpr const char* kNotStopped = "the job is not stopped";
 inline constexpr const char* kOldServerNoFile = "the server is an old one and this screen has no file to send again";
 inline constexpr const char* kNothingToGoOn = "there is nothing to go on from";
+inline constexpr const char* kJobRunning = "a job is running, so the file cannot be changed";
 
 }  // namespace reasons
 }  // namespace hmi

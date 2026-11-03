@@ -134,3 +134,14 @@ ui.OrientLandscape	Liggende
 ui.OrientPortrait	Stående
 ui.OverClip	Begrens til toppturtall
 ui.OverRefuse	Avvis
+ui.Tools	Verktøy
+ui.TimeLeft	Gjenstående tid
+ui.EstTime	Beregnet tid
+ui.AtcAuto	Bytter verktøy selv
+ui.AtcByHand	Verktøymagasinet er ikke klart: bytt verktøy for hånd
+ui.PutTool	Sett i verktøyet
+ui.WarnTiny	Arbeidet er bitte lite
+ui.WarnFar	Arbeidet ligger langt fra hjørnet
+ui.WarnScale	Skalaen er ikke 1
+ui.WarnCourse	Planen overskrider en akses slag
+ui.WfRunning	En jobb kjører: filen kan ikke byttes

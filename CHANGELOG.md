@@ -6,6 +6,7 @@ All notable changes to this project are documented here.
 - **Three checks that nothing ran are removed from `tools/`:** `_doc_policy.py`, `_readme_parity.py` and `_tracked_names.py` were copies of the checks of another family that no workflow, script or document named, and their header said another family kept them in step. The checks that run are in `tools/ci_validate.py`.
 - **More host tests:** the languages and their fall-backs, the sound files that an operator puts on the card, the job that is running, the turn of the panel and the files of the card.
 - **A sound file whose chunk ends past the end of the file is left alone** instead of moving the reader back onto itself on a 32-bit chip.
+- **The workflows are hardened:** every action is pinned by its commit with its version in a comment, and the checkouts keep no credentials.
 
 ## [0.0.6] - Screens that tell the operator what happens
 

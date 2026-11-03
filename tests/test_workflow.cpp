@@ -645,6 +645,130 @@ static void the_notes_of_the_server_about_a_job() {
     CHECK(w.choose("next.NCD", "M48\nT1C0.8\n%\nT1\nX1Y1\nM30\n", why) && w.advice(TableSize{}).notes.empty());
 }
 
+// A drilling file whose tools are used in another order than their numbers: T3 first, then T1, then T2 (the order the server works them in).
+static const char* kDrillOrder = "M48\nMETRIC\nT1C0.8\nT2C1.0\nT3C0.6\n%\nT3\nX1Y1\nX2Y2\nT1\nX3Y3\nX4Y4\nX5Y5\nT2\nX6Y6\nM30\n";
+
+static void the_bar_of_the_job_and_the_model() {
+    std::string why;
+    // the order of use, not the number, gives the order of the bar
+    FileSummary fs = summarize_drill(kDrillOrder);
+    CHECK(fs.tools.size() == 3 && fs.uses == 3);
+    ToolSwitch sw;
+    sw.reset(fs);
+    JobBar b = make_job_bar(sw, 0, 0, 0, 0);
+    CHECK(b.known && b.tools.size() == 3 && b.tools[0].number == 3 && b.tools[1].number == 1 && b.tools[2].number == 2);
+    CHECK(b.steps_total == 6 && b.steps_done == 0 && b.current == 0 && b.next == 1 && b.tools_done == 0 && b.seconds_left == -1);
+    // 3 of 6 steps done: T3 (2 holes) is finished, T1 has 1 of 3
+    b = make_job_bar(sw, 0, 3, 6, 60);
+    CHECK(b.steps_done == 3 && b.tools_done == 1 && b.current == 1 && b.tools[1].done == 1 && b.tools[1].total == 3 && b.next == 2 && b.seconds_left == 30);
+    // everything done: no tool at work, none next
+    b = make_job_bar(sw, 0, 6, 6, 60);
+    CHECK(b.tools_done == 3 && b.current == -1 && b.next == -1 && b.seconds_left == 0);
+    // a tool that is switched off is not in the bar; the steps are shared out over the others
+    CHECK(sw.toggle(1));
+    b = make_job_bar(sw, 0, 1, 3, 0);
+    CHECK(b.tools.size() == 2 && b.steps_total == 3 && b.steps_done == 1 && b.current == 0 && b.tools[0].done == 1 && b.tools[0].total == 2);
+    CHECK(sw.toggle(1));
+    // a job that goes on after a stop leaves out the steps already done, in the order of the work (T3 and the first hole of T1)
+    b = make_job_bar(sw, 3, 0, 3, 0);
+    CHECK(b.tools.size() == 2 && b.tools[0].number == 1 && b.tools[0].total == 2 && b.tools[1].number == 2 && b.steps_total == 3);
+    // the server counts its steps in another way (more or fewer than the file's): the share is scaled, never over the end
+    b = make_job_bar(sw, 0, 5, 10, 0);
+    CHECK(b.steps_done == 3 && b.tools_done == 1);
+    b = make_job_bar(sw, 0, 50, 10, 0);
+    CHECK(b.steps_done == 6);
+    // a file with no steps, and every tool off, give no bar
+    CHECK(!make_job_bar(ToolSwitch{}, 0, 0, 0, 0).known);
+
+    // routing: the pens in the order they are first used
+    FileSummary rs = summarize_route("IN;SP2;PU0,0;PD400,0;PD400,400;SP1;PU0,0;PD800,0;");
+    ToolSwitch rw;
+    rw.reset(rs);
+    JobBar rb = make_job_bar(rw, 0, 0, 0, 0);
+    CHECK(rb.known && rb.tools.size() == 2 && rb.tools[0].number == 2 && rb.tools[1].number == 1);
+
+    // the clock
+    CHECK(clock_text(0) == "0:00" && clock_text(75) == "1:15" && clock_text(3600) == "1:00:00" && clock_text(3725) == "1:02:05" && clock_text(-5) == "0:00");
+
+    // the model: a changer by the word ATC, the manual change and an unknown model are not
+    CHECK(changes_tools_itself("ccd-atc") && changes_tools_itself("CCD/2 ATC") && changes_tools_itself("xl_atc_2"));
+    CHECK(!changes_tools_itself("ccd-mtc") && !changes_tools_itself("") && !changes_tools_itself("catch") && !changes_tools_itself("atcx"));
+    CHECK(model_label("ccd-mtc") == "CCD MTC" && model_label("ccd_atc") == "CCD ATC");
+
+    // the fleet carries the model, the tool a pause waits for, the steps and the estimate
+    Workflow w;
+    CHECK(w.model().empty());
+    const char* fleet = "{\"machines\":[{\"id\":\"m1\",\"name\":\"Bungard\",\"model\":\"ccd-atc\",\"state\":\"waiting\","
+                        "\"job\":{\"id\":\"j1\",\"name\":\"board\",\"kind\":\"drill\",\"percent\":50,\"holes_done\":3,\"holes_total\":6,\"estimate_s\":120.4,"
+                        "\"pause\":{\"kind\":\"tool_change\",\"tool\":2}}}]}";
+    FleetView f;
+    CHECK(parse_fleet(fleet, f) && f.machines.size() == 1);
+    const MachineRow& m = f.machines[0];
+    CHECK(m.model == "ccd-atc" && m.pause_tool == 2 && m.steps_done == 3 && m.steps_total == 6 && m.estimate_s > 120 && m.estimate_s < 121);
+    // a G-code job counts lines
+    CHECK(parse_fleet("{\"machines\":[{\"id\":\"g\",\"job\":{\"id\":\"x\",\"kind\":\"gcode\",\"items_done\":4,\"items_total\":9}}]}", f) && f.machines[0].steps_done == 4 && f.machines[0].steps_total == 9);
+
+    // the workflow follows the model even with no job, and the bar of a running job moves with the fleet
+    w.on_fleet(f, "g");
+    CHECK(w.model().empty());
+    CHECK(parse_fleet(fleet, f));
+    w.on_fleet(f, "m1");
+    CHECK(w.model() == "ccd-atc" && w.bar().known == false);
+    CHECK(w.choose("board.NCD", kDrillOrder, why) && w.on_created(Response{201, "{\"id\":\"j1\",\"view\":{\"estimate_s\":90.0}}"}, why) && w.on_started(Response{200, "{}"}, why));
+    CHECK(w.bar().known && w.bar().steps_done == 0);
+    w.on_fleet(f, "m1");
+    JobBar jb = w.bar();
+    CHECK(w.stage() == Stage::Waiting && w.tool_wait() && w.pause_tool() == 2 && jb.steps_done == 3 && jb.tools_done == 1 && jb.seconds_left == 60);  // the estimate of the fleet wins
+    // the lines of the page: the model with the changer, the tool to put in, what to do by hand, the tool at work, the next one, the tools finished and the time left
+    const std::string en = hud_text(jb, Lang::En, w.model(), false, w.tool_wait(), w.pause_tool());
+    CHECK(en.find("CCD ATC  |  Changes the tools by itself") == 0);
+    CHECK(en.find("Put in the tool 2") != std::string::npos && en.find("change the tool by hand") != std::string::npos);
+    CHECK(en.find("Tool 1 0.80 mm   1/3 holes") != std::string::npos || en.find("Tool 1  0.80 mm   1/3 holes") != std::string::npos);
+    CHECK(en.find("Next: Tool 2  1.00 mm") != std::string::npos && en.find("Tools 1/3   Time left 1:00") != std::string::npos);
+    // a machine with the manual change says no such thing; with no file there is only the model
+    const std::string mtc = hud_text(jb, Lang::En, "ccd-mtc", false, true, 0);
+    CHECK(mtc.find("CCD MTC") == 0 && mtc.find("by itself") == std::string::npos && mtc.find("by hand") == std::string::npos && mtc.find("Put in the tool\n") != std::string::npos);
+    CHECK(hud_text(JobBar{}, Lang::Es, "ccd-atc", false, false, 0) == "CCD ATC  |  Cambia las herramientas sola");
+    CHECK(hud_text(JobBar{}, Lang::En, "", false, false, 0).empty());
+    CHECK(hud_text(jb, Lang::De, "ccd-mtc", true, false, 0).find("Fräsungen") != std::string::npos);
+
+    // the work in hand is locked while the machine runs it: another file is refused and the job is still followed
+    CHECK(!w.choose("other.NCD", kDrillOrder, why) && why == reasons::kJobRunning && w.job_id() == "j1" && w.stage() == Stage::Waiting);
+    // after it ended the file can be changed again
+    w.on_fleet(fleet_of("", "idle", 0, ""), "m1");
+    CHECK(w.on_report(Response{200, "{\"state\":\"done\"}"}) && w.choose("other.NCD", kDrillOrder, why) && w.stage() == Stage::FileChosen);
+    // a job that is only ready can still be replaced
+    CHECK(w.on_created(Response{201, "{\"id\":\"j2\"}"}, why) && w.choose("third.NCD", kDrillOrder, why));
+}
+
+static void the_plan_the_server_made() {
+    std::string why;
+    const char* made = "{\"id\":\"j1\",\"view\":{\"estimate_s\":185.6,\"items\":40,\"dry_run\":{\"within_course\":false,\"seconds\":185.0},"
+                       "\"warnings\":[{\"code\":\"tiny\",\"values\":[1,2]},{\"code\":\"far\",\"values\":[900]},{\"code\":\"scale\",\"values\":[2,2]},"
+                       "{\"code\":\"too_big\",\"values\":[400,300,200,100]},{\"code\":\"out_of_course\",\"axis\":\"X\",\"values\":[3.5]},{\"code\":\"something_new\"}]}}";
+    PlanView p = parse_plan_view(made);
+    CHECK(p.known && p.items == 40 && p.estimate_s > 185 && p.estimate_s < 186 && p.course_known && !p.within_course && p.warnings.size() == 6);
+    const std::string en = plan_text(p, Lang::En);
+    CHECK(en.find("Estimated time 3:06") == 0);
+    CHECK(en.find("! The work is tiny") != std::string::npos && en.find("! The work is far from the corner") != std::string::npos && en.find("! The scale is not 1") != std::string::npos);
+    CHECK(en.find("! The board does not fit the table") != std::string::npos && en.find("! The plan goes past the course of an axis (X)") != std::string::npos);
+    CHECK(en.find("something_new") == std::string::npos);
+    // a plan that leaves the course with no warning of its own is still told, once
+    PlanView q = parse_plan_view("{\"view\":{\"estimate_s\":10,\"dry_run\":{\"within_course\":false}}}");
+    const std::string t = plan_text(q, Lang::En);
+    CHECK(t.find("The plan goes past the course of an axis") != std::string::npos && t.find("(") == std::string::npos);
+    // a clean plan is only the time; an answer with no view says nothing
+    CHECK(plan_text(parse_plan_view("{\"view\":{\"estimate_s\":65,\"dry_run\":{\"within_course\":true},\"warnings\":[]}}"), Lang::En) == "Estimated time 1:05");
+    CHECK(!parse_plan_view("{\"id\":\"x\"}").known && plan_text(parse_plan_view("{\"id\":\"x\"}"), Lang::En).empty() && plan_text(parse_plan_view("not json"), Lang::En).empty());
+    CHECK(plan_text(p, Lang::Ja).find("推定時間") == 0 && plan_text(p, Lang::Pl).find("Szacowany czas") == 0);
+
+    // the workflow keeps the plan of the job it made and forgets it with the file
+    Workflow w;
+    CHECK(w.choose("board.NCD", "M48\nT1C0.8\n%\nT1\nX1Y1\nM30\n", why) && !w.advice(TableSize{}).plan.known);
+    CHECK(w.on_created(Response{201, made}, why) && w.advice(TableSize{}).plan.known && w.advice(TableSize{}).plan.warnings.size() == 6);
+    CHECK(w.choose("next.NCD", "M48\nT1C0.8\n%\nT1\nX1Y1\nM30\n", why) && !w.advice(TableSize{}).plan.known);
+}
+
 int main() {
     orientation_rules();
     sd_files();
@@ -659,6 +783,8 @@ int main() {
     the_box_of_a_file_and_the_table();
     a_stopped_or_failed_job_is_not_a_finished_one();
     the_notes_of_the_server_about_a_job();
+    the_bar_of_the_job_and_the_model();
+    the_plan_the_server_made();
     std::printf("%d checks, %d failed\n", g_checks, g_failed);
     return g_failed == 0 ? 0 : 1;
 }

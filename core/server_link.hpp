@@ -435,12 +435,61 @@ inline std::vector<SpindleNote> parse_job_notes(const std::string& body) {
     return out;
 }
 
+/// One thing that looks wrong in the work the server planned (`view.warnings`): `tiny`, `too_big`, `far`, `scale` or `out_of_course`.
+struct PlanWarning {
+    std::string code;
+    std::string axis;  // out_of_course: X, Y or Z
+};
+
+/// What the server says about the job it has just made (`view` of the answer to `POST /machines/:id/jobs`): how long the movements take, how many steps there are and what looks
+/// wrong in the work. The operator sees it before the start.
+struct PlanView {
+    bool known = false;
+    double estimate_s = 0;
+    int items = 0;
+    bool course_known = false;
+    bool within_course = true;  // the dry run of the exact plan stays inside the course of every axis
+    std::vector<PlanWarning> warnings;
+};
+
+inline PlanView parse_plan_view(const std::string& body) {
+    PlanView p;
+    Json j;
+    if (!parse_json(body, j) || j.type != Json::Type::Object) return p;
+    const Json* view = j.get("view");
+    if (!view || view->type != Json::Type::Object) return p;
+    p.known = true;
+    p.estimate_s = view->num("estimate_s");
+    if (!(p.estimate_s > 0)) p.estimate_s = 0;
+    p.items = static_cast<int>(view->num("items"));
+    const Json* dry = view->get("dry_run");
+    if (dry && dry->type == Json::Type::Object) {
+        const Json* within = dry->get("within_course");
+        if (within && within->type == Json::Type::Bool) {
+            p.course_known = true;
+            p.within_course = within->b;
+        }
+    }
+    const Json* list = view->get("warnings");
+    if (list && list->type == Json::Type::Array) {
+        for (const Json& w : list->a) {
+            if (w.type != Json::Type::Object || w.str("code").empty() || p.warnings.size() >= 8) continue;
+            p.warnings.push_back({w.str("code"), w.str("axis")});
+        }
+    }
+    return p;
+}
+
 struct MachineRow {
     std::string id, name, station, state;  // state: idle, busy or waiting
+    std::string model;                     // what the machine is, as the server holds it (`ccd-mtc`, `ccd-atc`...); empty when it says none
     std::string job_name, job_id;
     int percent = -1;                      // -1: no job
     int ready = 0;
     std::string pause_kind;                // `tool_change` while a job waits for the operator
+    int pause_tool = 0;                    // the tool the job waits for at a tool change (0 when the server does not say it)
+    int steps_done = 0, steps_total = 0;   // the holes (paths) of the job done and in all; the lines of a G-code program
+    double estimate_s = 0;                 // how long the movements of the job take, as the server estimated it (0: not said)
 };
 
 struct FleetView {
@@ -461,6 +510,7 @@ inline bool parse_fleet(const std::string& body, FleetView& out) {
         r.name = m.str("name", r.id);
         r.station = m.str("station");
         r.state = m.str("state", "idle");
+        r.model = m.str("model");
         r.ready = static_cast<int>(m.num("ready"));
         const Json* job = m.get("job");
         if (job && job->type == Json::Type::Object) {
@@ -470,7 +520,17 @@ inline bool parse_fleet(const std::string& body, FleetView& out) {
             if (r.percent < 0) r.percent = 0;
             if (r.percent > 100) r.percent = 100;
             const Json* pause = job->get("pause");
-            if (pause && pause->type == Json::Type::Object) r.pause_kind = pause->str("kind");
+            if (pause && pause->type == Json::Type::Object) {
+                r.pause_kind = pause->str("kind");
+                r.pause_tool = static_cast<int>(pause->num("tool"));
+            }
+            const bool lines = job->str("kind") == "gcode";
+            r.steps_done = static_cast<int>(job->num(lines ? "items_done" : "holes_done"));
+            r.steps_total = static_cast<int>(job->num(lines ? "items_total" : "holes_total"));
+            if (r.steps_done < 0) r.steps_done = 0;
+            if (r.steps_total < r.steps_done) r.steps_total = r.steps_done;
+            r.estimate_s = job->num("estimate_s");
+            if (!(r.estimate_s > 0)) r.estimate_s = 0;
         }
         v.machines.push_back(std::move(r));
     }

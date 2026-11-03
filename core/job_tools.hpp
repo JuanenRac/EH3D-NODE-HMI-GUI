@@ -18,6 +18,7 @@ struct ToolInfo {
     int number = 0;
     double diameter_mm = 0;
     int count = 0;
+    int use = 1 << 30;  // the place of the tool among those the work uses, in the order of its first hole or cut (the order the machine works in); large while it has none
 };
 
 /// The box that the coordinates of a file span, in mm (not known when the file holds none).
@@ -45,6 +46,7 @@ struct FileSummary {
     Box box;                      // where the holes or the cuts lie, as the file says it (a size to compare with the table)
     std::vector<ToolInfo> tools;  // by number
     int total = 0;                // the holes or the cuts of every tool
+    int uses = 0;                 // how many tools have had their first hole or cut so far (gives `ToolInfo::use`)
 };
 
 namespace detail {
@@ -55,6 +57,13 @@ inline ToolInfo& tool_entry(FileSummary& s, int number) {
     s.tools.push_back(ToolInfo{});
     s.tools.back().number = number;
     return s.tools.back();
+}
+
+/// One more hole or cut for a tool; the first one fixes the place of the tool in the order of use.
+inline void count_step(FileSummary& s, ToolInfo& t) {
+    if (t.count == 0) t.use = s.uses++;
+    ++t.count;
+    ++s.total;
 }
 
 inline bool is_digit(char c) { return c >= '0' && c <= '9'; }
@@ -122,8 +131,7 @@ inline FileSummary summarize_drill(const std::string& text) {
                 if (current > 0) detail::tool_entry(s, current);
             }
         } else if ((line[0] == 'X' || line[0] == 'Y') && current > 0) {
-            ++detail::tool_entry(s, current).count;
-            ++s.total;
+            detail::count_step(s, detail::tool_entry(s, current));
             double v = 0;
             if (detail::axis_value(line, 'X', v)) { x = v; has_x = true; }
             if (detail::axis_value(line, 'Y', v)) { y = v; has_y = true; }
@@ -153,8 +161,7 @@ inline FileSummary summarize_route(const std::string& text) {
             pen = std::atoi(st.c_str() + 2);
             if (pen > 0) detail::tool_entry(s, pen);
         } else if (st.size() >= 2 && st[0] == 'P' && st[1] == 'D' && pen > 0) {
-            ++detail::tool_entry(s, pen).count;
-            ++s.total;
+            detail::count_step(s, detail::tool_entry(s, pen));
         }
         // the places of a move: PU, PD and PA are followed by pairs of numbers in plotter steps (40 to the millimetre)
         if (st.size() > 2 && st[0] == 'P' && (st[1] == 'U' || st[1] == 'D' || st[1] == 'A')) {

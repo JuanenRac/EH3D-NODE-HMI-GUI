@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "job_bar.hpp"
 #include "job_tools.hpp"
 #include "sdfiles.hpp"
 #include "server_link.hpp"
@@ -29,6 +30,7 @@ struct JobAdvice {
     double board_w = 0, board_d = 0;   // the size of the box of the file, mm
     double table_w = 0, table_d = 0;   // the table, mm (0 when not known)
     std::vector<SpindleNote> notes;    // what the job asks for beyond the spindle (the server made it anyway)
+    PlanView plan;                     // what the server says about the plan it made: the time and what looks wrong in the work (not known before the job is made)
 };
 
 /// Whether the server makes the new job of a stopped one by itself (`POST /jobs/:id/resume-from`): not known until it was asked once; a server that answers 404 or 405 to
@@ -50,6 +52,11 @@ public:
         }
         if (text.empty()) {
             why = reasons::kEmptyFile;
+            return false;
+        }
+        // the work in hand is locked while the machine runs it: another file would make the screen forget the job it is following
+        if (stage_ == Stage::Running || stage_ == Stage::Waiting) {
+            why = reasons::kJobRunning;
             return false;
         }
         const bool gcode = k == FileKind::Gcode;
@@ -86,6 +93,7 @@ public:
         a.table_d = table.depth;
         a.fit = fit_on_table(b, table.width, table.depth);
         a.notes = notes_;
+        a.plan = plan_;
         return a;
     }
 
@@ -127,6 +135,7 @@ public:
         }
         job_id_ = j.str("id");
         notes_ = parse_job_notes(r.body);
+        plan_ = parse_plan_view(r.body);
         stage_ = Stage::Ready;
         return true;
     }
@@ -186,12 +195,18 @@ public:
     /// A reading of the fleet: where the job of this screen is, as the server says (the job may have been started or cancelled from another
     /// program; the screen follows what the server says).
     void on_fleet(const FleetView& f, const std::string& machine) {
+        for (const MachineRow& m : f.machines)
+            if (m.id == machine) model_ = m.model;  // the model is known whether a job is followed or not
         if (job_id_.empty() || stage_ == Stage::Nothing || stage_ == Stage::FileChosen) return;
         for (const MachineRow& m : f.machines) {
             if (m.id != machine) continue;
             percent_ = 0;
             if (m.job_id == job_id_) {
                 percent_ = m.percent < 0 ? 0 : m.percent;
+                steps_done_ = m.steps_done;
+                steps_total_ = m.steps_total;
+                estimate_s_ = m.estimate_s;
+                pause_tool_ = m.pause_tool;
                 stage_ = (m.state == "waiting" || !m.pause_kind.empty()) ? Stage::Waiting : Stage::Running;
                 pause_ = m.pause_kind;
             } else if (stage_ == Stage::Running || stage_ == Stage::Waiting) {
@@ -199,6 +214,7 @@ public:
                 stage_ = Stage::Finished;
                 percent_ = 100;
                 pause_.clear();
+                pause_tool_ = 0;
                 unreported_ = true;
             }
             return;
@@ -242,6 +258,17 @@ public:
     bool settled() const { return ended_well() || stage_ == Stage::Stopped || stage_ == Stage::Failed; }
     /// The notes of the server about the job that was made (see `advice`).
     const std::vector<SpindleNote>& notes() const { return notes_; }
+    /// The model of the machine as the server holds it (empty until the fleet was read) and the tool the job waits for at a tool change (0 when the server does not say it).
+    const std::string& model() const { return model_; }
+    int pause_tool() const { return pause_tool_; }
+    /// The bar of the job in turn: the tool at work, the next one, the tools finished and the time left, from the tools of the file and the progress the server reports.
+    JobBar bar() const {
+        const Slot& s = slots_[cur_];
+        if (!s.loaded || s.gcode) return JobBar{};
+        const bool running = stage_ == Stage::Running || stage_ == Stage::Waiting;
+        const double estimate = estimate_s_ > 0 ? estimate_s_ : plan_.estimate_s;
+        return make_job_bar(s.sw, s.skip, running ? steps_done_ : 0, running ? steps_total_ : 0, estimate);
+    }
 
     /// A job that was stopped can go on when it did some of its work and either the server makes the new job itself (it keeps the request, so a screen that was reset and
     /// has no file can go on too) or the file is still here to be sent again. Not when the server said there is nothing left to do.
@@ -278,6 +305,7 @@ public:
             reset_run();
             job_id_ = j.str("id");
             notes_ = parse_job_notes(r.body);
+            plan_ = parse_plan_view(r.body);
             resumed_from_ = from;
             stage_ = Stage::Ready;
             return ResumeStep::Made;
@@ -381,6 +409,10 @@ private:
         resumed_from_.clear();
         outcome_ = Outcome::None;
         notes_.clear();
+        plan_ = PlanView{};
+        steps_done_ = steps_total_ = 0;
+        estimate_s_ = 0;
+        pause_tool_ = 0;
     }
 
     Stage stage_ = Stage::Nothing;
@@ -393,6 +425,10 @@ private:
     bool unreported_ = false, reported_done_ = false;
     Outcome outcome_ = Outcome::None;
     std::vector<SpindleNote> notes_;
+    PlanView plan_;
+    std::string model_;
+    int steps_done_ = 0, steps_total_ = 0, pause_tool_ = 0;
+    double estimate_s_ = 0;
     ResumeApi api_ = ResumeApi::Unknown;
     bool no_work_ = false, resume_sent_ = false;
 };

@@ -45,12 +45,12 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Software | 🟠 | El proyecto ESP-IDF (ESP32-P4, LVGL 9, el fichero de ajustes en su propia partición) está escrito; no se ha compilado ni grabado. |
-| Pruebas | 🟢 | Pasan 9 programas de prueba en el ordenador (`ctest`): 179467 comprobaciones del fichero de ajustes, la compuerta, las órdenes y avisos por voz, los teclados, los avisos grabados, el cliente del servidor y los textos de las pantallas en ocho idiomas. |
+| Pruebas | 🟡 | Pasan 9 programas de prueba en el ordenador (`ctest`): 179467 comprobaciones del fichero de ajustes, la compuerta, las órdenes y avisos por voz, los teclados, los avisos grabados, el cliente del servidor y los textos de las pantallas en ocho idiomas. |
 | Reglas de seguridad | 🟡 | Todo movimiento y toda orden de husillo pasan por la compuerta: confirmación en la pantalla, pestillo de la parada por hardware que solo borra un reconocimiento en la pantalla cuando el pulsador está suelto, ningún movimiento con el enlace sin armar. Cubierto por pruebas; nunca probado con un pulsador de parada real. |
 | Voz | 🟡 | Las órdenes y avisos por voz se reconocen y se formulan en ocho idiomas y se prueban como texto; no se ha usado ningún micrófono ni altavoz. |
 | Pantallas | 🟠 | Las pantallas de máquina, trabajo (microSD), máquinas y estaciones y ajustes están escritas, en horizontal y en vertical, con el aspecto del programa de escritorio; la pestaña del visor sigue siendo una tarjeta vacía. Solo existe un dibujo del diseño, no una captura de un módulo. |
 | Hardware real | 🔴 | Ningún módulo ha ejecutado este firmware, el enlace con el servidor todavía no existe y no se ha conectado nada a una máquina. |
-| Documentación | 🟢 | README en ocho idiomas, la referencia de ajustes y las notas de hardware. |
+| Documentación | 🟡 | README en ocho idiomas, la referencia de ajustes y las notas de hardware. |
 | Servidor y tarjeta | 🟡 | Los ficheros de la microSD (listado, nombres seguros, tipos), las peticiones a EH3D-SERVER, la lectura de la flota y el flujo de un trabajo (enviarlo listo, iniciarlo por la compuerta, seguirlo, responder al cambio de herramienta) se prueban en un ordenador con respuestas del servidor escritas a mano; los sockets y el controlador de la tarjeta nunca se han ejecutado en un módulo. |
 
 ## 🎯 Resumen

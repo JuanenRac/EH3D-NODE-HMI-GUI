@@ -45,12 +45,12 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Software | 🟠 | The ESP-IDF project (ESP32-P4, LVGL 9, the settings file in its own partition) is written; it has not been built or flashed. |
-| Tests | 🟢 | 9 host test programs pass (`ctest`): 179467 checks in the settings file, the gate, the spoken orders and alerts, the keyboards, the recorded notices, the server client and the texts of the screens in eight languages. |
+| Tests | 🟡 | 9 host test programs pass (`ctest`): 179467 checks in the settings file, the gate, the spoken orders and alerts, the keyboards, the recorded notices, the server client and the texts of the screens in eight languages. |
 | Safety rules | 🟡 | Every move and spindle order goes through the gate: confirmation on the screen, hardware-stop latch that only an acknowledgement on the screen clears once the button is up, no move while the link is not armed. Covered by tests; never run with a real stop button. |
 | Voice | 🟡 | Spoken orders and alerts are recognised and phrased in eight languages and tested as text; no microphone or speaker has been used. |
 | Screens | 🟠 | The machine, job (microSD), machines-and-stations and settings screens are written, lying down and standing up, in the look of the desktop program; the viewer tab is still an empty card. Only a drawing of the layout exists, not a capture of a module. |
 | Real hardware | 🔴 | No module has run this firmware, the link to the server does not exist yet, and nothing has been connected to a machine. |
-| Documentation | 🟢 | README in eight languages, the settings reference and the hardware notes. |
+| Documentation | 🟡 | README in eight languages, the settings reference and the hardware notes. |
 | Server and card | 🟡 | The files of the microSD card (listing, safe names, kinds), the requests to EH3D-SERVER, the reading of the fleet and the flow of a job (send it ready, start it through the gate, follow it, answer the tool change) are tested on a computer with answers of the server written down; the sockets and the card driver have never run on a module. |
 
 ## 🎯 Overview

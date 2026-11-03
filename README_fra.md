@@ -45,12 +45,12 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Logiciel | 🟠 | Le projet ESP-IDF (ESP32-P4, LVGL 9, le fichier de réglages dans sa propre partition) est écrit ; il n'a été ni compilé ni flashé. |
-| Tests | 🟢 | 9 programmes de test sur ordinateur réussissent (`ctest`) : 179467 vérifications du fichier de réglages, de la porte, des ordres et alertes vocaux, des claviers, des avis enregistrés, du client du serveur et des textes des écrans en huit langues. |
+| Tests | 🟡 | 9 programmes de test sur ordinateur réussissent (`ctest`) : 179467 vérifications du fichier de réglages, de la porte, des ordres et alertes vocaux, des claviers, des avis enregistrés, du client du serveur et des textes des écrans en huit langues. |
 | Règles de sécurité | 🟡 | Tout déplacement et tout ordre de broche passent par la porte : confirmation à l'écran, verrou de l'arrêt matériel que seul un acquittement à l'écran lève une fois le bouton relâché, aucun déplacement si la liaison n'est pas armée. Couvert par des tests ; jamais essayé avec un vrai bouton d'arrêt. |
 | Voix | 🟡 | Les ordres et alertes vocaux sont reconnus et formulés en huit langues et testés comme du texte ; aucun micro ni haut-parleur n'a été utilisé. |
 | Écrans | 🟠 | Les écrans machine, travail (microSD), machines et stations et réglages sont écrits, en paysage et en portrait, avec l'aspect du programme de bureau ; l'onglet vue est encore une carte vide. Il n'existe qu'un dessin de la mise en page, pas une capture d'un module. |
 | Matériel réel | 🔴 | Aucun module n'a exécuté ce firmware, la liaison avec le serveur n'existe pas encore et rien n'a été branché sur une machine. |
-| Documentation | 🟢 | README en huit langues, la référence des réglages et les notes matérielles. |
+| Documentation | 🟡 | README en huit langues, la référence des réglages et les notes matérielles. |
 | Serveur et carte | 🟡 | Les fichiers de la microSD (liste, noms sûrs, types), les requêtes à EH3D-SERVER, la lecture de la flotte et le déroulement d'un travail (l'envoyer prêt, le lancer par la porte, le suivre, répondre au changement d'outil) sont testés sur ordinateur avec des réponses du serveur écrites à la main ; les sockets et le pilote de la carte n'ont jamais tourné sur un module. |
 
 ## 🎯 Présentation

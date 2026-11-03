@@ -45,12 +45,12 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Software | 🟠 | Das ESP-IDF-Projekt (ESP32-P4, LVGL 9, die Einstellungsdatei in einer eigenen Partition) ist geschrieben; es wurde weder gebaut noch geflasht. |
-| Tests | 🟢 | 9 Host-Testprogramme bestehen (`ctest`): 179467 Prüfungen zu Einstellungsdatei, Tor, gesprochenen Befehlen und Hinweisen, den Tastaturen, den aufgenommenen Hinweisen, dem Server-Client und den Bildschirmtexten in acht Sprachen. |
+| Tests | 🟡 | 9 Host-Testprogramme bestehen (`ctest`): 179467 Prüfungen zu Einstellungsdatei, Tor, gesprochenen Befehlen und Hinweisen, den Tastaturen, den aufgenommenen Hinweisen, dem Server-Client und den Bildschirmtexten in acht Sprachen. |
 | Sicherheitsregeln | 🟡 | Jede Bewegung und jeder Spindelbefehl läuft durch das Tor: Bestätigung auf dem Bildschirm, Hardware-Stopp-Sperre, die bei losgelassenem Taster nur eine Quittung auf dem Bildschirm löst, keine Bewegung bei nicht scharfer Verbindung. Durch Tests gedeckt; nie mit einem echten Stopp-Taster erprobt. |
 | Sprache | 🟡 | Gesprochene Befehle und Hinweise werden in acht Sprachen erkannt und formuliert und als Text getestet; es wurde kein Mikrofon und kein Lautsprecher benutzt. |
 | Bildschirme | 🟠 | Die Bildschirme Maschine, Auftrag (microSD), Maschinen und Stationen und Einstellungen sind geschrieben, im Quer- und im Hochformat, im Aussehen des Desktop-Programms; der Reiter Ansicht ist noch eine leere Karte. Es gibt nur eine Zeichnung des Layouts, keine Aufnahme eines Moduls. |
 | Echte Hardware | 🔴 | Kein Modul hat diese Firmware ausgeführt, die Verbindung zum Server gibt es noch nicht, und nichts wurde an eine Maschine angeschlossen. |
-| Dokumentation | 🟢 | README in acht Sprachen, die Einstellungsreferenz und die Hardware-Hinweise. |
+| Dokumentation | 🟡 | README in acht Sprachen, die Einstellungsreferenz und die Hardware-Hinweise. |
 | Server und Karte | 🟡 | Die Dateien der microSD-Karte (Liste, sichere Namen, Arten), die Anfragen an EH3D-SERVER, das Lesen der Flotte und der Ablauf eines Auftrags (bereit senden, über das Tor starten, verfolgen, den Werkzeugwechsel beantworten) sind auf einem Computer mit aufgeschriebenen Serverantworten getestet; die Sockets und der Kartentreiber liefen nie auf einem Modul. |
 
 ## 🎯 Überblick

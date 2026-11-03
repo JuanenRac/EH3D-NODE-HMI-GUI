@@ -45,12 +45,12 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Software | 🟠 | Il progetto ESP-IDF (ESP32-P4, LVGL 9, il file delle impostazioni in una partizione propria) è scritto; non è stato compilato né scritto sul chip. |
-| Test | 🟢 | 9 programmi di test sul computer passano (`ctest`): 179467 controlli sul file delle impostazioni, il varco, gli ordini e gli avvisi vocali, le tastiere, gli avvisi registrati, il client del server e i testi delle schermate in otto lingue. |
+| Test | 🟡 | 9 programmi di test sul computer passano (`ctest`): 179467 controlli sul file delle impostazioni, il varco, gli ordini e gli avvisi vocali, le tastiere, gli avvisi registrati, il client del server e i testi delle schermate in otto lingue. |
 | Regole di sicurezza | 🟡 | Ogni movimento e ogni ordine al mandrino passa dal varco: conferma sullo schermo, blocco dell'arresto hardware che solo una conferma sullo schermo toglie a pulsante rilasciato, nessun movimento con il collegamento non armato. Coperto da test; mai provato con un vero pulsante di arresto. |
 | Voce | 🟡 | Ordini e avvisi vocali sono riconosciuti e formulati in otto lingue e provati come testo; nessun microfono o altoparlante è stato usato. |
 | Schermate | 🟠 | Le schermate macchina, lavoro (microSD), macchine e stazioni e impostazioni sono scritte, in orizzontale e in verticale, con l'aspetto del programma desktop; la scheda della vista è ancora una scheda vuota. Esiste solo un disegno del layout, non una cattura di un modulo. |
 | Hardware reale | 🔴 | Nessun modulo ha eseguito questo firmware, il collegamento con il server non esiste ancora e nulla è stato collegato a una macchina. |
-| Documentazione | 🟢 | README in otto lingue, il riferimento delle impostazioni e le note hardware. |
+| Documentazione | 🟡 | README in otto lingue, il riferimento delle impostazioni e le note hardware. |
 | Server e scheda | 🟡 | I file della microSD (elenco, nomi sicuri, tipi), le richieste a EH3D-SERVER, la lettura della flotta e il flusso di un lavoro (inviarlo pronto, avviarlo dal varco, seguirlo, rispondere al cambio utensile) sono provati su un computer con risposte del server scritte a mano; i socket e il driver della scheda non hanno mai girato su un modulo. |
 
 ## 🎯 Panoramica

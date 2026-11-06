@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Shared files brought up to date:** the keyboard, the notices, the link with the server, the sound files and the workflow of the touch screens are the files of the shared firmware base again, after the node of the other screen changed them.
+
 ## [0.0.7] - Firmware built in GitHub Actions with a watchdog for the manual build and the new brand
 
 - **Brand:** Add the application icon and the logos of the program.

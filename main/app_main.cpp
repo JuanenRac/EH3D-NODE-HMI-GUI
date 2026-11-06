@@ -23,6 +23,7 @@
 #include "../core/orientation.hpp"
 #include "../core/quality.hpp"
 #include "../core/sdfiles.hpp"
+#include "../core/stage_notice.hpp"
 #include "../core/status.hpp"
 #include "../core/ui_text.hpp"
 #include "../core/voice.hpp"
@@ -59,6 +60,7 @@ static std::vector<hmi::Problem> g_problems;       // the lines of hmi.cfg that 
 static bool g_cfg_missing = false;                 // hmi.cfg is not there
 static std::string g_note;
 static hmi::Workflow g_flow;
+static hmi::EndWatcher g_end;           // tells once when a stage is done or the whole job is over
 static hmi::SpindleView g_spindle;  // the spindle of the machine, as the server says it (asked now and then)
 static bool g_spindle_new = false;
 static hmi::TableSize g_table;  // the table of the machine, as the server says it (asked with the spindle)
@@ -128,6 +130,7 @@ static void say_task(void*) {
             case hmi::Cue::ToolChange: setting = &g_settings.sound_tool_change; break;
             case hmi::Cue::CheckOk: setting = &g_settings.sound_check_ok; break;
             case hmi::Cue::CheckNotOk: setting = &g_settings.sound_check_bad; break;
+            case hmi::Cue::Stage: setting = &g_settings.sound_stage; break;
         }
         if (setting == nullptr || setting->kind == hmi::NoticeSetting::Kind::Off) continue;
         const unsigned volume = g_settings.volume_percent;
@@ -351,7 +354,11 @@ static void link_task(void*) {
                 std::string why;
                 xSemaphoreTake(g_lock, portMAX_DELAY);
                 bool ok = true;
-                if (job.what == ServerJob::Do::Create) ok = g_flow.on_created(r, why);
+                bool retry_plain = false;
+                if (job.what == ServerJob::Do::Create) {
+                    ok = g_flow.on_created(r, why);
+                    retry_plain = !ok && g_flow.take_rack_retry();  // the server turned the bar of the tool changer down: the job is sent again without it
+                }
                 else if (job.what == ServerJob::Do::Start) ok = g_flow.on_started(r, why);
                 else if (r.status != 200 && r.status != 202) { ok = false; why = hmi::error_line(r); }
                 const std::string base = g_flow.report_base();
@@ -359,7 +366,16 @@ static void link_task(void*) {
                 const std::string job_id = g_flow.job_id();
                 xSemaphoreGive(g_lock);
                 if (ok && job.what == ServerJob::Do::Start) memory_save({job_id, g_settings.server_machine, name});
-                if (ok) note(hmi::ScreenNote::Ok); else set_note(hmi::reason_text(why, g_settings.language));
+                if (retry_plain) {
+                    ServerJob again;
+                    again.what = ServerJob::Do::Create;
+                    xQueueSend(g_to_server, &again, 0);
+                    set_note(hmi::text(hmi::T::RackNotChained, g_settings.language));
+                } else if (ok) {
+                    note(hmi::ScreenNote::Ok);
+                } else {
+                    set_note(hmi::reason_text(why, g_settings.language));
+                }
                 if (ok && job.what == ServerJob::Do::Create) {
                     // the answer of the server is kept on the card, without replacing an older report
                     const std::string file = hmi::free_name(base, "txt", [](const std::string& n) {
@@ -502,6 +518,7 @@ extern "C" void app_main() {
     }();
     g_settings = hmi::parse_settings(read_file(CONFIG_HMI_CONFIG_PATH), g_problems);
     for (const auto& p : g_problems) ESP_LOGW(TAG, "settings line %d (%s): %s", p.line, p.key.c_str(), p.what.c_str());
+    g_flow.configure_rack(g_settings);
     {
         // who this firmware is: shown on the screen and sent to the server in every request
         const esp_app_desc_t* app = esp_app_get_description();
@@ -593,6 +610,14 @@ extern "C" void app_main() {
                             xSemaphoreGive(g_lock);
                             if (!ready) {
                                 note(hmi::ScreenNote::NoJobReady);
+                                break;
+                            }
+                            // on a machine with the tool changer, a tool with no place, a place the machine does not have or two tools in one place stop the start and say so
+                            xSemaphoreTake(g_lock, portMAX_DELAY);
+                            const std::string bad = hmi::rack_problem_text(g_flow.rack_problems(), g_settings.language);
+                            xSemaphoreGive(g_lock);
+                            if (!bad.empty()) {
+                                set_note(bad);
                                 break;
                             }
                         }
@@ -737,6 +762,9 @@ extern "C" void app_main() {
         const bool over = g_flow.settled();
         const bool ended_well = g_flow.ended_well();
         const hmi::Stage stage_now = g_flow.stage();
+        const int stages_done = g_flow.stages_done();
+        const bool job_complete = g_flow.job_complete();
+        const std::string stage_next = g_flow.stage_next_name();
         xSemaphoreGive(g_lock);
         if (over && g_remembered) memory_clear();
         // the notices of the job, once each time the stage changes into them
@@ -746,9 +774,20 @@ extern "C" void app_main() {
             last_stage = stage_now;
             stage_changed = true;
         }
-        // the notice of the end only when the server said the job was done, not when it was cancelled or failed
+        // the end of a program is not always the end of the job: a drilling that ends with the routing still to come is a stage of its own (its notice and its line), and the
+        // sound of the end waits until the whole job is done, and only when the server said it did all its work (not when it was cancelled or failed)
+        switch (g_end.update(stages_done, job_complete)) {
+            case hmi::EndNotice::StageDone:
+                say(hmi::Cue::Stage);
+                if (g_settings.stage_window) set_note(hmi::stage_text(stage_next, g_settings.language));
+                stage_changed = true;
+                break;
+            case hmi::EndNotice::BoardOut:
+                say(hmi::Cue::Finished);
+                break;
+            case hmi::EndNotice::None: break;
+        }
         if (ended_well != last_ended_well) {
-            if (ended_well) say(hmi::Cue::Finished);
             last_ended_well = ended_well;
             stage_changed = true;
         }

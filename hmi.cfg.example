@@ -60,3 +60,15 @@ sound_tool_change = off
 # the visual check of the board with the camera of the drill head (CNC only): the notice when it is correct and when it is not correct (a voice says: the visual check of the board is correct / is not correct)
 sound_check_ok = off
 sound_check_bad = off
+# the drilling is done and the routing comes next (the recording is voices/LANG/f|m/stage.wav)
+sound_stage = off
+
+# the bar of the tool changer (only on a machine whose model says ATC)
+# the places of the bar the machine defines: 1 to 14, like 1-14 or 1,2,5-8
+rack_places = 1-14
+# a job does not start while a tool has no place, a place is not defined or two tools share one
+rack_check = on
+# the request of the job carries the places of the tools and the chaining of the drilling and the routing (a server that does not know them gets the job without)
+rack_chain = on
+# the window that says the drilling is done and the routing comes next, with the buttons to follow the routing or to stop
+stage_window = on

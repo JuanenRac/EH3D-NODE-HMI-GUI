@@ -295,6 +295,19 @@ def _notice(v):
     return "" if m and m.group(1) in LANGS else "not off, default or voice:LANG:f|m"
 
 
+def _places(v):
+    if not re.fullmatch(r"\s*[0-9]+(\s*-\s*[0-9]+)?(\s*,\s*[0-9]+(\s*-\s*[0-9]+)?)*\s*", v):
+        return "places from 1 to 14, like 1-14 or 1,2,5-8"
+    got = set()
+    for part in v.split(","):
+        lo, _, hi = part.partition("-")
+        a, b = int(lo), int(hi or lo)
+        if b < a:
+            return "places from 1 to 14, like 1-14 or 1,2,5-8"
+        got.update(n for n in range(a, min(b, 1000) + 1) if 1 <= n <= 14)
+    return "" if got else "places from 1 to 14, like 1-14 or 1,2,5-8"
+
+
 RULES = {
     "language": lambda v: "" if v in LANGS else "not one of the language codes of the screen",
     "theme": lambda v: "",
@@ -309,7 +322,8 @@ RULES = {
     "hw_stop_required": _flag, "link_idle_ms": _num(200, 60000), "stale_after_s": _num(2, 3600),
     "voice_alerts": _flag, "voice_orders": _flag, "voice_confirm": _flag,
     "volume_percent": _num(0, 100), "mic_gain_percent": _num(0, 100),
-    "sound_finish": _notice, "sound_tool_change": _notice, "sound_check_ok": _notice, "sound_check_bad": _notice,
+    "sound_finish": _notice, "sound_tool_change": _notice, "sound_check_ok": _notice, "sound_check_bad": _notice, "sound_stage": _notice,
+    "rack_places": _places, "rack_check": _flag, "rack_chain": _flag, "stage_window": _flag,
 }
 if HAS_MACHINE_KIND:
     RULES["machine_kind"] = lambda v: "" if v in ("cnc", "laser", "pnp") else "not cnc, laser or pnp"

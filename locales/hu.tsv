@@ -145,3 +145,10 @@ ui.WarnFar	A munka messze van a saroktól
 ui.WarnScale	A méretarány nem 1
 ui.WarnCourse	A terv túllépi egy tengely útját
 ui.WfRunning	Munka fut: a fájl nem cserélhető
+ui.StageDone	A fúrás kész, jön a marás
+ui.FollowRouting	Marás követése
+ui.RackTitle	Pozíciók a sávban
+ui.RackNoSlot	nincs helye a sávban
+ui.RackShared	a sávban megosztja a helyét egy másik szerszámmal
+ui.RackUndefined	a helye nincs megadva a gépben
+ui.RackNotChained	A szerver nem láncolta a cseréket: tegye a szerszámokat a sávba a munka sorrendjében

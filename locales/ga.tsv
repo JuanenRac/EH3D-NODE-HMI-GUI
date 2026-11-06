@@ -145,3 +145,10 @@ ui.WarnFar	Tá an obair i bhfad ón gcúinne
 ui.WarnScale	Níl an scála 1
 ui.WarnCourse	Téann an plean thar chúrsa aise
 ui.WfRunning	Tá post ar siúl: ní féidir an comhad a athrú
+ui.StageDone	Tá an druileáil críochnaithe agus leanann an mhuilleáil
+ui.FollowRouting	Lean an mhuilleáil
+ui.RackTitle	Suíomhanna sa bharra
+ui.RackNoSlot	níl áit aige sa bharra
+ui.RackShared	roinneann sé a áit sa bharra le huirlis eile
+ui.RackUndefined	níl a áit sainithe sa mheaisín
+ui.RackNotChained	Níor shlabhraigh an freastalaí na hathruithe: cuir na huirlisí sa bharra in ord na hoibre

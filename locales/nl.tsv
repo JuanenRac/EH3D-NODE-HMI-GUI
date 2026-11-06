@@ -145,3 +145,10 @@ ui.WarnFar	Het werk ligt ver van de hoek
 ui.WarnScale	De schaal is niet 1
 ui.WarnCourse	Het plan overschrijdt de slag van een as
 ui.WfRunning	Een taak loopt: het bestand kan niet worden gewijzigd
+ui.StageDone	Het boren is klaar en het frezen volgt
+ui.FollowRouting	Frezen volgen
+ui.RackTitle	Posities in de balk
+ui.RackNoSlot	heeft geen plaats in de balk
+ui.RackShared	deelt zijn plaats in de balk met een ander gereedschap
+ui.RackUndefined	de plaats is niet gedefinieerd in de machine
+ui.RackNotChained	De server koppelde de wissels niet: leg het gereedschap in de balk op volgorde van de taak

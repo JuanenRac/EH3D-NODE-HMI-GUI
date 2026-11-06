@@ -145,3 +145,10 @@ ui.WarnFar	Lana izkinatik urrun dago
 ui.WarnScale	Eskala ez da 1
 ui.WarnCourse	Planak ardatz baten ibilbidea gainditzen du
 ui.WfRunning	Lan bat martxan dago: ezin da fitxategia aldatu
+ui.StageDone	Zulaketa amaitu da eta fresatzea dator
+ui.FollowRouting	Jarraitu fresatzea
+ui.RackTitle	Barrako posizioak
+ui.RackNoSlot	ez du lekurik barran
+ui.RackShared	barrako lekua beste tresna batekin partekatzen du
+ui.RackUndefined	bere lekua ez dago makinan definituta
+ui.RackNotChained	Zerbitzariak ez ditu tresna-aldaketak katean lotu: jarri tresnak barran lanaren ordenan

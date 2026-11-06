@@ -145,3 +145,10 @@ ui.WarnFar	Ix-xogħol huwa 'l bogħod mill-kantuniera
 ui.WarnScale	L-iskala mhijiex 1
 ui.WarnCourse	Il-pjan jaqbeż il-korsa ta' assi
 ui.WfRunning	Xogħol qed jaħdem: il-fajl ma jistax jinbidel
+ui.StageDone	It-tħaffir intemm u jmiss il-fresar
+ui.FollowRouting	Segwi l-fresar
+ui.RackTitle	Pożizzjonijiet fil-barra
+ui.RackNoSlot	m'għandux post fil-barra
+ui.RackShared	jaqsam il-post tiegħu fil-barra ma' għodda oħra
+ui.RackUndefined	il-post tiegħu mhux definit fil-magna
+ui.RackNotChained	Is-server ma rabatx il-bidliet tal-għodda: poġġi l-għodod fil-barra fl-ordni tax-xogħol

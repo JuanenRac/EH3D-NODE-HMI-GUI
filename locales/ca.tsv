@@ -145,3 +145,10 @@ ui.WarnFar	El treball és lluny de la cantonada
 ui.WarnScale	L'escala no és 1
 ui.WarnCourse	El pla supera el recorregut d'un eix
 ui.WfRunning	Hi ha un treball en marxa: no es pot canviar el fitxer
+ui.StageDone	El foradat ha acabat i segueix el fresat
+ui.FollowRouting	Seguir el fresat
+ui.RackTitle	Posicions a la barra
+ui.RackNoSlot	no té lloc a la barra
+ui.RackShared	comparteix el lloc a la barra amb una altra eina
+ui.RackUndefined	el seu lloc no està definit a la màquina
+ui.RackNotChained	El servidor no ha encadenat els canvis: poseu les eines a la barra en l'ordre de la feina

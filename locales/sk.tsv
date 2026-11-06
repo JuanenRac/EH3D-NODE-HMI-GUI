@@ -145,3 +145,10 @@ ui.WarnFar	Práca je ďaleko od rohu
 ui.WarnScale	Mierka nie je 1
 ui.WarnCourse	Plán presahuje dráhu osi
 ui.WfRunning	Úloha beží: súbor nemožno zmeniť
+ui.StageDone	Vŕtanie je hotové, nasleduje frézovanie
+ui.FollowRouting	Sledovať frézovanie
+ui.RackTitle	Pozície v lište
+ui.RackNoSlot	nemá miesto v lište
+ui.RackShared	zdieľa svoje miesto v lište s iným nástrojom
+ui.RackUndefined	jeho miesto nie je v stroji definované
+ui.RackNotChained	Server nepreviazal výmeny nástroja: vložte nástroje do lišty v poradí úlohy

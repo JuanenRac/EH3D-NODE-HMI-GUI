@@ -145,3 +145,10 @@ ui.WarnFar	Arbetet ligger långt från hörnet
 ui.WarnScale	Skalan är inte 1
 ui.WarnCourse	Planen överskrider en axels rörelse
 ui.WfRunning	Ett jobb pågår: filen kan inte bytas
+ui.StageDone	Borrningen är klar och fräsningen följer
+ui.FollowRouting	Följ fräsningen
+ui.RackTitle	Positioner i listen
+ui.RackNoSlot	har ingen plats i listen
+ui.RackShared	delar sin plats i listen med ett annat verktyg
+ui.RackUndefined	platsen är inte definierad i maskinen
+ui.RackNotChained	Servern kedjade inte verktygsbytena: lägg verktygen i listen i jobbets ordning

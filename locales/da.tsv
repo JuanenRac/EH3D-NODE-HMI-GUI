@@ -145,3 +145,10 @@ ui.WarnFar	Arbejdet ligger langt fra hjørnet
 ui.WarnScale	Skalaen er ikke 1
 ui.WarnCourse	Planen overskrider en akses vandring
 ui.WfRunning	Et job kører: filen kan ikke skiftes
+ui.StageDone	Boringen er færdig, og fræsningen følger
+ui.FollowRouting	Følg fræsningen
+ui.RackTitle	Positioner i bjælken
+ui.RackNoSlot	har ingen plads i bjælken
+ui.RackShared	deler sin plads i bjælken med et andet værktøj
+ui.RackUndefined	pladsen er ikke defineret i maskinen
+ui.RackNotChained	Serveren kædede ikke værktøjsskiftene: læg værktøjerne i bjælken i jobbets rækkefølge

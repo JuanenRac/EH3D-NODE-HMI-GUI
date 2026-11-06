@@ -145,3 +145,10 @@ ui.WarnFar	Darbs ir tālu no stūra
 ui.WarnScale	Mērogs nav 1
 ui.WarnCourse	Plāns pārsniedz ass gājienu
 ui.WfRunning	Darbs darbojas: failu nevar mainīt
+ui.StageDone	Urbšana pabeigta, tālāk frēzēšana
+ui.FollowRouting	Sekot frēzēšanai
+ui.RackTitle	Pozīcijas joslā
+ui.RackNoSlot	nav vietas joslā
+ui.RackShared	dala vietu joslā ar citu instrumentu
+ui.RackUndefined	tā vieta nav definēta iekārtā
+ui.RackNotChained	Serveris nesaistīja instrumentu maiņas: ievietojiet instrumentus joslā darba secībā

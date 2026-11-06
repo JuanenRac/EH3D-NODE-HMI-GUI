@@ -145,3 +145,10 @@ ui.WarnFar	Delo je daleč od kota
 ui.WarnScale	Merilo ni 1
 ui.WarnCourse	Načrt presega hod osi
 ui.WfRunning	Delo teče: datoteke ni mogoče zamenjati
+ui.StageDone	Vrtanje je končano, sledi frezanje
+ui.FollowRouting	Spremljaj frezanje
+ui.RackTitle	Položaji v vrstici
+ui.RackNoSlot	nima mesta v vrstici
+ui.RackShared	deli svoje mesto v vrstici z drugim orodjem
+ui.RackUndefined	njegovo mesto ni določeno v stroju
+ui.RackNotChained	Strežnik ni povezal menjav orodja: položite orodja v vrstico v vrstnem redu naloge

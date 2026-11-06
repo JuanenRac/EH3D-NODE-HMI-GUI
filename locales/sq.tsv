@@ -145,3 +145,10 @@ ui.WarnFar	Puna është larg këndit
 ui.WarnScale	Shkalla nuk është 1
 ui.WarnCourse	Plani e kalon rrugën e një aksi
 ui.WfRunning	Një punë është në ecuri: skedari nuk mund të ndryshohet
+ui.StageDone	Shpimi ka mbaruar dhe vijon frezimi
+ui.FollowRouting	Ndiq frezimin
+ui.RackTitle	Pozicionet në shirit
+ui.RackNoSlot	nuk ka vend në shirit
+ui.RackShared	ndan vendin e tij në shirit me një vegël tjetër
+ui.RackUndefined	vendi i tij nuk është përcaktuar në makinë
+ui.RackNotChained	Serveri nuk i lidhi ndërrimet: vendosini veglat në shirit sipas renditjes së punës

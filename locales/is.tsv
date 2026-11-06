@@ -145,3 +145,10 @@ ui.WarnFar	Verkið er langt frá horninu
 ui.WarnScale	Kvarðinn er ekki 1
 ui.WarnCourse	Áætlunin fer yfir slag áss
 ui.WfRunning	Verk er í gangi: ekki er hægt að skipta um skrá
+ui.StageDone	Borun er lokið og fræsing tekur við
+ui.FollowRouting	Fylgja fræsingu
+ui.RackTitle	Staðsetningar í stikunni
+ui.RackNoSlot	hefur engan stað í stikunni
+ui.RackShared	deilir stað sínum í stikunni með öðru verkfæri
+ui.RackUndefined	staður þess er ekki skilgreindur í vélinni
+ui.RackNotChained	Þjónninn tengdi ekki verkfæraskiptin: setjið verkfærin í stikuna í röð verksins

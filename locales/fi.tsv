@@ -145,3 +145,10 @@ ui.WarnFar	Työ on kaukana kulmasta
 ui.WarnScale	Mittakaava ei ole 1
 ui.WarnCourse	Suunnitelma ylittää akselin liikealueen
 ui.WfRunning	Työ on käynnissä: tiedostoa ei voi vaihtaa
+ui.StageDone	Poraus on valmis ja jyrsintä seuraa
+ui.FollowRouting	Seuraa jyrsintää
+ui.RackTitle	Paikat palkissa
+ui.RackNoSlot	ei ole paikkaa palkissa
+ui.RackShared	jakaa paikkansa palkissa toisen työkalun kanssa
+ui.RackUndefined	sen paikkaa ei ole määritetty koneessa
+ui.RackNotChained	Palvelin ei ketjuttanut työkalunvaihtoja: aseta työkalut palkkiin työn järjestyksessä

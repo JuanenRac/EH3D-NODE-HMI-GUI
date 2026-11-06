@@ -145,3 +145,10 @@ ui.WarnFar	Posao je daleko od kuta
 ui.WarnScale	Mjerilo nije 1
 ui.WarnCourse	Plan prelazi hod osi
 ui.WfRunning	Posao je u tijeku: datoteka se ne može promijeniti
+ui.StageDone	Bušenje je gotovo, slijedi glodanje
+ui.FollowRouting	Prati glodanje
+ui.RackTitle	Položaji u traci
+ui.RackNoSlot	nema mjesto u traci
+ui.RackShared	dijeli mjesto u traci s drugim alatom
+ui.RackUndefined	njegovo mjesto nije definirano u stroju
+ui.RackNotChained	Poslužitelj nije povezao izmjene alata: stavite alate u traku redoslijedom posla

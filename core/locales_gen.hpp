@@ -118,6 +118,13 @@ inline const char* const kText_bg[kKeyCount] = {
     "Мащабът не е 1",  // ui.WarnScale
     "Планът излиза извън хода на ос",  // ui.WarnCourse
     "Работи задание: файлът не може да се сменя",  // ui.WfRunning
+    "Пробиването приключи, следва фрезоването",  // ui.StageDone
+    "Следване на фрезоването",  // ui.FollowRouting
+    "Позиции в лентата",  // ui.RackTitle
+    "няма място в лентата",  // ui.RackNoSlot
+    "споделя мястото си в лентата с друг инструмент",  // ui.RackShared
+    "мястото му не е зададено в машината",  // ui.RackUndefined
+    "Сървърът не свърза смените: наредете инструментите в лентата по реда на работата",  // ui.RackNotChained
     "Проверка на качеството на работата",  // q.Title
     "Светлинен пръстен",  // q.Light
     "Изкл.",  // q.LightOff
@@ -267,6 +274,13 @@ inline const char* const kText_hr[kKeyCount] = {
     "Mjerilo nije 1",  // ui.WarnScale
     "Plan prelazi hod osi",  // ui.WarnCourse
     "Posao je u tijeku: datoteka se ne može promijeniti",  // ui.WfRunning
+    "Bušenje je gotovo, slijedi glodanje",  // ui.StageDone
+    "Prati glodanje",  // ui.FollowRouting
+    "Položaji u traci",  // ui.RackTitle
+    "nema mjesto u traci",  // ui.RackNoSlot
+    "dijeli mjesto u traci s drugim alatom",  // ui.RackShared
+    "njegovo mjesto nije definirano u stroju",  // ui.RackUndefined
+    "Poslužitelj nije povezao izmjene alata: stavite alate u traku redoslijedom posla",  // ui.RackNotChained
     "Provjera kvalitete rada",  // q.Title
     "Svjetlosni prsten",  // q.Light
     "Isklj.",  // q.LightOff
@@ -416,6 +430,13 @@ inline const char* const kText_cs[kKeyCount] = {
     "Měřítko není 1",  // ui.WarnScale
     "Plán přesahuje dráhu osy",  // ui.WarnCourse
     "Úloha běží: soubor nelze změnit",  // ui.WfRunning
+    "Vrtání je hotovo, následuje frézování",  // ui.StageDone
+    "Sledovat frézování",  // ui.FollowRouting
+    "Pozice v liště",  // ui.RackTitle
+    "nemá místo v liště",  // ui.RackNoSlot
+    "sdílí své místo v liště s jiným nástrojem",  // ui.RackShared
+    "jeho místo není ve stroji definováno",  // ui.RackUndefined
+    "Server nepropojil výměny nástroje: vložte nástroje do lišty v pořadí úlohy",  // ui.RackNotChained
     "Kontrola kvality práce",  // q.Title
     "Světelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -565,6 +586,13 @@ inline const char* const kText_da[kKeyCount] = {
     "Skalaen er ikke 1",  // ui.WarnScale
     "Planen overskrider en akses vandring",  // ui.WarnCourse
     "Et job kører: filen kan ikke skiftes",  // ui.WfRunning
+    "Boringen er færdig, og fræsningen følger",  // ui.StageDone
+    "Følg fræsningen",  // ui.FollowRouting
+    "Positioner i bjælken",  // ui.RackTitle
+    "har ingen plads i bjælken",  // ui.RackNoSlot
+    "deler sin plads i bjælken med et andet værktøj",  // ui.RackShared
+    "pladsen er ikke defineret i maskinen",  // ui.RackUndefined
+    "Serveren kædede ikke værktøjsskiftene: læg værktøjerne i bjælken i jobbets rækkefølge",  // ui.RackNotChained
     "Kvalitetskontrol af arbejdet",  // q.Title
     "Lysring",  // q.Light
     "Fra",  // q.LightOff
@@ -714,6 +742,13 @@ inline const char* const kText_nl[kKeyCount] = {
     "De schaal is niet 1",  // ui.WarnScale
     "Het plan overschrijdt de slag van een as",  // ui.WarnCourse
     "Een taak loopt: het bestand kan niet worden gewijzigd",  // ui.WfRunning
+    "Het boren is klaar en het frezen volgt",  // ui.StageDone
+    "Frezen volgen",  // ui.FollowRouting
+    "Posities in de balk",  // ui.RackTitle
+    "heeft geen plaats in de balk",  // ui.RackNoSlot
+    "deelt zijn plaats in de balk met een ander gereedschap",  // ui.RackShared
+    "de plaats is niet gedefinieerd in de machine",  // ui.RackUndefined
+    "De server koppelde de wissels niet: leg het gereedschap in de balk op volgorde van de taak",  // ui.RackNotChained
     "Kwaliteitscontrole van het werk",  // q.Title
     "Lichtring",  // q.Light
     "Uit",  // q.LightOff
@@ -863,6 +898,13 @@ inline const char* const kText_et[kKeyCount] = {
     "Mõõtkava pole 1",  // ui.WarnScale
     "Plaan ületab telje käigu",  // ui.WarnCourse
     "Töö käib: faili ei saa vahetada",  // ui.WfRunning
+    "Puurimine on valmis, järgmisena freesimine",  // ui.StageDone
+    "Jälgi freesimist",  // ui.FollowRouting
+    "Kohad ribal",  // ui.RackTitle
+    "ei ole ribal kohta",  // ui.RackNoSlot
+    "jagab oma kohta ribal teise tööriistaga",  // ui.RackShared
+    "selle koht pole masinas määratud",  // ui.RackUndefined
+    "Server ei sidunud tööriistavahetusi: pange tööriistad ribale töö järjekorras",  // ui.RackNotChained
     "Töö kvaliteedikontroll",  // q.Title
     "Valgusrõngas",  // q.Light
     "Väljas",  // q.LightOff
@@ -1012,6 +1054,13 @@ inline const char* const kText_fi[kKeyCount] = {
     "Mittakaava ei ole 1",  // ui.WarnScale
     "Suunnitelma ylittää akselin liikealueen",  // ui.WarnCourse
     "Työ on käynnissä: tiedostoa ei voi vaihtaa",  // ui.WfRunning
+    "Poraus on valmis ja jyrsintä seuraa",  // ui.StageDone
+    "Seuraa jyrsintää",  // ui.FollowRouting
+    "Paikat palkissa",  // ui.RackTitle
+    "ei ole paikkaa palkissa",  // ui.RackNoSlot
+    "jakaa paikkansa palkissa toisen työkalun kanssa",  // ui.RackShared
+    "sen paikkaa ei ole määritetty koneessa",  // ui.RackUndefined
+    "Palvelin ei ketjuttanut työkalunvaihtoja: aseta työkalut palkkiin työn järjestyksessä",  // ui.RackNotChained
     "Työn laatutarkastus",  // q.Title
     "Valorengas",  // q.Light
     "Pois",  // q.LightOff
@@ -1161,6 +1210,13 @@ inline const char* const kText_el[kKeyCount] = {
     "Η κλίμακα δεν είναι 1",  // ui.WarnScale
     "Το σχέδιο ξεπερνά τη διαδρομή ενός άξονα",  // ui.WarnCourse
     "Εκτελείται μια εργασία: το αρχείο δεν αλλάζει",  // ui.WfRunning
+    "Η διάτρηση τελείωσε και ακολουθεί το φρεζάρισμα",  // ui.StageDone
+    "Παρακολούθηση φρεζαρίσματος",  // ui.FollowRouting
+    "Θέσεις στη μπάρα",  // ui.RackTitle
+    "δεν έχει θέση στη μπάρα",  // ui.RackNoSlot
+    "μοιράζεται τη θέση του στη μπάρα με άλλο εργαλείο",  // ui.RackShared
+    "η θέση του δεν ορίζεται στο μηχάνημα",  // ui.RackUndefined
+    "Ο διακομιστής δεν αλυσίδωσε τις αλλαγές: βάλτε τα εργαλεία στη μπάρα με τη σειρά εργασίας",  // ui.RackNotChained
     "Έλεγχος ποιότητας της εργασίας",  // q.Title
     "Δακτύλιος φωτός",  // q.Light
     "Κλειστό",  // q.LightOff
@@ -1310,6 +1366,13 @@ inline const char* const kText_hu[kKeyCount] = {
     "A méretarány nem 1",  // ui.WarnScale
     "A terv túllépi egy tengely útját",  // ui.WarnCourse
     "Munka fut: a fájl nem cserélhető",  // ui.WfRunning
+    "A fúrás kész, jön a marás",  // ui.StageDone
+    "Marás követése",  // ui.FollowRouting
+    "Pozíciók a sávban",  // ui.RackTitle
+    "nincs helye a sávban",  // ui.RackNoSlot
+    "a sávban megosztja a helyét egy másik szerszámmal",  // ui.RackShared
+    "a helye nincs megadva a gépben",  // ui.RackUndefined
+    "A szerver nem láncolta a cseréket: tegye a szerszámokat a sávba a munka sorrendjében",  // ui.RackNotChained
     "A munka minőségellenőrzése",  // q.Title
     "Fénygyűrű",  // q.Light
     "Ki",  // q.LightOff
@@ -1459,6 +1522,13 @@ inline const char* const kText_ga[kKeyCount] = {
     "Níl an scála 1",  // ui.WarnScale
     "Téann an plean thar chúrsa aise",  // ui.WarnCourse
     "Tá post ar siúl: ní féidir an comhad a athrú",  // ui.WfRunning
+    "Tá an druileáil críochnaithe agus leanann an mhuilleáil",  // ui.StageDone
+    "Lean an mhuilleáil",  // ui.FollowRouting
+    "Suíomhanna sa bharra",  // ui.RackTitle
+    "níl áit aige sa bharra",  // ui.RackNoSlot
+    "roinneann sé a áit sa bharra le huirlis eile",  // ui.RackShared
+    "níl a áit sainithe sa mheaisín",  // ui.RackUndefined
+    "Níor shlabhraigh an freastalaí na hathruithe: cuir na huirlisí sa bharra in ord na hoibre",  // ui.RackNotChained
     "Seiceáil cáilíochta na hoibre",  // q.Title
     "Fáinne solais",  // q.Light
     "Múchta",  // q.LightOff
@@ -1608,6 +1678,13 @@ inline const char* const kText_lv[kKeyCount] = {
     "Mērogs nav 1",  // ui.WarnScale
     "Plāns pārsniedz ass gājienu",  // ui.WarnCourse
     "Darbs darbojas: failu nevar mainīt",  // ui.WfRunning
+    "Urbšana pabeigta, tālāk frēzēšana",  // ui.StageDone
+    "Sekot frēzēšanai",  // ui.FollowRouting
+    "Pozīcijas joslā",  // ui.RackTitle
+    "nav vietas joslā",  // ui.RackNoSlot
+    "dala vietu joslā ar citu instrumentu",  // ui.RackShared
+    "tā vieta nav definēta iekārtā",  // ui.RackUndefined
+    "Serveris nesaistīja instrumentu maiņas: ievietojiet instrumentus joslā darba secībā",  // ui.RackNotChained
     "Darba kvalitātes pārbaude",  // q.Title
     "Gaismas gredzens",  // q.Light
     "Izsl.",  // q.LightOff
@@ -1757,6 +1834,13 @@ inline const char* const kText_lt[kKeyCount] = {
     "Mastelis nėra 1",  // ui.WarnScale
     "Planas viršija ašies eigą",  // ui.WarnCourse
     "Vykdomas darbas: failo pakeisti negalima",  // ui.WfRunning
+    "Gręžimas baigtas, toliau frezavimas",  // ui.StageDone
+    "Sekti frezavimą",  // ui.FollowRouting
+    "Padėtys juostoje",  // ui.RackTitle
+    "neturi vietos juostoje",  // ui.RackNoSlot
+    "dalijasi vieta juostoje su kitu įrankiu",  // ui.RackShared
+    "jo vieta nėra apibrėžta staklėse",  // ui.RackUndefined
+    "Serveris nesujungė įrankių keitimų: sudėkite įrankius į juostą darbo tvarka",  // ui.RackNotChained
     "Darbo kokybės patikra",  // q.Title
     "Šviesos žiedas",  // q.Light
     "Išj.",  // q.LightOff
@@ -1906,6 +1990,13 @@ inline const char* const kText_mt[kKeyCount] = {
     "L-iskala mhijiex 1",  // ui.WarnScale
     "Il-pjan jaqbeż il-korsa ta' assi",  // ui.WarnCourse
     "Xogħol qed jaħdem: il-fajl ma jistax jinbidel",  // ui.WfRunning
+    "It-tħaffir intemm u jmiss il-fresar",  // ui.StageDone
+    "Segwi l-fresar",  // ui.FollowRouting
+    "Pożizzjonijiet fil-barra",  // ui.RackTitle
+    "m'għandux post fil-barra",  // ui.RackNoSlot
+    "jaqsam il-post tiegħu fil-barra ma' għodda oħra",  // ui.RackShared
+    "il-post tiegħu mhux definit fil-magna",  // ui.RackUndefined
+    "Is-server ma rabatx il-bidliet tal-għodda: poġġi l-għodod fil-barra fl-ordni tax-xogħol",  // ui.RackNotChained
     "Verifika tal-kwalità tax-xogħol",  // q.Title
     "Ċirku tad-dawl",  // q.Light
     "Mitfi",  // q.LightOff
@@ -2055,6 +2146,13 @@ inline const char* const kText_pl[kKeyCount] = {
     "Skala nie wynosi 1",  // ui.WarnScale
     "Plan przekracza skok osi",  // ui.WarnCourse
     "Zadanie trwa: nie można zmienić pliku",  // ui.WfRunning
+    "Wiercenie zakończone, teraz frezowanie",  // ui.StageDone
+    "Śledź frezowanie",  // ui.FollowRouting
+    "Pozycje w magazynie",  // ui.RackTitle
+    "nie ma miejsca w magazynie",  // ui.RackNoSlot
+    "dzieli miejsce w magazynie z innym narzędziem",  // ui.RackShared
+    "jego miejsce nie jest zdefiniowane w maszynie",  // ui.RackUndefined
+    "Serwer nie połączył wymian narzędzi: ułóż narzędzia w magazynie w kolejności zadania",  // ui.RackNotChained
     "Kontrola jakości wykonania",  // q.Title
     "Pierścień świetlny",  // q.Light
     "Wył.",  // q.LightOff
@@ -2204,6 +2302,13 @@ inline const char* const kText_ro[kKeyCount] = {
     "Scara nu este 1",  // ui.WarnScale
     "Planul depășește cursa unei axe",  // ui.WarnCourse
     "O lucrare rulează: fișierul nu poate fi schimbat",  // ui.WfRunning
+    "Găurirea s-a terminat și urmează frezarea",  // ui.StageDone
+    "Urmărește frezarea",  // ui.FollowRouting
+    "Poziții în bară",  // ui.RackTitle
+    "nu are loc în bară",  // ui.RackNoSlot
+    "își împarte locul din bară cu altă sculă",  // ui.RackShared
+    "locul său nu este definit în mașină",  // ui.RackUndefined
+    "Serverul nu a înlănțuit schimbările de sculă: puneți sculele în bară în ordinea lucrării",  // ui.RackNotChained
     "Verificarea calității lucrării",  // q.Title
     "Inel de lumină",  // q.Light
     "Oprit",  // q.LightOff
@@ -2353,6 +2458,13 @@ inline const char* const kText_sk[kKeyCount] = {
     "Mierka nie je 1",  // ui.WarnScale
     "Plán presahuje dráhu osi",  // ui.WarnCourse
     "Úloha beží: súbor nemožno zmeniť",  // ui.WfRunning
+    "Vŕtanie je hotové, nasleduje frézovanie",  // ui.StageDone
+    "Sledovať frézovanie",  // ui.FollowRouting
+    "Pozície v lište",  // ui.RackTitle
+    "nemá miesto v lište",  // ui.RackNoSlot
+    "zdieľa svoje miesto v lište s iným nástrojom",  // ui.RackShared
+    "jeho miesto nie je v stroji definované",  // ui.RackUndefined
+    "Server nepreviazal výmeny nástroja: vložte nástroje do lišty v poradí úlohy",  // ui.RackNotChained
     "Kontrola kvality práce",  // q.Title
     "Svetelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -2502,6 +2614,13 @@ inline const char* const kText_sl[kKeyCount] = {
     "Merilo ni 1",  // ui.WarnScale
     "Načrt presega hod osi",  // ui.WarnCourse
     "Delo teče: datoteke ni mogoče zamenjati",  // ui.WfRunning
+    "Vrtanje je končano, sledi frezanje",  // ui.StageDone
+    "Spremljaj frezanje",  // ui.FollowRouting
+    "Položaji v vrstici",  // ui.RackTitle
+    "nima mesta v vrstici",  // ui.RackNoSlot
+    "deli svoje mesto v vrstici z drugim orodjem",  // ui.RackShared
+    "njegovo mesto ni določeno v stroju",  // ui.RackUndefined
+    "Strežnik ni povezal menjav orodja: položite orodja v vrstico v vrstnem redu naloge",  // ui.RackNotChained
     "Kontrola kakovosti izdelka",  // q.Title
     "Svetlobni obroč",  // q.Light
     "Izklj.",  // q.LightOff
@@ -2651,6 +2770,13 @@ inline const char* const kText_sv[kKeyCount] = {
     "Skalan är inte 1",  // ui.WarnScale
     "Planen överskrider en axels rörelse",  // ui.WarnCourse
     "Ett jobb pågår: filen kan inte bytas",  // ui.WfRunning
+    "Borrningen är klar och fräsningen följer",  // ui.StageDone
+    "Följ fräsningen",  // ui.FollowRouting
+    "Positioner i listen",  // ui.RackTitle
+    "har ingen plats i listen",  // ui.RackNoSlot
+    "delar sin plats i listen med ett annat verktyg",  // ui.RackShared
+    "platsen är inte definierad i maskinen",  // ui.RackUndefined
+    "Servern kedjade inte verktygsbytena: lägg verktygen i listen i jobbets ordning",  // ui.RackNotChained
     "Kvalitetskontroll av arbetet",  // q.Title
     "Ljusring",  // q.Light
     "Av",  // q.LightOff
@@ -2800,6 +2926,13 @@ inline const char* const kText_no[kKeyCount] = {
     "Skalaen er ikke 1",  // ui.WarnScale
     "Planen overskrider en akses slag",  // ui.WarnCourse
     "En jobb kjører: filen kan ikke byttes",  // ui.WfRunning
+    "Boringen er ferdig og fresingen følger",  // ui.StageDone
+    "Følg fresingen",  // ui.FollowRouting
+    "Posisjoner i listen",  // ui.RackTitle
+    "har ingen plass i listen",  // ui.RackNoSlot
+    "deler plassen sin i listen med et annet verktøy",  // ui.RackShared
+    "plassen er ikke definert i maskinen",  // ui.RackUndefined
+    "Serveren koblet ikke sammen verktøyskiftene: legg verktøyene i listen i jobbens rekkefølge",  // ui.RackNotChained
     "Kvalitetskontroll av arbeidet",  // q.Title
     "Lysring",  // q.Light
     "Av",  // q.LightOff
@@ -2949,6 +3082,13 @@ inline const char* const kText_is[kKeyCount] = {
     "Kvarðinn er ekki 1",  // ui.WarnScale
     "Áætlunin fer yfir slag áss",  // ui.WarnCourse
     "Verk er í gangi: ekki er hægt að skipta um skrá",  // ui.WfRunning
+    "Borun er lokið og fræsing tekur við",  // ui.StageDone
+    "Fylgja fræsingu",  // ui.FollowRouting
+    "Staðsetningar í stikunni",  // ui.RackTitle
+    "hefur engan stað í stikunni",  // ui.RackNoSlot
+    "deilir stað sínum í stikunni með öðru verkfæri",  // ui.RackShared
+    "staður þess er ekki skilgreindur í vélinni",  // ui.RackUndefined
+    "Þjónninn tengdi ekki verkfæraskiptin: setjið verkfærin í stikuna í röð verksins",  // ui.RackNotChained
     "Gæðaskoðun verksins",  // q.Title
     "Ljósahringur",  // q.Light
     "Af",  // q.LightOff
@@ -3098,6 +3238,13 @@ inline const char* const kText_uk[kKeyCount] = {
     "Масштаб не дорівнює 1",  // ui.WarnScale
     "План виходить за хід осі",  // ui.WarnCourse
     "Завдання виконується: файл не можна змінити",  // ui.WfRunning
+    "Свердління завершено, далі фрезерування",  // ui.StageDone
+    "Стежити за фрезеруванням",  // ui.FollowRouting
+    "Позиції в планці",  // ui.RackTitle
+    "немає місця в планці",  // ui.RackNoSlot
+    "ділить своє місце в планці з іншим інструментом",  // ui.RackShared
+    "його місце не задано у верстаті",  // ui.RackUndefined
+    "Сервер не зв'язав зміни інструмента: розмістіть інструменти в планці в порядку завдання",  // ui.RackNotChained
     "Контроль якості виконаної роботи",  // q.Title
     "Світлове кільце",  // q.Light
     "Вимк.",  // q.LightOff
@@ -3247,6 +3394,13 @@ inline const char* const kText_ru[kKeyCount] = {
     "Масштаб не равен 1",  // ui.WarnScale
     "План выходит за ход оси",  // ui.WarnCourse
     "Задание выполняется: файл нельзя сменить",  // ui.WfRunning
+    "Сверление завершено, далее фрезеровка",  // ui.StageDone
+    "Следить за фрезеровкой",  // ui.FollowRouting
+    "Позиции в планке",  // ui.RackTitle
+    "нет места в планке",  // ui.RackNoSlot
+    "делит своё место в планке с другим инструментом",  // ui.RackShared
+    "его место не задано в станке",  // ui.RackUndefined
+    "Сервер не связал смены инструмента: разместите инструменты в планке в порядке задания",  // ui.RackNotChained
     "Контроль качества выполненной работы",  // q.Title
     "Световое кольцо",  // q.Light
     "Выкл.",  // q.LightOff
@@ -3396,6 +3550,13 @@ inline const char* const kText_sr[kKeyCount] = {
     "Размера није 1",  // ui.WarnScale
     "План прелази ход осе",  // ui.WarnCourse
     "Посао је у току: датотека се не може променити",  // ui.WfRunning
+    "Бушење је готово, следи глодање",  // ui.StageDone
+    "Прати глодање",  // ui.FollowRouting
+    "Положаји у траци",  // ui.RackTitle
+    "нема место у траци",  // ui.RackNoSlot
+    "дели место у траци са другим алатом",  // ui.RackShared
+    "његово место није дефинисано у машини",  // ui.RackUndefined
+    "Сервер није повезао замене алата: ставите алате у траку редоследом посла",  // ui.RackNotChained
     "Провера квалитета рада",  // q.Title
     "Светлосни прстен",  // q.Light
     "Искљ.",  // q.LightOff
@@ -3545,6 +3706,13 @@ inline const char* const kText_sq[kKeyCount] = {
     "Shkalla nuk është 1",  // ui.WarnScale
     "Plani e kalon rrugën e një aksi",  // ui.WarnCourse
     "Një punë është në ecuri: skedari nuk mund të ndryshohet",  // ui.WfRunning
+    "Shpimi ka mbaruar dhe vijon frezimi",  // ui.StageDone
+    "Ndiq frezimin",  // ui.FollowRouting
+    "Pozicionet në shirit",  // ui.RackTitle
+    "nuk ka vend në shirit",  // ui.RackNoSlot
+    "ndan vendin e tij në shirit me një vegël tjetër",  // ui.RackShared
+    "vendi i tij nuk është përcaktuar në makinë",  // ui.RackUndefined
+    "Serveri nuk i lidhi ndërrimet: vendosini veglat në shirit sipas renditjes së punës",  // ui.RackNotChained
     "Kontrolli i cilësisë së punës",  // q.Title
     "Unaza e dritës",  // q.Light
     "Fikur",  // q.LightOff
@@ -3694,6 +3862,13 @@ inline const char* const kText_ca[kKeyCount] = {
     "L'escala no és 1",  // ui.WarnScale
     "El pla supera el recorregut d'un eix",  // ui.WarnCourse
     "Hi ha un treball en marxa: no es pot canviar el fitxer",  // ui.WfRunning
+    "El foradat ha acabat i segueix el fresat",  // ui.StageDone
+    "Seguir el fresat",  // ui.FollowRouting
+    "Posicions a la barra",  // ui.RackTitle
+    "no té lloc a la barra",  // ui.RackNoSlot
+    "comparteix el lloc a la barra amb una altra eina",  // ui.RackShared
+    "el seu lloc no està definit a la màquina",  // ui.RackUndefined
+    "El servidor no ha encadenat els canvis: poseu les eines a la barra en l'ordre de la feina",  // ui.RackNotChained
     "Verificació de qualitat de la feina",  // q.Title
     "Aro de llum",  // q.Light
     "Apagat",  // q.LightOff
@@ -3843,6 +4018,13 @@ inline const char* const kText_gl[kKeyCount] = {
     "A escala non é 1",  // ui.WarnScale
     "O plan supera o percorrido dun eixe",  // ui.WarnCourse
     "Hai un traballo en marcha: non se pode cambiar o ficheiro",  // ui.WfRunning
+    "O taladrado rematou e segue o fresado",  // ui.StageDone
+    "Seguir o fresado",  // ui.FollowRouting
+    "Posicións na barra",  // ui.RackTitle
+    "non ten lugar na barra",  // ui.RackNoSlot
+    "comparte o lugar na barra con outra ferramenta",  // ui.RackShared
+    "o seu lugar non está definido na máquina",  // ui.RackUndefined
+    "O servidor non encadeou os cambios: poña as ferramentas na barra na orde do traballo",  // ui.RackNotChained
     "Verificación de calidade do traballo",  // q.Title
     "Aro de luz",  // q.Light
     "Apagado",  // q.LightOff
@@ -3992,6 +4174,13 @@ inline const char* const kText_eu[kKeyCount] = {
     "Eskala ez da 1",  // ui.WarnScale
     "Planak ardatz baten ibilbidea gainditzen du",  // ui.WarnCourse
     "Lan bat martxan dago: ezin da fitxategia aldatu",  // ui.WfRunning
+    "Zulaketa amaitu da eta fresatzea dator",  // ui.StageDone
+    "Jarraitu fresatzea",  // ui.FollowRouting
+    "Barrako posizioak",  // ui.RackTitle
+    "ez du lekurik barran",  // ui.RackNoSlot
+    "barrako lekua beste tresna batekin partekatzen du",  // ui.RackShared
+    "bere lekua ez dago makinan definituta",  // ui.RackUndefined
+    "Zerbitzariak ez ditu tresna-aldaketak katean lotu: jarri tresnak barran lanaren ordenan",  // ui.RackNotChained
     "Lanaren kalitate-egiaztapena",  // q.Title
     "Argi-eraztuna",  // q.Light
     "Itzalita",  // q.LightOff
@@ -4141,6 +4330,13 @@ inline const char* const kText_pt_br[kKeyCount] = {
     nullptr,  // ui.WarnScale
     nullptr,  // ui.WarnCourse
     "Há um trabalho em andamento: não é possível trocar o arquivo",  // ui.WfRunning
+    nullptr,  // ui.StageDone
+    nullptr,  // ui.FollowRouting
+    nullptr,  // ui.RackTitle
+    nullptr,  // ui.RackNoSlot
+    nullptr,  // ui.RackShared
+    nullptr,  // ui.RackUndefined
+    nullptr,  // ui.RackNotChained
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff
@@ -4290,6 +4486,13 @@ inline const char* const kText_fr_ca[kKeyCount] = {
     nullptr,  // ui.WarnScale
     nullptr,  // ui.WarnCourse
     nullptr,  // ui.WfRunning
+    nullptr,  // ui.StageDone
+    nullptr,  // ui.FollowRouting
+    nullptr,  // ui.RackTitle
+    nullptr,  // ui.RackNoSlot
+    nullptr,  // ui.RackShared
+    nullptr,  // ui.RackUndefined
+    nullptr,  // ui.RackNotChained
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff

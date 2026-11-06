@@ -145,3 +145,10 @@ ui.WarnFar	Praca jest daleko od rogu
 ui.WarnScale	Skala nie wynosi 1
 ui.WarnCourse	Plan przekracza skok osi
 ui.WfRunning	Zadanie trwa: nie można zmienić pliku
+ui.StageDone	Wiercenie zakończone, teraz frezowanie
+ui.FollowRouting	Śledź frezowanie
+ui.RackTitle	Pozycje w magazynie
+ui.RackNoSlot	nie ma miejsca w magazynie
+ui.RackShared	dzieli miejsce w magazynie z innym narzędziem
+ui.RackUndefined	jego miejsce nie jest zdefiniowane w maszynie
+ui.RackNotChained	Serwer nie połączył wymian narzędzi: ułóż narzędzia w magazynie w kolejności zadania

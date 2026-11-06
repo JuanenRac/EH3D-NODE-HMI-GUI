@@ -29,6 +29,7 @@ enum class T : unsigned {
     BoardTooBig, Failed,
     OrdStart, OrdPause, OrdResume, OrdToolChanged, OrdHome, OrdStop, CancelsIn, LinkOk, LinkLost, LinkOther, LinkOld, Firmware, CfgLine, CfgMore, CfgNoFile, CfgNotPair, CfgRange, CfgOnOff, CfgChoice, CfgToken, CfgUnknown, SrvNone, SrvSilent, SrvOther, NoteStopFail, NoteStopRefused, NoteStopSent, NoteNoJobToStop, NoteMoveNoLink, NoteBusy, NoteNothingToSend, NoteOldServer, NoteOk, NoteFollowing, NoteNoJobReady, NoteGoingOn, NoteFile, NoteUnreadable, NoteAllOff, ErrClient, ErrTooLong, ErrBroke, ErrSend, WfKind, WfEmpty, WfOldNoFile, WfNothing, OrientAuto, OrientLandscape, OrientPortrait, OverClip, OverRefuse,
     Tools, TimeLeft, EstTime, AtcAuto, AtcByHand, PutTool, WarnTiny, WarnFar, WarnScale, WarnCourse, WfRunning,
+    StageDone, FollowRouting, RackTitle, RackNoSlot, RackShared, RackUndefined, RackNotChained,
     Count
 };
 
@@ -143,6 +144,13 @@ inline const Row& text_row(T t) {
         {"The scale is not 1", "La escala no es 1", "La scala non è 1", "Der Maßstab ist nicht 1", "L'échelle n'est pas 1", "A escala não é 1", "缩放比例不是 1", "倍率が 1 ではありません"},
         {"The plan goes past the course of an axis", "El plan pasa del recorrido de un eje", "Il piano supera la corsa di un asse", "Der Plan überschreitet den Verfahrweg einer Achse", "Le plan dépasse la course d'un axe", "O plano ultrapassa o curso de um eixo", "计划超出某个轴的行程", "計画が軸の可動範囲を超えます"},
         {"A job is running: the file cannot be changed", "Hay un trabajo en marcha: no se puede cambiar el archivo", "Un lavoro è in corso: il file non si può cambiare", "Ein Auftrag läuft: die Datei kann nicht gewechselt werden", "Un travail est en cours : le fichier ne peut pas être changé", "Há um trabalho em curso: não é possível mudar o ficheiro", "作业正在运行：无法更换文件", "ジョブ実行中：ファイルは変更できません"},
+        {"The drilling is done and the routing comes next", "El taladrado ha terminado y sigue el fresado", "La foratura è terminata e segue la fresatura", "Das Bohren ist fertig, als Nächstes folgt das Fräsen", "Le perçage est terminé et le fraisage suit", "A furação terminou e segue-se a fresagem", "钻孔已完成，接下来是铣削", "穴あけが終わり、次はルーティングです"},
+        {"Follow the routing", "Seguir el fresado", "Segui la fresatura", "Fräsen verfolgen", "Suivre le fraisage", "Acompanhar a fresagem", "跟进铣削", "ルーティングを追う"},
+        {"Positions in the bar", "Posiciones en la barra", "Posizioni nella barra", "Positionen in der Leiste", "Positions dans la barre", "Posições na barra", "刀库位置", "バーの位置"},
+        {"has no place in the bar", "no tiene hueco en la barra", "non ha un posto nella barra", "hat keinen Platz in der Leiste", "n'a pas de place dans la barre", "não tem lugar na barra", "在刀库中没有位置", "バーに位置がありません"},
+        {"shares its place in the bar with another tool", "comparte hueco en la barra con otra herramienta", "condivide il posto nella barra con un altro utensile", "teilt seinen Platz in der Leiste mit einem anderen Werkzeug", "partage sa place dans la barre avec un autre outil", "partilha o lugar na barra com outra ferramenta", "与另一把刀共用刀库位置", "バーの位置が他の工具と重複しています"},
+        {"its place is not defined in the machine", "su hueco no está definido en la máquina", "il suo posto non è definito nella macchina", "sein Platz ist in der Maschine nicht definiert", "sa place n'est pas définie dans la machine", "o seu lugar não está definido na máquina", "其位置在机床中未定义", "位置がマシンに定義されていません"},
+        {"The server did not chain the tool changes: put the tools in the bar in the order of the job", "El servidor no encadenó los cambios de herramienta: ponga las herramientas en la barra en el orden del trabajo", "Il server non ha concatenato i cambi utensile: mettere gli utensili nella barra nell'ordine del lavoro", "Der Server hat die Werkzeugwechsel nicht verkettet: Werkzeuge in der Reihenfolge des Auftrags in die Leiste legen", "Outils non enchaînés : mettez-les dans la barre dans l'ordre du travail", "O servidor não encadeou as trocas: ponha as ferramentas na barra pela ordem do trabalho", "服务器没有连接换刀：请按作业顺序把刀具放入刀库", "サーバーが工具交換を連鎖しませんでした：ジョブの順にバーへ工具を置いてください"}
     }};
     return rows[static_cast<std::size_t>(t)];
 }

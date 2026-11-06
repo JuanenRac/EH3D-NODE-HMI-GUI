@@ -145,3 +145,10 @@ ui.WarnFar	Töö on nurgast kaugel
 ui.WarnScale	Mõõtkava pole 1
 ui.WarnCourse	Plaan ületab telje käigu
 ui.WfRunning	Töö käib: faili ei saa vahetada
+ui.StageDone	Puurimine on valmis, järgmisena freesimine
+ui.FollowRouting	Jälgi freesimist
+ui.RackTitle	Kohad ribal
+ui.RackNoSlot	ei ole ribal kohta
+ui.RackShared	jagab oma kohta ribal teise tööriistaga
+ui.RackUndefined	selle koht pole masinas määratud
+ui.RackNotChained	Server ei sidunud tööriistavahetusi: pange tööriistad ribale töö järjekorras

@@ -145,3 +145,10 @@ ui.WarnFar	O traballo está lonxe da esquina
 ui.WarnScale	A escala non é 1
 ui.WarnCourse	O plan supera o percorrido dun eixe
 ui.WfRunning	Hai un traballo en marcha: non se pode cambiar o ficheiro
+ui.StageDone	O taladrado rematou e segue o fresado
+ui.FollowRouting	Seguir o fresado
+ui.RackTitle	Posicións na barra
+ui.RackNoSlot	non ten lugar na barra
+ui.RackShared	comparte o lugar na barra con outra ferramenta
+ui.RackUndefined	o seu lugar non está definido na máquina
+ui.RackNotChained	O servidor non encadeou os cambios: poña as ferramentas na barra na orde do traballo

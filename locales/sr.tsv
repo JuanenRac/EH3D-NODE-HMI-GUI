@@ -145,3 +145,10 @@ ui.WarnFar	Посао је далеко од угла
 ui.WarnScale	Размера није 1
 ui.WarnCourse	План прелази ход осе
 ui.WfRunning	Посао је у току: датотека се не може променити
+ui.StageDone	Бушење је готово, следи глодање
+ui.FollowRouting	Прати глодање
+ui.RackTitle	Положаји у траци
+ui.RackNoSlot	нема место у траци
+ui.RackShared	дели место у траци са другим алатом
+ui.RackUndefined	његово место није дефинисано у машини
+ui.RackNotChained	Сервер није повезао замене алата: ставите алате у траку редоследом посла

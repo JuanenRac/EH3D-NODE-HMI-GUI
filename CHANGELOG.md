@@ -3,6 +3,9 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+
+## [0.0.7] - Firmware built in GitHub Actions with a watchdog for the manual build and the new brand
+
 - **Brand:** Add the application icon and the logos of the program.
 - **Shared checks updated:** the validator also compares the badge and the Version row of the README with the manifest, fails when one of its checks cannot run, and the CHANGELOG step of the workflow reads the base branch from the environment.
 - **A watchdog for the manual build:** `.github/workflows/build-watchdog.yml` looks every hour for a build that stays queued or running longer than the limit in `.github/build-watchdog.json` and opens (or updates) an issue `build-stuck`, which it closes when no build is stuck.

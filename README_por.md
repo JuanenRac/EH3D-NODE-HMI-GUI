@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-C%2B%2B17%20%2B%20ESP--IDF-00599C.svg" alt="C++17 and ESP-IDF">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.6-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.7-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -28,7 +28,7 @@
 
 | | |
 |---|---|
-| Versão | `0.0.6` |
+| Versão | `0.0.7` |
 | Maturidade | Estrutura inicial |
 | Testes | 9 programas de teste no computador (179467 verificações contadas) |
 | Tecnologias | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |

@@ -48,6 +48,10 @@ inline const std::vector<FieldSpec>& field_specs() {
         {"spindle_rpm", FieldKind::Number, 0, 65535, 0},
         {"spindle_over", FieldKind::List},
         {"hw_stop_required", FieldKind::Switch},
+        // the bar of the tool changer and the stages of a job
+        {"rack_check", FieldKind::Switch},
+        {"rack_chain", FieldKind::Switch},
+        {"stage_window", FieldKind::Switch},
         {"link_idle_ms", FieldKind::Number, 200, 60000, 0},
         {"voice_alerts", FieldKind::Switch},
         {"voice_orders", FieldKind::Switch},
@@ -58,6 +62,7 @@ inline const std::vector<FieldSpec>& field_specs() {
         {"sound_tool_change", FieldKind::List},
         {"sound_check_ok", FieldKind::List},
         {"sound_check_bad", FieldKind::List},
+        {"sound_stage", FieldKind::List},
     };
     return specs;
 }

@@ -79,7 +79,6 @@ inline std::vector<Note> tone_notes(Cue cue) {
         case Cue::ToolChange: return {{880.0f, 160}, {0.0f, 60}, {880.0f, 160}, {1174.66f, 300}};
         case Cue::CheckOk: return {{659.25f, 110}, {987.77f, 110}, {1318.5f, 320}};
         case Cue::CheckNotOk: return {{392.0f, 260}, {0.0f, 80}, {329.63f, 260}, {0.0f, 80}, {261.63f, 440}};
-        case Cue::Stage: return {{659.25f, 150}, {0.0f, 60}, {783.99f, 150}, {0.0f, 60}, {659.25f, 260}};
     }
     return {};
 }

@@ -7,14 +7,11 @@
 // Every step is a request to the server or a reading of its answer, so the flow is tested without a server.
 #pragma once
 
-#include <algorithm>
 #include <string>
 #include <vector>
 
-#include "hmi_config.hpp"
 #include "job_bar.hpp"
 #include "job_tools.hpp"
-#include "rack.hpp"
 #include "sdfiles.hpp"
 #include "server_link.hpp"
 #include "why_text.hpp"
@@ -81,11 +78,7 @@ public:
         cur_ = first_to_do();
         job_id_.clear();
         reset_run();
-        rack_fallback_ = false;
         stage_ = Stage::FileChosen;
-        // the places of a program that has no file any more go; the tools of the new file take the free places of the bar
-        for (int i = 0; i < 2; ++i) clear_rack_of(i == 1, !slots_[i].loaded);
-        rack_fill();
         return true;
     }
 
@@ -110,98 +103,7 @@ public:
     /// What the file of the program in turn holds (its tools and how many holes or cuts each has) and which tools the operator switched off; the screen shows both.
     const ToolSwitch& tool_switch() const { return slots_[cur_].sw; }
     /// Switches a tool of the chosen file off or on (only before the job is sent); false when there is no such tool or the job is already made.
-    bool toggle_tool(int number) {
-        if (stage_ != Stage::FileChosen || !slots_[cur_].sw.toggle(number)) return false;
-        rack_fill();
-        return true;
-    }
-
-    // ---- the bar of the tool changer (see rack.hpp)
-    /// Takes the settings of the bar: the places the machine defines, the switch that blocks the start while they are wrong and the one that sends them with the job.
-    void configure_rack(const Settings& s) {
-        std::vector<int> places;
-        if (!parse_places(s.rack_places, places) || places.empty()) places = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-        places_ = places;
-        rack_check_ = s.rack_check;
-        rack_chain_ = s.rack_chain;
-        rack_fill();
-    }
-    /// True when the machine changes the tools itself (the model of the fleet says so) and the places of the bar count.
-    bool atc() const { return changes_tools_itself(model_); }
-    const std::vector<int>& rack_places() const { return places_; }
-    /// The tools the job does, over both programs that are still to do: the drills first, then the cutters, each in the order the job uses them.
-    std::vector<RackTool> rack_tools() const {
-        std::vector<RackTool> out;
-        for (int i = 0; i < 2; ++i) {
-            const ProgramTools p = program_tools(i);
-            out.insert(out.end(), p.tools.begin(), p.tools.end());
-        }
-        return out;
-    }
-    const RackAssignment& rack_assignment() const { return rack_; }
-    int rack_slot(bool route, int tool) const { return slot_of(rack_, route, tool); }
-    /// The operator puts a tool in a place of the bar (0 takes the place away). Not while the job runs.
-    bool set_rack_place(bool route, int tool, int slot) {
-        if (stage_ == Stage::Running || stage_ == Stage::Waiting) return false;
-        bool known = false;
-        for (const RackTool& t : rack_tools()) known = known || (t.route == route && t.tool == tool);
-        if (!known) return false;
-        set_slot(rack_, route, tool, slot);  // a place the machine does not define is kept: the check tells it before the start
-        return true;
-    }
-    /// Gives a place to every tool of the job that has none (the small drills first, then the cutters, into the free places from the lowest).
-    void rack_fill() { fill_in_order(rack_tools(), rack_, places_); }
-    /// What stops the job from starting: empty when the machine does not change the tools itself, when the check is turned off or when all is well.
-    std::vector<RackProblem> rack_problems() const {
-        if (!atc() || !rack_check_) return {};
-        return check_rack(rack_tools(), rack_, places_);
-    }
-    /// The squares of the bar: every tool of the job with its place and where it is in the work.
-    std::vector<BarTool> rack_bar() const {
-        std::vector<BarTool> out;
-        const bool running = stage_ == Stage::Running || stage_ == Stage::Waiting;
-        const JobBar b = bar();
-        for (int i = 0; i < 2; ++i) {
-            if (!slots_[i].loaded) continue;
-            const ProgramTools p = program_tools(i, true);
-            for (const RackTool& t : p.tools) {
-                BarTool q;
-                q.route = t.route;
-                q.tool = t.tool;
-                q.diameter_mm = t.diameter_mm;
-                q.slot = slot_of(rack_, t.route, t.tool);
-                q.state = BarState::Pending;
-                if (slots_[i].done) {
-                    q.state = BarState::Done;
-                } else if (i == cur_) {
-                    bool found = false;
-                    for (std::size_t k = 0; k < b.tools.size(); ++k) {
-                        if (b.tools[k].number != t.tool) continue;
-                        found = true;
-                        if (b.tools[k].finished()) q.state = BarState::Done;
-                        else if (running && static_cast<int>(k) == b.current) q.state = BarState::InUse;
-                    }
-                    if (!found && b.known) q.state = BarState::Done;  // the steps of this tool were done before this job
-                }
-                out.push_back(q);
-            }
-        }
-        return out;
-    }
-    /// How the server took the bar of the job it made: not sent (no machine with the changer, or the server refused it), planned with it, or made without it.
-    enum class RackReply { NotSent, Applied, NotApplied };
-    RackReply rack_reply() const { return rack_reply_; }
-    /// True once after the server turned the places down with 400 or 422: the job is to be sent again without them.
-    bool take_rack_retry() {
-        const bool r = rack_retry_;
-        rack_retry_ = false;
-        return r;
-    }
-    /// How many times a program of the job ended well while another was still to come, and the name of the program that came next: the window between the stages.
-    int stages_done() const { return stages_done_; }
-    const std::string& stage_next_name() const { return stage_next_; }
-    /// True when the whole job is over and the server said it did all its work: the board can be taken out. A drilling that ends with a routing still to do is not that.
-    bool job_complete() const { return ended_well() && next_name().empty(); }
+    bool toggle_tool(int number) { return stage_ == Stage::FileChosen && slots_[cur_].sw.toggle(number); }
 
     /// The request that sends the program in turn to the machine as a job, without the tools that are switched off and without the holes (paths) already done; empty
     /// path when there is nothing to send, no machine is set, or every tool is off (`nothing_to_do`).
@@ -209,9 +111,7 @@ public:
         const Slot& s = slots_[cur_];
         if (stage_ != Stage::FileChosen || machine.empty() || !s.loaded || s.sw.nothing_left()) return {};
         if (s.gcode) return job_gcode_request(machine, s.name, s.text, s.skip);
-        RackPlan plan;
-        const RackPlan* rack = rack_for_request(plan) ? &plan : nullptr;
-        return job_request(machine, s.route, s.name, s.text, s.tools, s.sw.off(), s.skip, rack);
+        return job_request(machine, s.route, s.name, s.text, s.tools, s.sw.off(), s.skip);
     }
     /// True when the operator switched off every tool of the program in turn.
     bool nothing_to_do() const { return stage_ == Stage::FileChosen && slots_[cur_].loaded && slots_[cur_].sw.nothing_left(); }
@@ -228,22 +128,14 @@ public:
     /// The answer of the server to the creation of the job.
     bool on_created(const Response& r, std::string& why) {
         Json j;
-        RackPlan sent;
-        const bool with_rack = rack_for_request(sent);
         if ((r.status != 200 && r.status != 201) || !parse_json(r.body, j) || j.str("id").empty()) {
             why = error_line(r);
             stage_ = Stage::FileChosen;
-            // a server that turns the bar down (400 or 422) gets the job again without it: the tools are then taken in the order of the job
-            if (with_rack && (r.status == 400 || r.status == 422)) {
-                rack_fallback_ = true;
-                rack_retry_ = true;
-            }
             return false;
         }
         job_id_ = j.str("id");
         notes_ = parse_job_notes(r.body);
         plan_ = parse_plan_view(r.body);
-        rack_reply_ = !with_rack ? RackReply::NotSent : (parse_rack_applied(r.body) ? RackReply::Applied : RackReply::NotApplied);
         stage_ = Stage::Ready;
         return true;
     }
@@ -451,15 +343,10 @@ public:
         if (stage_ != Stage::Finished || !reported_done_) return false;
         const int other = 1 - cur_;
         if (!slots_[other].loaded || slots_[other].done) return false;
-        // the drilling left its last tool in the chuck only if the server planned it so; the routing then takes it over
-        RackPlan was;
-        slots_[cur_].chained = rack_for_request(was) && was.carry_out && rack_reply_ == RackReply::Applied;
         slots_[cur_].done = true;
         cur_ = other;
         job_id_.clear();
         reset_run();
-        ++stages_done_;
-        stage_next_ = slots_[cur_].name;
         stage_ = Stage::FileChosen;
         return true;
     }
@@ -502,37 +389,7 @@ private:
         std::string name, text, tools;
         ToolSwitch sw;
         int skip = 0;  // the holes (paths) already done before this job
-        bool chained = false;  // it ran with its last tool left in the chuck (the server planned it so)
     };
-
-    /// The tools of one program that the job does, in the order it uses them (switched off ones are left out). With `all`, a program already done counts too.
-    ProgramTools program_tools(int i, bool all = false) const {
-        ProgramTools p;
-        const Slot& s = slots_[i];
-        p.loaded = s.loaded && !s.gcode;
-        p.done = s.done;
-        p.chained = s.chained;
-        if (!p.loaded || (s.done && !all)) return p;
-        std::vector<const ToolInfo*> order;
-        for (const ToolInfo& t : s.sw.summary().tools)
-            if (t.count > 0 && !s.sw.is_off(t.number)) order.push_back(&t);
-        std::sort(order.begin(), order.end(), [](const ToolInfo* a, const ToolInfo* b) { return a->use < b->use; });
-        for (const ToolInfo* t : order) p.tools.push_back({i == 1, t->number, t->diameter_mm});
-        return p;
-    }
-
-    /// The bar of the request of the program in turn; false when none goes (a G-code job, a machine with the manual change, the switch off, or a server that turned it down).
-    bool rack_for_request(RackPlan& out) const {
-        if (!rack_chain_ || rack_fallback_ || !atc() || !slots_[cur_].loaded || slots_[cur_].gcode) return false;
-        out = plan_rack(program_tools(0, true), program_tools(1, true), cur_ == 1, rack_);
-        return out.present();
-    }
-
-    /// Takes the places of a program away when it has no file any more (a new job replaced it).
-    void clear_rack_of(bool route, bool unloaded) {
-        if (!unloaded) return;
-        rack_.erase(std::remove_if(rack_.begin(), rack_.end(), [&](const RackPlace& p) { return p.route == route; }), rack_.end());
-    }
 
     int first_to_do() const {
         for (int i = 0; i < 2; ++i)
@@ -556,8 +413,6 @@ private:
         steps_done_ = steps_total_ = 0;
         estimate_s_ = 0;
         pause_tool_ = 0;
-        rack_reply_ = RackReply::NotSent;
-        rack_retry_ = false;
     }
 
     Stage stage_ = Stage::Nothing;
@@ -576,12 +431,6 @@ private:
     double estimate_s_ = 0;
     ResumeApi api_ = ResumeApi::Unknown;
     bool no_work_ = false, resume_sent_ = false;
-    RackAssignment rack_;
-    std::vector<int> places_ = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-    bool rack_check_ = true, rack_chain_ = true, rack_fallback_ = false, rack_retry_ = false;
-    RackReply rack_reply_ = RackReply::NotSent;
-    int stages_done_ = 0;
-    std::string stage_next_;
 };
 
 }  // namespace hmi

@@ -3,7 +3,7 @@
 // The notices of the screen that are said by a recorded voice: one when the job ends, one when the machine asks for a tool and two for the visual check of the board with the camera
 // of the drill head (correct and not correct). A notice is set as the desktop program
 // sets it (`off`, `default` or `voice:LANG:f|m`), and the recordings live in the folder `voices` of the card or of the flash, one folder for each language and each
-// gender: `voices/es/f/finished.wav`, `voices/es/f/tool.wav`, `voices/es/f/check_ok.wav`, `voices/es/f/check_bad.wav`, and the same under `m`. This says which file a setting names; playing it is the job of the board.
+// gender: `voices/es/f/finished.wav`, `voices/es/f/tool.wav`, `voices/es/f/check_ok.wav`, `voices/es/f/check_bad.wav`, `voices/es/f/stage.wav` (the drilling is done and the routing comes next), and the same under `m`. This says which file a setting names; playing it is the job of the board.
 #pragma once
 
 #include <string>
@@ -12,7 +12,7 @@
 
 namespace hmi {
 
-enum class Cue { Finished, ToolChange, CheckOk, CheckNotOk };
+enum class Cue { Finished, ToolChange, CheckOk, CheckNotOk, Stage };
 
 struct NoticeSetting {
     enum class Kind { Off, Tone, Voice } kind = Kind::Off;
@@ -56,6 +56,7 @@ inline std::string notice_file(const std::string& root, const NoticeSetting& s, 
         case Cue::ToolChange: name = "tool.wav"; break;
         case Cue::CheckOk: name = "check_ok.wav"; break;
         case Cue::CheckNotOk: name = "check_bad.wav"; break;
+        case Cue::Stage: name = "stage.wav"; break;
     }
     return root + "/voices/" + lang_code(s.lang) + "/" + (s.female ? "f" : "m") + "/" + name;
 }

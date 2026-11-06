@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 
+#include "rack.hpp"
+
 namespace hmi {
 
 // ---- a small JSON reader: objects, arrays, strings, numbers, booleans and null; enough for the answers of the server -------------------------
@@ -257,7 +259,7 @@ inline Request job_resume_from_request(const std::string& id) { return {"POST", 
 /// A drilling or routing job made of the text of the file of the card (and its tool table when there is one); the server plans it and keeps
 /// it ready: nothing starts until `job_start_request` is sent, and that goes through the gate of the screen.
 inline Request job_request(const std::string& machine, bool route, const std::string& name, const std::string& file_text, const std::string& tools_text,
-                           const std::vector<int>& skip_tools = {}, int skip = 0) {
+                           const std::vector<int>& skip_tools = {}, int skip = 0, const RackPlan* rack = nullptr) {
     std::string files = std::string("{") + json_quote(route ? "plt" : "ncd") + ":" + json_quote(file_text);
     if (!tools_text.empty()) files += std::string(",") + json_quote(route ? "rtd" : "dtd") + ":" + json_quote(tools_text);
     files += "}";
@@ -270,8 +272,19 @@ inline Request job_request(const std::string& machine, bool route, const std::st
     }
     // how many holes (or paths) are already done: a job that goes on after a stop does only the rest
     if (skip > 0) body += ",\"skip\":" + std::to_string(skip);
+    // the bar of the tool changer (chaining and places of the tools): the request of the second version; without it the request is the one of the first version
+    if (rack != nullptr && rack->present()) body += ",\"request_version\":2,\"rack\":" + rack_json(*rack);
     body += "}";
     return {"POST", "/api/v1/machines/" + machine + "/jobs", body};
+}
+
+/// What the server answered about the bar of the job it made: `rack_applied` true when it planned the tool changes with the chaining and the places, false when it says it did not
+/// or says nothing (a server that does not know the field).
+inline bool parse_rack_applied(const std::string& body) {
+    Json j;
+    if (!parse_json(body, j) || j.type != Json::Type::Object) return false;
+    const Json* v = j.get("rack_applied");
+    return v && v->type == Json::Type::Bool && v->b;
 }
 
 /// A G-code job made of the text of a program of the card (`.nc`, `.gcode`, `.tap`): the server checks it against the machine (it refuses a machine that takes drilling and routing
@@ -490,10 +503,21 @@ struct MachineRow {
     int pause_tool = 0;                    // the tool the job waits for at a tool change (0 when the server does not say it)
     int steps_done = 0, steps_total = 0;   // the holes (paths) of the job done and in all; the lines of a G-code program
     double estimate_s = 0;                 // how long the movements of the job take, as the server estimated it (0: not said)
+    // what the server may say about the head and the tool while the job runs (every one is optional: an answer without them leaves the card with dashes)
+    bool pos_known = false;                // `job.position` {x, y, z} in mm (z positive downwards)
+    double pos_x = 0, pos_y = 0, pos_z = 0;
+    double feed_mm_min = 0;                // `job.feed`
+    double spindle_rpm = 0;                // `job.spindle_rpm`
+    int tool_changes = -1;                 // `job.tool_changes`, -1: not said
+    double elapsed_s = -1;                 // `job.elapsed_s`, -1: not said
+    double depth_mm = -1;                  // `job.depth_mm`: how deep the stroke is, -1: not said
+    double routed_mm = -1;                 // `job.routed_mm`: the length cut so far, -1: not said
+    int tool_slot = 0;                     // `job.tool_slot`: the place in the bar of the tool at work, 0: not said
 };
 
 struct FleetView {
     std::vector<MachineRow> machines;
+    long server_time_s = 0;  // `time_s`: the clock of the server in seconds since 1970, when the answer says it (0: it does not); the chip has no clock of its own
 };
 
 /// The fleet of the answer of `GET /fleet`; false when the text is not an answer of the server.
@@ -531,9 +555,28 @@ inline bool parse_fleet(const std::string& body, FleetView& out) {
             if (r.steps_total < r.steps_done) r.steps_total = r.steps_done;
             r.estimate_s = job->num("estimate_s");
             if (!(r.estimate_s > 0)) r.estimate_s = 0;
+            const Json* pos = job->get("position");
+            if (pos && pos->type == Json::Type::Object && pos->get("x") && pos->get("y")) {
+                r.pos_known = true;
+                r.pos_x = pos->num("x");
+                r.pos_y = pos->num("y");
+                r.pos_z = pos->num("z");
+            }
+            r.feed_mm_min = job->num("feed");
+            if (!(r.feed_mm_min > 0)) r.feed_mm_min = 0;
+            r.spindle_rpm = job->num("spindle_rpm");
+            if (!(r.spindle_rpm > 0)) r.spindle_rpm = 0;
+            r.tool_changes = job->get("tool_changes") ? static_cast<int>(job->num("tool_changes")) : -1;
+            r.elapsed_s = job->get("elapsed_s") ? job->num("elapsed_s") : -1;
+            r.depth_mm = job->get("depth_mm") ? job->num("depth_mm") : -1;
+            r.routed_mm = job->get("routed_mm") ? job->num("routed_mm") : -1;
+            r.tool_slot = static_cast<int>(job->num("tool_slot"));
+            if (r.tool_slot < 0 || r.tool_slot > 15) r.tool_slot = 0;
         }
         v.machines.push_back(std::move(r));
     }
+    v.server_time_s = static_cast<long>(j.num("time_s"));
+    if (v.server_time_s < 0) v.server_time_s = 0;
     out = std::move(v);
     return true;
 }

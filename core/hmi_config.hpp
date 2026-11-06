@@ -12,6 +12,7 @@
 #include "machine.hpp"
 #include "notices.hpp"
 #include "orientation.hpp"
+#include "rack.hpp"
 
 namespace hmi {
 
@@ -49,6 +50,12 @@ struct Settings {
     std::uint32_t link_idle_ms = 3000;      // the link is lost when the machine stays quiet this long, 200..60000
     std::uint32_t stale_after_s = 15;       // the data shown (the fleet, the progress) are marked old when the server has not updated them for this long, 2..3600
 
+    // the bar of the tool changer and the stages of a job (a machine that changes the tools itself)
+    std::string rack_places = "1-14";       // the places of the bar of the tool changer that the machine defines
+    bool rack_check = true;                 // SAFETY: a job on a machine with the tool changer does not start while a tool has no place, a place is not defined or two tools share one
+    bool rack_chain = true;                 // the request of the job carries the places of the tools and the chaining of the drilling and the routing (the server may turn it down)
+    bool stage_window = true;               // the window between the drilling and the routing, with the buttons to follow the routing or to abort
+
     // voice
     bool voice_alerts = true;               // spoken alerts (the end of a job, a tool change, an error)
     bool voice_orders = false;              // spoken orders; off until the operator turns it on
@@ -59,6 +66,7 @@ struct Settings {
     NoticeSetting sound_tool_change;        // the notice when the machine asks for a tool
     NoticeSetting sound_check_ok;           // CNC only: the notice when the visual check of the board (the camera of the drill head) is correct
     NoticeSetting sound_check_bad;          // and when it is not correct
+    NoticeSetting sound_stage;              // the notice at the end of the drilling when the routing comes next
 };
 
 /// Why a line of the settings file cannot be used: the screen says it in the language of the operator (the English `what` is for the log).
@@ -197,6 +205,17 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (!parse_notice(val, s.sound_check_ok)) bad("not off, default or voice:LANG:f|m");
         } else if (key == "sound_check_bad") {
             if (!parse_notice(val, s.sound_check_bad)) bad("not off, default or voice:LANG:f|m");
+        } else if (key == "sound_stage") {
+            if (!parse_notice(val, s.sound_stage)) bad("not off, default or voice:LANG:f|m");
+        } else if (key == "rack_places") {
+            std::vector<int> places;
+            if (parse_places(val, places) && !places.empty()) s.rack_places = val; else bad("places from 1 to 14, like 1-14 or 1,2,5-8", CfgReason::Range);
+        } else if (key == "rack_check") {
+            if (flag()) s.rack_check = b;
+        } else if (key == "rack_chain") {
+            if (flag()) s.rack_chain = b;
+        } else if (key == "stage_window") {
+            if (flag()) s.stage_window = b;
         } else if (key == "mic_gain_percent") {
             if (num(0, 100)) s.mic_gain_percent = static_cast<std::uint16_t>(n);
         } else {

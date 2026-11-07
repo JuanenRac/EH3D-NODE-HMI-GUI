@@ -4,6 +4,15 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The bar of the tool changer:** on a machine whose model says ATC, every tool of the job gets a place in the bar (1 to 14, the small drills first), the flow keeps the place of each tool, and the start is refused with a sentence in the language of the operator while a tool has no place, a place is not defined or two tools share one (`rack_check`). The rules live in `core/rack.hpp`, the same file as on the other touch screen.
+- **Drilling and routing chained in one change:** the request of the job carries the places of the tools and the chaining of the drilling and the routing (`rack.first`, `carry_in`, `carry_out`, `request_version` 2; `rack_chain` turns it off), the screen reads `rack_applied` in the answer, says when the server did not chain the changes, and sends the job again without the bar when the server turns it down.
+- **The end of a drilling is not the end of the job:** when a routing is still to come, the screen tells a stage of its own (a notice `sound_stage` with its tone or `voices/LANG/f|m/stage.wav`, and a line that says the routing comes next, `stage_window`); the sound of the end waits until the whole job is done and the server said it did all its work.
+- **New settings in `hmi.cfg`:** `rack_places`, `rack_check`, `rack_chain`, `stage_window` and `sound_stage`, with their ranges, the keyboards and the rules of the self-test; the example file carries them with the conservative defaults.
+- **Seven new texts in the 37 languages:** the stage line, the button to follow the routing, the title of the positions, and the three problems of a place and the note of a server that did not chain; the fonts are rebuilt for the new characters.
+- **The files of the tool changer are shared with the other touch screen again:** `core/rack.hpp`, `core/stage_notice.hpp`, `core/notices.hpp`, `core/wav.hpp`, `core/server_link.hpp` and `core/workflow.hpp` are kept identical by the firmware base of EH3D-COMMON.
+- **Tests:** a tenth host test program, `test_rack` (119 checks) on the places, the chaining, the request of the second version, a server that does not chain, the wait for the places, the end of a stage and the new settings; the keys and the keyboards of the new settings in `test_keyboard` and `test_locales`. The ten programs make 211934 checks.
+- **Built and run:** the rules are tested on a computer; the new code of `main/app_main.cpp` has not been built into a firmware image, the screen has not been flashed to a module and nothing has been connected to a machine. The window to choose the places by hand is not drawn on this screen yet.
+
 ## [0.0.7] - Firmware built in GitHub Actions with a watchdog for the manual build and the new brand
 
 - **Brand:** Add the application icon and the logos of the program.

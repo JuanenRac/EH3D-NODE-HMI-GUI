@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.8] - Tool changer in the display, shared with the other display and the texts of the stages in 37 languages
+
 - **The bar of the tool changer:** on a machine whose model says ATC, every tool of the job gets a place in the bar (1 to 14, the small drills first), the flow keeps the place of each tool, and the start is refused with a sentence in the language of the operator while a tool has no place, a place is not defined or two tools share one (`rack_check`). The rules live in `core/rack.hpp`, the same file as on the other touch screen.
 - **Drilling and routing chained in one change:** the request of the job carries the places of the tools and the chaining of the drilling and the routing (`rack.first`, `carry_in`, `carry_out`, `request_version` 2; `rack_chain` turns it off), the screen reads `rack_applied` in the answer, says when the server did not chain the changes, and sends the job again without the bar when the server turns it down.
 - **The end of a drilling is not the end of the job:** when a routing is still to come, the screen tells a stage of its own (a notice `sound_stage` with its tone or `voices/LANG/f|m/stage.wav`, and a line that says the routing comes next, `stage_window`); the sound of the end waits until the whole job is done and the server said it did all its work.

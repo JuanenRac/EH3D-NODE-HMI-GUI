@@ -119,6 +119,20 @@
         },
         {
           "desc": {
+            "en": "the bar of the tool changer and the stage notice",
+            "es": "la barra del cambiador de herramientas y el aviso de etapa",
+            "it": "la barra del cambio utensili e l'avviso di fase",
+            "de": "die Leiste des Werkzeugwechslers und die Etappenmeldung",
+            "fr": "la barre du changeur d'outils et l'avis d'étape",
+            "pt": "a barra do trocador de ferramentas e o aviso de etapa",
+            "zh": "换刀器刀库栏和阶段提示",
+            "ja": "ツールチェンジャーのバーと段階の通知"
+          },
+          "name": "rack.hpp  stage_notice.hpp",
+          "tree_name": "rack.hpp stage_notice.hpp"
+        },
+        {
+          "desc": {
             "en": "the quality check and the ring of LEDs",
             "es": "la verificación de calidad y el aro de LEDs",
             "it": "il controllo qualità e l'anello di LED",
@@ -316,6 +330,20 @@
           },
           "name": "test_keyboard.cpp  test_notices.cpp",
           "tree_name": "test_keyboard.cpp test_notices.cpp"
+        },
+        {
+          "desc": {
+            "en": "the tool changer bar and the stages of a job",
+            "es": "la barra del cambiador de herramientas y las etapas de un trabajo",
+            "it": "la barra del cambio utensili e le fasi di un lavoro",
+            "de": "die Leiste des Werkzeugwechslers und die Etappen eines Auftrags",
+            "fr": "la barre du changeur d'outils et les étapes d'un travail",
+            "pt": "a barra do trocador de ferramentas e as etapas de um trabalho",
+            "zh": "换刀器刀库栏和作业阶段",
+            "ja": "ツールチェンジャーのバーとジョブの段階"
+          },
+          "name": "test_rack.cpp",
+          "tree_name": "test_rack.cpp"
         },
         {
           "desc": {

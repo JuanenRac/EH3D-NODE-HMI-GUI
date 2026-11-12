@@ -124,7 +124,7 @@ const lv_color_t kGo = LV_COLOR_MAKE(0x28, 0xe6, 0x5a);
 const lv_color_t kHold = LV_COLOR_MAKE(0x28, 0x96, 0xff);
 const lv_color_t kHalt = LV_COLOR_MAKE(0xff, 0x28, 0x28);
 
-void on_stop(lv_event_t*) { send_action({hmi::Kind::Stop, "stop"}); }
+void on_stop(lv_event_t*) { send_action({hmi::Kind::Stop, "stop", 0, hmi::Op::Stop}); }
 void on_ack(lv_event_t*) { Request r; r.what = What::AckRelease; send(r); }
 void on_confirm(lv_event_t*) { Request r; r.what = What::Confirm; send(r); }
 void on_cancel(lv_event_t*) { Request r; r.what = What::Cancel; send(r); }
@@ -226,12 +226,12 @@ void on_refresh_card(lv_event_t*) { Request r; r.what = What::RefreshCard; send(
 
 const hmi::Action kJog[6] = {{hmi::Kind::Motion, "jog X -"}, {hmi::Kind::Motion, "jog X +"}, {hmi::Kind::Motion, "jog Y -"},
                              {hmi::Kind::Motion, "jog Y +"}, {hmi::Kind::Motion, "jog Z -"}, {hmi::Kind::Motion, "jog Z +"}};
-const hmi::Action kStart{hmi::Kind::Start, "start job"};
-const hmi::Action kPause{hmi::Kind::Pause, "pause"};
-const hmi::Action kContinue{hmi::Kind::Motion, "resume job"};
-const hmi::Action kToolChanged{hmi::Kind::Motion, "tool changed"};
+const hmi::Action kStart{hmi::Kind::Start, "start job", 0, hmi::Op::StartJob};
+const hmi::Action kPause{hmi::Kind::Pause, "pause", 0, hmi::Op::Pause};
+const hmi::Action kContinue{hmi::Kind::Motion, "resume job", 0, hmi::Op::ResumeJob};
+const hmi::Action kToolChanged{hmi::Kind::Motion, "tool changed", 0, hmi::Op::ToolChanged};
 const hmi::Action kHome{hmi::Kind::Motion, "home"};
-hmi::Action g_spindle_action{hmi::Kind::Spindle, "spindle on", 0};  // the turns come from the setting `spindle_rpm`; the gate cuts them to what the spindle gives
+hmi::Action g_spindle_action{hmi::Kind::Spindle, "spindle on", 0, hmi::Op::SpindleOn};  // the turns come from the setting `spindle_rpm`; the gate cuts them to what the spindle gives
 
 void remember_move(lv_obj_t* b) {
     if (g_move_count < 10) g_move_buttons[g_move_count++] = b;

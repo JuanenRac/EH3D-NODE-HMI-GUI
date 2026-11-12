@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "../core/ops.hpp"
 #include "../core/server_link.hpp"
 #include "../core/ui_text.hpp"
 #include "../core/voice.hpp"
@@ -364,6 +365,25 @@ static void the_start_the_pause_and_the_edge_of_the_stop() {
     CHECK(e.take_stop_edge());
 }
 
+// The orders of the screen are an enum, and the id of each one reads back to it.
+static void orders_are_an_enum() {
+    int seen = 0;
+    for (const OpEntry& e : kOps) {
+        CHECK(op_of(e.id) == e.op);
+        CHECK(std::string(op_id(e.op)) == e.id);
+        ++seen;
+    }
+    CHECK(seen == 7);
+    CHECK(op_of("start job") == Op::StartJob && op_of("pause") == Op::Pause && op_of("resume job") == Op::ResumeJob && op_of("tool changed") == Op::ToolChanged);
+    CHECK(op_of("spindle on 12000 rpm") == Op::SpindleOn && op_of("spindle on") == Op::SpindleOn);
+    // what is not an order is none: a jog, a text nobody sends, the empty text, a near miss
+    CHECK(op_of("jog X +10 mm") == Op::None && op_of("") == Op::None && op_of("Pause") == Op::None && op_of("pause ") == Op::None && op_of("spindle") == Op::None);
+    CHECK(std::string(op_id(Op::None)).empty());
+    // no two orders share an id
+    for (const OpEntry& a : kOps)
+        for (const OpEntry& b : kOps) CHECK(a.op == b.op || std::string(a.id) != b.id);
+}
+
 // The health check tells "nobody answers" from "something answers that is not an EH3D server".
 static void health_check() {
     CHECK(health_request().method == "GET" && health_request().path == "/api/v1/health" && health_request().body.empty());
@@ -387,6 +407,7 @@ static void health_check() {
 }
 
 int main() {
+    orders_are_an_enum();
     health_check();
     settings_file();
     gate_rules();

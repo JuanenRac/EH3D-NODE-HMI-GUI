@@ -21,6 +21,7 @@
 #include <string>
 
 #include "hmi_config.hpp"
+#include "ops.hpp"
 
 namespace hmi {
 
@@ -31,6 +32,7 @@ struct Action {
     Kind kind = Kind::Info;
     std::string what;  // what is asked, as the confirmation shows it ("jog X +10 mm")
     int rpm = 0;       // Spindle: the turns asked (0: the speed the job says); the gate cuts it to what the spindle gives and writes the turns it will really get in `what`
+    Op op = Op::None;  // the order as an enum (core/ops.hpp): what the application compares, never the text of `what`
 };
 
 enum class Verdict { Run, NeedConfirm, Refused };

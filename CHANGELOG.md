@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The orders of the screen are an enum:** every button sends an `Op` (`core/ops.hpp`: stop, start job, pause, resume job, tool changed, home, spindle on) in the action, and the application compares that and not the text of the order; the text stays as the id the confirmation shows and `op_of` reads it back, with a test through the whole table so that the two cannot drift.
+
 - **A new image goes back when the screen does not run:** `CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE` is on and `main/image_confirm.hpp` confirms an image written by an update after 30 seconds of running, or sends it back to the previous one at once when the display does not start; an image flashed through the cable is not touched.
 - **The first request to the server is its health check:** after a start or when the link was lost the screen asks `GET /api/v1/health` (open to anyone, no token goes with it) and tells "nobody answers" from "something answers that is not an EH3D server" (`classify_health` in `core/server_link.hpp`) before it asks for the fleet.
 - **The host tests also run under AddressSanitizer and UBSan in the CI:** the same programs are built with `-fsanitize=address,undefined` and run (an undefined behaviour stops the test), and `test.sh` / `test.bat` run the same steps as the CI (the repository checks, the tests of the tools, the pictures and the languages, and the host tests).

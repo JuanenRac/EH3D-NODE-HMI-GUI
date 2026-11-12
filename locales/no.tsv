@@ -29,7 +29,6 @@ ui.WhyNotArmed	Maskinen er ikke klar.
 ui.WhyVoiceOff	Talekommandoer er slått av i innstillingene.
 ui.WhyNoStop	Inngangen for maskinvarestopp er ikke koblet til.
 ui.WhySpindle	Spindelen er slått av i innstillingene.
-ui.WhyNoSpindleHere	Denne maskintypen har ingen spindel som skjermen kan starte.
 ui.Feed	Mating
 ui.Progress	Fremdrift
 ui.Tool	Verktøy
@@ -145,10 +144,21 @@ ui.WarnFar	Arbeidet ligger langt fra hjørnet
 ui.WarnScale	Skalaen er ikke 1
 ui.WarnCourse	Planen overskrider en akses slag
 ui.WfRunning	En jobb kjører: filen kan ikke byttes
+ui.Elapsed	Forløpt
+ui.EndsAt	Slutter kl.
+ui.Routed	Frest lengde
+ui.Changes	Verktøyskift
 ui.StageDone	Boringen er ferdig og fresingen følger
 ui.FollowRouting	Følg fresingen
+ui.BoardOut	Jobben er ferdig: ta ut kortet
+ui.JogLimit	Slutten av banen
+ui.JogRaise	Hodet er for lavt: løft Z først
+ui.WhyJobRunning	En jobb kjører: ingen manuelle bevegelser
+ui.Continuous	Kontinuerlig
 ui.RackTitle	Posisjoner i listen
 ui.RackNoSlot	har ingen plass i listen
 ui.RackShared	deler plassen sin i listen med et annet verktøy
 ui.RackUndefined	plassen er ikke definert i maskinen
 ui.RackNotChained	Serveren koblet ikke sammen verktøyskiftene: legg verktøyene i listen i jobbens rekkefølge
+ui.WhyNoSpindleHere	Denne maskintypen har ingen spindel som skjermen kan starte.
+ui.SrvDegraded	Serveren svarer, men sier at den ikke har det bra

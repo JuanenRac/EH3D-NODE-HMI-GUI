@@ -395,6 +395,7 @@ static void link_task(void*) {
             // an EH3D server" before the fleet is asked for. A server that answers it (well or degraded) goes on to the fleet as before.
             hmi::Health health = hmi::Health::Ok;
             if (g_link_said != hmi::Link::Connected) health = hmi::classify_health(srvlink::call(g_settings, hmi::health_request(), fr, error), fr);
+            if (health == hmi::Health::Degraded) set_note(hmi::text(hmi::T::SrvDegraded, g_settings.language));   // it answers and says it is not well: the operator is told, and the fleet is asked for all the same
             const bool reached = health == hmi::Health::Silent ? false : health == hmi::Health::NotEh3d ? true : srvlink::call(g_settings, hmi::fleet_request(), fr, error);
             const bool parsed = reached && health != hmi::Health::NotEh3d && fr.status == 200 && hmi::parse_fleet(fr.body, view);
             link_update(hmi::classify_fleet(reached, fr, parsed), !parsed || hmi::fleet_has_machine(view, g_settings.server_machine), fr);

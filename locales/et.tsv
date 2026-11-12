@@ -29,7 +29,6 @@ ui.WhyNotArmed	Masin ei ole valmis.
 ui.WhyVoiceOff	Häälkäsklused on seadetes välja lülitatud.
 ui.WhyNoStop	Raudvara stoppi sisend on ühendamata.
 ui.WhySpindle	Spindel on seadetes välja lülitatud.
-ui.WhyNoSpindleHere	Sellel masinatüübil pole spindlit, mida ekraan saaks käivitada.
 ui.Feed	Ettenihe
 ui.Progress	Edenemine
 ui.Tool	Tööriist
@@ -145,10 +144,21 @@ ui.WarnFar	Töö on nurgast kaugel
 ui.WarnScale	Mõõtkava pole 1
 ui.WarnCourse	Plaan ületab telje käigu
 ui.WfRunning	Töö käib: faili ei saa vahetada
+ui.Elapsed	Möödunud
+ui.EndsAt	Lõpeb kell
+ui.Routed	Freesitud pikkus
+ui.Changes	Tööriistavahetused
 ui.StageDone	Puurimine on valmis, järgmisena freesimine
 ui.FollowRouting	Jälgi freesimist
+ui.BoardOut	Töö on valmis: võtke plaat välja
+ui.JogLimit	Käigu ots
+ui.JogRaise	Pea on liiga madalal: tõstke kõigepealt Z
+ui.WhyJobRunning	Töö käib: käsitsi liigutamine keelatud
+ui.Continuous	Pidev
 ui.RackTitle	Kohad ribal
 ui.RackNoSlot	ei ole ribal kohta
 ui.RackShared	jagab oma kohta ribal teise tööriistaga
 ui.RackUndefined	selle koht pole masinas määratud
 ui.RackNotChained	Server ei sidunud tööriistavahetusi: pange tööriistad ribale töö järjekorras
+ui.WhyNoSpindleHere	Sellel masinatüübil pole spindlit, mida ekraan saaks käivitada.
+ui.SrvDegraded	Server vastab, kuid teatab, et ta ei ole korras

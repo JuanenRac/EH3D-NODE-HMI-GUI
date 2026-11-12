@@ -29,7 +29,6 @@ ui.WhyNotArmed	Mașina nu este pregătită.
 ui.WhyVoiceOff	Comenzile vocale sunt dezactivate în setări.
 ui.WhyNoStop	Intrarea opririi hardware nu este conectată.
 ui.WhySpindle	Axul principal este dezactivat în setări.
-ui.WhyNoSpindleHere	Acest tip de mașină nu are un ax principal pe care ecranul să-l poată porni.
 ui.Feed	Avans
 ui.Progress	Progres
 ui.Tool	Sculă
@@ -145,10 +144,21 @@ ui.WarnFar	Lucrarea este departe de colț
 ui.WarnScale	Scara nu este 1
 ui.WarnCourse	Planul depășește cursa unei axe
 ui.WfRunning	O lucrare rulează: fișierul nu poate fi schimbat
+ui.Elapsed	Scurs
+ui.EndsAt	Se termină la
+ui.Routed	Lungime frezată
+ui.Changes	Schimbări de sculă
 ui.StageDone	Găurirea s-a terminat și urmează frezarea
 ui.FollowRouting	Urmărește frezarea
+ui.BoardOut	Lucrarea s-a terminat: scoateți placa
+ui.JogLimit	Capătul cursei
+ui.JogRaise	Capul este prea jos: ridicați mai întâi Z
+ui.WhyJobRunning	O lucrare rulează: fără mișcări manuale
+ui.Continuous	Continuu
 ui.RackTitle	Poziții în bară
 ui.RackNoSlot	nu are loc în bară
 ui.RackShared	își împarte locul din bară cu altă sculă
 ui.RackUndefined	locul său nu este definit în mașină
 ui.RackNotChained	Serverul nu a înlănțuit schimbările de sculă: puneți sculele în bară în ordinea lucrării
+ui.WhyNoSpindleHere	Acest tip de mașină nu are un ax principal pe care ecranul să-l poată porni.
+ui.SrvDegraded	Serverul răspunde, dar spune că nu este bine

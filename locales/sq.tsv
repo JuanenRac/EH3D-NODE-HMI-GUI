@@ -29,7 +29,6 @@ ui.WhyNotArmed	Makina nuk është gati.
 ui.WhyVoiceOff	Komandat zanore janë çaktivizuar te cilësimet.
 ui.WhyNoStop	Hyrja e stopit harduerik nuk është e lidhur.
 ui.WhySpindle	Boshti është çaktivizuar te cilësimet.
-ui.WhyNoSpindleHere	Ky lloj makine nuk ka bosht që ekrani ta nisë.
 ui.Feed	Avancimi
 ui.Progress	Përparimi
 ui.Tool	Mjeti
@@ -145,10 +144,21 @@ ui.WarnFar	Puna është larg këndit
 ui.WarnScale	Shkalla nuk është 1
 ui.WarnCourse	Plani e kalon rrugën e një aksi
 ui.WfRunning	Një punë është në ecuri: skedari nuk mund të ndryshohet
+ui.Elapsed	Kaluar
+ui.EndsAt	Mbaron në
+ui.Routed	Gjatësia e frezuar
+ui.Changes	Ndërrimet e veglës
 ui.StageDone	Shpimi ka mbaruar dhe vijon frezimi
 ui.FollowRouting	Ndiq frezimin
+ui.BoardOut	Puna ka mbaruar: hiqeni pllakën
+ui.JogLimit	Fundi i lëvizjes
+ui.JogRaise	Koka është shumë ulët: ngrini fillimisht Z
+ui.WhyJobRunning	Një punë është në ecuri: pa lëvizje me dorë
+ui.Continuous	E vazhdueshme
 ui.RackTitle	Pozicionet në shirit
 ui.RackNoSlot	nuk ka vend në shirit
 ui.RackShared	ndan vendin e tij në shirit me një vegël tjetër
 ui.RackUndefined	vendi i tij nuk është përcaktuar në makinë
 ui.RackNotChained	Serveri nuk i lidhi ndërrimet: vendosini veglat në shirit sipas renditjes së punës
+ui.WhyNoSpindleHere	Ky lloj makine nuk ka bosht që ekrani ta nisë.
+ui.SrvDegraded	Serveri përgjigjet, por thotë se nuk është mirë

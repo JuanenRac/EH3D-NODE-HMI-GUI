@@ -29,7 +29,6 @@ ui.WhyNotArmed	Makina ez dago armatuta.
 ui.WhyVoiceOff	Ahots-aginduak itzalita daude ezarpenetan.
 ui.WhyNoStop	Hardware-geldialdiaren sarrera ez dago kableatuta.
 ui.WhySpindle	Ardatza desgaituta dago ezarpenetan.
-ui.WhyNoSpindleHere	Makina mota honek ez dauka pantailak abiaraz dezakeen ardatzik.
 ui.Feed	Aurrerapena
 ui.Progress	Aurrerapena
 ui.Tool	Erreminta
@@ -145,10 +144,21 @@ ui.WarnFar	Lana izkinatik urrun dago
 ui.WarnScale	Eskala ez da 1
 ui.WarnCourse	Planak ardatz baten ibilbidea gainditzen du
 ui.WfRunning	Lan bat martxan dago: ezin da fitxategia aldatu
+ui.Elapsed	Igarotako denbora
+ui.EndsAt	Amaiera ordua
+ui.Routed	Fresatutako luzera
+ui.Changes	Tresna-aldaketak
 ui.StageDone	Zulaketa amaitu da eta fresatzea dator
 ui.FollowRouting	Jarraitu fresatzea
+ui.BoardOut	Lana amaitu da: atera plaka
+ui.JogLimit	Ibilbidearen muga
+ui.JogRaise	Burua baxuegi dago: goratu Z lehenengo
+ui.WhyJobRunning	Lan bat martxan dago: eskuzko mugimendurik ez
+ui.Continuous	Etengabea
 ui.RackTitle	Barrako posizioak
 ui.RackNoSlot	ez du lekurik barran
 ui.RackShared	barrako lekua beste tresna batekin partekatzen du
 ui.RackUndefined	bere lekua ez dago makinan definituta
 ui.RackNotChained	Zerbitzariak ez ditu tresna-aldaketak katean lotu: jarri tresnak barran lanaren ordenan
+ui.WhyNoSpindleHere	Makina mota honek ez dauka pantailak abiaraz dezakeen ardatzik.
+ui.SrvDegraded	Zerbitzariak erantzuten du, baina ez dagoela ondo dio

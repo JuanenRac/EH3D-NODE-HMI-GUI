@@ -29,7 +29,6 @@ ui.WhyNotArmed	A gép nincs élesítve.
 ui.WhyVoiceOff	A hangparancsok ki vannak kapcsolva a beállításokban.
 ui.WhyNoStop	A hardveres leállítás bemenete nincs bekötve.
 ui.WhySpindle	A főorsó ki van kapcsolva a beállításokban.
-ui.WhyNoSpindleHere	Ennek a géptípusnak nincs főorsója, amelyet a képernyő elindíthatna.
 ui.Feed	Előtolás
 ui.Progress	Előrehaladás
 ui.Tool	Szerszám
@@ -145,10 +144,21 @@ ui.WarnFar	A munka messze van a saroktól
 ui.WarnScale	A méretarány nem 1
 ui.WarnCourse	A terv túllépi egy tengely útját
 ui.WfRunning	Munka fut: a fájl nem cserélhető
+ui.Elapsed	Eltelt
+ui.EndsAt	Befejezés ideje
+ui.Routed	Marás hossza
+ui.Changes	Szerszámcserék
 ui.StageDone	A fúrás kész, jön a marás
 ui.FollowRouting	Marás követése
+ui.BoardOut	A munka kész: vegye ki a lapot
+ui.JogLimit	Az út vége
+ui.JogRaise	A fej túl alacsonyan van: előbb emelje a Z-t
+ui.WhyJobRunning	Munka fut: kézi mozgatás tiltva
+ui.Continuous	Folyamatos
 ui.RackTitle	Pozíciók a sávban
 ui.RackNoSlot	nincs helye a sávban
 ui.RackShared	a sávban megosztja a helyét egy másik szerszámmal
 ui.RackUndefined	a helye nincs megadva a gépben
 ui.RackNotChained	A szerver nem láncolta a cseréket: tegye a szerszámokat a sávba a munka sorrendjében
+ui.WhyNoSpindleHere	Ennek a géptípusnak nincs főorsója, amelyet a képernyő elindíthatna.
+ui.SrvDegraded	A kiszolgáló válaszol, de azt jelzi, hogy nincs rendben

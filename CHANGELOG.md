@@ -4,6 +4,9 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The two screens share one `core/`:** the settings (`hmi_config.hpp`, with the panel that moves the machine by hand and the kind of machine), the gate, the keyboard, the texts, the 37 languages (`locales/`), `machine.hpp` and the fonts with their code ranges are the same files in both, kept equal by the firmware base of EH3D-COMMON; what one screen does not use the other leaves alone. The fonts are built from the literals of both screens, in GitHub Actions, with `lv_font_conv` 1.5.3 and the fonts of LVGL 9.3.0 (`EH3D_EXTRA_LITERALS` in `tools/make_locales.py` names the other screen's file).
+- **The screen says when the server answers but is not well:** the health check tells `degraded` and the note `ui.SrvDegraded` is shown, in the 37 languages.
+
 - **The build in GitHub Actions lists the biggest stack frames:** with `EH3D_STACK_REPORT=1` (set only by that build) the compiler writes the stack use of every function and the build prints the twenty biggest of `main/` and `core/` in its summary, with a warning on any above 2048 bytes; the image does not change.
 
 - **The orders of the screen are an enum:** every button sends an `Op` (`core/ops.hpp`: stop, start job, pause, resume job, tool changed, home, spindle on) in the action, and the application compares that and not the text of the order; the text stays as the id the confirmation shows and `op_of` reads it back, with a test through the whole table so that the two cannot drift.

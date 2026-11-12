@@ -29,7 +29,6 @@ ui.WhyNotArmed	A máquina non está armada.
 ui.WhyVoiceOff	As ordes por voz están desactivadas nos axustes.
 ui.WhyNoStop	A entrada da parada por hardware non está cableada.
 ui.WhySpindle	O fuso está desactivado nos axustes.
-ui.WhyNoSpindleHere	Este tipo de máquina non ten un fuso que a pantalla poida arrancar.
 ui.Feed	Avance
 ui.Progress	Progreso
 ui.Tool	Ferramenta
@@ -145,10 +144,21 @@ ui.WarnFar	O traballo está lonxe da esquina
 ui.WarnScale	A escala non é 1
 ui.WarnCourse	O plan supera o percorrido dun eixe
 ui.WfRunning	Hai un traballo en marcha: non se pode cambiar o ficheiro
+ui.Elapsed	Transcorrido
+ui.EndsAt	Remata ás
+ui.Routed	Lonxitude fresada
+ui.Changes	Cambios de ferramenta
 ui.StageDone	O taladrado rematou e segue o fresado
 ui.FollowRouting	Seguir o fresado
+ui.BoardOut	O traballo rematou: retire a placa
+ui.JogLimit	Fin do percorrido
+ui.JogRaise	O cabezal está demasiado baixo: suba primeiro Z
+ui.WhyJobRunning	Hai un traballo en marcha: sen movementos manuais
+ui.Continuous	Continuo
 ui.RackTitle	Posicións na barra
 ui.RackNoSlot	non ten lugar na barra
 ui.RackShared	comparte o lugar na barra con outra ferramenta
 ui.RackUndefined	o seu lugar non está definido na máquina
 ui.RackNotChained	O servidor non encadeou os cambios: poña as ferramentas na barra na orde do traballo
+ui.WhyNoSpindleHere	Este tipo de máquina non ten un fuso que a pantalla poida arrancar.
+ui.SrvDegraded	O servidor responde pero di que non está ben

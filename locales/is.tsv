@@ -29,7 +29,6 @@ ui.WhyNotArmed	Vélin er ekki tilbúin.
 ui.WhyVoiceOff	Raddskipanir eru óvirkar í stillingum.
 ui.WhyNoStop	Inngangur vélbúnaðarstopps er ekki tengdur.
 ui.WhySpindle	Snældan er óvirk í stillingum.
-ui.WhyNoSpindleHere	Vélargerð þessi er ekki með snældu sem skjárinn getur ræst.
 ui.Feed	Færsluhraði
 ui.Progress	Framvinda
 ui.Tool	Verkfæri
@@ -145,10 +144,21 @@ ui.WarnFar	Verkið er langt frá horninu
 ui.WarnScale	Kvarðinn er ekki 1
 ui.WarnCourse	Áætlunin fer yfir slag áss
 ui.WfRunning	Verk er í gangi: ekki er hægt að skipta um skrá
+ui.Elapsed	Liðið
+ui.EndsAt	Lýkur kl.
+ui.Routed	Fræst lengd
+ui.Changes	Verkfæraskipti
 ui.StageDone	Borun er lokið og fræsing tekur við
 ui.FollowRouting	Fylgja fræsingu
+ui.BoardOut	Verkinu er lokið: takið plötuna út
+ui.JogLimit	Enda ferilsins
+ui.JogRaise	Hausinn er of neðarlega: lyftið Z fyrst
+ui.WhyJobRunning	Verk er í gangi: engar handvirkar hreyfingar
+ui.Continuous	Samfellt
 ui.RackTitle	Staðsetningar í stikunni
 ui.RackNoSlot	hefur engan stað í stikunni
 ui.RackShared	deilir stað sínum í stikunni með öðru verkfæri
 ui.RackUndefined	staður þess er ekki skilgreindur í vélinni
 ui.RackNotChained	Þjónninn tengdi ekki verkfæraskiptin: setjið verkfærin í stikuna í röð verksins
+ui.WhyNoSpindleHere	Vélargerð þessi er ekki með snældu sem skjárinn getur ræst.
+ui.SrvDegraded	Þjónninn svarar en segist ekki vera í lagi

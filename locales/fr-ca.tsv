@@ -5,3 +5,4 @@ ui.WhyVoiceOff	Les ordres vocaux sont désactivés dans les paramètres.
 ui.WhySpindle	La broche est désactivée dans les paramètres.
 ui.BoardTooBig	La carte ne tient pas sur la table
 ui.Failed	Échec
+ui.SrvDegraded	Le serveur répond mais dit qu'il ne va pas bien

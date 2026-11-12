@@ -20,7 +20,7 @@ enum class T : unsigned {
     Language, Voice, Brightness, Volume,
     JogX, JogY, JogZ, Spindle,
     AskMove, AskSpindle,
-    WhyHardwareStop, WhyNotArmed, WhyVoiceOff, WhyNoStop, WhySpindle, WhyNoSpindleHere,
+    WhyHardwareStop, WhyNotArmed, WhyVoiceOff, WhyNoStop, WhySpindle,
     Feed, Progress, Tool, Jog,
     Holes, Cuts,
     SpindleCut, WhySpindleFast,
@@ -29,7 +29,8 @@ enum class T : unsigned {
     BoardTooBig, Failed,
     OrdStart, OrdPause, OrdResume, OrdToolChanged, OrdHome, OrdStop, CancelsIn, LinkOk, LinkLost, LinkOther, LinkOld, Firmware, CfgLine, CfgMore, CfgNoFile, CfgNotPair, CfgRange, CfgOnOff, CfgChoice, CfgToken, CfgUnknown, SrvNone, SrvSilent, SrvOther, NoteStopFail, NoteStopRefused, NoteStopSent, NoteNoJobToStop, NoteMoveNoLink, NoteBusy, NoteNothingToSend, NoteOldServer, NoteOk, NoteFollowing, NoteNoJobReady, NoteGoingOn, NoteFile, NoteUnreadable, NoteAllOff, ErrClient, ErrTooLong, ErrBroke, ErrSend, WfKind, WfEmpty, WfOldNoFile, WfNothing, OrientAuto, OrientLandscape, OrientPortrait, OverClip, OverRefuse,
     Tools, TimeLeft, EstTime, AtcAuto, AtcByHand, PutTool, WarnTiny, WarnFar, WarnScale, WarnCourse, WfRunning,
-    StageDone, FollowRouting, RackTitle, RackNoSlot, RackShared, RackUndefined, RackNotChained,
+    Elapsed, EndsAt, Routed, Changes, StageDone, FollowRouting, BoardOut, JogLimit, JogRaise, WhyJobRunning, Continuous, RackTitle, RackNoSlot, RackShared, RackUndefined, RackNotChained,
+    WhyNoSpindleHere, SrvDegraded,
     Count
 };
 
@@ -65,7 +66,6 @@ inline const Row& text_row(T t) {
         {"Spoken orders are off in the settings.", "Las órdenes por voz están desactivadas en los ajustes.", "Gli ordini vocali sono disattivati nelle impostazioni.", "Sprachbefehle sind in den Einstellungen aus.", "Les ordres vocaux sont désactivés dans les réglages.", "As ordens por voz estão desligadas nas definições.", "设置中已关闭语音指令。", "設定で音声命令がオフです。"},
         {"The hardware stop input is not wired.", "La entrada de paro por hardware no está cableada.", "L'ingresso di arresto hardware non è collegato.", "Der Hardware-Stopp-Eingang ist nicht verdrahtet.", "L'entrée d'arrêt matériel n'est pas câblée.", "A entrada de paragem por hardware não está ligada.", "硬件急停输入未接线。", "ハードウェア停止入力が配線されていません。"},
         {"The spindle is switched off in the settings.", "El husillo está desactivado en los ajustes.", "Il mandrino è disattivato nelle impostazioni.", "Die Spindel ist in den Einstellungen abgeschaltet.", "La broche est désactivée dans les réglages.", "O fuso está desligado nas definições.", "设置中已禁用主轴。", "設定でスピンドルが無効です。"},
-        {"This kind of machine has no spindle for the screen to start.", "Este tipo de máquina no tiene un husillo que la pantalla pueda arrancar.", "Questo tipo di macchina non ha un mandrino che lo schermo possa avviare.", "Diese Art Maschine hat keine Spindel, die der Bildschirm starten könnte.", "Ce type de machine n'a pas de broche que l'écran puisse démarrer.", "Este tipo de máquina não tem um fuso que o ecrã possa arrancar.", "这类机床没有可由屏幕启动的主轴。", "この種類のマシンには、画面から始動できるスピンドルがありません。"},
         {"Feed", "Avance", "Avanzamento", "Vorschub", "Avance", "Avanço", "进给", "送り"},
         {"Progress", "Progreso", "Avanzamento lavoro", "Fortschritt", "Progression", "Progresso", "进度", "進行"},
         {"Tool", "Herramienta", "Utensile", "Werkzeug", "Outil", "Ferramenta", "刀具", "工具"},
@@ -144,13 +144,24 @@ inline const Row& text_row(T t) {
         {"The scale is not 1", "La escala no es 1", "La scala non è 1", "Der Maßstab ist nicht 1", "L'échelle n'est pas 1", "A escala não é 1", "缩放比例不是 1", "倍率が 1 ではありません"},
         {"The plan goes past the course of an axis", "El plan pasa del recorrido de un eje", "Il piano supera la corsa di un asse", "Der Plan überschreitet den Verfahrweg einer Achse", "Le plan dépasse la course d'un axe", "O plano ultrapassa o curso de um eixo", "计划超出某个轴的行程", "計画が軸の可動範囲を超えます"},
         {"A job is running: the file cannot be changed", "Hay un trabajo en marcha: no se puede cambiar el archivo", "Un lavoro è in corso: il file non si può cambiare", "Ein Auftrag läuft: die Datei kann nicht gewechselt werden", "Un travail est en cours : le fichier ne peut pas être changé", "Há um trabalho em curso: não é possível mudar o ficheiro", "作业正在运行：无法更换文件", "ジョブ実行中：ファイルは変更できません"},
+        {"Elapsed", "Transcurrido", "Trascorso", "Verstrichen", "Écoulé", "Decorrido", "已用时间", "経過時間"},
+        {"Ends at", "Termina a las", "Termina alle", "Endet um", "Fin à", "Termina às", "结束于", "終了時刻"},
+        {"Length routed", "Longitud fresada", "Lunghezza fresata", "Gefräste Länge", "Longueur fraisée", "Comprimento fresado", "已铣削长度", "切削長"},
+        {"Tool changes", "Cambios de herramienta", "Cambi utensile", "Werkzeugwechsel", "Changements d'outil", "Trocas de ferramenta", "换刀次数", "工具交換回数"},
         {"The drilling is done and the routing comes next", "El taladrado ha terminado y sigue el fresado", "La foratura è terminata e segue la fresatura", "Das Bohren ist fertig, als Nächstes folgt das Fräsen", "Le perçage est terminé et le fraisage suit", "A furação terminou e segue-se a fresagem", "钻孔已完成，接下来是铣削", "穴あけが終わり、次はルーティングです"},
         {"Follow the routing", "Seguir el fresado", "Segui la fresatura", "Fräsen verfolgen", "Suivre le fraisage", "Acompanhar a fresagem", "跟进铣削", "ルーティングを追う"},
+        {"The job is done: take the board out", "El trabajo ha terminado: retire la placa", "Il lavoro è terminato: togliere la scheda", "Der Auftrag ist fertig: Platine entnehmen", "Le travail est terminé : retirez la carte", "O trabalho terminou: retire a placa", "作业已完成：请取出电路板", "ジョブが完了しました：基板を取り出してください"},
+        {"End of the travel", "Fin del recorrido", "Fine della corsa", "Ende des Verfahrwegs", "Fin de course", "Fim do curso", "行程终点", "移動範囲の端"},
+        {"The head is too low: raise Z first", "El cabezal está demasiado bajo: suba Z primero", "La testa è troppo bassa: alzare prima Z", "Der Kopf ist zu tief: zuerst Z anheben", "La tête est trop basse : relevez d'abord Z", "A cabeça está demasiado baixa: suba primeiro o Z", "刀头过低：请先抬高 Z", "ヘッドが低すぎます：先に Z を上げてください"},
+        {"A job is running: no moves by hand", "Hay un trabajo en marcha: sin movimientos a mano", "Un lavoro è in corso: nessun movimento manuale", "Ein Auftrag läuft: keine Handbewegungen", "Un travail est en cours : aucun déplacement manuel", "Há um trabalho em curso: sem movimentos manuais", "作业运行中：不能手动移动", "ジョブ実行中：手動で動かせません"},
+        {"Continuous", "Continuo", "Continuo", "Dauerlauf", "Continu", "Contínuo", "连续", "連続"},
         {"Positions in the bar", "Posiciones en la barra", "Posizioni nella barra", "Positionen in der Leiste", "Positions dans la barre", "Posições na barra", "刀库位置", "バーの位置"},
         {"has no place in the bar", "no tiene hueco en la barra", "non ha un posto nella barra", "hat keinen Platz in der Leiste", "n'a pas de place dans la barre", "não tem lugar na barra", "在刀库中没有位置", "バーに位置がありません"},
         {"shares its place in the bar with another tool", "comparte hueco en la barra con otra herramienta", "condivide il posto nella barra con un altro utensile", "teilt seinen Platz in der Leiste mit einem anderen Werkzeug", "partage sa place dans la barre avec un autre outil", "partilha o lugar na barra com outra ferramenta", "与另一把刀共用刀库位置", "バーの位置が他の工具と重複しています"},
         {"its place is not defined in the machine", "su hueco no está definido en la máquina", "il suo posto non è definito nella macchina", "sein Platz ist in der Maschine nicht definiert", "sa place n'est pas définie dans la machine", "o seu lugar não está definido na máquina", "其位置在机床中未定义", "位置がマシンに定義されていません"},
-        {"The server did not chain the tool changes: put the tools in the bar in the order of the job", "El servidor no encadenó los cambios de herramienta: ponga las herramientas en la barra en el orden del trabajo", "Il server non ha concatenato i cambi utensile: mettere gli utensili nella barra nell'ordine del lavoro", "Der Server hat die Werkzeugwechsel nicht verkettet: Werkzeuge in der Reihenfolge des Auftrags in die Leiste legen", "Outils non enchaînés : mettez-les dans la barre dans l'ordre du travail", "O servidor não encadeou as trocas: ponha as ferramentas na barra pela ordem do trabalho", "服务器没有连接换刀：请按作业顺序把刀具放入刀库", "サーバーが工具交換を連鎖しませんでした：ジョブの順にバーへ工具を置いてください"}
+        {"The server did not chain the tool changes: put the tools in the bar in the order of the job", "El servidor no encadenó los cambios de herramienta: ponga las herramientas en la barra en el orden del trabajo", "Il server non ha concatenato i cambi utensile: mettere gli utensili nella barra nell'ordine del lavoro", "Der Server hat die Werkzeugwechsel nicht verkettet: Werkzeuge in der Reihenfolge des Auftrags in die Leiste legen", "Outils non enchaînés : mettez-les dans la barre dans l'ordre du travail", "O servidor não encadeou as trocas: ponha as ferramentas na barra pela ordem do trabalho", "服务器没有连接换刀：请按作业顺序把刀具放入刀库", "サーバーが工具交換を連鎖しませんでした：ジョブの順にバーへ工具を置いてください"},
+        {"This kind of machine has no spindle for the screen to start.", "Este tipo de máquina no tiene un husillo que la pantalla pueda arrancar.", "Questo tipo di macchina non ha un mandrino che lo schermo possa avviare.", "Diese Art Maschine hat keine Spindel, die der Bildschirm starten könnte.", "Ce type de machine n'a pas de broche que l'écran puisse démarrer.", "Este tipo de máquina não tem um fuso que o ecrã possa arrancar.", "这类机床没有可由屏幕启动的主轴。", "この種類のマシンには、画面から始動できるスピンドルがありません。"},
+        {"The server answers but says it is not well", "El servidor responde pero dice que no está bien", "Il server risponde ma dice di non stare bene", "Der Server antwortet, meldet aber, dass es ihm nicht gut geht", "Le serveur répond mais dit qu'il ne va pas bien", "O servidor responde mas diz que não está bem", "服务器有响应，但表示状态不佳", "サーバーは応答しますが、不調だと伝えています"},
     }};
     return rows[static_cast<std::size_t>(t)];
 }
@@ -169,6 +180,7 @@ inline const char* why_text(Why w, Lang l) {
         case Why::SpindleDisabled: return text(T::WhySpindle, l);
         case Why::NoSpindleHere: return text(T::WhyNoSpindleHere, l);
         case Why::SpindleTooFast: return text(T::WhySpindleFast, l);
+        case Why::JobRunning: return text(T::WhyJobRunning, l);
         default: return "";
     }
 }

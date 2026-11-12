@@ -8,7 +8,8 @@
 //  * the start of a job that is ready asks like a move, but it does not need the link to be armed (a job is armed only once it runs);
 //  * the hardware stop is a latch the screen cannot clear by itself: while the input is pressed, or until the operator has
 //    acknowledged its release on the screen, no move and no spindle order passes;
-//  * a move or a spindle order passes only when the link is armed, and (unless the bench setting turns it off for the touch) it first asks for a
+//  * a move by hand from the jog panel (`Kind::Jog`) passes without a running job and is refused while one runs (unless the switch `jog_block_running` is turned off);
+//  * any other move or a spindle order passes only when the link is armed, and (unless the bench setting turns it off for the touch) it first asks for a
 //    confirmation that lives `confirm_timeout_ms`; a spoken order always asks, whatever the setting says;
 //  * a spoken "yes" confirms only when the setting `voice_confirm` is on; by default only a touch on the screen does;
 //  * a spindle order never asks for more turns than the spindle gives (the setting `spindle_max_rpm` and the top speed of the spindle the server says the machine carries,
@@ -26,7 +27,7 @@
 namespace hmi {
 
 enum class Origin { Touch, Voice };
-enum class Kind { Info, Motion, Spindle, Stop, Pause, Start };
+enum class Kind { Info, Motion, Spindle, Stop, Pause, Start, Jog };
 
 struct Action {
     Kind kind = Kind::Info;
@@ -36,7 +37,7 @@ struct Action {
 };
 
 enum class Verdict { Run, NeedConfirm, Refused };
-enum class Why { None, HardwareStop, NotArmed, VoiceOrdersOff, NoHardwareStop, SpindleDisabled, NoSpindleHere, SpindleTooFast };
+enum class Why { None, HardwareStop, NotArmed, VoiceOrdersOff, NoHardwareStop, SpindleDisabled, NoSpindleHere, SpindleTooFast, JobRunning };
 
 struct Decision {
     Verdict verdict = Verdict::Refused;
@@ -110,8 +111,10 @@ public:
         if (s_.hw_stop_required && !wired_) return {Verdict::Refused, Why::NoHardwareStop};
         if (from == Origin::Voice && !s_.voice_orders) return {Verdict::Refused, Why::VoiceOrdersOff};
         if (a.kind == Kind::Spindle && s_.spindle_max_rpm == 0) return {Verdict::Refused, Why::SpindleDisabled};
+        // a move by hand (the jog panel) does not need a job to be running; it is refused while one runs (the switch `jog_block_running`), and the hardware stop above always blocks it
         if (a.kind == Kind::Spindle && !controls_for(s_.machine).spindle) return {Verdict::Refused, Why::NoSpindleHere};
-        if (!armed_ && a.kind != Kind::Start) return {Verdict::Refused, Why::NotArmed};
+        if (a.kind == Kind::Jog && armed_ && s_.jog_block_running) return {Verdict::Refused, Why::JobRunning};
+        if (!armed_ && a.kind != Kind::Start && a.kind != Kind::Jog) return {Verdict::Refused, Why::NotArmed};
         Decision d;
         action_ = a;
         if (a.kind == Kind::Spindle && a.rpm > 0) {
@@ -144,7 +147,7 @@ public:
             return false;
         }
         if (from == Origin::Voice && !s_.voice_confirm) return false;
-        if (latched_ || pressed_ || (!armed_ && action_.kind != Kind::Start)) {
+        if (latched_ || pressed_ || (!armed_ && action_.kind != Kind::Start && action_.kind != Kind::Jog) || (armed_ && action_.kind == Kind::Jog && s_.jog_block_running)) {
             drop();
             return false;
         }

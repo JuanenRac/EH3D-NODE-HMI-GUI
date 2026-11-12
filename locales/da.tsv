@@ -29,7 +29,6 @@ ui.WhyNotArmed	Maskinen er ikke klar.
 ui.WhyVoiceOff	Stemmekommandoer er slået fra i indstillingerne.
 ui.WhyNoStop	Hardwarestoppets indgang er ikke tilsluttet.
 ui.WhySpindle	Spindlen er slået fra i indstillingerne.
-ui.WhyNoSpindleHere	Denne type maskine har ingen spindel, som skærmen kan starte.
 ui.Feed	Tilspænding
 ui.Progress	Fremdrift
 ui.Tool	Værktøj
@@ -145,10 +144,21 @@ ui.WarnFar	Arbejdet ligger langt fra hjørnet
 ui.WarnScale	Skalaen er ikke 1
 ui.WarnCourse	Planen overskrider en akses vandring
 ui.WfRunning	Et job kører: filen kan ikke skiftes
+ui.Elapsed	Forløbet
+ui.EndsAt	Slutter kl.
+ui.Routed	Fræset længde
+ui.Changes	Værktøjsskift
 ui.StageDone	Boringen er færdig, og fræsningen følger
 ui.FollowRouting	Følg fræsningen
+ui.BoardOut	Jobbet er færdigt: tag printet ud
+ui.JogLimit	Enden af kørslen
+ui.JogRaise	Hovedet er for lavt: løft Z først
+ui.WhyJobRunning	Et job kører: ingen manuelle bevægelser
+ui.Continuous	Kontinuerlig
 ui.RackTitle	Positioner i bjælken
 ui.RackNoSlot	har ingen plads i bjælken
 ui.RackShared	deler sin plads i bjælken med et andet værktøj
 ui.RackUndefined	pladsen er ikke defineret i maskinen
 ui.RackNotChained	Serveren kædede ikke værktøjsskiftene: læg værktøjerne i bjælken i jobbets rækkefølge
+ui.WhyNoSpindleHere	Denne type maskine har ingen spindel, som skærmen kan starte.
+ui.SrvDegraded	Serveren svarer, men siger, at den ikke har det godt

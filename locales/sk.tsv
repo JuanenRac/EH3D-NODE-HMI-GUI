@@ -29,7 +29,6 @@ ui.WhyNotArmed	Stroj nie je pripravený.
 ui.WhyVoiceOff	Hlasové príkazy sú v nastaveniach vypnuté.
 ui.WhyNoStop	Vstup hardvérového stopu nie je zapojený.
 ui.WhySpindle	Vreteno je v nastaveniach vypnuté.
-ui.WhyNoSpindleHere	Tento druh stroja nemá vreteno, ktoré by mohla obrazovka spustiť.
 ui.Feed	Posuv
 ui.Progress	Priebeh
 ui.Tool	Nástroj
@@ -145,10 +144,21 @@ ui.WarnFar	Práca je ďaleko od rohu
 ui.WarnScale	Mierka nie je 1
 ui.WarnCourse	Plán presahuje dráhu osi
 ui.WfRunning	Úloha beží: súbor nemožno zmeniť
+ui.Elapsed	Uplynulo
+ui.EndsAt	Skončí o
+ui.Routed	Dĺžka frézovania
+ui.Changes	Výmeny nástroja
 ui.StageDone	Vŕtanie je hotové, nasleduje frézovanie
 ui.FollowRouting	Sledovať frézovanie
+ui.BoardOut	Úloha je hotová: vyberte dosku
+ui.JogLimit	Koniec dráhy
+ui.JogRaise	Hlava je príliš nízko: najprv zdvihnite Z
+ui.WhyJobRunning	Úloha beží: žiadny ručný pohyb
+ui.Continuous	Priebežne
 ui.RackTitle	Pozície v lište
 ui.RackNoSlot	nemá miesto v lište
 ui.RackShared	zdieľa svoje miesto v lište s iným nástrojom
 ui.RackUndefined	jeho miesto nie je v stroji definované
 ui.RackNotChained	Server nepreviazal výmeny nástroja: vložte nástroje do lišty v poradí úlohy
+ui.WhyNoSpindleHere	Tento druh stroja nemá vreteno, ktoré by mohla obrazovka spustiť.
+ui.SrvDegraded	Server odpovedá, ale hlási, že nie je v poriadku

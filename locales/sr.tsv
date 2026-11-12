@@ -29,7 +29,6 @@ ui.WhyNotArmed	Машина није спремна.
 ui.WhyVoiceOff	Гласовне команде су искључене у подешавањима.
 ui.WhyNoStop	Улаз хардверског стопа није повезан.
 ui.WhySpindle	Вретено је искључено у подешавањима.
-ui.WhyNoSpindleHere	Ова врста машине нема вретено које екран може да покрене.
 ui.Feed	Помак
 ui.Progress	Напредак
 ui.Tool	Алат
@@ -145,10 +144,21 @@ ui.WarnFar	Посао је далеко од угла
 ui.WarnScale	Размера није 1
 ui.WarnCourse	План прелази ход осе
 ui.WfRunning	Посао је у току: датотека се не може променити
+ui.Elapsed	Протекло
+ui.EndsAt	Завршава у
+ui.Routed	Дужина глодања
+ui.Changes	Замене алата
 ui.StageDone	Бушење је готово, следи глодање
 ui.FollowRouting	Прати глодање
+ui.BoardOut	Посао је готов: извадите плочу
+ui.JogLimit	Крај хода
+ui.JogRaise	Глава је прениско: прво подигните Z
+ui.WhyJobRunning	Посао је у току: без ручног померања
+ui.Continuous	Континуирано
 ui.RackTitle	Положаји у траци
 ui.RackNoSlot	нема место у траци
 ui.RackShared	дели место у траци са другим алатом
 ui.RackUndefined	његово место није дефинисано у машини
 ui.RackNotChained	Сервер није повезао замене алата: ставите алате у траку редоследом посла
+ui.WhyNoSpindleHere	Ова врста машине нема вретено које екран може да покрене.
+ui.SrvDegraded	Сервер одговара, али каже да није добро

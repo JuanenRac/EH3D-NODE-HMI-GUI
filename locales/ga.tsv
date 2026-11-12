@@ -29,7 +29,6 @@ ui.WhyNotArmed	Níl an meaisín armtha.
 ui.WhyVoiceOff	Tá orduithe cainte múchta sna socruithe.
 ui.WhyNoStop	Níl ionchur an stop crua-earraí cuibhrithe.
 ui.WhySpindle	Tá an fhearsaid múchta sna socruithe.
-ui.WhyNoSpindleHere	Níl fearsaid ag an gcineál meaisín seo a bhféadfadh an scáileán a thosú.
 ui.Feed	Beart
 ui.Progress	Dul chun cinn
 ui.Tool	Uirlis
@@ -145,10 +144,21 @@ ui.WarnFar	Tá an obair i bhfad ón gcúinne
 ui.WarnScale	Níl an scála 1
 ui.WarnCourse	Téann an plean thar chúrsa aise
 ui.WfRunning	Tá post ar siúl: ní féidir an comhad a athrú
+ui.Elapsed	Caite
+ui.EndsAt	Críochnaíonn ar
+ui.Routed	Fad muilleáilte
+ui.Changes	Athruithe uirlise
 ui.StageDone	Tá an druileáil críochnaithe agus leanann an mhuilleáil
 ui.FollowRouting	Lean an mhuilleáil
+ui.BoardOut	Tá an obair críochnaithe: tóg amach an bord
+ui.JogLimit	Deireadh an aistir
+ui.JogRaise	Tá an ceann ró-íseal: tóg Z ar dtús
+ui.WhyJobRunning	Tá obair ar siúl: gan gluaiseachtaí de láimh
+ui.Continuous	Leanúnach
 ui.RackTitle	Suíomhanna sa bharra
 ui.RackNoSlot	níl áit aige sa bharra
 ui.RackShared	roinneann sé a áit sa bharra le huirlis eile
 ui.RackUndefined	níl a áit sainithe sa mheaisín
 ui.RackNotChained	Níor shlabhraigh an freastalaí na hathruithe: cuir na huirlisí sa bharra in ord na hoibre
+ui.WhyNoSpindleHere	Níl fearsaid ag an gcineál meaisín seo a bhféadfadh an scáileán a thosú.
+ui.SrvDegraded	Freagraíonn an freastalaí ach deir sé nach bhfuil sé ceart go leor

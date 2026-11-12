@@ -39,7 +39,6 @@ inline const char* const kText_bg[kKeyCount] = {
     "Гласовите команди са изключени в настройките.",  // ui.WhyVoiceOff
     "Входът на хардуерния стоп не е свързан.",  // ui.WhyNoStop
     "Шпинделът е изключен в настройките.",  // ui.WhySpindle
-    "Този вид машина няма шпиндел, който екранът да може да стартира.",  // ui.WhyNoSpindleHere
     "Подаване",  // ui.Feed
     "Напредък",  // ui.Progress
     "Инструмент",  // ui.Tool
@@ -118,13 +117,24 @@ inline const char* const kText_bg[kKeyCount] = {
     "Мащабът не е 1",  // ui.WarnScale
     "Планът излиза извън хода на ос",  // ui.WarnCourse
     "Работи задание: файлът не може да се сменя",  // ui.WfRunning
+    "Изминало време",  // ui.Elapsed
+    "Завършва в",  // ui.EndsAt
+    "Фрезована дължина",  // ui.Routed
+    "Смени на инструмента",  // ui.Changes
     "Пробиването приключи, следва фрезоването",  // ui.StageDone
     "Следване на фрезоването",  // ui.FollowRouting
+    "Работата е готова: извадете платката",  // ui.BoardOut
+    "Край на хода",  // ui.JogLimit
+    "Главата е твърде ниско: първо вдигнете Z",  // ui.JogRaise
+    "Работа е в ход: без ръчно движение",  // ui.WhyJobRunning
+    "Непрекъснато",  // ui.Continuous
     "Позиции в лентата",  // ui.RackTitle
     "няма място в лентата",  // ui.RackNoSlot
     "споделя мястото си в лентата с друг инструмент",  // ui.RackShared
     "мястото му не е зададено в машината",  // ui.RackUndefined
     "Сървърът не свърза смените: наредете инструментите в лентата по реда на работата",  // ui.RackNotChained
+    "Този вид машина няма шпиндел, който екранът да може да стартира.",  // ui.WhyNoSpindleHere
+    "Сървърът отговаря, но казва, че не е добре",  // ui.SrvDegraded
     "Проверка на качеството на работата",  // q.Title
     "Светлинен пръстен",  // q.Light
     "Изкл.",  // q.LightOff
@@ -195,7 +205,6 @@ inline const char* const kText_hr[kKeyCount] = {
     "Glasovne naredbe isključene su u postavkama.",  // ui.WhyVoiceOff
     "Ulaz hardverskog stopa nije spojen.",  // ui.WhyNoStop
     "Vreteno je isključeno u postavkama.",  // ui.WhySpindle
-    "Ova vrsta stroja nema vreteno koje bi zaslon mogao pokrenuti.",  // ui.WhyNoSpindleHere
     "Posmak",  // ui.Feed
     "Napredak",  // ui.Progress
     "Alat",  // ui.Tool
@@ -274,13 +283,24 @@ inline const char* const kText_hr[kKeyCount] = {
     "Mjerilo nije 1",  // ui.WarnScale
     "Plan prelazi hod osi",  // ui.WarnCourse
     "Posao je u tijeku: datoteka se ne može promijeniti",  // ui.WfRunning
+    "Proteklo",  // ui.Elapsed
+    "Završava u",  // ui.EndsAt
+    "Dužina glodanja",  // ui.Routed
+    "Izmjene alata",  // ui.Changes
     "Bušenje je gotovo, slijedi glodanje",  // ui.StageDone
     "Prati glodanje",  // ui.FollowRouting
+    "Posao je gotov: izvadite ploču",  // ui.BoardOut
+    "Kraj hoda",  // ui.JogLimit
+    "Glava je prenisko: prvo podignite Z",  // ui.JogRaise
+    "Posao je u tijeku: bez ručnog pomicanja",  // ui.WhyJobRunning
+    "Kontinuirano",  // ui.Continuous
     "Položaji u traci",  // ui.RackTitle
     "nema mjesto u traci",  // ui.RackNoSlot
     "dijeli mjesto u traci s drugim alatom",  // ui.RackShared
     "njegovo mjesto nije definirano u stroju",  // ui.RackUndefined
     "Poslužitelj nije povezao izmjene alata: stavite alate u traku redoslijedom posla",  // ui.RackNotChained
+    "Ova vrsta stroja nema vreteno koje bi zaslon mogao pokrenuti.",  // ui.WhyNoSpindleHere
+    "Poslužitelj odgovara, ali kaže da nije dobro",  // ui.SrvDegraded
     "Provjera kvalitete rada",  // q.Title
     "Svjetlosni prsten",  // q.Light
     "Isklj.",  // q.LightOff
@@ -351,7 +371,6 @@ inline const char* const kText_cs[kKeyCount] = {
     "Hlasové příkazy jsou v nastavení vypnuty.",  // ui.WhyVoiceOff
     "Vstup hardwarového stopu není zapojen.",  // ui.WhyNoStop
     "Vřeteno je v nastavení vypnuto.",  // ui.WhySpindle
-    "Tento druh stroje nemá vřeteno, které by obrazovka mohla spustit.",  // ui.WhyNoSpindleHere
     "Posuv",  // ui.Feed
     "Průběh",  // ui.Progress
     "Nástroj",  // ui.Tool
@@ -430,13 +449,24 @@ inline const char* const kText_cs[kKeyCount] = {
     "Měřítko není 1",  // ui.WarnScale
     "Plán přesahuje dráhu osy",  // ui.WarnCourse
     "Úloha běží: soubor nelze změnit",  // ui.WfRunning
+    "Uplynulo",  // ui.Elapsed
+    "Skončí v",  // ui.EndsAt
+    "Délka frézování",  // ui.Routed
+    "Výměny nástroje",  // ui.Changes
     "Vrtání je hotovo, následuje frézování",  // ui.StageDone
     "Sledovat frézování",  // ui.FollowRouting
+    "Úloha je hotová: vyjměte desku",  // ui.BoardOut
+    "Konec dráhy",  // ui.JogLimit
+    "Hlava je příliš nízko: nejdřív zvedněte Z",  // ui.JogRaise
+    "Úloha běží: žádný ruční pohyb",  // ui.WhyJobRunning
+    "Průběžně",  // ui.Continuous
     "Pozice v liště",  // ui.RackTitle
     "nemá místo v liště",  // ui.RackNoSlot
     "sdílí své místo v liště s jiným nástrojem",  // ui.RackShared
     "jeho místo není ve stroji definováno",  // ui.RackUndefined
     "Server nepropojil výměny nástroje: vložte nástroje do lišty v pořadí úlohy",  // ui.RackNotChained
+    "Tento druh stroje nemá vřeteno, které by obrazovka mohla spustit.",  // ui.WhyNoSpindleHere
+    "Server odpovídá, ale hlásí, že není v pořádku",  // ui.SrvDegraded
     "Kontrola kvality práce",  // q.Title
     "Světelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -507,7 +537,6 @@ inline const char* const kText_da[kKeyCount] = {
     "Stemmekommandoer er slået fra i indstillingerne.",  // ui.WhyVoiceOff
     "Hardwarestoppets indgang er ikke tilsluttet.",  // ui.WhyNoStop
     "Spindlen er slået fra i indstillingerne.",  // ui.WhySpindle
-    "Denne type maskine har ingen spindel, som skærmen kan starte.",  // ui.WhyNoSpindleHere
     "Tilspænding",  // ui.Feed
     "Fremdrift",  // ui.Progress
     "Værktøj",  // ui.Tool
@@ -586,13 +615,24 @@ inline const char* const kText_da[kKeyCount] = {
     "Skalaen er ikke 1",  // ui.WarnScale
     "Planen overskrider en akses vandring",  // ui.WarnCourse
     "Et job kører: filen kan ikke skiftes",  // ui.WfRunning
+    "Forløbet",  // ui.Elapsed
+    "Slutter kl.",  // ui.EndsAt
+    "Fræset længde",  // ui.Routed
+    "Værktøjsskift",  // ui.Changes
     "Boringen er færdig, og fræsningen følger",  // ui.StageDone
     "Følg fræsningen",  // ui.FollowRouting
+    "Jobbet er færdigt: tag printet ud",  // ui.BoardOut
+    "Enden af kørslen",  // ui.JogLimit
+    "Hovedet er for lavt: løft Z først",  // ui.JogRaise
+    "Et job kører: ingen manuelle bevægelser",  // ui.WhyJobRunning
+    "Kontinuerlig",  // ui.Continuous
     "Positioner i bjælken",  // ui.RackTitle
     "har ingen plads i bjælken",  // ui.RackNoSlot
     "deler sin plads i bjælken med et andet værktøj",  // ui.RackShared
     "pladsen er ikke defineret i maskinen",  // ui.RackUndefined
     "Serveren kædede ikke værktøjsskiftene: læg værktøjerne i bjælken i jobbets rækkefølge",  // ui.RackNotChained
+    "Denne type maskine har ingen spindel, som skærmen kan starte.",  // ui.WhyNoSpindleHere
+    "Serveren svarer, men siger, at den ikke har det godt",  // ui.SrvDegraded
     "Kvalitetskontrol af arbejdet",  // q.Title
     "Lysring",  // q.Light
     "Fra",  // q.LightOff
@@ -663,7 +703,6 @@ inline const char* const kText_nl[kKeyCount] = {
     "Spraakopdrachten staan uit in de instellingen.",  // ui.WhyVoiceOff
     "De ingang van de hardware-stop is niet aangesloten.",  // ui.WhyNoStop
     "De spindel is uitgeschakeld in de instellingen.",  // ui.WhySpindle
-    "Dit type machine heeft geen spindel die het scherm kan starten.",  // ui.WhyNoSpindleHere
     "Voeding",  // ui.Feed
     "Voortgang",  // ui.Progress
     "Gereedschap",  // ui.Tool
@@ -742,13 +781,24 @@ inline const char* const kText_nl[kKeyCount] = {
     "De schaal is niet 1",  // ui.WarnScale
     "Het plan overschrijdt de slag van een as",  // ui.WarnCourse
     "Een taak loopt: het bestand kan niet worden gewijzigd",  // ui.WfRunning
+    "Verstreken",  // ui.Elapsed
+    "Eindigt om",  // ui.EndsAt
+    "Gefreesde lengte",  // ui.Routed
+    "Gereedschapswissels",  // ui.Changes
     "Het boren is klaar en het frezen volgt",  // ui.StageDone
     "Frezen volgen",  // ui.FollowRouting
+    "De taak is klaar: haal de print eruit",  // ui.BoardOut
+    "Einde van de slag",  // ui.JogLimit
+    "De kop staat te laag: til eerst Z op",  // ui.JogRaise
+    "Een taak loopt: geen handmatige bewegingen",  // ui.WhyJobRunning
+    "Continu",  // ui.Continuous
     "Posities in de balk",  // ui.RackTitle
     "heeft geen plaats in de balk",  // ui.RackNoSlot
     "deelt zijn plaats in de balk met een ander gereedschap",  // ui.RackShared
     "de plaats is niet gedefinieerd in de machine",  // ui.RackUndefined
     "De server koppelde de wissels niet: leg het gereedschap in de balk op volgorde van de taak",  // ui.RackNotChained
+    "Dit type machine heeft geen spindel die het scherm kan starten.",  // ui.WhyNoSpindleHere
+    "De server antwoordt maar meldt dat het niet goed met hem gaat",  // ui.SrvDegraded
     "Kwaliteitscontrole van het werk",  // q.Title
     "Lichtring",  // q.Light
     "Uit",  // q.LightOff
@@ -819,7 +869,6 @@ inline const char* const kText_et[kKeyCount] = {
     "Häälkäsklused on seadetes välja lülitatud.",  // ui.WhyVoiceOff
     "Raudvara stoppi sisend on ühendamata.",  // ui.WhyNoStop
     "Spindel on seadetes välja lülitatud.",  // ui.WhySpindle
-    "Sellel masinatüübil pole spindlit, mida ekraan saaks käivitada.",  // ui.WhyNoSpindleHere
     "Ettenihe",  // ui.Feed
     "Edenemine",  // ui.Progress
     "Tööriist",  // ui.Tool
@@ -898,13 +947,24 @@ inline const char* const kText_et[kKeyCount] = {
     "Mõõtkava pole 1",  // ui.WarnScale
     "Plaan ületab telje käigu",  // ui.WarnCourse
     "Töö käib: faili ei saa vahetada",  // ui.WfRunning
+    "Möödunud",  // ui.Elapsed
+    "Lõpeb kell",  // ui.EndsAt
+    "Freesitud pikkus",  // ui.Routed
+    "Tööriistavahetused",  // ui.Changes
     "Puurimine on valmis, järgmisena freesimine",  // ui.StageDone
     "Jälgi freesimist",  // ui.FollowRouting
+    "Töö on valmis: võtke plaat välja",  // ui.BoardOut
+    "Käigu ots",  // ui.JogLimit
+    "Pea on liiga madalal: tõstke kõigepealt Z",  // ui.JogRaise
+    "Töö käib: käsitsi liigutamine keelatud",  // ui.WhyJobRunning
+    "Pidev",  // ui.Continuous
     "Kohad ribal",  // ui.RackTitle
     "ei ole ribal kohta",  // ui.RackNoSlot
     "jagab oma kohta ribal teise tööriistaga",  // ui.RackShared
     "selle koht pole masinas määratud",  // ui.RackUndefined
     "Server ei sidunud tööriistavahetusi: pange tööriistad ribale töö järjekorras",  // ui.RackNotChained
+    "Sellel masinatüübil pole spindlit, mida ekraan saaks käivitada.",  // ui.WhyNoSpindleHere
+    "Server vastab, kuid teatab, et ta ei ole korras",  // ui.SrvDegraded
     "Töö kvaliteedikontroll",  // q.Title
     "Valgusrõngas",  // q.Light
     "Väljas",  // q.LightOff
@@ -975,7 +1035,6 @@ inline const char* const kText_fi[kKeyCount] = {
     "Puhekomennot on poistettu käytöstä asetuksissa.",  // ui.WhyVoiceOff
     "Laitteistopysäytyksen tuloa ei ole kytketty.",  // ui.WhyNoStop
     "Kara on poistettu käytöstä asetuksissa.",  // ui.WhySpindle
-    "Tällä konetyypillä ei ole karaa, jonka näyttö voisi käynnistää.",  // ui.WhyNoSpindleHere
     "Syöttö",  // ui.Feed
     "Eteneminen",  // ui.Progress
     "Työkalu",  // ui.Tool
@@ -1054,13 +1113,24 @@ inline const char* const kText_fi[kKeyCount] = {
     "Mittakaava ei ole 1",  // ui.WarnScale
     "Suunnitelma ylittää akselin liikealueen",  // ui.WarnCourse
     "Työ on käynnissä: tiedostoa ei voi vaihtaa",  // ui.WfRunning
+    "Kulunut",  // ui.Elapsed
+    "Päättyy klo",  // ui.EndsAt
+    "Jyrsitty pituus",  // ui.Routed
+    "Työkalunvaihdot",  // ui.Changes
     "Poraus on valmis ja jyrsintä seuraa",  // ui.StageDone
     "Seuraa jyrsintää",  // ui.FollowRouting
+    "Työ on valmis: ota piirilevy pois",  // ui.BoardOut
+    "Liikeradan loppu",  // ui.JogLimit
+    "Pää on liian alhaalla: nosta ensin Z",  // ui.JogRaise
+    "Työ on käynnissä: ei käsiliikkeitä",  // ui.WhyJobRunning
+    "Jatkuva",  // ui.Continuous
     "Paikat palkissa",  // ui.RackTitle
     "ei ole paikkaa palkissa",  // ui.RackNoSlot
     "jakaa paikkansa palkissa toisen työkalun kanssa",  // ui.RackShared
     "sen paikkaa ei ole määritetty koneessa",  // ui.RackUndefined
     "Palvelin ei ketjuttanut työkalunvaihtoja: aseta työkalut palkkiin työn järjestyksessä",  // ui.RackNotChained
+    "Tällä konetyypillä ei ole karaa, jonka näyttö voisi käynnistää.",  // ui.WhyNoSpindleHere
+    "Palvelin vastaa, mutta ilmoittaa, ettei se voi hyvin",  // ui.SrvDegraded
     "Työn laatutarkastus",  // q.Title
     "Valorengas",  // q.Light
     "Pois",  // q.LightOff
@@ -1131,7 +1201,6 @@ inline const char* const kText_el[kKeyCount] = {
     "Οι φωνητικές εντολές είναι απενεργοποιημένες στις ρυθμίσεις.",  // ui.WhyVoiceOff
     "Η είσοδος του stop υλικού δεν είναι συνδεδεμένη.",  // ui.WhyNoStop
     "Ο άξονας είναι απενεργοποιημένος στις ρυθμίσεις.",  // ui.WhySpindle
-    "Αυτός ο τύπος μηχανής δεν έχει άξονα που να μπορεί να εκκινήσει η οθόνη.",  // ui.WhyNoSpindleHere
     "Τροφοδοσία",  // ui.Feed
     "Πρόοδος",  // ui.Progress
     "Εργαλείο",  // ui.Tool
@@ -1210,13 +1279,24 @@ inline const char* const kText_el[kKeyCount] = {
     "Η κλίμακα δεν είναι 1",  // ui.WarnScale
     "Το σχέδιο ξεπερνά τη διαδρομή ενός άξονα",  // ui.WarnCourse
     "Εκτελείται μια εργασία: το αρχείο δεν αλλάζει",  // ui.WfRunning
+    "Παρήλθε",  // ui.Elapsed
+    "Τελειώνει στις",  // ui.EndsAt
+    "Μήκος φρεζαρίσματος",  // ui.Routed
+    "Αλλαγές εργαλείου",  // ui.Changes
     "Η διάτρηση τελείωσε και ακολουθεί το φρεζάρισμα",  // ui.StageDone
     "Παρακολούθηση φρεζαρίσματος",  // ui.FollowRouting
+    "Η εργασία τελείωσε: αφαιρέστε την πλακέτα",  // ui.BoardOut
+    "Τέρμα διαδρομής",  // ui.JogLimit
+    "Η κεφαλή είναι πολύ χαμηλά: ανεβάστε πρώτα το Z",  // ui.JogRaise
+    "Εκτελείται εργασία: καμία χειροκίνητη κίνηση",  // ui.WhyJobRunning
+    "Συνεχής",  // ui.Continuous
     "Θέσεις στη μπάρα",  // ui.RackTitle
     "δεν έχει θέση στη μπάρα",  // ui.RackNoSlot
     "μοιράζεται τη θέση του στη μπάρα με άλλο εργαλείο",  // ui.RackShared
     "η θέση του δεν ορίζεται στο μηχάνημα",  // ui.RackUndefined
     "Ο διακομιστής δεν αλυσίδωσε τις αλλαγές: βάλτε τα εργαλεία στη μπάρα με τη σειρά εργασίας",  // ui.RackNotChained
+    "Αυτός ο τύπος μηχανής δεν έχει άξονα που να μπορεί να εκκινήσει η οθόνη.",  // ui.WhyNoSpindleHere
+    "Ο διακομιστής απαντά αλλά λέει ότι δεν είναι καλά",  // ui.SrvDegraded
     "Έλεγχος ποιότητας της εργασίας",  // q.Title
     "Δακτύλιος φωτός",  // q.Light
     "Κλειστό",  // q.LightOff
@@ -1287,7 +1367,6 @@ inline const char* const kText_hu[kKeyCount] = {
     "A hangparancsok ki vannak kapcsolva a beállításokban.",  // ui.WhyVoiceOff
     "A hardveres leállítás bemenete nincs bekötve.",  // ui.WhyNoStop
     "A főorsó ki van kapcsolva a beállításokban.",  // ui.WhySpindle
-    "Ennek a géptípusnak nincs főorsója, amelyet a képernyő elindíthatna.",  // ui.WhyNoSpindleHere
     "Előtolás",  // ui.Feed
     "Előrehaladás",  // ui.Progress
     "Szerszám",  // ui.Tool
@@ -1366,13 +1445,24 @@ inline const char* const kText_hu[kKeyCount] = {
     "A méretarány nem 1",  // ui.WarnScale
     "A terv túllépi egy tengely útját",  // ui.WarnCourse
     "Munka fut: a fájl nem cserélhető",  // ui.WfRunning
+    "Eltelt",  // ui.Elapsed
+    "Befejezés ideje",  // ui.EndsAt
+    "Marás hossza",  // ui.Routed
+    "Szerszámcserék",  // ui.Changes
     "A fúrás kész, jön a marás",  // ui.StageDone
     "Marás követése",  // ui.FollowRouting
+    "A munka kész: vegye ki a lapot",  // ui.BoardOut
+    "Az út vége",  // ui.JogLimit
+    "A fej túl alacsonyan van: előbb emelje a Z-t",  // ui.JogRaise
+    "Munka fut: kézi mozgatás tiltva",  // ui.WhyJobRunning
+    "Folyamatos",  // ui.Continuous
     "Pozíciók a sávban",  // ui.RackTitle
     "nincs helye a sávban",  // ui.RackNoSlot
     "a sávban megosztja a helyét egy másik szerszámmal",  // ui.RackShared
     "a helye nincs megadva a gépben",  // ui.RackUndefined
     "A szerver nem láncolta a cseréket: tegye a szerszámokat a sávba a munka sorrendjében",  // ui.RackNotChained
+    "Ennek a géptípusnak nincs főorsója, amelyet a képernyő elindíthatna.",  // ui.WhyNoSpindleHere
+    "A kiszolgáló válaszol, de azt jelzi, hogy nincs rendben",  // ui.SrvDegraded
     "A munka minőségellenőrzése",  // q.Title
     "Fénygyűrű",  // q.Light
     "Ki",  // q.LightOff
@@ -1443,7 +1533,6 @@ inline const char* const kText_ga[kKeyCount] = {
     "Tá orduithe cainte múchta sna socruithe.",  // ui.WhyVoiceOff
     "Níl ionchur an stop crua-earraí cuibhrithe.",  // ui.WhyNoStop
     "Tá an fhearsaid múchta sna socruithe.",  // ui.WhySpindle
-    "Níl fearsaid ag an gcineál meaisín seo a bhféadfadh an scáileán a thosú.",  // ui.WhyNoSpindleHere
     "Beart",  // ui.Feed
     "Dul chun cinn",  // ui.Progress
     "Uirlis",  // ui.Tool
@@ -1522,13 +1611,24 @@ inline const char* const kText_ga[kKeyCount] = {
     "Níl an scála 1",  // ui.WarnScale
     "Téann an plean thar chúrsa aise",  // ui.WarnCourse
     "Tá post ar siúl: ní féidir an comhad a athrú",  // ui.WfRunning
+    "Caite",  // ui.Elapsed
+    "Críochnaíonn ar",  // ui.EndsAt
+    "Fad muilleáilte",  // ui.Routed
+    "Athruithe uirlise",  // ui.Changes
     "Tá an druileáil críochnaithe agus leanann an mhuilleáil",  // ui.StageDone
     "Lean an mhuilleáil",  // ui.FollowRouting
+    "Tá an obair críochnaithe: tóg amach an bord",  // ui.BoardOut
+    "Deireadh an aistir",  // ui.JogLimit
+    "Tá an ceann ró-íseal: tóg Z ar dtús",  // ui.JogRaise
+    "Tá obair ar siúl: gan gluaiseachtaí de láimh",  // ui.WhyJobRunning
+    "Leanúnach",  // ui.Continuous
     "Suíomhanna sa bharra",  // ui.RackTitle
     "níl áit aige sa bharra",  // ui.RackNoSlot
     "roinneann sé a áit sa bharra le huirlis eile",  // ui.RackShared
     "níl a áit sainithe sa mheaisín",  // ui.RackUndefined
     "Níor shlabhraigh an freastalaí na hathruithe: cuir na huirlisí sa bharra in ord na hoibre",  // ui.RackNotChained
+    "Níl fearsaid ag an gcineál meaisín seo a bhféadfadh an scáileán a thosú.",  // ui.WhyNoSpindleHere
+    "Freagraíonn an freastalaí ach deir sé nach bhfuil sé ceart go leor",  // ui.SrvDegraded
     "Seiceáil cáilíochta na hoibre",  // q.Title
     "Fáinne solais",  // q.Light
     "Múchta",  // q.LightOff
@@ -1599,7 +1699,6 @@ inline const char* const kText_lv[kKeyCount] = {
     "Balss komandas ir izslēgtas iestatījumos.",  // ui.WhyVoiceOff
     "Hardvera stop ieeja nav pieslēgta.",  // ui.WhyNoStop
     "Vārpsta ir izslēgta iestatījumos.",  // ui.WhySpindle
-    "Šim iekārtas veidam nav vārpstas, ko ekrāns varētu iedarbināt.",  // ui.WhyNoSpindleHere
     "Padeve",  // ui.Feed
     "Progress",  // ui.Progress
     "Rīks",  // ui.Tool
@@ -1678,13 +1777,24 @@ inline const char* const kText_lv[kKeyCount] = {
     "Mērogs nav 1",  // ui.WarnScale
     "Plāns pārsniedz ass gājienu",  // ui.WarnCourse
     "Darbs darbojas: failu nevar mainīt",  // ui.WfRunning
+    "Pagājis",  // ui.Elapsed
+    "Beigsies plkst.",  // ui.EndsAt
+    "Frēzētais garums",  // ui.Routed
+    "Instrumentu maiņas",  // ui.Changes
     "Urbšana pabeigta, tālāk frēzēšana",  // ui.StageDone
     "Sekot frēzēšanai",  // ui.FollowRouting
+    "Darbs pabeigts: izņemiet plati",  // ui.BoardOut
+    "Gājiena gals",  // ui.JogLimit
+    "Galva ir pārāk zemu: vispirms paceliet Z",  // ui.JogRaise
+    "Darbs tiek izpildīts: rokas kustības nav atļautas",  // ui.WhyJobRunning
+    "Nepārtraukti",  // ui.Continuous
     "Pozīcijas joslā",  // ui.RackTitle
     "nav vietas joslā",  // ui.RackNoSlot
     "dala vietu joslā ar citu instrumentu",  // ui.RackShared
     "tā vieta nav definēta iekārtā",  // ui.RackUndefined
     "Serveris nesaistīja instrumentu maiņas: ievietojiet instrumentus joslā darba secībā",  // ui.RackNotChained
+    "Šim iekārtas veidam nav vārpstas, ko ekrāns varētu iedarbināt.",  // ui.WhyNoSpindleHere
+    "Serveris atbild, bet ziņo, ka tam nav labi",  // ui.SrvDegraded
     "Darba kvalitātes pārbaude",  // q.Title
     "Gaismas gredzens",  // q.Light
     "Izsl.",  // q.LightOff
@@ -1755,7 +1865,6 @@ inline const char* const kText_lt[kKeyCount] = {
     "Balso komandos nustatymuose išjungtos.",  // ui.WhyVoiceOff
     "Aparatinio stop įvestis neprijungta.",  // ui.WhyNoStop
     "Verpstė nustatymuose išjungta.",  // ui.WhySpindle
-    "Šio tipo staklės neturi verpstės, kurią galėtų paleisti ekranas.",  // ui.WhyNoSpindleHere
     "Paduotis",  // ui.Feed
     "Eiga",  // ui.Progress
     "Įrankis",  // ui.Tool
@@ -1834,13 +1943,24 @@ inline const char* const kText_lt[kKeyCount] = {
     "Mastelis nėra 1",  // ui.WarnScale
     "Planas viršija ašies eigą",  // ui.WarnCourse
     "Vykdomas darbas: failo pakeisti negalima",  // ui.WfRunning
+    "Praėjo",  // ui.Elapsed
+    "Baigsis",  // ui.EndsAt
+    "Frezuotas ilgis",  // ui.Routed
+    "Įrankių keitimai",  // ui.Changes
     "Gręžimas baigtas, toliau frezavimas",  // ui.StageDone
     "Sekti frezavimą",  // ui.FollowRouting
+    "Darbas baigtas: išimkite plokštę",  // ui.BoardOut
+    "Eigos pabaiga",  // ui.JogLimit
+    "Galvutė per žemai: pirmiausia pakelkite Z",  // ui.JogRaise
+    "Vykdomas darbas: rankinis judinimas negalimas",  // ui.WhyJobRunning
+    "Nepertraukiamas",  // ui.Continuous
     "Padėtys juostoje",  // ui.RackTitle
     "neturi vietos juostoje",  // ui.RackNoSlot
     "dalijasi vieta juostoje su kitu įrankiu",  // ui.RackShared
     "jo vieta nėra apibrėžta staklėse",  // ui.RackUndefined
     "Serveris nesujungė įrankių keitimų: sudėkite įrankius į juostą darbo tvarka",  // ui.RackNotChained
+    "Šio tipo staklės neturi verpstės, kurią galėtų paleisti ekranas.",  // ui.WhyNoSpindleHere
+    "Serveris atsako, bet praneša, kad jam nesiseka",  // ui.SrvDegraded
     "Darbo kokybės patikra",  // q.Title
     "Šviesos žiedas",  // q.Light
     "Išj.",  // q.LightOff
@@ -1911,7 +2031,6 @@ inline const char* const kText_mt[kKeyCount] = {
     "L-ordnijiet bil-vuċi huma mitfija fis-settings.",  // ui.WhyVoiceOff
     "L-input tal-istop tal-hardware mhuwiex imqabbad.",  // ui.WhyNoStop
     "L-ispindil huwa mitfi fis-settings.",  // ui.WhySpindle
-    "Dan it-tip ta' magna m'għandux ispindil li l-iskrin jista' jibda.",  // ui.WhyNoSpindleHere
     "Avvanz",  // ui.Feed
     "Progress",  // ui.Progress
     "Għodda",  // ui.Tool
@@ -1990,13 +2109,24 @@ inline const char* const kText_mt[kKeyCount] = {
     "L-iskala mhijiex 1",  // ui.WarnScale
     "Il-pjan jaqbeż il-korsa ta' assi",  // ui.WarnCourse
     "Xogħol qed jaħdem: il-fajl ma jistax jinbidel",  // ui.WfRunning
+    "Għadda",  // ui.Elapsed
+    "Jispiċċa fi",  // ui.EndsAt
+    "Tul iffresat",  // ui.Routed
+    "Bidliet tal-għodda",  // ui.Changes
     "It-tħaffir intemm u jmiss il-fresar",  // ui.StageDone
     "Segwi l-fresar",  // ui.FollowRouting
+    "Ix-xogħol intemm: neħħi l-bord",  // ui.BoardOut
+    "Tmiem il-ġirja",  // ui.JogLimit
+    "Ir-ras baxxa wisq: għolli Z l-ewwel",  // ui.JogRaise
+    "Xogħol għaddej: l-ebda moviment bl-idejn",  // ui.WhyJobRunning
+    "Kontinwu",  // ui.Continuous
     "Pożizzjonijiet fil-barra",  // ui.RackTitle
     "m'għandux post fil-barra",  // ui.RackNoSlot
     "jaqsam il-post tiegħu fil-barra ma' għodda oħra",  // ui.RackShared
     "il-post tiegħu mhux definit fil-magna",  // ui.RackUndefined
     "Is-server ma rabatx il-bidliet tal-għodda: poġġi l-għodod fil-barra fl-ordni tax-xogħol",  // ui.RackNotChained
+    "Dan it-tip ta' magna m'għandux ispindil li l-iskrin jista' jibda.",  // ui.WhyNoSpindleHere
+    "Is-server iwieġeb imma jgħid li mhux tajjeb",  // ui.SrvDegraded
     "Verifika tal-kwalità tax-xogħol",  // q.Title
     "Ċirku tad-dawl",  // q.Light
     "Mitfi",  // q.LightOff
@@ -2067,7 +2197,6 @@ inline const char* const kText_pl[kKeyCount] = {
     "Polecenia głosowe są wyłączone w ustawieniach.",  // ui.WhyVoiceOff
     "Wejście stopu sprzętowego nie jest podłączone.",  // ui.WhyNoStop
     "Wrzeciono jest wyłączone w ustawieniach.",  // ui.WhySpindle
-    "Ten rodzaj maszyny nie ma wrzeciona, które ekran mógłby uruchomić.",  // ui.WhyNoSpindleHere
     "Posuw",  // ui.Feed
     "Postęp",  // ui.Progress
     "Narzędzie",  // ui.Tool
@@ -2146,13 +2275,24 @@ inline const char* const kText_pl[kKeyCount] = {
     "Skala nie wynosi 1",  // ui.WarnScale
     "Plan przekracza skok osi",  // ui.WarnCourse
     "Zadanie trwa: nie można zmienić pliku",  // ui.WfRunning
+    "Upłynęło",  // ui.Elapsed
+    "Kończy się o",  // ui.EndsAt
+    "Długość frezowania",  // ui.Routed
+    "Wymiany narzędzia",  // ui.Changes
     "Wiercenie zakończone, teraz frezowanie",  // ui.StageDone
     "Śledź frezowanie",  // ui.FollowRouting
+    "Zadanie zakończone: wyjmij płytkę",  // ui.BoardOut
+    "Koniec przesuwu",  // ui.JogLimit
+    "Głowica jest za nisko: najpierw podnieś Z",  // ui.JogRaise
+    "Trwa zadanie: brak ruchów ręcznych",  // ui.WhyJobRunning
+    "Ciągły",  // ui.Continuous
     "Pozycje w magazynie",  // ui.RackTitle
     "nie ma miejsca w magazynie",  // ui.RackNoSlot
     "dzieli miejsce w magazynie z innym narzędziem",  // ui.RackShared
     "jego miejsce nie jest zdefiniowane w maszynie",  // ui.RackUndefined
     "Serwer nie połączył wymian narzędzi: ułóż narzędzia w magazynie w kolejności zadania",  // ui.RackNotChained
+    "Ten rodzaj maszyny nie ma wrzeciona, które ekran mógłby uruchomić.",  // ui.WhyNoSpindleHere
+    "Serwer odpowiada, ale zgłasza, że nie jest w porządku",  // ui.SrvDegraded
     "Kontrola jakości wykonania",  // q.Title
     "Pierścień świetlny",  // q.Light
     "Wył.",  // q.LightOff
@@ -2223,7 +2363,6 @@ inline const char* const kText_ro[kKeyCount] = {
     "Comenzile vocale sunt dezactivate în setări.",  // ui.WhyVoiceOff
     "Intrarea opririi hardware nu este conectată.",  // ui.WhyNoStop
     "Axul principal este dezactivat în setări.",  // ui.WhySpindle
-    "Acest tip de mașină nu are un ax principal pe care ecranul să-l poată porni.",  // ui.WhyNoSpindleHere
     "Avans",  // ui.Feed
     "Progres",  // ui.Progress
     "Sculă",  // ui.Tool
@@ -2302,13 +2441,24 @@ inline const char* const kText_ro[kKeyCount] = {
     "Scara nu este 1",  // ui.WarnScale
     "Planul depășește cursa unei axe",  // ui.WarnCourse
     "O lucrare rulează: fișierul nu poate fi schimbat",  // ui.WfRunning
+    "Scurs",  // ui.Elapsed
+    "Se termină la",  // ui.EndsAt
+    "Lungime frezată",  // ui.Routed
+    "Schimbări de sculă",  // ui.Changes
     "Găurirea s-a terminat și urmează frezarea",  // ui.StageDone
     "Urmărește frezarea",  // ui.FollowRouting
+    "Lucrarea s-a terminat: scoateți placa",  // ui.BoardOut
+    "Capătul cursei",  // ui.JogLimit
+    "Capul este prea jos: ridicați mai întâi Z",  // ui.JogRaise
+    "O lucrare rulează: fără mișcări manuale",  // ui.WhyJobRunning
+    "Continuu",  // ui.Continuous
     "Poziții în bară",  // ui.RackTitle
     "nu are loc în bară",  // ui.RackNoSlot
     "își împarte locul din bară cu altă sculă",  // ui.RackShared
     "locul său nu este definit în mașină",  // ui.RackUndefined
     "Serverul nu a înlănțuit schimbările de sculă: puneți sculele în bară în ordinea lucrării",  // ui.RackNotChained
+    "Acest tip de mașină nu are un ax principal pe care ecranul să-l poată porni.",  // ui.WhyNoSpindleHere
+    "Serverul răspunde, dar spune că nu este bine",  // ui.SrvDegraded
     "Verificarea calității lucrării",  // q.Title
     "Inel de lumină",  // q.Light
     "Oprit",  // q.LightOff
@@ -2379,7 +2529,6 @@ inline const char* const kText_sk[kKeyCount] = {
     "Hlasové príkazy sú v nastaveniach vypnuté.",  // ui.WhyVoiceOff
     "Vstup hardvérového stopu nie je zapojený.",  // ui.WhyNoStop
     "Vreteno je v nastaveniach vypnuté.",  // ui.WhySpindle
-    "Tento druh stroja nemá vreteno, ktoré by mohla obrazovka spustiť.",  // ui.WhyNoSpindleHere
     "Posuv",  // ui.Feed
     "Priebeh",  // ui.Progress
     "Nástroj",  // ui.Tool
@@ -2458,13 +2607,24 @@ inline const char* const kText_sk[kKeyCount] = {
     "Mierka nie je 1",  // ui.WarnScale
     "Plán presahuje dráhu osi",  // ui.WarnCourse
     "Úloha beží: súbor nemožno zmeniť",  // ui.WfRunning
+    "Uplynulo",  // ui.Elapsed
+    "Skončí o",  // ui.EndsAt
+    "Dĺžka frézovania",  // ui.Routed
+    "Výmeny nástroja",  // ui.Changes
     "Vŕtanie je hotové, nasleduje frézovanie",  // ui.StageDone
     "Sledovať frézovanie",  // ui.FollowRouting
+    "Úloha je hotová: vyberte dosku",  // ui.BoardOut
+    "Koniec dráhy",  // ui.JogLimit
+    "Hlava je príliš nízko: najprv zdvihnite Z",  // ui.JogRaise
+    "Úloha beží: žiadny ručný pohyb",  // ui.WhyJobRunning
+    "Priebežne",  // ui.Continuous
     "Pozície v lište",  // ui.RackTitle
     "nemá miesto v lište",  // ui.RackNoSlot
     "zdieľa svoje miesto v lište s iným nástrojom",  // ui.RackShared
     "jeho miesto nie je v stroji definované",  // ui.RackUndefined
     "Server nepreviazal výmeny nástroja: vložte nástroje do lišty v poradí úlohy",  // ui.RackNotChained
+    "Tento druh stroja nemá vreteno, ktoré by mohla obrazovka spustiť.",  // ui.WhyNoSpindleHere
+    "Server odpovedá, ale hlási, že nie je v poriadku",  // ui.SrvDegraded
     "Kontrola kvality práce",  // q.Title
     "Svetelný kruh",  // q.Light
     "Vyp.",  // q.LightOff
@@ -2535,7 +2695,6 @@ inline const char* const kText_sl[kKeyCount] = {
     "Glasovni ukazi so v nastavitvah izklopljeni.",  // ui.WhyVoiceOff
     "Vhod stopa ni priključen.",  // ui.WhyNoStop
     "Vreteno je v nastavitvah izklopljeno.",  // ui.WhySpindle
-    "Ta vrsta stroja nima vretena, ki bi ga lahko zagnal zaslon.",  // ui.WhyNoSpindleHere
     "Podajanje",  // ui.Feed
     "Napredek",  // ui.Progress
     "Orodje",  // ui.Tool
@@ -2614,13 +2773,24 @@ inline const char* const kText_sl[kKeyCount] = {
     "Merilo ni 1",  // ui.WarnScale
     "Načrt presega hod osi",  // ui.WarnCourse
     "Delo teče: datoteke ni mogoče zamenjati",  // ui.WfRunning
+    "Preteklo",  // ui.Elapsed
+    "Konča ob",  // ui.EndsAt
+    "Dolžina frezanja",  // ui.Routed
+    "Menjave orodja",  // ui.Changes
     "Vrtanje je končano, sledi frezanje",  // ui.StageDone
     "Spremljaj frezanje",  // ui.FollowRouting
+    "Naloga je končana: odstranite ploščo",  // ui.BoardOut
+    "Konec poti",  // ui.JogLimit
+    "Glava je prenizko: najprej dvignite Z",  // ui.JogRaise
+    "Naloga teče: brez ročnih premikov",  // ui.WhyJobRunning
+    "Neprekinjeno",  // ui.Continuous
     "Položaji v vrstici",  // ui.RackTitle
     "nima mesta v vrstici",  // ui.RackNoSlot
     "deli svoje mesto v vrstici z drugim orodjem",  // ui.RackShared
     "njegovo mesto ni določeno v stroju",  // ui.RackUndefined
     "Strežnik ni povezal menjav orodja: položite orodja v vrstico v vrstnem redu naloge",  // ui.RackNotChained
+    "Ta vrsta stroja nima vretena, ki bi ga lahko zagnal zaslon.",  // ui.WhyNoSpindleHere
+    "Strežnik odgovarja, vendar sporoča, da ni v redu",  // ui.SrvDegraded
     "Kontrola kakovosti izdelka",  // q.Title
     "Svetlobni obroč",  // q.Light
     "Izklj.",  // q.LightOff
@@ -2691,7 +2861,6 @@ inline const char* const kText_sv[kKeyCount] = {
     "Röstkommandon är avstängda i inställningarna.",  // ui.WhyVoiceOff
     "Hårdvarustoppets ingång är inte ansluten.",  // ui.WhyNoStop
     "Spindeln är avstängd i inställningarna.",  // ui.WhySpindle
-    "Den här maskintypen har ingen spindel som skärmen kan starta.",  // ui.WhyNoSpindleHere
     "Matning",  // ui.Feed
     "Förlopp",  // ui.Progress
     "Verktyg",  // ui.Tool
@@ -2770,13 +2939,24 @@ inline const char* const kText_sv[kKeyCount] = {
     "Skalan är inte 1",  // ui.WarnScale
     "Planen överskrider en axels rörelse",  // ui.WarnCourse
     "Ett jobb pågår: filen kan inte bytas",  // ui.WfRunning
+    "Förfluten",  // ui.Elapsed
+    "Slutar kl.",  // ui.EndsAt
+    "Fräst längd",  // ui.Routed
+    "Verktygsbyten",  // ui.Changes
     "Borrningen är klar och fräsningen följer",  // ui.StageDone
     "Följ fräsningen",  // ui.FollowRouting
+    "Jobbet är klart: ta ut kortet",  // ui.BoardOut
+    "Slutet av rörelsen",  // ui.JogLimit
+    "Huvudet är för lågt: lyft Z först",  // ui.JogRaise
+    "Ett jobb pågår: inga manuella rörelser",  // ui.WhyJobRunning
+    "Kontinuerlig",  // ui.Continuous
     "Positioner i listen",  // ui.RackTitle
     "har ingen plats i listen",  // ui.RackNoSlot
     "delar sin plats i listen med ett annat verktyg",  // ui.RackShared
     "platsen är inte definierad i maskinen",  // ui.RackUndefined
     "Servern kedjade inte verktygsbytena: lägg verktygen i listen i jobbets ordning",  // ui.RackNotChained
+    "Den här maskintypen har ingen spindel som skärmen kan starta.",  // ui.WhyNoSpindleHere
+    "Servern svarar, men säger att den inte mår bra",  // ui.SrvDegraded
     "Kvalitetskontroll av arbetet",  // q.Title
     "Ljusring",  // q.Light
     "Av",  // q.LightOff
@@ -2847,7 +3027,6 @@ inline const char* const kText_no[kKeyCount] = {
     "Talekommandoer er slått av i innstillingene.",  // ui.WhyVoiceOff
     "Inngangen for maskinvarestopp er ikke koblet til.",  // ui.WhyNoStop
     "Spindelen er slått av i innstillingene.",  // ui.WhySpindle
-    "Denne maskintypen har ingen spindel som skjermen kan starte.",  // ui.WhyNoSpindleHere
     "Mating",  // ui.Feed
     "Fremdrift",  // ui.Progress
     "Verktøy",  // ui.Tool
@@ -2926,13 +3105,24 @@ inline const char* const kText_no[kKeyCount] = {
     "Skalaen er ikke 1",  // ui.WarnScale
     "Planen overskrider en akses slag",  // ui.WarnCourse
     "En jobb kjører: filen kan ikke byttes",  // ui.WfRunning
+    "Forløpt",  // ui.Elapsed
+    "Slutter kl.",  // ui.EndsAt
+    "Frest lengde",  // ui.Routed
+    "Verktøyskift",  // ui.Changes
     "Boringen er ferdig og fresingen følger",  // ui.StageDone
     "Følg fresingen",  // ui.FollowRouting
+    "Jobben er ferdig: ta ut kortet",  // ui.BoardOut
+    "Slutten av banen",  // ui.JogLimit
+    "Hodet er for lavt: løft Z først",  // ui.JogRaise
+    "En jobb kjører: ingen manuelle bevegelser",  // ui.WhyJobRunning
+    "Kontinuerlig",  // ui.Continuous
     "Posisjoner i listen",  // ui.RackTitle
     "har ingen plass i listen",  // ui.RackNoSlot
     "deler plassen sin i listen med et annet verktøy",  // ui.RackShared
     "plassen er ikke definert i maskinen",  // ui.RackUndefined
     "Serveren koblet ikke sammen verktøyskiftene: legg verktøyene i listen i jobbens rekkefølge",  // ui.RackNotChained
+    "Denne maskintypen har ingen spindel som skjermen kan starte.",  // ui.WhyNoSpindleHere
+    "Serveren svarer, men sier at den ikke har det bra",  // ui.SrvDegraded
     "Kvalitetskontroll av arbeidet",  // q.Title
     "Lysring",  // q.Light
     "Av",  // q.LightOff
@@ -3003,7 +3193,6 @@ inline const char* const kText_is[kKeyCount] = {
     "Raddskipanir eru óvirkar í stillingum.",  // ui.WhyVoiceOff
     "Inngangur vélbúnaðarstopps er ekki tengdur.",  // ui.WhyNoStop
     "Snældan er óvirk í stillingum.",  // ui.WhySpindle
-    "Vélargerð þessi er ekki með snældu sem skjárinn getur ræst.",  // ui.WhyNoSpindleHere
     "Færsluhraði",  // ui.Feed
     "Framvinda",  // ui.Progress
     "Verkfæri",  // ui.Tool
@@ -3082,13 +3271,24 @@ inline const char* const kText_is[kKeyCount] = {
     "Kvarðinn er ekki 1",  // ui.WarnScale
     "Áætlunin fer yfir slag áss",  // ui.WarnCourse
     "Verk er í gangi: ekki er hægt að skipta um skrá",  // ui.WfRunning
+    "Liðið",  // ui.Elapsed
+    "Lýkur kl.",  // ui.EndsAt
+    "Fræst lengd",  // ui.Routed
+    "Verkfæraskipti",  // ui.Changes
     "Borun er lokið og fræsing tekur við",  // ui.StageDone
     "Fylgja fræsingu",  // ui.FollowRouting
+    "Verkinu er lokið: takið plötuna út",  // ui.BoardOut
+    "Enda ferilsins",  // ui.JogLimit
+    "Hausinn er of neðarlega: lyftið Z fyrst",  // ui.JogRaise
+    "Verk er í gangi: engar handvirkar hreyfingar",  // ui.WhyJobRunning
+    "Samfellt",  // ui.Continuous
     "Staðsetningar í stikunni",  // ui.RackTitle
     "hefur engan stað í stikunni",  // ui.RackNoSlot
     "deilir stað sínum í stikunni með öðru verkfæri",  // ui.RackShared
     "staður þess er ekki skilgreindur í vélinni",  // ui.RackUndefined
     "Þjónninn tengdi ekki verkfæraskiptin: setjið verkfærin í stikuna í röð verksins",  // ui.RackNotChained
+    "Vélargerð þessi er ekki með snældu sem skjárinn getur ræst.",  // ui.WhyNoSpindleHere
+    "Þjónninn svarar en segist ekki vera í lagi",  // ui.SrvDegraded
     "Gæðaskoðun verksins",  // q.Title
     "Ljósahringur",  // q.Light
     "Af",  // q.LightOff
@@ -3159,7 +3359,6 @@ inline const char* const kText_uk[kKeyCount] = {
     "Голосові команди вимкнено в налаштуваннях.",  // ui.WhyVoiceOff
     "Вхід апаратного стопу не підключено.",  // ui.WhyNoStop
     "Шпиндель вимкнено в налаштуваннях.",  // ui.WhySpindle
-    "Цей тип верстата не має шпинделя, який екран міг би запустити.",  // ui.WhyNoSpindleHere
     "Подача",  // ui.Feed
     "Хід виконання",  // ui.Progress
     "Інструмент",  // ui.Tool
@@ -3238,13 +3437,24 @@ inline const char* const kText_uk[kKeyCount] = {
     "Масштаб не дорівнює 1",  // ui.WarnScale
     "План виходить за хід осі",  // ui.WarnCourse
     "Завдання виконується: файл не можна змінити",  // ui.WfRunning
+    "Минуло",  // ui.Elapsed
+    "Закінчиться о",  // ui.EndsAt
+    "Довжина фрезерування",  // ui.Routed
+    "Зміни інструмента",  // ui.Changes
     "Свердління завершено, далі фрезерування",  // ui.StageDone
     "Стежити за фрезеруванням",  // ui.FollowRouting
+    "Завдання виконано: вийміть плату",  // ui.BoardOut
+    "Кінець ходу",  // ui.JogLimit
+    "Головка надто низько: спершу підніміть Z",  // ui.JogRaise
+    "Триває завдання: ручні переміщення заборонені",  // ui.WhyJobRunning
+    "Безперервно",  // ui.Continuous
     "Позиції в планці",  // ui.RackTitle
     "немає місця в планці",  // ui.RackNoSlot
     "ділить своє місце в планці з іншим інструментом",  // ui.RackShared
     "його місце не задано у верстаті",  // ui.RackUndefined
     "Сервер не зв'язав зміни інструмента: розмістіть інструменти в планці в порядку завдання",  // ui.RackNotChained
+    "Цей тип верстата не має шпинделя, який екран міг би запустити.",  // ui.WhyNoSpindleHere
+    "Сервер відповідає, але повідомляє, що йому недобре",  // ui.SrvDegraded
     "Контроль якості виконаної роботи",  // q.Title
     "Світлове кільце",  // q.Light
     "Вимк.",  // q.LightOff
@@ -3315,7 +3525,6 @@ inline const char* const kText_ru[kKeyCount] = {
     "Голосовые команды выключены в настройках.",  // ui.WhyVoiceOff
     "Вход аппаратного стопа не подключён.",  // ui.WhyNoStop
     "Шпиндель выключен в настройках.",  // ui.WhySpindle
-    "У этого типа станка нет шпинделя, который экран мог бы запустить.",  // ui.WhyNoSpindleHere
     "Подача",  // ui.Feed
     "Ход выполнения",  // ui.Progress
     "Инструмент",  // ui.Tool
@@ -3394,13 +3603,24 @@ inline const char* const kText_ru[kKeyCount] = {
     "Масштаб не равен 1",  // ui.WarnScale
     "План выходит за ход оси",  // ui.WarnCourse
     "Задание выполняется: файл нельзя сменить",  // ui.WfRunning
+    "Прошло",  // ui.Elapsed
+    "Закончится в",  // ui.EndsAt
+    "Длина фрезеровки",  // ui.Routed
+    "Смены инструмента",  // ui.Changes
     "Сверление завершено, далее фрезеровка",  // ui.StageDone
     "Следить за фрезеровкой",  // ui.FollowRouting
+    "Задание выполнено: выньте плату",  // ui.BoardOut
+    "Конец хода",  // ui.JogLimit
+    "Головка слишком низко: сначала поднимите Z",  // ui.JogRaise
+    "Идёт задание: ручные перемещения запрещены",  // ui.WhyJobRunning
+    "Непрерывно",  // ui.Continuous
     "Позиции в планке",  // ui.RackTitle
     "нет места в планке",  // ui.RackNoSlot
     "делит своё место в планке с другим инструментом",  // ui.RackShared
     "его место не задано в станке",  // ui.RackUndefined
     "Сервер не связал смены инструмента: разместите инструменты в планке в порядке задания",  // ui.RackNotChained
+    "У этого типа станка нет шпинделя, который экран мог бы запустить.",  // ui.WhyNoSpindleHere
+    "Сервер отвечает, но сообщает, что ему нехорошо",  // ui.SrvDegraded
     "Контроль качества выполненной работы",  // q.Title
     "Световое кольцо",  // q.Light
     "Выкл.",  // q.LightOff
@@ -3471,7 +3691,6 @@ inline const char* const kText_sr[kKeyCount] = {
     "Гласовне команде су искључене у подешавањима.",  // ui.WhyVoiceOff
     "Улаз хардверског стопа није повезан.",  // ui.WhyNoStop
     "Вретено је искључено у подешавањима.",  // ui.WhySpindle
-    "Ова врста машине нема вретено које екран може да покрене.",  // ui.WhyNoSpindleHere
     "Помак",  // ui.Feed
     "Напредак",  // ui.Progress
     "Алат",  // ui.Tool
@@ -3550,13 +3769,24 @@ inline const char* const kText_sr[kKeyCount] = {
     "Размера није 1",  // ui.WarnScale
     "План прелази ход осе",  // ui.WarnCourse
     "Посао је у току: датотека се не може променити",  // ui.WfRunning
+    "Протекло",  // ui.Elapsed
+    "Завршава у",  // ui.EndsAt
+    "Дужина глодања",  // ui.Routed
+    "Замене алата",  // ui.Changes
     "Бушење је готово, следи глодање",  // ui.StageDone
     "Прати глодање",  // ui.FollowRouting
+    "Посао је готов: извадите плочу",  // ui.BoardOut
+    "Крај хода",  // ui.JogLimit
+    "Глава је прениско: прво подигните Z",  // ui.JogRaise
+    "Посао је у току: без ручног померања",  // ui.WhyJobRunning
+    "Континуирано",  // ui.Continuous
     "Положаји у траци",  // ui.RackTitle
     "нема место у траци",  // ui.RackNoSlot
     "дели место у траци са другим алатом",  // ui.RackShared
     "његово место није дефинисано у машини",  // ui.RackUndefined
     "Сервер није повезао замене алата: ставите алате у траку редоследом посла",  // ui.RackNotChained
+    "Ова врста машине нема вретено које екран може да покрене.",  // ui.WhyNoSpindleHere
+    "Сервер одговара, али каже да није добро",  // ui.SrvDegraded
     "Провера квалитета рада",  // q.Title
     "Светлосни прстен",  // q.Light
     "Искљ.",  // q.LightOff
@@ -3627,7 +3857,6 @@ inline const char* const kText_sq[kKeyCount] = {
     "Komandat zanore janë çaktivizuar te cilësimet.",  // ui.WhyVoiceOff
     "Hyrja e stopit harduerik nuk është e lidhur.",  // ui.WhyNoStop
     "Boshti është çaktivizuar te cilësimet.",  // ui.WhySpindle
-    "Ky lloj makine nuk ka bosht që ekrani ta nisë.",  // ui.WhyNoSpindleHere
     "Avancimi",  // ui.Feed
     "Përparimi",  // ui.Progress
     "Mjeti",  // ui.Tool
@@ -3706,13 +3935,24 @@ inline const char* const kText_sq[kKeyCount] = {
     "Shkalla nuk është 1",  // ui.WarnScale
     "Plani e kalon rrugën e një aksi",  // ui.WarnCourse
     "Një punë është në ecuri: skedari nuk mund të ndryshohet",  // ui.WfRunning
+    "Kaluar",  // ui.Elapsed
+    "Mbaron në",  // ui.EndsAt
+    "Gjatësia e frezuar",  // ui.Routed
+    "Ndërrimet e veglës",  // ui.Changes
     "Shpimi ka mbaruar dhe vijon frezimi",  // ui.StageDone
     "Ndiq frezimin",  // ui.FollowRouting
+    "Puna ka mbaruar: hiqeni pllakën",  // ui.BoardOut
+    "Fundi i lëvizjes",  // ui.JogLimit
+    "Koka është shumë ulët: ngrini fillimisht Z",  // ui.JogRaise
+    "Një punë është në ecuri: pa lëvizje me dorë",  // ui.WhyJobRunning
+    "E vazhdueshme",  // ui.Continuous
     "Pozicionet në shirit",  // ui.RackTitle
     "nuk ka vend në shirit",  // ui.RackNoSlot
     "ndan vendin e tij në shirit me një vegël tjetër",  // ui.RackShared
     "vendi i tij nuk është përcaktuar në makinë",  // ui.RackUndefined
     "Serveri nuk i lidhi ndërrimet: vendosini veglat në shirit sipas renditjes së punës",  // ui.RackNotChained
+    "Ky lloj makine nuk ka bosht që ekrani ta nisë.",  // ui.WhyNoSpindleHere
+    "Serveri përgjigjet, por thotë se nuk është mirë",  // ui.SrvDegraded
     "Kontrolli i cilësisë së punës",  // q.Title
     "Unaza e dritës",  // q.Light
     "Fikur",  // q.LightOff
@@ -3783,7 +4023,6 @@ inline const char* const kText_ca[kKeyCount] = {
     "Les ordres per veu estan desactivades als paràmetres.",  // ui.WhyVoiceOff
     "L'entrada de la parada de maquinari no està cablejada.",  // ui.WhyNoStop
     "El capçal està desactivat als paràmetres.",  // ui.WhySpindle
-    "Aquest tipus de màquina no té cap capçal que la pantalla pugui engegar.",  // ui.WhyNoSpindleHere
     "Avanç",  // ui.Feed
     "Progrés",  // ui.Progress
     "Eina",  // ui.Tool
@@ -3862,13 +4101,24 @@ inline const char* const kText_ca[kKeyCount] = {
     "L'escala no és 1",  // ui.WarnScale
     "El pla supera el recorregut d'un eix",  // ui.WarnCourse
     "Hi ha un treball en marxa: no es pot canviar el fitxer",  // ui.WfRunning
+    "Transcorregut",  // ui.Elapsed
+    "Acaba a les",  // ui.EndsAt
+    "Longitud fresada",  // ui.Routed
+    "Canvis d'eina",  // ui.Changes
     "El foradat ha acabat i segueix el fresat",  // ui.StageDone
     "Seguir el fresat",  // ui.FollowRouting
+    "La feina ha acabat: retireu la placa",  // ui.BoardOut
+    "Final del recorregut",  // ui.JogLimit
+    "El capçal és massa baix: pugeu primer Z",  // ui.JogRaise
+    "Hi ha una feina en curs: sense moviments manuals",  // ui.WhyJobRunning
+    "Continu",  // ui.Continuous
     "Posicions a la barra",  // ui.RackTitle
     "no té lloc a la barra",  // ui.RackNoSlot
     "comparteix el lloc a la barra amb una altra eina",  // ui.RackShared
     "el seu lloc no està definit a la màquina",  // ui.RackUndefined
     "El servidor no ha encadenat els canvis: poseu les eines a la barra en l'ordre de la feina",  // ui.RackNotChained
+    "Aquest tipus de màquina no té cap capçal que la pantalla pugui engegar.",  // ui.WhyNoSpindleHere
+    "El servidor respon però diu que no està bé",  // ui.SrvDegraded
     "Verificació de qualitat de la feina",  // q.Title
     "Aro de llum",  // q.Light
     "Apagat",  // q.LightOff
@@ -3939,7 +4189,6 @@ inline const char* const kText_gl[kKeyCount] = {
     "As ordes por voz están desactivadas nos axustes.",  // ui.WhyVoiceOff
     "A entrada da parada por hardware non está cableada.",  // ui.WhyNoStop
     "O fuso está desactivado nos axustes.",  // ui.WhySpindle
-    "Este tipo de máquina non ten un fuso que a pantalla poida arrancar.",  // ui.WhyNoSpindleHere
     "Avance",  // ui.Feed
     "Progreso",  // ui.Progress
     "Ferramenta",  // ui.Tool
@@ -4018,13 +4267,24 @@ inline const char* const kText_gl[kKeyCount] = {
     "A escala non é 1",  // ui.WarnScale
     "O plan supera o percorrido dun eixe",  // ui.WarnCourse
     "Hai un traballo en marcha: non se pode cambiar o ficheiro",  // ui.WfRunning
+    "Transcorrido",  // ui.Elapsed
+    "Remata ás",  // ui.EndsAt
+    "Lonxitude fresada",  // ui.Routed
+    "Cambios de ferramenta",  // ui.Changes
     "O taladrado rematou e segue o fresado",  // ui.StageDone
     "Seguir o fresado",  // ui.FollowRouting
+    "O traballo rematou: retire a placa",  // ui.BoardOut
+    "Fin do percorrido",  // ui.JogLimit
+    "O cabezal está demasiado baixo: suba primeiro Z",  // ui.JogRaise
+    "Hai un traballo en marcha: sen movementos manuais",  // ui.WhyJobRunning
+    "Continuo",  // ui.Continuous
     "Posicións na barra",  // ui.RackTitle
     "non ten lugar na barra",  // ui.RackNoSlot
     "comparte o lugar na barra con outra ferramenta",  // ui.RackShared
     "o seu lugar non está definido na máquina",  // ui.RackUndefined
     "O servidor non encadeou os cambios: poña as ferramentas na barra na orde do traballo",  // ui.RackNotChained
+    "Este tipo de máquina non ten un fuso que a pantalla poida arrancar.",  // ui.WhyNoSpindleHere
+    "O servidor responde pero di que non está ben",  // ui.SrvDegraded
     "Verificación de calidade do traballo",  // q.Title
     "Aro de luz",  // q.Light
     "Apagado",  // q.LightOff
@@ -4095,7 +4355,6 @@ inline const char* const kText_eu[kKeyCount] = {
     "Ahots-aginduak itzalita daude ezarpenetan.",  // ui.WhyVoiceOff
     "Hardware-geldialdiaren sarrera ez dago kableatuta.",  // ui.WhyNoStop
     "Ardatza desgaituta dago ezarpenetan.",  // ui.WhySpindle
-    "Makina mota honek ez dauka pantailak abiaraz dezakeen ardatzik.",  // ui.WhyNoSpindleHere
     "Aurrerapena",  // ui.Feed
     "Aurrerapena",  // ui.Progress
     "Erreminta",  // ui.Tool
@@ -4174,13 +4433,24 @@ inline const char* const kText_eu[kKeyCount] = {
     "Eskala ez da 1",  // ui.WarnScale
     "Planak ardatz baten ibilbidea gainditzen du",  // ui.WarnCourse
     "Lan bat martxan dago: ezin da fitxategia aldatu",  // ui.WfRunning
+    "Igarotako denbora",  // ui.Elapsed
+    "Amaiera ordua",  // ui.EndsAt
+    "Fresatutako luzera",  // ui.Routed
+    "Tresna-aldaketak",  // ui.Changes
     "Zulaketa amaitu da eta fresatzea dator",  // ui.StageDone
     "Jarraitu fresatzea",  // ui.FollowRouting
+    "Lana amaitu da: atera plaka",  // ui.BoardOut
+    "Ibilbidearen muga",  // ui.JogLimit
+    "Burua baxuegi dago: goratu Z lehenengo",  // ui.JogRaise
+    "Lan bat martxan dago: eskuzko mugimendurik ez",  // ui.WhyJobRunning
+    "Etengabea",  // ui.Continuous
     "Barrako posizioak",  // ui.RackTitle
     "ez du lekurik barran",  // ui.RackNoSlot
     "barrako lekua beste tresna batekin partekatzen du",  // ui.RackShared
     "bere lekua ez dago makinan definituta",  // ui.RackUndefined
     "Zerbitzariak ez ditu tresna-aldaketak katean lotu: jarri tresnak barran lanaren ordenan",  // ui.RackNotChained
+    "Makina mota honek ez dauka pantailak abiaraz dezakeen ardatzik.",  // ui.WhyNoSpindleHere
+    "Zerbitzariak erantzuten du, baina ez dagoela ondo dio",  // ui.SrvDegraded
     "Lanaren kalitate-egiaztapena",  // q.Title
     "Argi-eraztuna",  // q.Light
     "Itzalita",  // q.LightOff
@@ -4251,7 +4521,6 @@ inline const char* const kText_pt_br[kKeyCount] = {
     "As ordens por voz estão desligadas nas configurações.",  // ui.WhyVoiceOff
     "A entrada da parada por hardware não está ligada.",  // ui.WhyNoStop
     "O fuso está desligado nas configurações.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
     nullptr,  // ui.Feed
     nullptr,  // ui.Progress
     nullptr,  // ui.Tool
@@ -4330,13 +4599,24 @@ inline const char* const kText_pt_br[kKeyCount] = {
     nullptr,  // ui.WarnScale
     nullptr,  // ui.WarnCourse
     "Há um trabalho em andamento: não é possível trocar o arquivo",  // ui.WfRunning
+    nullptr,  // ui.Elapsed
+    nullptr,  // ui.EndsAt
+    nullptr,  // ui.Routed
+    nullptr,  // ui.Changes
     nullptr,  // ui.StageDone
     nullptr,  // ui.FollowRouting
+    nullptr,  // ui.BoardOut
+    nullptr,  // ui.JogLimit
+    nullptr,  // ui.JogRaise
+    nullptr,  // ui.WhyJobRunning
+    nullptr,  // ui.Continuous
     nullptr,  // ui.RackTitle
     nullptr,  // ui.RackNoSlot
     nullptr,  // ui.RackShared
     nullptr,  // ui.RackUndefined
     nullptr,  // ui.RackNotChained
+    nullptr,  // ui.WhyNoSpindleHere
+    "O servidor responde, mas diz que não está bem",  // ui.SrvDegraded
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff
@@ -4407,7 +4687,6 @@ inline const char* const kText_fr_ca[kKeyCount] = {
     "Les ordres vocaux sont désactivés dans les paramètres.",  // ui.WhyVoiceOff
     nullptr,  // ui.WhyNoStop
     "La broche est désactivée dans les paramètres.",  // ui.WhySpindle
-    nullptr,  // ui.WhyNoSpindleHere
     nullptr,  // ui.Feed
     nullptr,  // ui.Progress
     nullptr,  // ui.Tool
@@ -4486,13 +4765,24 @@ inline const char* const kText_fr_ca[kKeyCount] = {
     nullptr,  // ui.WarnScale
     nullptr,  // ui.WarnCourse
     nullptr,  // ui.WfRunning
+    nullptr,  // ui.Elapsed
+    nullptr,  // ui.EndsAt
+    nullptr,  // ui.Routed
+    nullptr,  // ui.Changes
     nullptr,  // ui.StageDone
     nullptr,  // ui.FollowRouting
+    nullptr,  // ui.BoardOut
+    nullptr,  // ui.JogLimit
+    nullptr,  // ui.JogRaise
+    nullptr,  // ui.WhyJobRunning
+    nullptr,  // ui.Continuous
     nullptr,  // ui.RackTitle
     nullptr,  // ui.RackNoSlot
     nullptr,  // ui.RackShared
     nullptr,  // ui.RackUndefined
     nullptr,  // ui.RackNotChained
+    nullptr,  // ui.WhyNoSpindleHere
+    "Le serveur répond mais dit qu'il ne va pas bien",  // ui.SrvDegraded
     nullptr,  // q.Title
     nullptr,  // q.Light
     nullptr,  // q.LightOff

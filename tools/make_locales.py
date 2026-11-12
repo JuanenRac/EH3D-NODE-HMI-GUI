@@ -11,6 +11,7 @@ Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 """
 from __future__ import annotations
 
+import os
 import re
 import sys
 from pathlib import Path
@@ -59,8 +60,10 @@ def extra_codes() -> list[str]:
 def literal_chars() -> set[str]:
     """The characters of the string literals of the files that draw text."""
     chars: set[str] = set()
-    for rel in LITERAL_FILES:
-        text = (ROOT / rel).read_text(encoding="utf-8")
+    # EH3D_EXTRA_LITERALS: more files (separated like a PATH) whose literals the fonts must hold too: the two touch screens share one set of fonts, so each is built with the literals of the other
+    extra = [Path(p) for p in os.environ.get("EH3D_EXTRA_LITERALS", "").split(os.pathsep) if p]
+    for source in [ROOT / rel for rel in LITERAL_FILES] + extra:
+        text = source.read_text(encoding="utf-8")
         for lit in re.findall(r'"((?:[^"\\\n]|\\.)*)"', text):
             chars.update(re.sub(r"\\.", "", lit))
     return chars

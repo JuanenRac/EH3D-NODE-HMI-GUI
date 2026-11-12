@@ -29,7 +29,6 @@ ui.WhyNotArmed	Maskinen är inte redo.
 ui.WhyVoiceOff	Röstkommandon är avstängda i inställningarna.
 ui.WhyNoStop	Hårdvarustoppets ingång är inte ansluten.
 ui.WhySpindle	Spindeln är avstängd i inställningarna.
-ui.WhyNoSpindleHere	Den här maskintypen har ingen spindel som skärmen kan starta.
 ui.Feed	Matning
 ui.Progress	Förlopp
 ui.Tool	Verktyg
@@ -145,10 +144,21 @@ ui.WarnFar	Arbetet ligger långt från hörnet
 ui.WarnScale	Skalan är inte 1
 ui.WarnCourse	Planen överskrider en axels rörelse
 ui.WfRunning	Ett jobb pågår: filen kan inte bytas
+ui.Elapsed	Förfluten
+ui.EndsAt	Slutar kl.
+ui.Routed	Fräst längd
+ui.Changes	Verktygsbyten
 ui.StageDone	Borrningen är klar och fräsningen följer
 ui.FollowRouting	Följ fräsningen
+ui.BoardOut	Jobbet är klart: ta ut kortet
+ui.JogLimit	Slutet av rörelsen
+ui.JogRaise	Huvudet är för lågt: lyft Z först
+ui.WhyJobRunning	Ett jobb pågår: inga manuella rörelser
+ui.Continuous	Kontinuerlig
 ui.RackTitle	Positioner i listen
 ui.RackNoSlot	har ingen plats i listen
 ui.RackShared	delar sin plats i listen med ett annat verktyg
 ui.RackUndefined	platsen är inte definierad i maskinen
 ui.RackNotChained	Servern kedjade inte verktygsbytena: lägg verktygen i listen i jobbets ordning
+ui.WhyNoSpindleHere	Den här maskintypen har ingen spindel som skärmen kan starta.
+ui.SrvDegraded	Servern svarar, men säger att den inte mår bra

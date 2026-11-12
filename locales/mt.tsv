@@ -29,7 +29,6 @@ ui.WhyNotArmed	Il-magna mhix armata.
 ui.WhyVoiceOff	L-ordnijiet bil-vuċi huma mitfija fis-settings.
 ui.WhyNoStop	L-input tal-istop tal-hardware mhuwiex imqabbad.
 ui.WhySpindle	L-ispindil huwa mitfi fis-settings.
-ui.WhyNoSpindleHere	Dan it-tip ta' magna m'għandux ispindil li l-iskrin jista' jibda.
 ui.Feed	Avvanz
 ui.Progress	Progress
 ui.Tool	Għodda
@@ -145,10 +144,21 @@ ui.WarnFar	Ix-xogħol huwa 'l bogħod mill-kantuniera
 ui.WarnScale	L-iskala mhijiex 1
 ui.WarnCourse	Il-pjan jaqbeż il-korsa ta' assi
 ui.WfRunning	Xogħol qed jaħdem: il-fajl ma jistax jinbidel
+ui.Elapsed	Għadda
+ui.EndsAt	Jispiċċa fi
+ui.Routed	Tul iffresat
+ui.Changes	Bidliet tal-għodda
 ui.StageDone	It-tħaffir intemm u jmiss il-fresar
 ui.FollowRouting	Segwi l-fresar
+ui.BoardOut	Ix-xogħol intemm: neħħi l-bord
+ui.JogLimit	Tmiem il-ġirja
+ui.JogRaise	Ir-ras baxxa wisq: għolli Z l-ewwel
+ui.WhyJobRunning	Xogħol għaddej: l-ebda moviment bl-idejn
+ui.Continuous	Kontinwu
 ui.RackTitle	Pożizzjonijiet fil-barra
 ui.RackNoSlot	m'għandux post fil-barra
 ui.RackShared	jaqsam il-post tiegħu fil-barra ma' għodda oħra
 ui.RackUndefined	il-post tiegħu mhux definit fil-magna
 ui.RackNotChained	Is-server ma rabatx il-bidliet tal-għodda: poġġi l-għodod fil-barra fl-ordni tax-xogħol
+ui.WhyNoSpindleHere	Dan it-tip ta' magna m'għandux ispindil li l-iskrin jista' jibda.
+ui.SrvDegraded	Is-server iwieġeb imma jgħid li mhux tajjeb

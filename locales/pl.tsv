@@ -29,7 +29,6 @@ ui.WhyNotArmed	Maszyna nie jest gotowa.
 ui.WhyVoiceOff	Polecenia głosowe są wyłączone w ustawieniach.
 ui.WhyNoStop	Wejście stopu sprzętowego nie jest podłączone.
 ui.WhySpindle	Wrzeciono jest wyłączone w ustawieniach.
-ui.WhyNoSpindleHere	Ten rodzaj maszyny nie ma wrzeciona, które ekran mógłby uruchomić.
 ui.Feed	Posuw
 ui.Progress	Postęp
 ui.Tool	Narzędzie
@@ -145,10 +144,21 @@ ui.WarnFar	Praca jest daleko od rogu
 ui.WarnScale	Skala nie wynosi 1
 ui.WarnCourse	Plan przekracza skok osi
 ui.WfRunning	Zadanie trwa: nie można zmienić pliku
+ui.Elapsed	Upłynęło
+ui.EndsAt	Kończy się o
+ui.Routed	Długość frezowania
+ui.Changes	Wymiany narzędzia
 ui.StageDone	Wiercenie zakończone, teraz frezowanie
 ui.FollowRouting	Śledź frezowanie
+ui.BoardOut	Zadanie zakończone: wyjmij płytkę
+ui.JogLimit	Koniec przesuwu
+ui.JogRaise	Głowica jest za nisko: najpierw podnieś Z
+ui.WhyJobRunning	Trwa zadanie: brak ruchów ręcznych
+ui.Continuous	Ciągły
 ui.RackTitle	Pozycje w magazynie
 ui.RackNoSlot	nie ma miejsca w magazynie
 ui.RackShared	dzieli miejsce w magazynie z innym narzędziem
 ui.RackUndefined	jego miejsce nie jest zdefiniowane w maszynie
 ui.RackNotChained	Serwer nie połączył wymian narzędzi: ułóż narzędzia w magazynie w kolejności zadania
+ui.WhyNoSpindleHere	Ten rodzaj maszyny nie ma wrzeciona, które ekran mógłby uruchomić.
+ui.SrvDegraded	Serwer odpowiada, ale zgłasza, że nie jest w porządku

@@ -29,7 +29,6 @@ ui.WhyNotArmed	Stroj ni pripravljen.
 ui.WhyVoiceOff	Glasovni ukazi so v nastavitvah izklopljeni.
 ui.WhyNoStop	Vhod stopa ni priključen.
 ui.WhySpindle	Vreteno je v nastavitvah izklopljeno.
-ui.WhyNoSpindleHere	Ta vrsta stroja nima vretena, ki bi ga lahko zagnal zaslon.
 ui.Feed	Podajanje
 ui.Progress	Napredek
 ui.Tool	Orodje
@@ -145,10 +144,21 @@ ui.WarnFar	Delo je daleč od kota
 ui.WarnScale	Merilo ni 1
 ui.WarnCourse	Načrt presega hod osi
 ui.WfRunning	Delo teče: datoteke ni mogoče zamenjati
+ui.Elapsed	Preteklo
+ui.EndsAt	Konča ob
+ui.Routed	Dolžina frezanja
+ui.Changes	Menjave orodja
 ui.StageDone	Vrtanje je končano, sledi frezanje
 ui.FollowRouting	Spremljaj frezanje
+ui.BoardOut	Naloga je končana: odstranite ploščo
+ui.JogLimit	Konec poti
+ui.JogRaise	Glava je prenizko: najprej dvignite Z
+ui.WhyJobRunning	Naloga teče: brez ročnih premikov
+ui.Continuous	Neprekinjeno
 ui.RackTitle	Položaji v vrstici
 ui.RackNoSlot	nima mesta v vrstici
 ui.RackShared	deli svoje mesto v vrstici z drugim orodjem
 ui.RackUndefined	njegovo mesto ni določeno v stroju
 ui.RackNotChained	Strežnik ni povezal menjav orodja: položite orodja v vrstico v vrstnem redu naloge
+ui.WhyNoSpindleHere	Ta vrsta stroja nima vretena, ki bi ga lahko zagnal zaslon.
+ui.SrvDegraded	Strežnik odgovarja, vendar sporoča, da ni v redu

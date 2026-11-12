@@ -49,7 +49,8 @@ static void every_setting_has_its_keyboard() {
     const char* keys[] = {"language", "theme", "orientation", "brightness_percent", "idle_dim_s", "server_host", "server_port", "server_machine", "token", "poll_s",
                           "confirm_moves", "confirm_timeout_ms", "jog_max_mm", "spindle_max_rpm", "spindle_rpm", "spindle_over", "hw_stop_required", "link_idle_ms", "voice_alerts", "voice_orders",
                           "voice_confirm", "volume_percent", "mic_gain_percent", "sound_finish", "sound_tool_change", "sound_check_ok", "sound_check_bad",
-                          "rack_check", "rack_chain", "stage_window", "sound_stage"};
+                          "jog_block_running", "jog_limits", "jog_safe_z", "rack_check", "rack_chain", "stage_window", "jog_continuous", "jog_board_z_mm", "jog_clearance_mm", "jog_below_board_mm",
+                          "clock_utc_offset_min", "sound_stage"};
     for (const char* k : keys) CHECK(field_spec(k) != nullptr);
     CHECK(field_specs().size() == sizeof(keys) / sizeof(keys[0]));
     CHECK(field_spec("colour") == nullptr);

@@ -29,7 +29,6 @@ ui.WhyNotArmed	Kone ei ole valmis.
 ui.WhyVoiceOff	Puhekomennot on poistettu käytöstä asetuksissa.
 ui.WhyNoStop	Laitteistopysäytyksen tuloa ei ole kytketty.
 ui.WhySpindle	Kara on poistettu käytöstä asetuksissa.
-ui.WhyNoSpindleHere	Tällä konetyypillä ei ole karaa, jonka näyttö voisi käynnistää.
 ui.Feed	Syöttö
 ui.Progress	Eteneminen
 ui.Tool	Työkalu
@@ -145,10 +144,21 @@ ui.WarnFar	Työ on kaukana kulmasta
 ui.WarnScale	Mittakaava ei ole 1
 ui.WarnCourse	Suunnitelma ylittää akselin liikealueen
 ui.WfRunning	Työ on käynnissä: tiedostoa ei voi vaihtaa
+ui.Elapsed	Kulunut
+ui.EndsAt	Päättyy klo
+ui.Routed	Jyrsitty pituus
+ui.Changes	Työkalunvaihdot
 ui.StageDone	Poraus on valmis ja jyrsintä seuraa
 ui.FollowRouting	Seuraa jyrsintää
+ui.BoardOut	Työ on valmis: ota piirilevy pois
+ui.JogLimit	Liikeradan loppu
+ui.JogRaise	Pää on liian alhaalla: nosta ensin Z
+ui.WhyJobRunning	Työ on käynnissä: ei käsiliikkeitä
+ui.Continuous	Jatkuva
 ui.RackTitle	Paikat palkissa
 ui.RackNoSlot	ei ole paikkaa palkissa
 ui.RackShared	jakaa paikkansa palkissa toisen työkalun kanssa
 ui.RackUndefined	sen paikkaa ei ole määritetty koneessa
 ui.RackNotChained	Palvelin ei ketjuttanut työkalunvaihtoja: aseta työkalut palkkiin työn järjestyksessä
+ui.WhyNoSpindleHere	Tällä konetyypillä ei ole karaa, jonka näyttö voisi käynnistää.
+ui.SrvDegraded	Palvelin vastaa, mutta ilmoittaa, ettei se voi hyvin

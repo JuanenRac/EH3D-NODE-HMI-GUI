@@ -29,7 +29,6 @@ ui.WhyNotArmed	Stroj nije spreman.
 ui.WhyVoiceOff	Glasovne naredbe isključene su u postavkama.
 ui.WhyNoStop	Ulaz hardverskog stopa nije spojen.
 ui.WhySpindle	Vreteno je isključeno u postavkama.
-ui.WhyNoSpindleHere	Ova vrsta stroja nema vreteno koje bi zaslon mogao pokrenuti.
 ui.Feed	Posmak
 ui.Progress	Napredak
 ui.Tool	Alat
@@ -145,10 +144,21 @@ ui.WarnFar	Posao je daleko od kuta
 ui.WarnScale	Mjerilo nije 1
 ui.WarnCourse	Plan prelazi hod osi
 ui.WfRunning	Posao je u tijeku: datoteka se ne može promijeniti
+ui.Elapsed	Proteklo
+ui.EndsAt	Završava u
+ui.Routed	Dužina glodanja
+ui.Changes	Izmjene alata
 ui.StageDone	Bušenje je gotovo, slijedi glodanje
 ui.FollowRouting	Prati glodanje
+ui.BoardOut	Posao je gotov: izvadite ploču
+ui.JogLimit	Kraj hoda
+ui.JogRaise	Glava je prenisko: prvo podignite Z
+ui.WhyJobRunning	Posao je u tijeku: bez ručnog pomicanja
+ui.Continuous	Kontinuirano
 ui.RackTitle	Položaji u traci
 ui.RackNoSlot	nema mjesto u traci
 ui.RackShared	dijeli mjesto u traci s drugim alatom
 ui.RackUndefined	njegovo mjesto nije definirano u stroju
 ui.RackNotChained	Poslužitelj nije povezao izmjene alata: stavite alate u traku redoslijedom posla
+ui.WhyNoSpindleHere	Ova vrsta stroja nema vreteno koje bi zaslon mogao pokrenuti.
+ui.SrvDegraded	Poslužitelj odgovara, ali kaže da nije dobro

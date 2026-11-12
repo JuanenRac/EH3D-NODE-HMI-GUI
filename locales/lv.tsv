@@ -29,7 +29,6 @@ ui.WhyNotArmed	Iekārta nav gatava.
 ui.WhyVoiceOff	Balss komandas ir izslēgtas iestatījumos.
 ui.WhyNoStop	Hardvera stop ieeja nav pieslēgta.
 ui.WhySpindle	Vārpsta ir izslēgta iestatījumos.
-ui.WhyNoSpindleHere	Šim iekārtas veidam nav vārpstas, ko ekrāns varētu iedarbināt.
 ui.Feed	Padeve
 ui.Progress	Progress
 ui.Tool	Rīks
@@ -145,10 +144,21 @@ ui.WarnFar	Darbs ir tālu no stūra
 ui.WarnScale	Mērogs nav 1
 ui.WarnCourse	Plāns pārsniedz ass gājienu
 ui.WfRunning	Darbs darbojas: failu nevar mainīt
+ui.Elapsed	Pagājis
+ui.EndsAt	Beigsies plkst.
+ui.Routed	Frēzētais garums
+ui.Changes	Instrumentu maiņas
 ui.StageDone	Urbšana pabeigta, tālāk frēzēšana
 ui.FollowRouting	Sekot frēzēšanai
+ui.BoardOut	Darbs pabeigts: izņemiet plati
+ui.JogLimit	Gājiena gals
+ui.JogRaise	Galva ir pārāk zemu: vispirms paceliet Z
+ui.WhyJobRunning	Darbs tiek izpildīts: rokas kustības nav atļautas
+ui.Continuous	Nepārtraukti
 ui.RackTitle	Pozīcijas joslā
 ui.RackNoSlot	nav vietas joslā
 ui.RackShared	dala vietu joslā ar citu instrumentu
 ui.RackUndefined	tā vieta nav definēta iekārtā
 ui.RackNotChained	Serveris nesaistīja instrumentu maiņas: ievietojiet instrumentus joslā darba secībā
+ui.WhyNoSpindleHere	Šim iekārtas veidam nav vārpstas, ko ekrāns varētu iedarbināt.
+ui.SrvDegraded	Serveris atbild, bet ziņo, ka tam nav labi

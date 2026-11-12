@@ -29,7 +29,6 @@ ui.WhyNotArmed	La màquina no està armada.
 ui.WhyVoiceOff	Les ordres per veu estan desactivades als paràmetres.
 ui.WhyNoStop	L'entrada de la parada de maquinari no està cablejada.
 ui.WhySpindle	El capçal està desactivat als paràmetres.
-ui.WhyNoSpindleHere	Aquest tipus de màquina no té cap capçal que la pantalla pugui engegar.
 ui.Feed	Avanç
 ui.Progress	Progrés
 ui.Tool	Eina
@@ -145,10 +144,21 @@ ui.WarnFar	El treball és lluny de la cantonada
 ui.WarnScale	L'escala no és 1
 ui.WarnCourse	El pla supera el recorregut d'un eix
 ui.WfRunning	Hi ha un treball en marxa: no es pot canviar el fitxer
+ui.Elapsed	Transcorregut
+ui.EndsAt	Acaba a les
+ui.Routed	Longitud fresada
+ui.Changes	Canvis d'eina
 ui.StageDone	El foradat ha acabat i segueix el fresat
 ui.FollowRouting	Seguir el fresat
+ui.BoardOut	La feina ha acabat: retireu la placa
+ui.JogLimit	Final del recorregut
+ui.JogRaise	El capçal és massa baix: pugeu primer Z
+ui.WhyJobRunning	Hi ha una feina en curs: sense moviments manuals
+ui.Continuous	Continu
 ui.RackTitle	Posicions a la barra
 ui.RackNoSlot	no té lloc a la barra
 ui.RackShared	comparteix el lloc a la barra amb una altra eina
 ui.RackUndefined	el seu lloc no està definit a la màquina
 ui.RackNotChained	El servidor no ha encadenat els canvis: poseu les eines a la barra en l'ordre de la feina
+ui.WhyNoSpindleHere	Aquest tipus de màquina no té cap capçal que la pantalla pugui engegar.
+ui.SrvDegraded	El servidor respon però diu que no està bé

@@ -5,30 +5,34 @@
 #pragma once
 
 #include <cstdint>
+#include <cstdlib>
 #include <string>
 #include <vector>
 
 #include "lang.hpp"
-#include "machine.hpp"
 #include "notices.hpp"
 #include "orientation.hpp"
 #include "rack.hpp"
+#include "machine.hpp"
 
 namespace hmi {
 
 /// What the gate does with a spindle order that asks for more turns than the spindle gives: cut it to the top speed and say so (the default), or refuse it.
 enum class SpindleOver { Clip, Refuse };
 
+/// How fast the panel that moves the machine by hand goes: slow, medium or fast.
+enum class JogSpeed { Slow, Medium, Fast };
+
 struct Settings {
+    // the kind of machine: what the screen may order on it (a CNC machine has a spindle and the camera of the drill head, a laser and a pick and place machine do not)
+    MachineKind machine = MachineKind::Cnc;
+
     // the screen
     Lang language = Lang::En;
     std::string theme = "forge";
     Orientation orientation = Orientation::Auto;  // auto, landscape or portrait
     std::uint16_t brightness_percent = 80;  // 10..100
     std::uint32_t idle_dim_s = 120;         // 0 (never) .. 3600
-
-    // the kind of machine: what the screen may order on it (a CNC machine has a spindle and the camera of the drill head, a laser and a pick and place machine do not)
-    MachineKind machine = MachineKind::Cnc;
 
     // where the machine is: the EH3D server (or the Bungard node) the screen controls
     std::string server_host;                // empty: nothing is controlled yet
@@ -49,12 +53,26 @@ struct Settings {
     bool hw_stop_required = true;           // the screen controls the machine only while the hardware stop input is wired and released
     std::uint32_t link_idle_ms = 3000;      // the link is lost when the machine stays quiet this long, 200..60000
     std::uint32_t stale_after_s = 15;       // the data shown (the fleet, the progress) are marked old when the server has not updated them for this long, 2..3600
+    bool tool_bar = true;                   // the machine page says the model, the tool at work with its holes (cuts) done, the next tool, the tools finished and the time left
 
-    // the bar of the tool changer and the stages of a job (a machine that changes the tools itself)
+    // the panel that moves the machine by hand (the values come from the file; the three switches are safety switches and every default is the conservative one)
+    std::vector<double> jog_steps = {0.01, 0.1, 1, 10, 50};  // the distances of the step buttons, mm, from the finest to the coarsest (up to 8, each above 0 and up to 500)
+    double jog_step = 1;                    // the step chosen when the panel opens (one of the list, or the nearest to it)
+    bool jog_continuous = false;            // a press of an arrow moves until it is let go instead of one step
+    double jog_speed_slow = 300, jog_speed_medium = 1200, jog_speed_fast = 3000;  // mm per minute, 1..20000
+    JogSpeed jog_speed = JogSpeed::Medium;
+    double jog_chunk_mm = 2;                // while an arrow is held in the continuous mode the head moves in stretches of this length, 0.1..20
+    double jog_clearance_mm = 5;            // the head crosses the board only when it is at least this far above the surface, 0..100
+    double jog_board_z_mm = 0;              // how far below home the surface of the board is, 0..500 (0: not known, so Z does not move by hand)
+    double jog_below_board_mm = 0;          // how far below the surface the tool may go by hand, 0..50
+    bool jog_block_running = true;          // SAFETY: no move by hand while a job runs or waits
+    bool jog_limits = true;                 // SAFETY: the head stays inside the table and above the board (a move that would pass the end goes to the end)
+    bool jog_safe_z = true;                 // SAFETY: Z goes up to the clearance before the head crosses the board
     std::string rack_places = "1-14";       // the places of the bar of the tool changer that the machine defines
     bool rack_check = true;                 // SAFETY: a job on a machine with the tool changer does not start while a tool has no place, a place is not defined or two tools share one
     bool rack_chain = true;                 // the request of the job carries the places of the tools and the chaining of the drilling and the routing (the server may turn it down)
     bool stage_window = true;               // the window between the drilling and the routing, with the buttons to follow the routing or to abort
+    std::int32_t clock_utc_offset_min = 0;  // the local time of the hour a job is expected to end at, minutes from UTC, -720..840 (the chip has no time zones)
 
     // voice
     bool voice_alerts = true;               // spoken alerts (the end of a job, a tool change, an error)
@@ -64,7 +82,7 @@ struct Settings {
     std::uint16_t mic_gain_percent = 50;    // 0..100
     NoticeSetting sound_finish;             // the notice when a job ends: off, the tone or a recorded voice (voice:es:f)
     NoticeSetting sound_tool_change;        // the notice when the machine asks for a tool
-    NoticeSetting sound_check_ok;           // CNC only: the notice when the visual check of the board (the camera of the drill head) is correct
+    NoticeSetting sound_check_ok;           // the notice when the visual check of the board (the camera of the drill head) is correct
     NoticeSetting sound_check_bad;          // and when it is not correct
     NoticeSetting sound_stage;              // the notice at the end of the drilling when the routing comes next
 };
@@ -104,6 +122,35 @@ inline bool to_bool(const std::string& v, bool& out) {
     if (v == "on" || v == "true" || v == "yes" || v == "1") { out = true; return true; }
     if (v == "off" || v == "false" || v == "no" || v == "0") { out = false; return true; }
     return false;
+}
+
+/// A number with a point or without ("0.01", "50", "-3"), within `lo`..`hi`.
+inline bool to_double(const std::string& v, double lo, double hi, double& out) {
+    if (v.empty() || v.size() > 16) return false;
+    char* end = nullptr;
+    const double x = std::strtod(v.c_str(), &end);
+    if (end != v.c_str() + v.size() || !(x >= lo && x <= hi)) return false;
+    out = x;
+    return true;
+}
+
+/// A list of steps ("0.01, 0.1, 1, 10, 50"): up to 8, each above 0 and up to 500, in increasing order, once each.
+inline bool to_steps(const std::string& v, std::vector<double>& out) {
+    std::vector<double> list;
+    std::size_t pos = 0;
+    while (pos <= v.size()) {
+        std::size_t comma = v.find(',', pos);
+        if (comma == std::string::npos) comma = v.size();
+        double x = 0;
+        if (!to_double(trim(v.substr(pos, comma - pos)), 0.001, 500, x)) return false;
+        list.push_back(x);
+        pos = comma + 1;
+    }
+    if (list.empty() || list.size() > 8) return false;
+    for (std::size_t i = 1; i < list.size(); ++i)
+        if (!(list[i] > list[i - 1])) return false;
+    out = list;
+    return true;
 }
 
 }  // namespace detail
@@ -148,9 +195,6 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
         } else if (key == "orientation") {
             Orientation o;
             if (orientation_from_text(val, o)) s.orientation = o; else bad("not auto, landscape or portrait");
-        } else if (key == "machine_kind") {
-            MachineKind k;
-            if (machine_kind_from_text(val, k)) s.machine = k; else bad("not cnc, laser or pnp");
         } else if (key == "poll_s") {
             if (num(1, 60)) s.poll_s = n;
         } else if (key == "table_width_mm") {
@@ -189,6 +233,11 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (num(200, 60000)) s.link_idle_ms = n;
         } else if (key == "stale_after_s") {
             if (num(2, 3600)) s.stale_after_s = n;
+        } else if (key == "machine_kind") {
+            MachineKind k;
+            if (machine_kind_from_text(val, k)) s.machine = k; else bad("not cnc, laser or pnp");
+        } else if (key == "tool_bar") {
+            if (flag()) s.tool_bar = b;
         } else if (key == "voice_alerts") {
             if (flag()) s.voice_alerts = b;
         } else if (key == "voice_orders") {
@@ -207,6 +256,42 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (!parse_notice(val, s.sound_check_bad)) bad("not off, default or voice:LANG:f|m");
         } else if (key == "sound_stage") {
             if (!parse_notice(val, s.sound_stage)) bad("not off, default or voice:LANG:f|m");
+        } else if (key == "jog_steps") {
+            if (!detail::to_steps(val, s.jog_steps)) bad("up to 8 distances above 0 and up to 500, increasing", CfgReason::Range);
+        } else if (key == "jog_step") {
+            double x = 0;
+            if (detail::to_double(val, 0.001, 500, x)) s.jog_step = x; else bad("out of range or not a number", CfgReason::Range);
+        } else if (key == "jog_continuous") {
+            if (flag()) s.jog_continuous = b;
+        } else if (key == "jog_speed_slow" || key == "jog_speed_medium" || key == "jog_speed_fast") {
+            double x = 0;
+            if (!detail::to_double(val, 1, 20000, x)) bad("out of range or not a number", CfgReason::Range);
+            else if (key == "jog_speed_slow") s.jog_speed_slow = x;
+            else if (key == "jog_speed_medium") s.jog_speed_medium = x;
+            else s.jog_speed_fast = x;
+        } else if (key == "jog_speed") {
+            if (val == "slow") s.jog_speed = JogSpeed::Slow;
+            else if (val == "medium") s.jog_speed = JogSpeed::Medium;
+            else if (val == "fast") s.jog_speed = JogSpeed::Fast;
+            else bad("not slow, medium or fast");
+        } else if (key == "jog_chunk_mm") {
+            double x = 0;
+            if (detail::to_double(val, 0.1, 20, x)) s.jog_chunk_mm = x; else bad("out of range or not a number", CfgReason::Range);
+        } else if (key == "jog_clearance_mm") {
+            double x = 0;
+            if (detail::to_double(val, 0, 100, x)) s.jog_clearance_mm = x; else bad("out of range or not a number", CfgReason::Range);
+        } else if (key == "jog_board_z_mm") {
+            double x = 0;
+            if (detail::to_double(val, 0, 500, x)) s.jog_board_z_mm = x; else bad("out of range or not a number", CfgReason::Range);
+        } else if (key == "jog_below_board_mm") {
+            double x = 0;
+            if (detail::to_double(val, 0, 50, x)) s.jog_below_board_mm = x; else bad("out of range or not a number", CfgReason::Range);
+        } else if (key == "jog_block_running") {
+            if (flag()) s.jog_block_running = b;
+        } else if (key == "jog_limits") {
+            if (flag()) s.jog_limits = b;
+        } else if (key == "jog_safe_z") {
+            if (flag()) s.jog_safe_z = b;
         } else if (key == "rack_places") {
             std::vector<int> places;
             if (parse_places(val, places) && !places.empty()) s.rack_places = val; else bad("places from 1 to 14, like 1-14 or 1,2,5-8", CfgReason::Range);
@@ -216,6 +301,10 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (flag()) s.rack_chain = b;
         } else if (key == "stage_window") {
             if (flag()) s.stage_window = b;
+        } else if (key == "clock_utc_offset_min") {
+            const bool neg = !val.empty() && val[0] == '-';
+            if (detail::to_uint(neg ? val.substr(1) : val, 0, neg ? 720u : 840u, n)) s.clock_utc_offset_min = neg ? -static_cast<std::int32_t>(n) : static_cast<std::int32_t>(n);
+            else bad("out of range or not a number", CfgReason::Range);
         } else if (key == "mic_gain_percent") {
             if (num(0, 100)) s.mic_gain_percent = static_cast<std::uint16_t>(n);
         } else {

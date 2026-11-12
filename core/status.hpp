@@ -173,6 +173,7 @@ inline std::string reason_text(const std::string& why, Lang l) {
     if (why == reasons::kEmptyFile) return text(T::WfEmpty, l);
     if (why == reasons::kOldServerNoFile) return text(T::WfOldNoFile, l);
     if (why == reasons::kNotStopped || why == reasons::kNothingToGoOn) return text(T::WfNothing, l);
+    if (why == reasons::kJobRunning) return text(T::WfRunning, l);
     return why;
 }
 
@@ -192,6 +193,8 @@ inline std::string order_text(const Action& a, Lang l) {
     if (w == "resume job") return text(T::OrdResume, l);
     if (w == "tool changed") return text(T::OrdToolChanged, l);
     if (w == "home") return text(T::OrdHome, l);
+    if (w == "jog home") return text(T::OrdHome, l);
+    if (detail::starts_with(w, "jog goto ")) return "P" + w.substr(9);  // the place kept in the panel: P1 to P4
     if (detail::starts_with(w, "jog X")) return std::string(text(T::JogX, l)) + w.substr(5);
     if (detail::starts_with(w, "jog Y")) return std::string(text(T::JogY, l)) + w.substr(5);
     if (detail::starts_with(w, "jog Z")) return std::string(text(T::JogZ, l)) + w.substr(5);

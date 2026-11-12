@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **A pull request must bring a line in the changelog when it changes the code:** `tools/changelog_pr_check.py` runs in the CI of every pull request (a label `no-changelog` skips it).
+
 - **The two screens share one `core/`:** the settings (`hmi_config.hpp`, with the panel that moves the machine by hand and the kind of machine), the gate, the keyboard, the texts, the 37 languages (`locales/`), `machine.hpp` and the fonts with their code ranges are the same files in both, kept equal by the firmware base of EH3D-COMMON; what one screen does not use the other leaves alone. The fonts are built from the literals of both screens, in GitHub Actions, with `lv_font_conv` 1.5.3 and the fonts of LVGL 9.3.0 (`EH3D_EXTRA_LITERALS` in `tools/make_locales.py` names the other screen's file).
 - **The screen says when the server answers but is not well:** the health check tells `degraded` and the note `ui.SrvDegraded` is shown, in the 37 languages.
 

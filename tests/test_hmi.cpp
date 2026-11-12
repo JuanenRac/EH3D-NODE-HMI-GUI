@@ -406,7 +406,52 @@ static void health_check() {
     CHECK(classify_health(true, answer(503, "{\"name\":\"eh3d-server\",\"status\":\"ok\"}")) == Health::NotEh3d);
 }
 
+// A settings file damaged at every place and in many copies (a fixed seed, so a failure is the same failure every time): it is always read, and no value ever leaves its range.
+static void settings_file_damaged() {
+    const std::string seed =
+        "# the screen\nlanguage = es\ntheme = forge\norientation = landscape\nbrightness_percent = 60\nidle_dim_s = 300\nserver_host = 192.168.0.180\nserver_port = 18200\n"
+        "poll_s = 5\nconfirm_moves = on\nconfirm_timeout_ms = 8000\njog_max_mm = 20\nspindle_max_rpm = 24000\ntoken = abcdefgh12345678\nvoice_orders = off\n";
+    auto in_range = [](const Settings& s) {
+        return s.brightness_percent >= 10 && s.brightness_percent <= 100 && s.idle_dim_s <= 3600 && s.server_port >= 1 && s.poll_s >= 1 && s.poll_s <= 60 &&
+               s.confirm_timeout_ms >= 1000 && s.confirm_timeout_ms <= 60000 && s.jog_max_mm >= 1 && s.jog_max_mm <= 200 && s.spindle_max_rpm <= 65535;
+    };
+    std::vector<Problem> p0;
+    Settings whole = parse_settings(seed, p0);
+    CHECK(p0.empty() && whole.server_port == 18200 && whole.jog_max_mm == 20);
+    for (std::size_t end = 0; end <= seed.size(); ++end) {
+        std::vector<Problem> p;
+        CHECK(in_range(parse_settings(seed.substr(0, end), p)));
+    }
+    std::uint64_t x = 0x9E3779B97F4A7C15ULL;  // xorshift64: the same numbers on every machine
+    auto next = [&x]() {
+        x ^= x << 13;
+        x ^= x >> 7;
+        x ^= x << 17;
+        return x;
+    };
+    const std::string pieces = "0123456789-+.eE=\n #xX\r\t,;ofnabc";
+    for (int round = 0; round < 600; ++round) {
+        std::string copy = seed;
+        for (int k = 0; k < 1 + round % 5; ++k) {
+            std::size_t at = static_cast<std::size_t>(next() % copy.size());
+            switch (next() % 4) {
+                case 0: copy[at] = pieces[next() % pieces.size()]; break;
+                case 1: copy.insert(at, 1, static_cast<char>(next() & 0xFF)); break;
+                case 2: copy.erase(at, 1); break;
+                default: copy.resize(at > 0 ? at : 1); break;
+            }
+            if (copy.empty()) copy = "0";
+        }
+        std::vector<Problem> p, q;
+        Settings a = parse_settings(copy, p);
+        Settings b = parse_settings(copy, q);
+        CHECK(in_range(a));
+        CHECK(p.size() == q.size() && a.server_port == b.server_port && a.token == b.token);
+    }
+}
+
 int main() {
+    settings_file_damaged();
     orders_are_an_enum();
     health_check();
     settings_file();

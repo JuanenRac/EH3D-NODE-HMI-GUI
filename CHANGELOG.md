@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The settings file is tested damaged:** `test_hmi` reads the settings file cut at every place and in 600 copies with bytes changed, inserted or cut (a fixed seed), and no value ever leaves its range. The counts of the host tests in the README are the ones of the CI.
+
 - **A pull request must bring a line in the changelog when it changes the code:** `tools/changelog_pr_check.py` runs in the CI of every pull request (a label `no-changelog` skips it).
 
 - **The two screens share one `core/`:** the settings (`hmi_config.hpp`, with the panel that moves the machine by hand and the kind of machine), the gate, the keyboard, the texts, the 37 languages (`locales/`), `machine.hpp` and the fonts with their code ranges are the same files in both, kept equal by the firmware base of EH3D-COMMON; what one screen does not use the other leaves alone. The fonts are built from the literals of both screens, in GitHub Actions, with `lv_font_conv` 1.5.3 and the fonts of LVGL 9.3.0 (`EH3D_EXTRA_LITERALS` in `tools/make_locales.py` names the other screen's file).

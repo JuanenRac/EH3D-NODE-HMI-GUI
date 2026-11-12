@@ -142,6 +142,8 @@ jobs:
           fi
 
       - name: Build the image in the ESP-IDF container
+        env:
+          EH3D_STACK_REPORT: "1"
         shell: bash
         run: |
           set -eo pipefail
@@ -156,6 +158,34 @@ jobs:
           cp "$build/eh3d-node-hmi-gui.bin" "out/eh3d-node-hmi-gui-$VERSION-$BOARD-app.bin"
           (cd "$build" && python -m esptool --chip esp32p4 merge_bin -o "$GITHUB_WORKSPACE/out/eh3d-node-hmi-gui-$VERSION-$BOARD-complete.bin" @flash_args)
 
+
+      - name: Report the stack use of the functions
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os
+          import pathlib
+          rows = []
+          for su in pathlib.Path("build/" + os.environ["BOARD"]).rglob("*.su"):
+              for line in su.read_text(encoding="utf-8", errors="replace").splitlines():
+                  parts = line.split("\t")
+                  if len(parts) < 2 or not parts[1].isdigit():
+                      continue
+                  where = parts[0].replace("\\", "/")
+                  if "/main/" in where or "/core/" in where:
+                      rows.append((int(parts[1]), where.rsplit("/", 1)[-1], parts[2] if len(parts) > 2 else ""))
+          rows.sort(reverse=True)
+          lines = ["| bytes | function (file:line:column:name) | kind |", "|---:|---|---|"] + [f"| {b} | {w} | {k} |" for b, w, k in rows[:20]]
+          text = "\n".join(lines)
+          print(f"{len(rows)} functions of main/ and core/; the biggest frames:\n{text}")
+          summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary:
+              with open(summary, "a", encoding="utf-8") as f:
+                  f.write(f"### Stack use of the functions ({os.environ['BOARD']})\n\n{text}\n")
+          for b, w, k in rows:
+              if b > 2048:
+                  print(f"::warning title=Big stack frame::{w} uses {b} bytes of stack")
+          PY
       - name: Check the version in the images and the settings of the build, and list the files
         shell: bash
         run: |

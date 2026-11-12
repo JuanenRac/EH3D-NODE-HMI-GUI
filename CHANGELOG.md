@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The build in GitHub Actions lists the biggest stack frames:** with `EH3D_STACK_REPORT=1` (set only by that build) the compiler writes the stack use of every function and the build prints the twenty biggest of `main/` and `core/` in its summary, with a warning on any above 2048 bytes; the image does not change.
+
 - **The orders of the screen are an enum:** every button sends an `Op` (`core/ops.hpp`: stop, start job, pause, resume job, tool changed, home, spindle on) in the action, and the application compares that and not the text of the order; the text stays as the id the confirmation shows and `op_of` reads it back, with a test through the whole table so that the two cannot drift.
 
 - **A new image goes back when the screen does not run:** `CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE` is on and `main/image_confirm.hpp` confirms an image written by an update after 30 seconds of running, or sends it back to the previous one at once when the display does not start; an image flashed through the cable is not touched.

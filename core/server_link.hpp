@@ -245,6 +245,20 @@ inline std::string error_line(const Response& r) {
 }
 
 inline Request fleet_request() { return {"GET", "/api/v1/fleet", ""}; }
+
+/// The health check of the server: open to anyone (no token is needed), so it is the first request after a start or after the link was lost.
+inline Request health_request() { return {"GET", "/api/v1/health", ""}; }
+
+/// What the health check says about whoever answered: nobody (`Silent`), something that is not an EH3D server (`NotEh3d`: another service on that address, a proxy page, a router), a server
+/// that says it is not well (`Degraded`) or a server that is well (`Ok`). `reached` says whether any answer came.
+enum class Health { Silent, NotEh3d, Degraded, Ok };
+
+inline Health classify_health(bool reached, const Response& r) {
+    if (!reached) return Health::Silent;
+    Json j;
+    if (r.status != 200 || !parse_json(r.body, j) || j.type != Json::Type::Object || j.str("name") != "eh3d-server") return Health::NotEh3d;
+    return j.str("status") == "ok" ? Health::Ok : Health::Degraded;
+}
 inline Request job_report_request(const std::string& id) { return {"GET", "/api/v1/jobs/" + id, ""}; }
 inline Request job_start_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/start", "{}"}; }
 inline Request job_cancel_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/cancel", "{}"}; }

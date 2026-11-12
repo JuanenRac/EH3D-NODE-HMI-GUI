@@ -30,6 +30,7 @@
 #include "../core/wav.hpp"
 #include "../core/workflow.hpp"
 #include "board.hpp"
+#include "image_confirm.hpp"
 #include "server_link.hpp"
 #include "ui.hpp"
 
@@ -390,8 +391,12 @@ static void link_task(void*) {
             next_poll = xTaskGetTickCount() + pdMS_TO_TICKS(g_settings.poll_s * 1000);
             hmi::Response fr;
             hmi::FleetView view;
-            const bool reached = srvlink::call(g_settings, hmi::fleet_request(), fr, error);
-            const bool parsed = reached && fr.status == 200 && hmi::parse_fleet(fr.body, view);
+            // After a start or a loss of the link the first request is the health check (open to anyone, no token goes with it): it tells "nobody answers" from "something answers that is not
+            // an EH3D server" before the fleet is asked for. A server that answers it (well or degraded) goes on to the fleet as before.
+            hmi::Health health = hmi::Health::Ok;
+            if (g_link_said != hmi::Link::Connected) health = hmi::classify_health(srvlink::call(g_settings, hmi::health_request(), fr, error), fr);
+            const bool reached = health == hmi::Health::Silent ? false : health == hmi::Health::NotEh3d ? true : srvlink::call(g_settings, hmi::fleet_request(), fr, error);
+            const bool parsed = reached && health != hmi::Health::NotEh3d && fr.status == 200 && hmi::parse_fleet(fr.body, view);
             link_update(hmi::classify_fleet(reached, fr, parsed), !parsed || hmi::fleet_has_machine(view, g_settings.server_machine), fr);
             if (parsed) {
                 xSemaphoreTake(g_lock, portMAX_DELAY);
@@ -529,8 +534,10 @@ extern "C" void app_main() {
 
     if (!board::display_start()) {
         ESP_LOGE(TAG, "the display does not start");
+        imgconfirm::display_failed();
         return;
     }
+    imgconfirm::start();   // an image on probation is confirmed after a while of running
     board::set_brightness(g_settings.brightness_percent);
     if (!board::audio_start()) ESP_LOGW(TAG, "no sound: the alerts are only shown");
     if (!board::sd_mount()) ESP_LOGW(TAG, "no microSD card: files cannot be opened or saved");

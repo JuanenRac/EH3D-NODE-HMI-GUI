@@ -25,3 +25,6 @@ CONFIG_ESP_MAIN_TASK_STACK_SIZE=12288
 # A task that overruns its stack stops the program with a message instead of corrupting memory; the stack each task has left is read from FreeRTOS and logged (main/app_main.cpp).
 CONFIG_FREERTOS_CHECK_STACKOVERFLOW_CANARY=y
 CONFIG_FREERTOS_USE_TRACE_FACILITY=y
+
+# An image written by an update is confirmed by the screen after a while (main/image_confirm.hpp); if it resets before that, the boot loader goes back to the previous one.
+CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=y

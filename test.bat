@@ -12,5 +12,22 @@ if not defined PRETTY_RUN if exist "%~dp0tools\pretty_run.py" (
 )
 rem PRETTY_RUN_END
 cd /d "%~dp0"
+rem The same steps as .github/workflows/ci.yml: the repository checks, the tests of the tools, the pictures and the languages, and the host tests of the core.
 py -3 tools/ci_validate.py
+if errorlevel 1 exit /b 1
+py -3 -m unittest discover -s tools -p "test_*.py"
+if errorlevel 1 exit /b 1
+if exist tools\make_locales.py (
+    py -3 tools/make_locales.py --check
+    if errorlevel 1 exit /b 1
+)
+py -3 tools/make_architecture.py --check
+if errorlevel 1 exit /b 1
+py -3 tools/make_structure.py --check --readmes
+if errorlevel 1 exit /b 1
+cmake -S tests -B build\host
+if errorlevel 1 exit /b 1
+cmake --build build\host --config Debug
+if errorlevel 1 exit /b 1
+ctest --test-dir build\host -C Debug --output-on-failure
 exit /b %ERRORLEVEL%

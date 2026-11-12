@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "../core/server_link.hpp"
 #include "../core/ui_text.hpp"
 #include "../core/voice.hpp"
 
@@ -363,7 +364,30 @@ static void the_start_the_pause_and_the_edge_of_the_stop() {
     CHECK(e.take_stop_edge());
 }
 
+// The health check tells "nobody answers" from "something answers that is not an EH3D server".
+static void health_check() {
+    CHECK(health_request().method == "GET" && health_request().path == "/api/v1/health" && health_request().body.empty());
+    auto answer = [](int status, const std::string& body) {
+        Response r;
+        r.status = status;
+        r.body = body;
+        return r;
+    };
+    CHECK(classify_health(false, Response{}) == Health::Silent);
+    CHECK(classify_health(true, answer(200, "{\"name\":\"eh3d-server\",\"version\":\"0.1.0\",\"api_revision\":3,\"status\":\"ok\"}")) == Health::Ok);
+    CHECK(classify_health(true, answer(200, "{\"name\":\"eh3d-server\",\"status\":\"degraded\"}")) == Health::Degraded);
+    CHECK(classify_health(true, answer(200, "{\"name\":\"eh3d-server\"}")) == Health::Degraded);   // no status: not said to be well
+    // another service on that address, a page of a router or a proxy, a server of another family
+    CHECK(classify_health(true, answer(200, "<html><body>It works</body></html>")) == Health::NotEh3d);
+    CHECK(classify_health(true, answer(200, "{\"name\":\"other-server\",\"status\":\"ok\"}")) == Health::NotEh3d);
+    CHECK(classify_health(true, answer(200, "[]")) == Health::NotEh3d);
+    CHECK(classify_health(true, answer(200, "")) == Health::NotEh3d);
+    CHECK(classify_health(true, answer(404, "{\"error\":\"not_found\"}")) == Health::NotEh3d);   // an old server without the route is not told apart from another service
+    CHECK(classify_health(true, answer(503, "{\"name\":\"eh3d-server\",\"status\":\"ok\"}")) == Health::NotEh3d);
+}
+
 int main() {
+    health_check();
     settings_file();
     gate_rules();
     gate_switches();

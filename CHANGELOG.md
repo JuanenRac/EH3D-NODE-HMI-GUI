@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.9] - Shared core of both screens, rollback of a new image and server health check
+
 - **The settings file is tested damaged:** `test_hmi` reads the settings file cut at every place and in 600 copies with bytes changed, inserted or cut (a fixed seed), and no value ever leaves its range. The counts of the host tests in the README are the ones of the CI.
 
 - **A pull request must bring a line in the changelog when it changes the code:** `tools/changelog_pr_check.py` runs in the CI of every pull request (a label `no-changelog` skips it).

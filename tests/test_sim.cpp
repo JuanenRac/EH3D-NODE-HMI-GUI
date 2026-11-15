@@ -206,7 +206,7 @@ static std::vector<int> storm(std::uint64_t seed) {
             case Mode::NoToken: case Mode::Unavailable: CHECK(l == Link::Connected && screen.last == Answer::ServerError); break;
         }
         // old data is never called current: the age is the time since the last fresh answer
-        if (screen.last != Answer::Fresh && screen.link.has_data()) CHECK(screen.link.age_s(now) * 1000u <= now);
+        CHECK(screen.link.age_s(now) * 1000u <= now);
         states.push_back(static_cast<int>(l));
     }
     return states;

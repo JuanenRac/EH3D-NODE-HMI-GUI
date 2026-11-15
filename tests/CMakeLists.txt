@@ -21,6 +21,8 @@ add_executable(test_status test_status.cpp)
 add_executable(test_more test_more.cpp)
 add_executable(test_machine test_machine.cpp)
 add_executable(test_rack test_rack.cpp)
+
+add_executable(test_sim test_sim.cpp)
 
 enable_testing()
 add_test(NAME hmi COMMAND test_hmi)
@@ -33,3 +35,4 @@ add_test(NAME status COMMAND test_status)
 add_test(NAME more COMMAND test_more)
 add_test(NAME machine COMMAND test_machine)
 add_test(NAME rack COMMAND test_rack)
+add_test(NAME sim COMMAND test_sim)

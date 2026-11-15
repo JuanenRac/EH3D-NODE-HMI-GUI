@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Simulation of the server for the screen:** add `tests/test_sim.cpp`, a program that runs the screen against a simulated EH3D-SERVER in memory (one machine, one job that stops when it is told to) that can be made to fail: no answer, a router page, a missing token, a 503, an answer cut short and a degraded server. The screen is driven with its own requests, its own reading of the answers and its own state of the link and the age of the data, with the clock as a number; a seeded storm of 300 failures checks that the state of the link is always the one of the cause and that the same seed gives the same run. 1824 checks. The manifest now says `evidence: simulator`. Nothing has run on the screen (the Guition 10.1" with the ESP32-P4 and the ESP32-C6) or against a real server.
+
 - **The CI validation checks the workflows and the lessons of past CI failures against a baseline:** `tools/workflow_hygiene.py` and `tools/lessons_lint.py` (copies of the shared tools) run in the validation, and only findings that are not in `tools/workflow_hygiene_baseline.json` and `tools/lessons_lint_baseline.json` fail it, so what exists today stays as it is and a new one is caught. `python tools/workflow_hygiene.py --root . --detail` and `python tools/lessons_lint.py --repo .` list the findings.
 - **The validation of the CI is the reusable one of the documentation hub:** the job `validate` calls `validate.yml` of EH3D-DOCS (pinned by commit) and what the repository checks besides it is in jobs of their own, with the check of the CHANGELOG.
 

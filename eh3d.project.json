@@ -13,7 +13,7 @@
   ],
   "deployment_target": "mcu",
   "maturity": "scaffolding",
-  "evidence": "host-test",
+  "evidence": "simulator",
   "family": "CNC Workflow Tools",
   "parent": null,
   "build": "cmake -S tests -B build/host && cmake --build build/host && ctest --test-dir build/host -C Debug",

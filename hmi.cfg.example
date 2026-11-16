@@ -44,6 +44,10 @@ hw_stop_required = on
 link_idle_ms = 3000
 # the data shown are marked old when the server has not updated them for this many seconds, 2..3600
 stale_after_s = 15
+# a stop the server could not be reached for is tried again this many times (0 = only the first try), 0..100
+stop_retries = 10
+# the wait between those tries in milliseconds, 200..10000
+stop_retry_ms = 1000
 
 # voice
 voice_alerts = on

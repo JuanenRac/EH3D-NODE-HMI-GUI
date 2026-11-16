@@ -2,6 +2,8 @@
 // built or run against a server from a module yet (the requests and the answers are tested on a computer). GPL-3.0-or-later.
 #include "server_link.hpp"
 
+#include <atomic>
+
 #include "esp_http_client.h"
 
 namespace srvlink {
@@ -9,7 +11,10 @@ namespace srvlink {
 namespace {
 constexpr std::size_t kMaxAnswer = 256 * 1024;  // a fleet of a big workshop is far smaller
 std::string g_client;                           // `name/version`, set once at the start
+std::atomic<int> g_verdict{static_cast<int>(hmi::Health::Silent)};  // what the last health check found
 }
+
+void set_verdict(hmi::Health verdict) { g_verdict.store(static_cast<int>(verdict)); }
 
 void set_client(const std::string& client) { g_client = client; }
 
@@ -17,6 +22,11 @@ bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, hmi
     error = hmi::CallError::None;
     if (s.server_host.empty()) {
         error = hmi::CallError::NoServer;
+        return false;
+    }
+    // whatever answers on the address is not known to be the server: nothing with the token or a body goes to it (the stop is the exception)
+    if (!hmi::may_send(static_cast<hmi::Health>(g_verdict.load()), r)) {
+        error = hmi::CallError::NoAnswer;
         return false;
     }
     esp_http_client_config_t cfg = {};

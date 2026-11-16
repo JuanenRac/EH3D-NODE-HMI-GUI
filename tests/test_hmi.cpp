@@ -7,6 +7,7 @@
 
 #include "../core/ops.hpp"
 #include "../core/server_link.hpp"
+#include "../core/stop_latch.hpp"
 #include "../core/ui_text.hpp"
 #include "../core/voice.hpp"
 
@@ -407,6 +408,52 @@ static void health_check() {
     CHECK(classify_health(true, answer(503, "{\"name\":\"eh3d-server\",\"status\":\"ok\"}")) == Health::NotEh3d);
 }
 
+// After a health check that found nobody or something that is not an EH3D server, the link sends nothing with the token or a body; the stop is always tried.
+static void nothing_goes_to_whatever_answers() {
+    const Request health = health_request();
+    const Request fleet = fleet_request();
+    const Request create = {"POST", "/api/v1/jobs", "{\"machine\":\"m1\",\"file\":\"G1 X1\"}"};
+    const Request start = job_start_request("j1");
+    const Request cancel = job_cancel_request("j1");
+    const Request stop = machine_stop_request("m1");
+    for (Health good : {Health::Ok, Health::Degraded}) {
+        for (const Request* r : {&health, &fleet, &create, &start, &cancel, &stop}) CHECK(may_send(good, *r));
+    }
+    for (Health bad : {Health::Silent, Health::NotEh3d}) {
+        CHECK(may_send(bad, health));       // it carries neither the token nor a body
+        CHECK(may_send(bad, stop) && may_send(bad, cancel));   // the stop is always tried
+        CHECK(!may_send(bad, fleet) && !may_send(bad, create) && !may_send(bad, start));
+        CHECK(!may_send(bad, job_pause_request("j1")) && !may_send(bad, job_resume_request("j1")) && !may_send(bad, job_confirm_request("j1")));
+    }
+    CHECK(is_stop_order(stop) && is_stop_order(cancel) && !is_stop_order(start) && !is_stop_order(fleet));
+    // a GET that merely ends in /stop is not a stop
+    CHECK(!is_stop_order(Request{"GET", "/api/v1/machines/m1/stop", ""}));
+}
+
+// The stop is a flag that the task of the stop takes, not an entry of the queue of the touches; it is asked again until the server has it or the tries of the settings are used.
+static void the_stop_is_a_flag_and_is_tried_again() {
+    StopLatch latch;
+    CHECK(!latch.pending() && !latch.take());
+    latch.ask();
+    latch.ask();   // two stops before the task looks are one
+    CHECK(latch.pending() && latch.take() && !latch.take());
+    latch.give_back();
+    CHECK(latch.take());
+    // the plan of the retries: delivered or out of tries ends it, otherwise it waits the time of the settings
+    CHECK(!stop_retry_after(true, 1, 10, 1000).retry);
+    StopRetry again = stop_retry_after(false, 1, 10, 1000);
+    CHECK(again.retry && again.wait_ms == 1000);
+    CHECK(stop_retry_after(false, 10, 10, 1000).retry && !stop_retry_after(false, 11, 10, 1000).retry);
+    CHECK(stop_retry_after(false, 1, 0, 1000).retry == false);
+    std::vector<Problem> p;
+    Settings d = parse_settings("", p);
+    CHECK(d.stop_retries == 10 && d.stop_retry_ms == 1000);
+    Settings s = parse_settings("stop_retries = 3\nstop_retry_ms = 500\n", p);
+    CHECK(p.empty() && s.stop_retries == 3 && s.stop_retry_ms == 500);
+    Settings bad = parse_settings("stop_retries = 101\nstop_retry_ms = 100\n", p);
+    CHECK(p.size() == 2 && bad.stop_retries == 10 && bad.stop_retry_ms == 1000);
+}
+
 // A settings file damaged at every place and in many copies (a fixed seed, so a failure is the same failure every time): it is always read, and no value ever leaves its range.
 static void settings_file_damaged() {
     const std::string seed =
@@ -452,6 +499,8 @@ static void settings_file_damaged() {
 }
 
 int main() {
+    nothing_goes_to_whatever_answers();
+    the_stop_is_a_flag_and_is_tried_again();
     settings_file_damaged();
     orders_are_an_enum();
     health_check();

@@ -272,6 +272,20 @@ inline Health classify_health(bool reached, const Response& r) {
     if (r.status != 200 || !parse_json(r.body, j) || j.type != Json::Type::Object || j.str("name") != "eh3d-server") return Health::NotEh3d;
     return j.str("status") == "ok" ? Health::Ok : Health::Degraded;
 }
+
+/// Whether a request is the stop of a machine or the cancel of a job: the orders that are tried whoever answers on the address.
+inline bool is_stop_order(const Request& r) {
+    if (r.method != "POST") return false;
+    auto ends = [&r](const std::string& tail) { return r.path.size() >= tail.size() && r.path.compare(r.path.size() - tail.size(), tail.size(), tail) == 0; };
+    return ends("/stop") || ends("/cancel");
+}
+
+/// Whether the link sends `r` while the last verdict of the health check is `verdict`. After `NotEh3d` (something else answers on the address) or `Silent` (nobody did) nothing that
+/// carries the token or a body goes out to whatever may be there: only the health check, which carries neither, and the stop, which is always tried.
+inline bool may_send(Health verdict, const Request& r) {
+    if (verdict == Health::Ok || verdict == Health::Degraded) return true;
+    return r.path == "/api/v1/health" || is_stop_order(r);
+}
 inline Request job_report_request(const std::string& id) { return {"GET", "/api/v1/jobs/" + id, ""}; }
 inline Request job_start_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/start", "{}"}; }
 inline Request job_cancel_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/cancel", "{}"}; }

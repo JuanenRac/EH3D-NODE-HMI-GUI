@@ -12,6 +12,10 @@ namespace srvlink {
 /// `timeout_ms` is how long it waits for the server (the stop uses a short time and tries again).
 bool call(const hmi::Settings& settings, const hmi::Request& request, hmi::Response& response, hmi::CallError& error, int timeout_ms = 4000);
 
+/// Tells the link what the last health check found: after `NotEh3d` or `Silent` it sends nothing with the token or a body (only the health check and the stop). It starts as `Silent`, so
+/// nothing but the health check goes out before the first one. Callable from any task.
+void set_verdict(hmi::Health verdict);
+
 /// Names this screen to the server: `name/version` goes in the headers User-Agent and X-EH3D-Client of every request. Call it once, before the tasks start.
 void set_client(const std::string& client);
 

@@ -53,6 +53,8 @@ struct Settings {
     bool hw_stop_required = true;           // the screen controls the machine only while the hardware stop input is wired and released
     std::uint32_t link_idle_ms = 3000;      // the link is lost when the machine stays quiet this long, 200..60000
     std::uint32_t stale_after_s = 15;       // the data shown (the fleet, the progress) are marked old when the server has not updated them for this long, 2..3600
+    std::uint32_t stop_retries = 10;        // a stop the server could not be reached for is tried again this many times (0: only the first), 0..100
+    std::uint32_t stop_retry_ms = 1000;     // the wait between those tries, 200..10000
     bool tool_bar = true;                   // the machine page says the model, the tool at work with its holes (cuts) done, the next tool, the tools finished and the time left
 
     // the panel that moves the machine by hand (the values come from the file; the three switches are safety switches and every default is the conservative one)
@@ -233,6 +235,10 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (num(200, 60000)) s.link_idle_ms = n;
         } else if (key == "stale_after_s") {
             if (num(2, 3600)) s.stale_after_s = n;
+        } else if (key == "stop_retries") {
+            if (num(0, 100)) s.stop_retries = n;
+        } else if (key == "stop_retry_ms") {
+            if (num(200, 10000)) s.stop_retry_ms = n;
         } else if (key == "machine_kind") {
             MachineKind k;
             if (machine_kind_from_text(val, k)) s.machine = k; else bad("not cnc, laser or pnp");

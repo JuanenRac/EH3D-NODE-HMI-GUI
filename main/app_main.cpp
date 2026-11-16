@@ -2,6 +2,7 @@
 // from the voice, through the gate (core/gate.hpp). A second task is the client of EH3D-SERVER: it reads the fleet every few seconds and
 // sends what the operator asked (a job made of a file of the microSD card, its start, its confirmation), so the desktop programs and the
 // node see the same jobs at the same time. This has not been built or run on a module yet. GPL-3.0-or-later.
+#include <atomic>
 #include <cstdio>
 #include <cstring>
 #include <string>
@@ -24,6 +25,7 @@
 #include "../core/quality.hpp"
 #include "../core/sdfiles.hpp"
 #include "../core/stage_notice.hpp"
+#include "../core/stop_latch.hpp"
 #include "../core/status.hpp"
 #include "../core/ui_text.hpp"
 #include "../core/voice.hpp"
@@ -43,7 +45,8 @@ static SemaphoreHandle_t g_lock = nullptr;  // guards what the link task shares:
 static TaskHandle_t g_stop_task = nullptr;  // the task that sends a stop to the server, apart from the queue of the link
 static TaskHandle_t g_say_task = nullptr;   // the task of the notices
 static TaskHandle_t g_link_task = nullptr;  // the task of the link
-static std::vector<hmi::Request> g_stop_reqs;  // what it sends (guarded by g_lock)
+static hmi::StopLatch g_stop_latch;            // the stop asked, read by the stop task (it never travels in the queue of the touches)
+static std::atomic<bool> g_touch_dropped{false};  // a touch did not fit in the queue
 
 // what the link task is asked to do
 struct ServerJob {
@@ -154,11 +157,6 @@ static void say(hmi::Cue cue) {
     if (g_say != nullptr) xQueueSend(g_say, &cue, 0);
 }
 
-// called by the screens in the LVGL task: the request is only queued
-static void post(const ui::Request& r) {
-    if (g_requests != nullptr) xQueueSend(g_requests, &r, 0);
-}
-
 static std::string read_file(const char* path) {
     std::string text;
     if (FILE* f = std::fopen(path, "rb")) {
@@ -179,6 +177,17 @@ static void set_note(const std::string& s) {
 // A note in the language of the operator (the texts are in core/status.hpp, never literals here).
 static void note(hmi::ScreenNote n, const std::string& detail = "") { set_note(hmi::note_with(n, detail, g_settings.language)); }
 static std::string said(hmi::CallError e) { return hmi::call_error_text(e, g_settings, g_settings.language); }
+
+// called by the screens in the LVGL task. A stop never waits in the queue of the touches (eight places, which a busy task leaves full): it is a flag that the task of the stop reads, and
+// the task is woken. Any other request is queued; one that does not fit is remembered, and the application task tells the operator that a touch was not taken.
+static void post(const ui::Request& r) {
+    if (r.what == ui::What::Action && r.action.kind == hmi::Kind::Stop) {
+        g_stop_latch.ask();
+        if (g_stop_task != nullptr) xTaskNotifyGive(g_stop_task);
+        return;
+    }
+    if (g_requests != nullptr && xQueueSend(g_requests, &r, 0) != pdTRUE) g_touch_dropped.store(true);
+}
 
 // What the screen says about hmi.cfg: it is missing, or the first line that could not be used and why.
 static std::string config_issue() {
@@ -254,35 +263,55 @@ static void quality_job(const ServerJob& job) {
     if (say_bad) say(hmi::Cue::CheckNotOk);
 }
 
-// The stop does not wait in the queue of the link, behind a file being sent or a reading of the fleet: it has a task of its own, short timeouts and three tries, and when the
-// server cannot be reached the note says so, so the operator knows to use the hardware stop. It cancels the job the fleet shows on the machine, whoever started it.
+// The stop does not wait in the queue of the link, behind a file being sent or a reading of the fleet, nor in the queue of the touches: it is a flag (`g_stop_latch`) that this task reads. It has
+// a task of its own, short timeouts and three tries in each round; when the server cannot be reached the note says so (the operator knows to use the hardware stop) and the stop is tried
+// again after `stop_retry_ms`, up to `stop_retries` more times, so a stop that did not get through is not forgotten. It cancels the job the fleet shows on the machine, whoever started it.
 static void stop_task(void*) {
+    std::uint32_t round = 0;
     for (;;) {
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        if (!g_stop_latch.pending()) {
+            round = 0;
+            ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        }
+        if (!g_stop_latch.take()) continue;
         std::vector<hmi::Request> reqs;
         xSemaphoreTake(g_lock, portMAX_DELAY);
-        reqs.swap(g_stop_reqs);
+        reqs = g_flow.stop_requests(g_fleet, g_settings.server_machine);
         xSemaphoreGive(g_lock);
+        if (reqs.empty()) {
+            round = 0;
+            note(hmi::ScreenNote::NoJobToStop);
+            continue;
+        }
+        bool delivered = true;
         for (const hmi::Request& req : reqs) {
             hmi::Response r;
             hmi::CallError error = hmi::CallError::None;
             bool reached = false;
             for (int attempt = 0; attempt < 3 && !reached; ++attempt) reached = srvlink::call(g_settings, req, r, error, 1500);
-            if (!reached) note(hmi::ScreenNote::StopFail, said(error));
-            else if (r.status != 200 && r.status != 202 && r.status != 409) note(hmi::ScreenNote::StopRefused, hmi::error_line(r));  // 409: the job was no longer running
-            else note(hmi::ScreenNote::StopSent);
+            if (!reached) {
+                delivered = false;
+                note(hmi::ScreenNote::StopFail, said(error));
+            } else if (r.status != 200 && r.status != 202 && r.status != 409) {
+                note(hmi::ScreenNote::StopRefused, hmi::error_line(r));  // 409: the job was no longer running
+            } else {
+                note(hmi::ScreenNote::StopSent);
+            }
+        }
+        const hmi::StopRetry again = hmi::stop_retry_after(delivered, ++round, g_settings.stop_retries, g_settings.stop_retry_ms);
+        if (again.retry) {
+            vTaskDelay(pdMS_TO_TICKS(again.wait_ms));
+            g_stop_latch.give_back();
+        } else {
+            round = 0;
         }
     }
 }
 
-// A stop from the touch screen, the voice or the hardware input: hands the cancel of the job of the machine to the stop task at once.
+// A stop from the voice or the hardware input (the touch screen sets the flag itself, in `post`): asks the stop task to cancel the job of the machine at once.
 static void request_stop() {
-    xSemaphoreTake(g_lock, portMAX_DELAY);
-    g_stop_reqs = g_flow.stop_requests(g_fleet, g_settings.server_machine);
-    const bool none = g_stop_reqs.empty();
-    xSemaphoreGive(g_lock);
-    if (none) note(hmi::ScreenNote::NoJobToStop);
-    else if (g_stop_task != nullptr) xTaskNotifyGive(g_stop_task);
+    g_stop_latch.ask();
+    if (g_stop_task != nullptr) xTaskNotifyGive(g_stop_task);
 }
 
 // What the operator asked, once the gate lets it go: the job of the screen is started, held, let go on or answered at a tool change.
@@ -395,6 +424,7 @@ static void link_task(void*) {
             // an EH3D server" before the fleet is asked for. A server that answers it (well or degraded) goes on to the fleet as before.
             hmi::Health health = hmi::Health::Ok;
             if (g_link_said != hmi::Link::Connected) health = hmi::classify_health(srvlink::call(g_settings, hmi::health_request(), fr, error), fr);
+            srvlink::set_verdict(health);   // after nobody or something that is not an EH3D server, nothing with the token or a body is sent to the address (the stop still is)
             if (health == hmi::Health::Degraded) set_note(hmi::text(hmi::T::SrvDegraded, g_settings.language));   // it answers and says it is not well: the operator is told, and the fleet is asked for all the same
             const bool reached = health == hmi::Health::Silent ? false : health == hmi::Health::NotEh3d ? true : srvlink::call(g_settings, hmi::fleet_request(), fr, error);
             const bool parsed = reached && health != hmi::Health::NotEh3d && fr.status == 200 && hmi::parse_fleet(fr.body, view);
@@ -588,6 +618,7 @@ extern "C" void app_main() {
             xSemaphoreGive(g_lock);
         }
 
+        if (g_touch_dropped.exchange(false)) note(hmi::ScreenNote::Busy);   // a touch did not fit in the queue: the operator is told, not left to guess
         ui::Request r;
         while (xQueueReceive(g_requests, &r, 0) == pdTRUE) {
             board::lvgl_lock();

@@ -251,10 +251,12 @@ public:
     /// The request that starts the job. Only a job that is ready can be started: the caller sends it after the gate has confirmed.
     Request start_request() const { return stage_ == Stage::Ready ? job_start_request(job_id_) : Request{}; }
     Request cancel_request() const { return (stage_ == Stage::Running || stage_ == Stage::Waiting || stage_ == Stage::Ready) ? job_cancel_request(job_id_) : Request{}; }
-    /// The requests of a stop: the job the fleet shows on the machine (also one that another program or screen started) and, when it is another one, the job of this screen
-    /// that is ready or running. Empty when no job is known. Cancelling is what every kind of job allows.
+    /// The requests of a stop: first the stop of the machine itself, which needs no job id and so does not depend on the last reading of the fleet; then, as a backup for a
+    /// server without that route, the job the fleet shows on the machine (also one that another program or screen started) and, when it is another one, the job of this screen
+    /// that is ready or running. Empty only when no machine is named and no job is known. Cancelling is what every kind of job allows.
     std::vector<Request> stop_requests(const FleetView& f, const std::string& machine) const {
         std::vector<Request> out;
+        if (!machine.empty()) out.push_back(machine_stop_request(machine));
         std::string on_machine;
         for (const MachineRow& m : f.machines)
             if (m.id == machine && !m.job_id.empty()) on_machine = m.job_id;

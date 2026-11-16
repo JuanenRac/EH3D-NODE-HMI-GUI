@@ -266,6 +266,9 @@ inline Health classify_health(bool reached, const Response& r) {
 inline Request job_report_request(const std::string& id) { return {"GET", "/api/v1/jobs/" + id, ""}; }
 inline Request job_start_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/start", "{}"}; }
 inline Request job_cancel_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/cancel", "{}"}; }
+/// Stops whatever job the server has on the machine (`POST /machines/:id/stop`); it needs no job id, so it works for a job another program started after the last reading of
+/// the fleet. An old server has no such route (404 or 405).
+inline Request machine_stop_request(const std::string& machine) { return {"POST", "/api/v1/machines/" + machine + "/stop", "{}"}; }
 inline Request job_confirm_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/confirm", "{}"}; }
 /// Holds a running job where it is (`POST /jobs/:id/pause`) and lets a held one go on (`POST /jobs/:id/resume`); the server holds only G-code jobs.
 inline Request job_pause_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/pause", "{}"}; }

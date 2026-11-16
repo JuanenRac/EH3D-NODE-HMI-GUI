@@ -386,6 +386,7 @@ static void orders_are_an_enum() {
 
 // The health check tells "nobody answers" from "something answers that is not an EH3D server".
 static void health_check() {
+    CHECK(!request_carries_token(health_request()) && request_carries_token(fleet_request()));   // the token never goes to an address that is not yet known to be a server
     CHECK(health_request().method == "GET" && health_request().path == "/api/v1/health" && health_request().body.empty());
     auto answer = [](int status, const std::string& body) {
         Response r;

@@ -773,7 +773,21 @@ static void the_plan_the_server_made() {
     CHECK(w.choose("next.NCD", "M48\nT1C0.8\n%\nT1\nX1Y1\nM30\n", why) && !w.advice(TableSize{}).plan.known);
 }
 
+// a number of the server that no integer can hold is brought into range before the conversion, never converted as it is
+static void numbers_of_the_server_out_of_range() {
+    FleetView f;
+    CHECK(parse_fleet("{\"time_s\":1e99,\"machines\":[{\"id\":\"m1\",\"ready\":-1e99,\"job\":{\"id\":\"j1\",\"percent\":1e99,\"holes_done\":1e999,\"holes_total\":\"x\",\"tool_slot\":-1e999}}]}", f));
+    CHECK(f.machines.size() == 1 && f.machines[0].percent == 100 && f.machines[0].tool_slot == 0);
+    CHECK(f.machines[0].ready == -1000000000 && f.machines[0].steps_done == 1000000000 && f.machines[0].steps_total == 1000000000);
+    CHECK(f.server_time_s == 2000000000);
+    Json j;
+    CHECK(parse_json("{\"a\":5,\"b\":1e99,\"c\":-1e99,\"d\":\"7\",\"e\":2.9}", j));
+    CHECK(j.int_in("a", 0, 10) == 5 && j.int_in("b", 0, 10) == 10 && j.int_in("c", 0, 10) == 0);
+    CHECK(j.int_in("d", 0, 10, 3) == 3 && j.int_in("missing", 0, 10, 4) == 4 && j.int_in("e", 0, 10) == 2);
+}
+
 int main() {
+    numbers_of_the_server_out_of_range();
     orientation_rules();
     sd_files();
     server_client();

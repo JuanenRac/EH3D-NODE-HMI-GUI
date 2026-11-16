@@ -38,6 +38,15 @@ struct Json {
         const Json* v = get(key);
         return v && v->type == Type::Number ? v->n : fallback;
     }
+    /// A whole number from `lo` to `hi`: the value of the server is brought into the range BEFORE it becomes an integer (a number out of range, 1e99 or infinite, is undefined behaviour
+    /// when converted), and one that is not a number gives `fallback`.
+    long int_in(const std::string& key, long lo, long hi, long fallback = 0) const {
+        const double d = num(key, static_cast<double>(fallback));
+        if (!(d == d)) return fallback;
+        if (d <= static_cast<double>(lo)) return lo;
+        if (d >= static_cast<double>(hi)) return hi;
+        return static_cast<long>(d);
+    }
 };
 
 namespace detail {
@@ -331,11 +340,11 @@ inline bool parse_job_report(const std::string& body, JobReport& out) {
     r.state = j.str("state");
     r.message = j.str("message");
     r.kind = j.str("kind");
-    r.holes_done = static_cast<int>(j.num("holes_done"));
-    r.holes_total = static_cast<int>(j.num("holes_total"));
+    r.holes_done = static_cast<int>(j.int_in("holes_done", -1000000000L, 1000000000L));
+    r.holes_total = static_cast<int>(j.int_in("holes_total", -1000000000L, 1000000000L));
     if (r.kind == "gcode") {
-        r.holes_done = static_cast<int>(j.num("items_done"));
-        r.holes_total = static_cast<int>(j.num("items_total"));
+        r.holes_done = static_cast<int>(j.int_in("items_done", -1000000000L, 1000000000L));
+        r.holes_total = static_cast<int>(j.int_in("items_total", -1000000000L, 1000000000L));
     }
     if (r.holes_done < 0) r.holes_done = 0;
     if (r.holes_total < r.holes_done) r.holes_total = r.holes_done;
@@ -362,11 +371,11 @@ inline bool parse_spindle(const std::string& body, SpindleView& out) {
     SpindleView v;
     v.kind = j.str("spindle");
     v.guard = j.str("guard");
-    v.node_max_rpm = static_cast<int>(j.num("node_max_rpm"));
+    v.node_max_rpm = static_cast<int>(j.int_in("node_max_rpm", -1000000000L, 1000000000L));
     const Json* active = j.get("active");
     if (active && active->type == Json::Type::Object) {
-        v.min_rpm = static_cast<int>(active->num("min_rpm"));
-        v.max_rpm = static_cast<int>(active->num("max_rpm"));
+        v.min_rpm = static_cast<int>(active->int_in("min_rpm", -1000000000L, 1000000000L));
+        v.max_rpm = static_cast<int>(active->int_in("max_rpm", -1000000000L, 1000000000L));
     }
     v.known = !v.kind.empty() && v.max_rpm > 0;
     out = std::move(v);
@@ -461,9 +470,9 @@ inline std::vector<SpindleNote> parse_job_notes(const std::string& body) {
         if (w.type != Json::Type::Object || w.str("code").empty() || out.size() >= 16) continue;
         SpindleNote n;
         n.code = w.str("code");
-        n.tool = static_cast<int>(w.num("tool"));
-        n.value = static_cast<long>(w.num("value"));
-        n.limit = static_cast<long>(w.num("limit"));
+        n.tool = static_cast<int>(w.int_in("tool", -1000000000L, 1000000000L));
+        n.value = w.int_in("value", -2000000000L, 2000000000L);
+        n.limit = w.int_in("limit", -2000000000L, 2000000000L);
         out.push_back(n);
     }
     return out;
@@ -495,7 +504,7 @@ inline PlanView parse_plan_view(const std::string& body) {
     p.known = true;
     p.estimate_s = view->num("estimate_s");
     if (!(p.estimate_s > 0)) p.estimate_s = 0;
-    p.items = static_cast<int>(view->num("items"));
+    p.items = static_cast<int>(view->int_in("items", -1000000000L, 1000000000L));
     const Json* dry = view->get("dry_run");
     if (dry && dry->type == Json::Type::Object) {
         const Json* within = dry->get("within_course");
@@ -556,22 +565,22 @@ inline bool parse_fleet(const std::string& body, FleetView& out) {
         r.station = m.str("station");
         r.state = m.str("state", "idle");
         r.model = m.str("model");
-        r.ready = static_cast<int>(m.num("ready"));
+        r.ready = static_cast<int>(m.int_in("ready", -1000000000L, 1000000000L));
         const Json* job = m.get("job");
         if (job && job->type == Json::Type::Object) {
             r.job_id = job->str("id");
             r.job_name = job->str("name");
-            r.percent = static_cast<int>(job->num("percent"));
+            r.percent = static_cast<int>(job->int_in("percent", -1000000000L, 1000000000L));
             if (r.percent < 0) r.percent = 0;
             if (r.percent > 100) r.percent = 100;
             const Json* pause = job->get("pause");
             if (pause && pause->type == Json::Type::Object) {
                 r.pause_kind = pause->str("kind");
-                r.pause_tool = static_cast<int>(pause->num("tool"));
+                r.pause_tool = static_cast<int>(pause->int_in("tool", -1000000000L, 1000000000L));
             }
             const bool lines = job->str("kind") == "gcode";
-            r.steps_done = static_cast<int>(job->num(lines ? "items_done" : "holes_done"));
-            r.steps_total = static_cast<int>(job->num(lines ? "items_total" : "holes_total"));
+            r.steps_done = static_cast<int>(job->int_in(lines ? "items_done" : "holes_done", -1000000000L, 1000000000L));
+            r.steps_total = static_cast<int>(job->int_in(lines ? "items_total" : "holes_total", -1000000000L, 1000000000L));
             if (r.steps_done < 0) r.steps_done = 0;
             if (r.steps_total < r.steps_done) r.steps_total = r.steps_done;
             r.estimate_s = job->num("estimate_s");
@@ -587,16 +596,16 @@ inline bool parse_fleet(const std::string& body, FleetView& out) {
             if (!(r.feed_mm_min > 0)) r.feed_mm_min = 0;
             r.spindle_rpm = job->num("spindle_rpm");
             if (!(r.spindle_rpm > 0)) r.spindle_rpm = 0;
-            r.tool_changes = job->get("tool_changes") ? static_cast<int>(job->num("tool_changes")) : -1;
+            r.tool_changes = job->get("tool_changes") ? static_cast<int>(job->int_in("tool_changes", -1000000000L, 1000000000L)) : -1;
             r.elapsed_s = job->get("elapsed_s") ? job->num("elapsed_s") : -1;
             r.depth_mm = job->get("depth_mm") ? job->num("depth_mm") : -1;
             r.routed_mm = job->get("routed_mm") ? job->num("routed_mm") : -1;
-            r.tool_slot = static_cast<int>(job->num("tool_slot"));
+            r.tool_slot = static_cast<int>(job->int_in("tool_slot", -1000000000L, 1000000000L));
             if (r.tool_slot < 0 || r.tool_slot > 15) r.tool_slot = 0;
         }
         v.machines.push_back(std::move(r));
     }
-    v.server_time_s = static_cast<long>(j.num("time_s"));
+    v.server_time_s = j.int_in("time_s", -2000000000L, 2000000000L);
     if (v.server_time_s < 0) v.server_time_s = 0;
     out = std::move(v);
     return true;

@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **A number of the server is brought into range before it becomes an integer:** `percent`, the counters of a job, the tool, the limits of the spindle, the clock and the other whole numbers read from the answers of the server go through `Json::int_in(key, lo, hi)`, so a value such as `1e99` or an infinite one gives the end of the range instead of an undefined conversion; a host test covers it.
 - **The token of the server no longer goes with the health check:** the first request after a start or a lost link is sent without the `Authorization` header, so whatever answers on that address does not receive the token before it is known to be an EH3D server.
 
 - **The stop no longer depends on the last reading of the fleet:** a stop from the touch screen, the voice or the hardware input now sends the stop of the machine (`POST /machines/:id/stop`) first, which needs no job id, and keeps the cancel of the job the fleet shows and of the job of this screen as a backup for a server without that route. A job another program started after the last reading, or a fleet that could not be read, is now stopped; before, the screen said there was no job to stop, or cancelled an old job, got a refusal that it took for success and left the machine running. Covered by the workflow host test; not tried against a real server from the screen.

@@ -467,25 +467,29 @@ static void a_job_is_held_and_a_stop_reaches_the_job_of_the_machine() {
     CHECK(w.tool_wait() && !w.held());
     CHECK(w.confirm_request().path == "/api/v1/jobs/j42/confirm" && w.release_request().path.empty());
 
-    // the stop reaches the job the fleet shows on the machine, also when this screen did not start it
+    // the stop of the machine goes first and needs no job id; the cancel of the jobs the fleet shows is the backup for a server without that route
     Workflow other;
-    CHECK(other.stop_requests(FleetView{}, "m1").empty());  // nothing known
+    const std::string machine_stop = "/api/v1/machines/m1/stop";
+    std::vector<Request> stops = other.stop_requests(FleetView{}, "m1");  // nothing known about a job: the machine is stopped all the same
+    CHECK(stops.size() == 1 && stops[0].method == "POST" && stops[0].path == machine_stop);
+    CHECK(other.stop_requests(FleetView{}, "").empty());  // no machine named and no job known
     FleetView desk = fleet_of("desk7", "busy", 10, "");
-    std::vector<Request> stops = other.stop_requests(desk, "m1");
-    CHECK(stops.size() == 1 && stops[0].path == "/api/v1/jobs/desk7/cancel");
-    CHECK(other.stop_requests(desk, "another").empty());
+    stops = other.stop_requests(desk, "m1");
+    CHECK(stops.size() == 2 && stops[0].path == machine_stop && stops[1].path == "/api/v1/jobs/desk7/cancel");
+    stops = other.stop_requests(desk, "another");  // a fleet that shows no job on this machine: only the stop of the machine
+    CHECK(stops.size() == 1 && stops[0].path == "/api/v1/machines/another/stop");
     // both the job of the fleet and the own one when they differ; once when they are the same
     stops = w.stop_requests(desk, "m1");
-    CHECK(stops.size() == 2 && stops[0].path == "/api/v1/jobs/desk7/cancel" && stops[1].path == "/api/v1/jobs/j42/cancel");
+    CHECK(stops.size() == 3 && stops[0].path == machine_stop && stops[1].path == "/api/v1/jobs/desk7/cancel" && stops[2].path == "/api/v1/jobs/j42/cancel");
     stops = w.stop_requests(fleet_of("j42", "busy", 50, ""), "m1");
-    CHECK(stops.size() == 1 && stops[0].path == "/api/v1/jobs/j42/cancel");
+    CHECK(stops.size() == 2 && stops[0].path == machine_stop && stops[1].path == "/api/v1/jobs/j42/cancel");
     // an own job that the fleet has not shown yet is stopped too, and so is one that is only ready
     stops = w.stop_requests(FleetView{}, "m1");
-    CHECK(stops.size() == 1 && stops[0].path == "/api/v1/jobs/j42/cancel");
+    CHECK(stops.size() == 2 && stops[0].path == machine_stop && stops[1].path == "/api/v1/jobs/j42/cancel");
     Workflow ready;
     CHECK(ready.choose("board.NCD", "M48\n", why) && ready.on_created(ok(201, "{\"id\":\"r1\"}"), why));
     stops = ready.stop_requests(FleetView{}, "m1");
-    CHECK(stops.size() == 1 && stops[0].path == "/api/v1/jobs/r1/cancel");
+    CHECK(stops.size() == 2 && stops[0].path == machine_stop && stops[1].path == "/api/v1/jobs/r1/cancel");
 }
 
 static void a_gcode_program_is_a_job_of_its_own() {

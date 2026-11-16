@@ -35,7 +35,7 @@ bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, hmi
         esp_http_client_set_header(c, "User-Agent", g_client.c_str());
         esp_http_client_set_header(c, "X-EH3D-Client", g_client.c_str());
     }
-    if (!s.token.empty()) {
+    if (!s.token.empty() && hmi::request_carries_token(r)) {
         const std::string bearer = "Bearer " + s.token;
         esp_http_client_set_header(c, "Authorization", bearer.c_str());
     }

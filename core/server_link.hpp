@@ -249,6 +249,10 @@ inline Request fleet_request() { return {"GET", "/api/v1/fleet", ""}; }
 /// The health check of the server: open to anyone (no token is needed), so it is the first request after a start or after the link was lost.
 inline Request health_request() { return {"GET", "/api/v1/health", ""}; }
 
+/// Whether the token of the server goes with a request: every request except the health check, which is asked before anybody is known to be an EH3D server and must not hand the token to
+/// whatever answers on that address.
+inline bool request_carries_token(const Request& r) { return r.path != "/api/v1/health"; }
+
 /// What the health check says about whoever answered: nobody (`Silent`), something that is not an EH3D server (`NotEh3d`: another service on that address, a proxy page, a router), a server
 /// that says it is not well (`Degraded`) or a server that is well (`Ok`). `reached` says whether any answer came.
 enum class Health { Silent, NotEh3d, Degraded, Ok };

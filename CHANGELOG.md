@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.0] - Newest improvements of the screen interface of the node
+
 - **The stop of the screen no longer waits in the queue of the touches, and it is tried again:** the touch of the stop sets a flag that the task of the stop reads, so it cannot be lost when the queue of eight is full (a touch of anything else that does not fit now says so); when the server cannot be reached the note stays and the stop is tried again every `stop_retry_ms` (1 second) up to `stop_retries` (10) more times, both in `hmi.cfg`. The host tests cover the flag and the plan of the retries.
 - **After a health check that found nobody, or something that is not an EH3D server, the link sends nothing with the token or a body:** only the health check and the stop (always tried) go out, so a job file, a start or the token do not reach whatever answers on the address.
 - **A number of the server is brought into range before it becomes an integer:** `percent`, the counters of a job, the tool, the limits of the spindle, the clock and the other whole numbers read from the answers of the server go through `Json::int_in(key, lo, hi)`, so a value such as `1e99` or an infinite one gives the end of the range instead of an undefined conversion; a host test covers it.

@@ -105,6 +105,20 @@
         },
         {
           "desc": {
+            "en": "the settings of the server from its contract",
+            "es": "los ajustes del servidor según su contrato",
+            "it": "le impostazioni del server dal suo contratto",
+            "de": "die Servereinstellungen aus seinem Vertrag",
+            "fr": "les réglages du serveur d'après son contrat",
+            "pt": "as definições do servidor pelo seu contrato",
+            "zh": "依据服务器契约的服务器设置",
+            "ja": "契約に基づくサーバーの設定"
+          },
+          "name": "settings_contract.hpp  settings_page.hpp",
+          "tree_name": "settings_contract.hpp settings_page.hpp"
+        },
+        {
+          "desc": {
             "en": "the tools of a file and the ones switched off",
             "es": "las herramientas de un archivo y las desactivadas",
             "it": "gli utensili di un file e quelli disattivati",
@@ -372,6 +386,20 @@
             "zh": "37 种语言与字体",
             "ja": "37 言語とフォント"
           }
+        },
+        {
+          "desc": {
+            "en": "the settings of the server and who may change them",
+            "es": "los ajustes del servidor y quién puede cambiarlos",
+            "it": "le impostazioni del server e chi può modificarle",
+            "de": "die Servereinstellungen und wer sie ändern darf",
+            "fr": "les réglages du serveur et qui peut les modifier",
+            "pt": "as definições do servidor e quem as pode alterar",
+            "zh": "服务器设置以及谁可以修改",
+            "ja": "サーバーの設定と変更できる人"
+          },
+          "name": "test_settings.cpp",
+          "tree_name": "test_settings.cpp"
         },
         {
           "name": "test_machine.cpp",

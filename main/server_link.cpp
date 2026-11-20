@@ -11,11 +11,11 @@
 
 #include "../core/server_errors.hpp"
 #include "../core/session.hpp"
+#include "../core/settings_contract.hpp"
 
 namespace srvlink {
 
 namespace {
-constexpr std::size_t kMaxAnswer = 256 * 1024;  // a fleet of a big workshop is far smaller
 std::string g_client;                           // `name/version`, set once at the start
 std::atomic<int> g_verdict{static_cast<int>(hmi::Health::Silent)};  // what the last health check found
 hmi::SessionTracker g_session;                  // the login of the screen (guarded by g_session_mutex: the stop is sent from another task)
@@ -69,7 +69,7 @@ bool call_once(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out
             int n;
             ok = true;
             while ((n = esp_http_client_read(c, buf, sizeof buf)) > 0) {
-                if (out.body.size() + static_cast<std::size_t>(n) > kMaxAnswer) {
+                if (out.body.size() + static_cast<std::size_t>(n) > hmi::answer_limit(r)) {  // 256 KiB; the contract of the settings has 1 MiB
                     error = hmi::CallError::TooLong;
                     ok = false;
                     break;
@@ -158,6 +158,11 @@ std::string keep_login(const hmi::Settings& s, std::uint32_t now_ms) {
 bool logged_in() {
     std::lock_guard<std::mutex> lock(g_session_mutex);
     return g_session.logged_in();
+}
+
+std::string role() {
+    std::lock_guard<std::mutex> lock(g_session_mutex);
+    return g_session.role();
 }
 
 void logout(const hmi::Settings& s) {

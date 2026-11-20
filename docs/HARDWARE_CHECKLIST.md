@@ -33,3 +33,8 @@ A value in `hmi.cfg` must stand alone on its line: a `#` comment after a value i
 | 14 | Give a wrong password | The screen says the refusal in its language (the text of `bad_credentials`); the next try waits 30 s, then 60 s | |
 | 15 | Set `server_timeout_s = 1`, then switch the server off | The screen reports no answer within about a second per try, with `server_retries` more tries; a job request is never sent twice | |
 | 16 | Make a machine of a plugin (for example a demo or a laser) on the server and latch it | The fleet page shows it with its detail, in red with the warning mark | |
+| 17 | With the login of an administrator (`server_user`) open the settings page | The block "Server settings" says the values are read from the server and lists 89 settings in 15 groups with their values; reading the answer (some 250 KB) does not reset the screen or stall the touch | |
+| 18 | Use the login of an operator (or only the `token`) and restart | The block shows the copy the screen carries, read only, without values, and says that the server gives its settings to an administrator only | |
+| 19 | Set the language to Japanese, then to Chinese | The labels are drawn without boxes, or in English until the fonts hold the characters of the contract | |
+| 20 | Put a proxy page or another service on the address of the server | The block shows the copy, nothing is changed and no token goes to the other service | |
+| 21 | Set `settings_write = on` and a key in `settings_write_keys`, with an administrator login (waits for the controls: they are not drawn yet) | A switch asks, a risky one asks twice, the server's `weak_confirm_required` asks a third time; nothing is sent before the last touch; a job running blocks it | |

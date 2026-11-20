@@ -103,6 +103,9 @@ class SessionTracker {
 public:
     /// The token of the login, empty while there is none.
     const std::string& token() const { return token_; }
+    /// The role the server gave the login (`viewer`, `operator`, `admin`); empty while there is no login. The page of the settings of the server changes nothing for a role below
+    /// the one the contract asks for; a screen that uses the static `token` never learns its role and so never changes a setting.
+    const std::string& role() const { return role_; }
     bool logged_in() const { return !token_.empty(); }
 
     /// True when the settings hold a name and a password to log in with.
@@ -124,6 +127,7 @@ public:
     /// A login came back good.
     void on_login(const LoginView& v, std::uint32_t now_ms) {
         token_ = v.token;
+        role_ = v.role;
         life_ms_ = static_cast<std::uint32_t>(v.expires_s) * 1000u;
         renewed_ms_ = now_ms;
         refresh_wait_ = false;
@@ -165,6 +169,7 @@ public:
     /// Forgets the login (the screen logged out, or the settings changed).
     void forget() {
         token_.clear();
+        role_.clear();
         life_ms_ = 0;
         refresh_wait_ = false;
         login_wait_ = false;
@@ -181,6 +186,7 @@ private:
     static bool elapsed(std::uint32_t now, std::uint32_t at) { return static_cast<std::int32_t>(now - at) >= 0; }
 
     std::string token_;
+    std::string role_;
     std::uint32_t life_ms_ = 0;
     std::uint32_t renewed_ms_ = 0;
     std::uint32_t next_refresh_ms_ = 0;

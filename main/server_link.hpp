@@ -21,6 +21,9 @@ std::string keep_login(const hmi::Settings& settings, std::uint32_t now_ms);
 /// Whether the screen holds a login now.
 bool logged_in();
 
+/// The role the server gave the login (`viewer`, `operator`, `admin`); empty while there is no login (the screen then never changes a setting of the server).
+std::string role();
+
 /// Ends the login at the server and forgets the token.
 void logout(const hmi::Settings& settings);
 

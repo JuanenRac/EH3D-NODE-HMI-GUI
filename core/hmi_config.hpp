@@ -81,6 +81,13 @@ struct Settings {
     bool stage_window = true;               // the window between the drilling and the routing, with the buttons to follow the routing or to abort
     std::int32_t clock_utc_offset_min = 0;  // the local time of the hour a job is expected to end at, minutes from UTC, -720..840 (the chip has no time zones)
 
+    // the settings of the server drawn from its contract (see settings_contract.hpp and settings_page.hpp); reading them changes nothing, changing one needs all of the three SAFETY lines
+    bool settings_contract = true;          // read the contract of the server now and then and show its settings (read only)
+    std::uint32_t settings_poll_s = 600;    // how often the contract is read again, 30..86400 seconds
+    bool settings_write = false;            // SAFETY: this screen may change a setting of the server (it also needs an administrator login); off
+    std::string settings_write_keys;        // SAFETY: the keys of the security page this screen may change, like "slice_enabled, design_run" (up to 32); empty: none
+    bool settings_block_running = true;     // SAFETY: no change of a setting of the server while a job runs or waits
+
     // voice
     bool voice_alerts = true;               // spoken alerts (the end of a job, a tool change, an error)
     bool voice_orders = false;              // spoken orders; off until the operator turns it on
@@ -157,6 +164,28 @@ inline bool to_steps(const std::string& v, std::vector<double>& out) {
     for (std::size_t i = 1; i < list.size(); ++i)
         if (!(list[i] > list[i - 1])) return false;
     out = list;
+    return true;
+}
+
+/// A list of key names ("slice_enabled, design_run", or nothing): up to 32 names of lower-case letters, digits and underscores of up to 48 characters, once each.
+inline bool to_key_list(const std::string& v, std::vector<std::string>& out) {
+    std::vector<std::string> keys;
+    if (trim(v).empty()) { out.clear(); return true; }
+    std::size_t pos = 0;
+    while (pos <= v.size()) {
+        std::size_t comma = v.find(',', pos);
+        if (comma == std::string::npos) comma = v.size();
+        const std::string item = trim(v.substr(pos, comma - pos));
+        pos = comma + 1;
+        if (item.empty() || item.size() > 48) return false;
+        for (char c : item)
+            if (!((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_')) return false;
+        for (const std::string& k : keys)
+            if (k == item) return false;
+        keys.push_back(item);
+        if (keys.size() > 32) return false;
+    }
+    out = std::move(keys);
     return true;
 }
 
@@ -326,6 +355,17 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             const bool neg = !val.empty() && val[0] == '-';
             if (detail::to_uint(neg ? val.substr(1) : val, 0, neg ? 720u : 840u, n)) s.clock_utc_offset_min = neg ? -static_cast<std::int32_t>(n) : static_cast<std::int32_t>(n);
             else bad("out of range or not a number", CfgReason::Range);
+        } else if (key == "settings_contract") {
+            if (flag()) s.settings_contract = b;
+        } else if (key == "settings_poll_s") {
+            if (num(30, 86400)) s.settings_poll_s = n;
+        } else if (key == "settings_write") {
+            if (flag()) s.settings_write = b;
+        } else if (key == "settings_write_keys") {
+            std::vector<std::string> keys;
+            if (detail::to_key_list(val, keys)) s.settings_write_keys = val; else bad("up to 32 key names of lower-case letters, digits and underscores, separated by commas", CfgReason::Choice);
+        } else if (key == "settings_block_running") {
+            if (flag()) s.settings_block_running = b;
         } else if (key == "mic_gain_percent") {
             if (num(0, 100)) s.mic_gain_percent = static_cast<std::uint16_t>(n);
         } else {

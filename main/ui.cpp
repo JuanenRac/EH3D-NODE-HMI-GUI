@@ -48,6 +48,8 @@ lv_obj_t* g_dialog = nullptr;
 lv_obj_t* g_dialog_text = nullptr;
 lv_obj_t* g_fleet_list = nullptr;
 lv_obj_t* g_card_list = nullptr;
+lv_obj_t* g_srv_note = nullptr;
+lv_obj_t* g_srv_list = nullptr;
 lv_obj_t* g_selected_file = nullptr;
 lv_obj_t* g_job_summary = nullptr;
 lv_obj_t* g_tools_box = nullptr;
@@ -388,6 +390,20 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
         g_over_label = button(box, hmi::text(g_over_refuse ? T::OverRefuse : T::OverClip, s.language), on_spindle_over, nullptr, kSlate, 220, 64);
     }
 
+    // the settings of the server, drawn from its contract: read only
+    g_srv_note = nullptr;
+    g_srv_list = nullptr;
+    if (s.settings_contract) {
+        lv_obj_t* srv = card(set, hmi::settings_text(hmi::ST::Title, s.language).c_str());
+        lv_obj_set_size(srv, LV_PCT(100), 420);
+        g_srv_note = lv_label_create(srv);
+        lv_obj_set_width(g_srv_note, LV_PCT(100));
+        lv_label_set_long_mode(g_srv_note, LV_LABEL_LONG_WRAP);
+        lv_obj_set_style_text_color(g_srv_note, kDim, 0);
+        g_srv_list = lv_list_create(srv);
+        lv_obj_set_size(g_srv_list, LV_PCT(100), 300);
+    }
+
     // the language: the thirty-seven languages, each named in itself, in a list that scrolls; the one in use is outlined
     lv_obj_t* langs = card(set, hmi::text(T::Language, s.language));
     lv_obj_set_size(langs, LV_PCT(100), 300);
@@ -613,6 +629,23 @@ void show_fleet(const hmi::FleetView& fleet, const hmi::Settings& s, bool stale)
         lv_obj_t* b = lv_list_add_button(g_fleet_list, nullptr, row);
         if (w.attention) lv_obj_set_style_text_color(b, kBad, 0);
         else if (stale) lv_obj_set_style_text_color(b, kOld, 0);
+    }
+}
+
+void show_server_settings(const hmi::PageView& page, const hmi::Settings&) {
+    if (g_srv_list == nullptr || g_srv_note == nullptr) return;
+    std::string head = page.source;
+    if (!page.why.empty()) head += "\n" + page.why;
+    for (const std::string& w : page.warnings) head += std::string("\n" LV_SYMBOL_WARNING " ") + w;
+    lv_label_set_text(g_srv_note, head.c_str());
+    lv_obj_clean(g_srv_list);
+    for (const auto& g : page.groups) {
+        lv_list_add_text(g_srv_list, g.label.c_str());
+        for (const auto& r : g.rows) {
+            const std::string line = r.label + "   " + r.value;
+            lv_obj_t* b = lv_list_add_button(g_srv_list, nullptr, line.c_str());
+            if (r.not_default) lv_obj_set_style_text_color(b, kAmber, 0);  // a value that is not the default stands out
+        }
     }
 }
 

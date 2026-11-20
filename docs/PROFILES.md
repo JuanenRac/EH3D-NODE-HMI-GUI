@@ -16,7 +16,7 @@ Bungard screen, and every key of the profile must be one that the generic screen
 ## What is shared today
 
 The files of the core (`core/`), the host tests of the core (`tests/`), the sockets of the link to the server (`main/server_link.*`), the board (`main/board*`), the image confirmation,
-the `sdkconfig` files and the texts of the 37 languages (`locales/`) are the same text in both repositories once the names of the projects are made equal. The firmware base of
+the `sdkconfig` files, the login of the application `hmi`, the table of refusals by code and the page of the settings of the server (`core/settings_*.hpp`, `docs/SETTINGS_CONTRACT.md`) and the texts of the 37 languages (`locales/`) are the same text in both repositories once the names of the projects are made equal. The firmware base of
 EH3D-COMMON copies them. `tools/check_profile_parity.py` compares them and fails on a difference that `tools/profile_parity_baseline.json` does not list, and on a listed difference
 that has been closed.
 
@@ -28,7 +28,7 @@ that has been closed.
 | The card under the progress bar (tool, times, position, counters) | `core/job_card.hpp` and the machine page of the Bungard screen | The same: write it in the generic screen, shown for the CNC kind with `tool_bar` on |
 | The parity tests of the desktop program | `tests/test_parity.cpp` | Move with the two parts above |
 | The tests of the kind of machine and of the bar of the tool changer | `tests/test_machine.cpp`, `tests/test_rack.cpp` exist only here | Copy to the Bungard screen with the next copy of the firmware base |
-| The login of the application `hmi`, the table of refusals by code, the connection settings and the machines of the plugins | `core/session.hpp`, `core/server_errors.hpp`, `core/server_errors_gen.hpp`, `main/server_link.*`, `core/server_link.hpp`, `core/hmi_config.hpp` and `tests/test_session.cpp` exist here first | Add the new files to the list of the firmware base and copy; until then the baseline lists them |
+| The lines of the connection settings (`server_user`, `server_password`, `server_timeout_s`, `server_retries`, `server_mdns`) in `hmi.cfg.example` | The generic file has them; the Bungard one does not yet (its core reads them) | Add the lines and the rules of `tools/selftest.py` to the Bungard files, then empty `settings_not_yet_in_bungard` of the baseline |
 | The screens themselves | `main/app_main.cpp`, `main/ui.cpp` | They are not compared; after the two panels above are in the generic screen the Bungard ones are the same file |
 
 When every line above is closed, EH3D-NODE-BUNGARD-HMI holds only its manifest, its profile and its documentation, and the firmware of the Bungard machine is built from the generic

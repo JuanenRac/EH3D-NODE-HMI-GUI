@@ -11,6 +11,7 @@
 #include "../core/quality.hpp"
 #include "../core/sdfiles.hpp"
 #include "../core/server_link.hpp"
+#include "../core/settings_page.hpp"
 #include "../core/status.hpp"
 #include "../core/workflow.hpp"
 
@@ -85,6 +86,10 @@ struct FlowState {
 };
 /// Shows where the job is: what a stopped job did and the button to go on from there, and the program that comes next.
 void show_flow(const FlowState& flow, const hmi::Settings& settings);
+/// Shows the settings of the server drawn from its contract (see core/settings_page.hpp): where the values come from, why the copy of the screen is shown instead of the live contract,
+/// the lines about what the server says and hmi.cfg says do not fit, and every setting by group with its value in force (the ones that differ from the default in amber). Read only: the
+/// controls that change a setting wait for the hardware day (the core that asks, confirms and sends is tested on a computer).
+void show_server_settings(const hmi::PageView& page, const hmi::Settings& settings);
 /// Shows the files of the card.
 void show_card(const std::vector<hmi::Entry>& files, const hmi::Settings& settings);
 

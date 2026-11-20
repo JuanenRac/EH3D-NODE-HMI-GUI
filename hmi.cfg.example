@@ -59,6 +59,17 @@ stale_after_s = 15
 stop_retries = 10
 # the wait between those tries in milliseconds, 200..10000
 stop_retry_ms = 1000
+# the settings of the server, drawn from its contract (GET /api/v1/settings/contract): the page shows every setting with its value in force. Reading changes nothing. Without the live
+# contract (no administrator login, an older or a newer server) the page shows the copy the screen carries, read only
+settings_contract = on
+# how often the contract is read again, 30..86400 seconds
+settings_poll_s = 600
+# SAFETY: this screen may change a setting of the server. It also needs a login as an administrator (server_user) and the key in the list below; a spoken order never changes one. Off
+settings_write = off
+# SAFETY: the keys of the security page this screen may change, like slice_enabled, design_run (up to 32); empty = none. The other keys are set in server.cfg and never written from the screen
+settings_write_keys =
+# SAFETY: no change of a setting of the server while a job runs or waits
+settings_block_running = on
 
 # voice
 voice_alerts = on

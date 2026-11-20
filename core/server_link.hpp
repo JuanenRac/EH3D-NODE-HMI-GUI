@@ -259,8 +259,8 @@ inline Request fleet_request() { return {"GET", "/api/v1/fleet", ""}; }
 inline Request health_request() { return {"GET", "/api/v1/health", ""}; }
 
 /// Whether the token of the server goes with a request: every request except the health check, which is asked before anybody is known to be an EH3D server and must not hand the token to
-/// whatever answers on that address.
-inline bool request_carries_token(const Request& r) { return r.path != "/api/v1/health"; }
+/// whatever answers on that address, and the login, which is the way to get a token (it carries the name and the password instead).
+inline bool request_carries_token(const Request& r) { return r.path != "/api/v1/health" && r.path != "/api/v1/auth/login"; }
 
 /// What the health check says about whoever answered: nobody (`Silent`), something that is not an EH3D server (`NotEh3d`: another service on that address, a proxy page, a router), a server
 /// that says it is not well (`Degraded`) or a server that is well (`Ok`). `reached` says whether any answer came.
@@ -537,6 +537,82 @@ inline PlanView parse_plan_view(const std::string& body) {
     return p;
 }
 
+/// A machine of a plugin of the server (`GET /work/machines`: a laser, a printer, a pick and place machine...), with what its `detail` says. The words are the server's own.
+struct WorkMachine {
+    std::string id, name, plugin, state;
+    std::string job;      // the id of the job it is working on, empty when none
+    std::string detail;   // the plain entries of `detail` as `key value` (up to 4, the ones that raise an alarm first)
+    bool attention = false;  // `latched`, `estop_latched` or `alarm` is on: the row is drawn in red
+};
+
+/// The machines of every plugin; they need the scope `machines:view`, and an older server has no such route.
+inline Request work_machines_request() { return {"GET", "/api/v1/work/machines", ""}; }
+
+namespace detail {
+/// Whether a value of `detail` says that something is wrong: true, a number that is not 0, or a text that is not empty, `none`, `ok` or `false`.
+inline bool alarm_on(const Json& v) {
+    switch (v.type) {
+        case Json::Type::Bool: return v.b;
+        case Json::Type::Number: return v.n != 0;
+        case Json::Type::String: return !v.s.empty() && v.s != "none" && v.s != "ok" && v.s != "false";
+        default: return false;
+    }
+}
+inline bool alarm_key(const std::string& k) { return k == "latched" || k == "estop_latched" || k == "alarm"; }
+/// A plain value of `detail` as text; empty for an object, an array, null or a text that is too long to show.
+inline std::string plain_value(const Json& v) {
+    switch (v.type) {
+        case Json::Type::Bool: return v.b ? "true" : "false";
+        case Json::Type::Number: {
+            char b[32];
+            std::snprintf(b, sizeof b, "%.6g", v.n);
+            return b;
+        }
+        case Json::Type::String: return v.s.size() <= 24 ? v.s : "";
+        default: return "";
+    }
+}
+}  // namespace detail
+
+/// The machines of the answer of `GET /work/machines` (`{"machines": [...]}`); false when the text is not that. A machine with no id is left out.
+inline bool parse_work_machines(const std::string& body, std::vector<WorkMachine>& out) {
+    Json j;
+    if (!parse_json(body, j) || j.type != Json::Type::Object) return false;
+    const Json* list = j.get("machines");
+    if (!list || list->type != Json::Type::Array) return false;
+    std::vector<WorkMachine> rows;
+    for (const Json& m : list->a) {
+        if (m.type != Json::Type::Object || m.str("id").empty() || rows.size() >= 32) continue;
+        WorkMachine w;
+        w.id = m.str("id");
+        w.name = m.str("name", w.id);
+        w.plugin = m.str("plugin");
+        w.state = m.str("state");
+        w.job = m.str("job");
+        const Json* d = m.get("detail");
+        if (d && d->type == Json::Type::Object) {
+            // two passes: the entries that raise an alarm come first, then the rest, up to four in all
+            int count = 0;
+            for (int pass = 0; pass < 2; ++pass) {
+                for (const auto& kv : d->o) {
+                    if (kv.first == "evidence" || kv.first == "simulator_only") continue;
+                    const bool alarm = detail::alarm_key(kv.first);
+                    if (pass == 0 && alarm && detail::alarm_on(kv.second)) w.attention = true;
+                    if (alarm != (pass == 0)) continue;
+                    const std::string shown = detail::plain_value(kv.second);
+                    if (shown.empty() || count >= 4) continue;
+                    ++count;
+                    if (!w.detail.empty()) w.detail += "   ";
+                    w.detail += kv.first + " " + shown;
+                }
+            }
+        }
+        rows.push_back(std::move(w));
+    }
+    out = std::move(rows);
+    return true;
+}
+
 struct MachineRow {
     std::string id, name, station, state;  // state: idle, busy or waiting
     std::string model;                     // what the machine is, as the server holds it (`ccd-mtc`, `ccd-atc`...); empty when it says none
@@ -561,6 +637,7 @@ struct MachineRow {
 
 struct FleetView {
     std::vector<MachineRow> machines;
+    std::vector<WorkMachine> work;  // the machines of the plugins (`GET /work/machines`), read less often than the fleet; empty when the server does not give them
     long server_time_s = 0;  // `time_s`: the clock of the server in seconds since 1970, when the answer says it (0: it does not); the chip has no clock of its own
 };
 

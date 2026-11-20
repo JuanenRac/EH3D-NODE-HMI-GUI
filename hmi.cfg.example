@@ -22,6 +22,17 @@ table_depth_mm = 0
 # write-only, 8..64 characters
 token =
 
+# the login: with a name and a password the screen logs in to the server as the application hmi (POST /auth/login), renews the login in the last quarter of its life and logs in again
+# when the server refuses the token; without them it uses the token above. The password is write-only: never shown, never logged
+server_user =
+server_password =
+# how long one try of a request may take, 1..120 seconds
+server_timeout_s = 15
+# how many more tries after a failure on the network, 0..5 (a request that creates something is never sent twice after a time-out)
+server_retries = 2
+# look for the server on the local network (_eh3d._tcp): off. This screen has no resolver yet; the address is the one above
+server_mdns = off
+
 # the kind of machine: cnc (it has a spindle and the visual check of the board), laser or pnp (pick and place). The screen never starts a spindle on a laser or on a pick and place machine, and only a CNC machine has the page and the notices of the visual check
 machine_kind = cnc
 

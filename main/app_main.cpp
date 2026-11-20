@@ -23,6 +23,7 @@
 #include "../core/job_memory.hpp"
 #include "../core/orientation.hpp"
 #include "../core/quality.hpp"
+#include "../core/server_errors.hpp"
 #include "../core/sdfiles.hpp"
 #include "../core/stage_notice.hpp"
 #include "../core/stop_latch.hpp"
@@ -54,6 +55,7 @@ struct ServerJob {
 };
 
 static hmi::FleetView g_fleet;
+static std::vector<hmi::WorkMachine> g_work;  // the machines of the plugins, read now and then by the task of the link (only that task touches it)
 static bool g_fleet_new = false;
 static bool g_server_ok = false;
 static hmi::LinkTracker g_link;                    // the state of the link and the age of the data (guarded by g_lock)
@@ -207,7 +209,7 @@ static void link_update(hmi::Answer answer, bool machine_found, const hmi::Respo
     g_answer_said = answer;
     xSemaphoreGive(g_lock);
     if (changed && now != hmi::Link::Connected) set_note(hmi::link_note(now, g_settings, g_settings.language));
-    else if (refused) set_note(hmi::error_line(r));
+    else if (refused) set_note(hmi::error_note(r, g_settings.language));
 }
 
 // A request of the quality check: the ring of LEDs, a check, a preset of the profile, the calibration of the scale, or the last check. Everything goes through the server of
@@ -256,7 +258,7 @@ static void quality_job(const ServerJob& job) {
         if (job.what == ServerJob::Do::Preset || job.what == ServerJob::Do::Calibrate) g_note = hmi::note_text(hmi::ScreenNote::Ok, g_settings.language);
         g_quality_new = true;
     } else if (job.what != ServerJob::Do::Last) {
-        g_note = hmi::error_line(r);  // the screen that has never been checked has no last check: that is not an error to show
+        g_note = hmi::error_note(r, g_settings.language);  // the screen that has never been checked has no last check: that is not an error to show
     }
     xSemaphoreGive(g_lock);
     if (say_ok) say(hmi::Cue::CheckOk);
@@ -288,12 +290,12 @@ static void stop_task(void*) {
             hmi::Response r;
             hmi::CallError error = hmi::CallError::None;
             bool reached = false;
-            for (int attempt = 0; attempt < 3 && !reached; ++attempt) reached = srvlink::call(g_settings, req, r, error, 1500);
+            for (int attempt = 0; attempt < 3 && !reached; ++attempt) reached = srvlink::call(g_settings, req, r, error, 1500, 0);  // the stop has its own tries
             if (!reached) {
                 delivered = false;
                 note(hmi::ScreenNote::StopFail, said(error));
             } else if (r.status != 200 && r.status != 202 && r.status != 409) {
-                note(hmi::ScreenNote::StopRefused, hmi::error_line(r));  // 409: the job was no longer running
+                note(hmi::ScreenNote::StopRefused, hmi::error_note(r, g_settings.language));  // 409: the job was no longer running
             } else {
                 note(hmi::ScreenNote::StopSent);
             }
@@ -332,6 +334,7 @@ static void run_action(const hmi::Action& go) {
 static void link_task(void*) {
     TickType_t next_poll = 0;
     unsigned polls = 0;
+    unsigned work_round = 0;
     for (;;) {
         ServerJob job;
         const bool asked = xQueueReceive(g_to_server, &job, pdMS_TO_TICKS(200)) == pdTRUE;
@@ -378,7 +381,7 @@ static void link_task(void*) {
                     xQueueSend(g_to_server, &again, 0);
                     note(hmi::ScreenNote::OldServer);
                 } else {
-                    if (step == hmi::ResumeStep::Made) note(hmi::ScreenNote::GoingOn); else set_note(hmi::reason_text(why, g_settings.language));
+                    if (step == hmi::ResumeStep::Made) note(hmi::ScreenNote::GoingOn); else set_note(hmi::reason_note(why, g_settings.language));
                 }
             } else {
                 std::string why;
@@ -404,7 +407,7 @@ static void link_task(void*) {
                 } else if (ok) {
                     note(hmi::ScreenNote::Ok);
                 } else {
-                    set_note(hmi::reason_text(why, g_settings.language));
+                    set_note(hmi::reason_note(why, g_settings.language));
                 }
                 if (ok && job.what == ServerJob::Do::Create) {
                     // the answer of the server is kept on the card, without replacing an older report
@@ -423,13 +426,26 @@ static void link_task(void*) {
             // After a start or a loss of the link the first request is the health check (open to anyone, no token goes with it): it tells "nobody answers" from "something answers that is not
             // an EH3D server" before the fleet is asked for. A server that answers it (well or degraded) goes on to the fleet as before.
             hmi::Health health = hmi::Health::Ok;
-            if (g_link_said != hmi::Link::Connected) health = hmi::classify_health(srvlink::call(g_settings, hmi::health_request(), fr, error), fr);
+            if (g_link_said != hmi::Link::Connected) health = hmi::classify_health(srvlink::call(g_settings, hmi::health_request(), fr, error, 0, 0), fr);
             srvlink::set_verdict(health);   // after nobody or something that is not an EH3D server, nothing with the token or a body is sent to the address (the stop still is)
             if (health == hmi::Health::Degraded) set_note(hmi::text(hmi::T::SrvDegraded, g_settings.language));   // it answers and says it is not well: the operator is told, and the fleet is asked for all the same
+            // the login: with a name and a password in the settings the screen logs in as the application hmi and renews the login; only to a server that answered the health check
+            if (health == hmi::Health::Ok || health == hmi::Health::Degraded) {
+                const std::string login_issue = srvlink::keep_login(g_settings, board::now_ms());
+                if (!login_issue.empty()) set_note(login_issue);
+            }
             const bool reached = health == hmi::Health::Silent ? false : health == hmi::Health::NotEh3d ? true : srvlink::call(g_settings, hmi::fleet_request(), fr, error);
             const bool parsed = reached && health != hmi::Health::NotEh3d && fr.status == 200 && hmi::parse_fleet(fr.body, view);
             link_update(hmi::classify_fleet(reached, fr, parsed), !parsed || hmi::fleet_has_machine(view, g_settings.server_machine), fr);
             if (parsed) {
+                // the machines of the plugins (a laser, a printer...) with their detail: asked at the first reading and then every fifth; a server that does not give them (403, 404) shows none
+                if ((work_round++ % 5) == 0) {
+                    hmi::Response wr;
+                    std::vector<hmi::WorkMachine> found;
+                    if (srvlink::call(g_settings, hmi::work_machines_request(), wr, error, 0, 0) && wr.status == 200 && hmi::parse_work_machines(wr.body, found)) g_work = found;
+                    else g_work.clear();
+                }
+                view.work = g_work;
                 xSemaphoreTake(g_lock, portMAX_DELAY);
                 g_fleet = view;
                 g_fleet_new = true;

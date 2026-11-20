@@ -39,6 +39,11 @@ struct Settings {
     std::uint16_t server_port = 18200;      // 1..65535
     std::string server_machine;             // the machine of the server this screen controls
     std::string token;                      // write-only: never shown, never logged
+    std::string server_user;                // the name to log in with (application `hmi`); empty: the screen uses the `token` and never logs in
+    std::string server_password;            // write-only: never shown, never logged; the login needs both the name and the password
+    std::uint32_t server_timeout_s = 15;    // how long one try of a request may take, 1..120
+    std::uint32_t server_retries = 2;       // how many more tries after a failure on the network (a POST is never sent twice after a time-out), 0..5
+    bool server_mdns = false;               // look for the server on the local network: off; this screen has no resolver yet, so on only keeps the switch (see the documentation)
     std::uint32_t poll_s = 3;               // how often the screen asks the server for the fleet, 1..60
     std::uint32_t table_width_mm = 0;       // the table of the machine, for the warning of a board that does not fit: 0 = the one the server says, 0..5000
     std::uint32_t table_depth_mm = 0;       // (the course of the machine less the offset); both are used only when the server does not say it
@@ -213,6 +218,16 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (num(1, 65535)) s.server_port = static_cast<std::uint16_t>(n);
         } else if (key == "server_machine") {
             s.server_machine = val;
+        } else if (key == "server_user") {
+            if (val.size() <= 64) s.server_user = val; else bad("up to 64 characters", CfgReason::Range);
+        } else if (key == "server_password") {
+            if (val.size() <= 128) s.server_password = val; else bad("up to 128 characters", CfgReason::Range);
+        } else if (key == "server_timeout_s") {
+            if (num(1, 120)) s.server_timeout_s = n;
+        } else if (key == "server_retries") {
+            if (num(0, 5)) s.server_retries = n;
+        } else if (key == "server_mdns") {
+            if (flag()) s.server_mdns = b;
         } else if (key == "token") {
             if (val.empty() || (val.size() >= 8 && val.size() <= 64)) s.token = val; else bad("8 to 64 characters", CfgReason::Token);
         } else if (key == "confirm_moves") {

@@ -606,6 +606,14 @@ void show_fleet(const hmi::FleetView& fleet, const hmi::Settings& s, bool stale)
         lv_obj_t* b = lv_list_add_button(g_fleet_list, nullptr, row);
         if (stale) lv_obj_set_style_text_color(b, kOld, 0);  // an old value is never drawn like a current one
     }
+    // the machines of the plugins, with what their detail says; one that is latched or in alarm is red (the words are the server's own)
+    for (const auto& w : fleet.work) {
+        char row[240];
+        std::snprintf(row, sizeof row, "%s[%s] %s   %s   %s%s", w.attention ? LV_SYMBOL_WARNING " " : "", w.plugin.c_str(), w.name.c_str(), w.state.c_str(), w.detail.c_str(), old.c_str());
+        lv_obj_t* b = lv_list_add_button(g_fleet_list, nullptr, row);
+        if (w.attention) lv_obj_set_style_text_color(b, kBad, 0);
+        else if (stale) lv_obj_set_style_text_color(b, kOld, 0);
+    }
 }
 
 void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, const hmi::JobAdvice& advice, const hmi::Settings& s) {

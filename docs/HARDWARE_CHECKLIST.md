@@ -27,3 +27,9 @@ A value in `hmi.cfg` must stand alone on its line: a `#` comment after a value i
 | 8 | Leave the screen idle | It dims after `idle_dim_s` and wakes on touch | |
 | 9 | Turn the unit to portrait | The layout follows (with `orientation = auto`) | |
 | 10 | Set `machine_kind = laser` (or `pnp`) and restart | The spindle button and the visual check of the board disappear; the screen never starts a spindle | |
+| 11 | Set `server_user` and `server_password` of a real login (and no `token`), restart | The screen logs in as the application `hmi` (the server's audit shows `login` with app `hmi`) and the fleet is read with that login | |
+| 12 | Wait until the login is in the last quarter of its life (set a short `session_hours` on the server for the test) | The server's audit shows `session_refresh`; the screen stays connected without a new login | |
+| 13 | End the login from the server (`POST /auth/logout` with that token, or close it from another client) | The next request is refused with 401, the screen forgets the token and logs in again on its own | |
+| 14 | Give a wrong password | The screen says the refusal in its language (the text of `bad_credentials`); the next try waits 30 s, then 60 s | |
+| 15 | Set `server_timeout_s = 1`, then switch the server off | The screen reports no answer within about a second per try, with `server_retries` more tries; a job request is never sent twice | |
+| 16 | Make a machine of a plugin (for example a demo or a laser) on the server and latch it | The fleet page shows it with its detail, in red with the warning mark | |

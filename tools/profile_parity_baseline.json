@@ -1,0 +1,35 @@
+{
+  "_comment": "Known differences between EH3D-NODE-HMI-GUI (the generic screen) and EH3D-NODE-BUNGARD-HMI (the same screen for one machine); see docs/PROFILES.md. Take a line out when the difference is closed.",
+  "different": [
+    "core/hmi_config.hpp",
+    "core/keyboard.hpp",
+    "core/server_link.hpp",
+    "main/server_link.cpp",
+    "main/server_link.hpp",
+    "tests/test_hmi.cpp",
+    "tests/test_keyboard.cpp",
+    "tests/test_more.cpp",
+    "tests/test_status.cpp",
+    "tools/make_locales.py"
+  ],
+  "only_generic": [
+    "core/server_errors.hpp",
+    "core/server_errors_gen.hpp",
+    "core/session.hpp",
+    "tests/test_machine.cpp",
+    "tests/test_rack.cpp",
+    "tests/test_session.cpp"
+  ],
+  "only_bungard": [
+    "core/job_card.hpp",
+    "core/jog_panel.hpp",
+    "tests/test_parity.cpp"
+  ],
+  "settings_not_yet_in_bungard": [
+    "server_user",
+    "server_password",
+    "server_timeout_s",
+    "server_retries",
+    "server_mdns"
+  ]
+}

@@ -251,6 +251,7 @@ EH3D-NODE-HMI-GUI/
 │   └── idf_component.yml Kconfig.projbuild           コンポーネント一覧と menuconfig のピン
 ├── tests/                                            設定、関門、音声、画面文言のホストテスト
 ├── locales/                                          残り 29 言語の文言（1 言語につき 1 ファイル）
+├── profiles/                                         Bungard など他の画面の設定プロファイル
 ├── docs/                                             ハードウェアのメモと 2 つの図のソース
 ├── tools/                                            CI チェック、README チェック、図のツール
 ├── CMakeLists.txt                                    ESP-IDF プロジェクト

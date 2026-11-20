@@ -251,6 +251,7 @@ EH3D-NODE-HMI-GUI/
 │   └── idf_component.yml Kconfig.projbuild           lista de componentes e pinos do menuconfig
 ├── tests/                                            testes no computador das definições, da comporta, da voz e dos textos de ecrã
 ├── locales/                                          os textos das outras 29 línguas, um ficheiro cada
+├── profiles/                                         perfis de definições de outros ecrãs, como o da Bungard
 ├── docs/                                             as notas de hardware e as fontes dos dois desenhos
 ├── tools/                                            verificação de CI, de README e ferramentas dos desenhos
 ├── CMakeLists.txt                                    o projeto ESP-IDF

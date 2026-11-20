@@ -427,6 +427,19 @@
           }
         },
         {
+          "name": "profiles/",
+          "desc": {
+            "en": "settings profiles of other screens, such as the Bungard one",
+            "es": "perfiles de ajustes de otras pantallas, como la de Bungard",
+            "it": "profili di impostazioni di altre schermate, come quella di Bungard",
+            "de": "Einstellungsprofile anderer Bildschirme, etwa der von Bungard",
+            "fr": "profils de réglages d'autres écrans, comme celui de Bungard",
+            "pt": "perfis de definições de outros ecrãs, como o da Bungard",
+            "zh": "其他屏幕的设置配置，例如 Bungard 的配置",
+            "ja": "Bungard など他の画面の設定プロファイル"
+          }
+        },
+        {
           "desc": {
             "en": "the hardware notes and the two pictures' sources",
             "es": "las notas de hardware y las fuentes de los dos dibujos",

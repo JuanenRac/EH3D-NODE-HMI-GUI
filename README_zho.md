@@ -251,6 +251,7 @@ EH3D-NODE-HMI-GUI/
 │   └── idf_component.yml Kconfig.projbuild           组件列表和 menuconfig 引脚
 ├── tests/                                            设置、闸门、语音和界面文本的主机测试
 ├── locales/                                          其余 29 种语言的文本，每种一个文件
+├── profiles/                                         其他屏幕的设置配置，例如 Bungard 的配置
 ├── docs/                                             硬件说明和两幅图的源文件
 ├── tools/                                            CI 检查、README 检查和绘图工具
 ├── CMakeLists.txt                                    ESP-IDF 工程

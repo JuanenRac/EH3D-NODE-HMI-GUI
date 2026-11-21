@@ -131,6 +131,12 @@ static void the_languages() {
     CHECK(std::string(lang_code(Lang::Pt)) == "pt" && std::string(lang_code(Lang::Ja)) == "ja" && std::string(lang_name(Lang::Pt)) == "Português");
     Lang none;
     CHECK(!lang_from_code("xx", none) && !lang_from_code("", none) && !lang_from_code("pt-pt", none));
+    // hostile codes are refused and leave the language that was there as it was
+    Lang keep = Lang::De;
+    CHECK(!lang_from_code(std::string("en\0", 3), keep) && !lang_from_code(std::string("\0", 1), keep) && !lang_from_code(std::string("pt-br\0x", 7), keep));
+    for (const char* code : {" en", "en ", "en\n", "EN", "Pt-Br", "PT-BR", "FR-CA", "pt_br", "fr_ca", "pt-br ", "fr-ca\n", "pt-br-x", "en,es", "<script>", "../en", "%65n", "ru-RU", "zh-CN", "ja-JP", "constructor", "__proto__"})
+        CHECK_MSG(!lang_from_code(code, keep) && keep == Lang::De, "\"%s\" is not a language of the project", code);
+    CHECK(!lang_from_code(std::string(5000, 'e'), keep) && keep == Lang::De);
     // the languages that were removed are not read, except the two codes of the former variants, which are their main languages
     for (const char* gone : {"pl", "ru", "bg", "uk", "nl", "sv", "ca", "el", "hu", "cs", "sr", "no", "is", "eu"}) CHECK_MSG(!lang_from_code(gone, none), "%s is not a language of the project", gone);
     Lang l = Lang::En;

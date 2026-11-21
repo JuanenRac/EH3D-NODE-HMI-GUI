@@ -73,6 +73,9 @@ static void settings_file() {
     p.clear();
     parse_settings("language = PL", p);
     CHECK(!p.empty());  // the codes are lower case
+    p.clear();
+    parse_settings("language = PT-BR", p);
+    CHECK(!p.empty());  // the former variants are read in lower case only, like the languages
     for (unsigned i = 0; i < kLangCount; ++i) {
         Lang l;
         CHECK(lang_from_code(lang_code(static_cast<Lang>(i)), l) && l == static_cast<Lang>(i));

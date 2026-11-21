@@ -361,7 +361,7 @@ inline Loaded load_contract(bool reached, CallError error, const Response& r) {
     return out;
 }
 
-/// The text of a field of the contract in the language of the operator: the text of the language (the fallback language for the twenty-nine and the two variants), English when that is
+/// The text of a field of the contract in the language of the operator: the text of the language (the fallback language for the two former variants), English when that is
 /// blank or cannot be drawn with the fonts of the screen, then any text there is, then `fallback` (the key).
 inline std::string contract_text(const Texts& t, Lang l, const std::string& fallback = "") {
     const std::string& wanted = t[static_cast<std::size_t>(lang_fallback(l))];

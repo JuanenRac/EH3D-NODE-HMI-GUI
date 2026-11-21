@@ -311,7 +311,7 @@ static void texts_are_complete() {
 static void screen_texts() {
     // every text exists in the eight languages, the scripts without spaces are not English, and every refusal has its sentence
     for (unsigned t = 0; t < static_cast<unsigned>(T::Count); ++t) {
-        for (std::size_t i = 0; i < kBaseLangCount; ++i) {  // the other twenty-nine languages are checked in test_locales.cpp
+        for (std::size_t i = 0; i < kBaseLangCount; ++i) {  // the eight languages of the project
             const char* s = text(static_cast<T>(t), static_cast<Lang>(i));
             CHECK(s != nullptr && std::strlen(s) > 0);
             if (i >= 6) CHECK(static_cast<unsigned char>(s[0]) >= 0xE3 || (s[0] >= 'A' && s[0] <= 'Z'));

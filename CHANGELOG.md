@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The comments and the README speak of eight languages only:** the sentences about the other twenty-nine languages in `core/ui_text.hpp`, `core/settings_text.hpp` and `core/settings_contract.hpp` are gone,. Still to do: the bitmap fonts (`main/fonts/eh3d_font_16.c`, `eh3d_font_24.c`) and `core/font_ranges.hpp` still hold the characters of the former languages; rebuilding them needs `tools/make_fonts.py` with the fonts that LVGL ships and `lv_font_conv`, which are not at hand.
 - **The screen speaks the eight languages of the project and no more:** the twenty-nine extra languages (and their files in `locales/`) are removed, `pt-br` and `fr-ca` in a settings file are still read as Portuguese of Portugal and French, `core/lang.hpp`, `core/locales*.hpp` and the shared tests come again from the firmware base, `locales/names.tsv` is the only file left in the folder and `tools/make_locales.py` checks just the names of the eight languages and the font ranges. The fonts still hold the characters of the languages removed, until they are built again with `tools/make_fonts.py`.
 
 ## [0.1.2] - The settings of the server drawn from its contract and its light view of the values in force, a login for the touch screen and the newest refusal codes in eight languages

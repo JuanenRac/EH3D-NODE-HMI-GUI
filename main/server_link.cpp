@@ -22,7 +22,7 @@ std::atomic<int> g_verdict{static_cast<int>(hmi::Health::Silent)};  // what the 
 hmi::SessionTracker g_session;                  // the login of the screen (guarded by g_session_mutex: the stop is sent from another task)
 std::mutex g_session_mutex;
 
-esp_http_method_t method_of(const std::string& m) {
+esp_http_client_method_t method_of(const std::string& m) {
     if (m == "POST") return HTTP_METHOD_POST;
     if (m == "DELETE") return HTTP_METHOD_DELETE;
     if (m == "PUT") return HTTP_METHOD_PUT;

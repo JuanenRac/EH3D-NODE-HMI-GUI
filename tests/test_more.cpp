@@ -39,7 +39,7 @@ static void every_language_has_one_code_that_reads_back() {
     CHECK(!code.empty() && seen.insert(code).second);
     for (const char c : code) CHECK((c >= 'a' && c <= 'z') || c == '-');
   }
-  CHECK(seen.size() == 37 && static_cast<std::size_t>(Lang::FrCa) + 1 == kLangCount && kBaseLangCount == 8);
+  CHECK(seen.size() == 8 && static_cast<std::size_t>(Lang::Ja) + 1 == kLangCount && kBaseLangCount == 8);
 }
 
 static void a_code_that_is_not_exact_is_not_a_language() {
@@ -50,10 +50,8 @@ static void a_code_that_is_not_exact_is_not_a_language() {
 
 static void the_variants_and_the_languages_without_a_table_fall_back_to_a_table() {
   for (std::size_t i = 0; i < kBaseLangCount; ++i) CHECK(lang_fallback(static_cast<Lang>(i)) == static_cast<Lang>(i));
-  CHECK(lang_fallback(Lang::PtBr) == Lang::Pt && lang_fallback(Lang::FrCa) == Lang::Fr);
-  for (std::size_t i = kBaseLangCount; i < kLangCount - 2; ++i) CHECK(lang_fallback(static_cast<Lang>(i)) == Lang::En);
   const Row row = {"en", "es", "it", "de", "fr", "pt", "zh", "ja"};
-  CHECK(std::string(pick(row, Lang::PtBr)) == "pt" && std::string(pick(row, Lang::FrCa)) == "fr" && std::string(pick(row, Lang::Ru)) == "en" && std::string(pick(row, Lang::Ja)) == "ja");
+  CHECK(std::string(pick(row, Lang::Pt)) == "pt" && std::string(pick(row, Lang::Fr)) == "fr" && std::string(pick(row, Lang::En)) == "en" && std::string(pick(row, Lang::Ja)) == "ja");
 }
 
 // ---- the notices -------------------------------------------------------------------------------------------------------------------------
@@ -69,7 +67,7 @@ static void a_notice_setting_reads_back_for_every_language_and_voice() {
   NoticeSetting n;
   CHECK(parse_notice("off", n) && n.kind == NoticeSetting::Kind::Off && notice_text(n) == "off");
   CHECK(parse_notice("default", n) && n.kind == NoticeSetting::Kind::Tone && notice_text(n) == "default");
-  CHECK(parse_notice("voice:pt-br:f", n) && n.lang == Lang::PtBr && n.female);
+  CHECK(parse_notice("voice:pt-br:f", n) && n.lang == Lang::Pt && n.female);
 }
 
 static void a_notice_that_is_not_written_exactly_is_refused_and_leaves_the_answer_alone() {
@@ -81,11 +79,11 @@ static void a_notice_that_is_not_written_exactly_is_refused_and_leaves_the_answe
 }
 
 static void the_file_of_a_cue_depends_on_the_voice_only() {
-  const NoticeSetting voice{NoticeSetting::Kind::Voice, Lang::PtBr, false};
-  CHECK(notice_file("/sdcard", voice, Cue::Finished) == "/sdcard/voices/pt-br/m/finished.wav");
-  CHECK(notice_file("/sdcard", voice, Cue::ToolChange) == "/sdcard/voices/pt-br/m/tool.wav");
-  CHECK(notice_file("/sdcard", voice, Cue::CheckOk) == "/sdcard/voices/pt-br/m/check_ok.wav");
-  CHECK(notice_file("/sdcard", voice, Cue::CheckNotOk) == "/sdcard/voices/pt-br/m/check_bad.wav");
+  const NoticeSetting voice{NoticeSetting::Kind::Voice, Lang::Pt, false};
+  CHECK(notice_file("/sdcard", voice, Cue::Finished) == "/sdcard/voices/pt/m/finished.wav");
+  CHECK(notice_file("/sdcard", voice, Cue::ToolChange) == "/sdcard/voices/pt/m/tool.wav");
+  CHECK(notice_file("/sdcard", voice, Cue::CheckOk) == "/sdcard/voices/pt/m/check_ok.wav");
+  CHECK(notice_file("/sdcard", voice, Cue::CheckNotOk) == "/sdcard/voices/pt/m/check_bad.wav");
   CHECK(notice_file("", NoticeSetting{NoticeSetting::Kind::Voice, Lang::En, true}, Cue::Finished) == "/voices/en/f/finished.wav");
   for (const Cue c : {Cue::Finished, Cue::ToolChange, Cue::CheckOk, Cue::CheckNotOk}) {
     CHECK(notice_file("/sdcard", NoticeSetting{}, c).empty() && notice_file("/sdcard", NoticeSetting{NoticeSetting::Kind::Tone, Lang::En, true}, c).empty());

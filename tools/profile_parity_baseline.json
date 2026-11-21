@@ -2,8 +2,7 @@
   "_comment": "Known differences between EH3D-NODE-HMI-GUI (the generic screen) and EH3D-NODE-BUNGARD-HMI (the same screen for one machine); see docs/PROFILES.md. Take a line out when the difference is closed.",
   "different": [
     "tests/test_more.cpp",
-    "tests/test_status.cpp",
-    "tools/make_locales.py"
+    "tests/test_status.cpp"
   ],
   "only_generic": [
     "tests/test_machine.cpp",

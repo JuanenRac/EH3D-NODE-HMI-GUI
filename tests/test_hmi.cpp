@@ -59,10 +59,18 @@ static void settings_file() {
     p.clear();
     Settings w = parse_settings("language = de\r\nvolume_percent = 10", p);
     CHECK(p.empty() && w.language == Lang::De && w.volume_percent == 10);
-    Settings pl = parse_settings("language = pl\nvolume_percent = 20", p);
-    CHECK(p.empty() && pl.language == Lang::Pl);
+    Settings ja = parse_settings("language = ja\nvolume_percent = 20", p);
+    CHECK(p.empty() && ja.language == Lang::Ja);
+    // the former variants are read as their main languages
     Settings br = parse_settings("language = pt-br", p);
-    CHECK(p.empty() && br.language == Lang::PtBr);
+    CHECK(p.empty() && br.language == Lang::Pt);
+    Settings ca = parse_settings("language = fr-ca", p);
+    CHECK(p.empty() && ca.language == Lang::Fr);
+    // a language the project does not have any more is refused and the language stays the default
+    p.clear();
+    Settings pl = parse_settings("language = pl", p);
+    CHECK(!p.empty() && pl.language == Settings{}.language);
+    p.clear();
     parse_settings("language = PL", p);
     CHECK(!p.empty());  // the codes are lower case
     for (unsigned i = 0; i < kLangCount; ++i) {

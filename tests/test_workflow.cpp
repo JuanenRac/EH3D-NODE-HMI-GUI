@@ -764,7 +764,7 @@ static void the_plan_the_server_made() {
     // a clean plan is only the time; an answer with no view says nothing
     CHECK(plan_text(parse_plan_view("{\"view\":{\"estimate_s\":65,\"dry_run\":{\"within_course\":true},\"warnings\":[]}}"), Lang::En) == "Estimated time 1:05");
     CHECK(!parse_plan_view("{\"id\":\"x\"}").known && plan_text(parse_plan_view("{\"id\":\"x\"}"), Lang::En).empty() && plan_text(parse_plan_view("not json"), Lang::En).empty());
-    CHECK(plan_text(p, Lang::Ja).find("推定時間") == 0 && plan_text(p, Lang::Pl).find("Szacowany czas") == 0);
+    CHECK(plan_text(p, Lang::Ja).find("推定時間") == 0 && plan_text(p, Lang::Pt).find("Tempo estimado") == 0);
 
     // the workflow keeps the plan of the job it made and forgets it with the file
     Workflow w;

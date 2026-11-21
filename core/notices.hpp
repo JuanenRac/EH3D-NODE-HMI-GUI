@@ -20,7 +20,7 @@ struct NoticeSetting {
     bool female = true;
 };
 
-/// Reads `off`, `default` or `voice:LANG:f|m` (LANG: the code of a language, `es`, `pt-br`...). False for anything else (the setting then keeps its default).
+/// Reads `off`, `default` or `voice:LANG:f|m` (LANG: the code of one of the eight languages, `es`, `pt`, `ja`...). False for anything else (the setting then keeps its default).
 inline bool parse_notice(const std::string& text, NoticeSetting& out) {
     if (text == "off") {
         out = NoticeSetting{};

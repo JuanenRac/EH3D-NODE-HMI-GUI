@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The screen speaks the eight languages of the project and no more:** the twenty-nine extra languages (and their files in `locales/`) are removed, `pt-br` and `fr-ca` in a settings file are still read as Portuguese of Portugal and French, `core/lang.hpp`, `core/locales*.hpp` and the shared tests come again from the firmware base, `locales/names.tsv` is the only file left in the folder and `tools/make_locales.py` checks just the names of the eight languages and the font ranges. The fonts still hold the characters of the languages removed, until they are built again with `tools/make_fonts.py`.
+
 ## [0.1.2] - The settings of the server drawn from its contract and its light view of the values in force, a login for the touch screen and the newest refusal codes in eight languages
 
 - **The settings of the server are shown with their values in force to a login that is not an administrator:** `core/settings_values.hpp` reads the light view (`GET /api/v1/settings/values`, any login: the `hmi` application of an operator included, a few kilobytes and never more than 16 KiB) and the page draws the values with the labels and warnings of the copy the screen carries, read only. An administrator still reads the full contract; one whose token cannot read it falls back to the light view. Until now these logins saw the copy with no value at all.

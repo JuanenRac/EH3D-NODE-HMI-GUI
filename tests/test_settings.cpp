@@ -654,8 +654,7 @@ static void the_page_of_the_copy() {
         }
     }
     CHECK(row_of(build_page(copy, cfg, Lang::Es, "", false), "listen")->label == "Dirección de escucha");
-    CHECK(row_of(build_page(copy, cfg, Lang::PtBr, "", false), "listen")->label == "Endereço de escuta");  // a variant reads its main language
-    CHECK(row_of(build_page(copy, cfg, Lang::Pl, "", false), "listen")->label == "Listen address");         // the other twenty-nine read English
+    CHECK(row_of(build_page(copy, cfg, Lang::Pt, "", false), "listen")->label == "Endereço de escuta");
 }
 
 static void the_page_of_the_live_contract() {
@@ -816,7 +815,7 @@ static void the_texts() {
     CHECK(fill("{n} and {n}", {{"n", "{n}"}}) == "{n} and {n}");  // a value that holds a hole is not filled again
     CHECK(fill("no holes", {{"x", "y"}}) == "no holes" && fill("{x}", {}) == "{x}");
     CHECK(settings_text(ST::Title, Lang::Ja) == "サーバー設定" || settings_text(ST::Title, Lang::Ja) == "Server settings");
-    CHECK(settings_text(ST::Title, Lang::Pl) == "Server settings" && settings_text(ST::Title, Lang::FrCa) == "Réglages du serveur" && settings_text(ST::Title, Lang::PtBr) == "Definições do servidor");
+    CHECK(settings_text(ST::Title, Lang::En) == "Server settings" && settings_text(ST::Title, Lang::Fr) == "Réglages du serveur" && settings_text(ST::Title, Lang::Pt) == "Definições do servidor");
     CHECK(contract_text(Texts(), Lang::En, "key") == "key");
     Texts only_ja;
     only_ja[7] = "x";

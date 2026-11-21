@@ -1,7 +1,7 @@
 // EH3D-NODE-HMI-GUI - core/server_errors.hpp
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 // What the screen says when the server refuses: the server answers `{"error": "<code>", "detail": "..."}` and the screen shows the text of the code in the language of the operator
-// (the table is core/server_errors_gen.hpp, in the eight languages of the tables; the other twenty-nine show the English one). A code the table does not have (a newer server) is shown
+// (the table is core/server_errors_gen.hpp, in the eight languages of the tables; the languages the project does not have are not offered). A code the table does not have (a newer server) is shown
 // as the code itself and its detail, so nothing is hidden. A text with a character that the fonts of the screen do not hold is not drawn (it would be boxes): the English text is
 // shown instead until the fonts are built with the characters of the table.
 #pragma once

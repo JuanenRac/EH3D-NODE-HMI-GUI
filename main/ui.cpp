@@ -10,7 +10,7 @@
 
 #include "../core/ui_text.hpp"
 
-// the fonts of the screen (tools/make_fonts.py): the characters of the thirty-seven languages, with the symbols of LVGL as fallback
+// the fonts of the screen (tools/make_fonts.py): the characters of the eight languages, with the symbols of LVGL as fallback
 extern "C" {
 LV_FONT_DECLARE(eh3d_font_16)
 LV_FONT_DECLARE(eh3d_font_24)
@@ -404,7 +404,7 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
         lv_obj_set_size(g_srv_list, LV_PCT(100), 300);
     }
 
-    // the language: the thirty-seven languages, each named in itself, in a list that scrolls; the one in use is outlined
+    // the language: the eight languages, each named in itself, in a list that scrolls; the one in use is outlined
     lv_obj_t* langs = card(set, hmi::text(T::Language, s.language));
     lv_obj_set_size(langs, LV_PCT(100), 300);
     lv_obj_set_flex_flow(langs, LV_FLEX_FLOW_ROW_WRAP);

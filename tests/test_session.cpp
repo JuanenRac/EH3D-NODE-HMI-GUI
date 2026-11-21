@@ -77,8 +77,7 @@ static void the_line_of_a_refusal() {
     CHECK(row != nullptr);
     CHECK(error_note(r, Lang::En) == row->texts[0]);
     CHECK(error_note(r, Lang::Es) == row->texts[1] && error_note(r, Lang::De) == row->texts[3] && error_note(r, Lang::Pt) == row->texts[5]);
-    CHECK(error_note(r, Lang::Pl) == row->texts[0] && error_note(r, Lang::Ru) == row->texts[0]);  // the other languages say it in English
-    CHECK(error_note(r, Lang::PtBr) == row->texts[5] && error_note(r, Lang::FrCa) == row->texts[4]);  // the variants follow their language
+    CHECK(error_note(r, Lang::En) == row->texts[0] && error_note(r, Lang::Pt) == row->texts[5] && error_note(r, Lang::Fr) == row->texts[4]);  // each of the eight says it in its own language
     // a code that is not in the table is shown as the code and its detail, so nothing is hidden
     CHECK(error_note(refusal(409, "{\"error\":\"brand_new_code\",\"detail\":\"why\"}"), Lang::Es) == "brand_new_code: why");
     CHECK(error_note(refusal(409, "{\"error\":\"brand_new_code\"}"), Lang::Es) == "brand_new_code");

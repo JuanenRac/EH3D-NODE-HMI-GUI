@@ -1,4 +1,4 @@
-// EH3D-NODE-HMI-GUI host tests: the texts of the screen in the thirty-seven languages. Every key has a text in every language (the two variants only what changes), nothing
+// EH3D-NODE-HMI-GUI host tests: the texts of the screen in the eight languages. Every key has a text in every language, nothing
 // is empty or too long for the screen, what must stay stays (the name hmi.cfg, the three dots), the script of each language is the right one, and every character that
 // any text can draw is in the range of the fonts of the screen (core/font_ranges.hpp, made by tools/make_fonts.py).
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
@@ -114,7 +114,7 @@ static void the_keys() {
         CHECK_MSG(std::string(kKeyNames[kUiKeyCount + kQualityKeyCount + i]) == std::string("f.") + table[i].code, "finding key name %zu", i);
     }
     // two keys of different tables are never mixed up: the same key, the same text as the table of its language
-    CHECK(std::string(text(T::Start, Lang::Pl)) != "" && std::string(quality_text(Q::NeedServer, Lang::Pl)).find("hmi.cfg") != std::string::npos);
+    CHECK(std::string(text(T::Start, Lang::Ja)) != "" && std::string(quality_text(Q::NeedServer, Lang::De)).find("hmi.cfg") != std::string::npos);
 }
 
 static void the_languages() {
@@ -127,10 +127,20 @@ static void the_languages() {
         Lang back;
         CHECK(lang_from_code(lang_code(l), back) && back == l);
     }
-    CHECK(codes.size() == 37 && std::string(lang_code(Lang::PtBr)) == "pt-br" && std::string(lang_code(Lang::FrCa)) == "fr-ca" && std::string(lang_code(Lang::Sr)) == "sr");
+    CHECK(kLangCount == 8 && kBaseLangCount == 8 && codes.size() == 8);
+    CHECK(std::string(lang_code(Lang::Pt)) == "pt" && std::string(lang_code(Lang::Ja)) == "ja" && std::string(lang_name(Lang::Pt)) == "Português");
     Lang none;
     CHECK(!lang_from_code("xx", none) && !lang_from_code("", none) && !lang_from_code("pt-pt", none));
-    CHECK(lang_fallback(Lang::PtBr) == Lang::Pt && lang_fallback(Lang::FrCa) == Lang::Fr && lang_fallback(Lang::Pl) == Lang::En && lang_fallback(Lang::Ja) == Lang::Ja);
+    // the languages that were removed are not read, except the two codes of the former variants, which are their main languages
+    for (const char* gone : {"pl", "ru", "bg", "uk", "nl", "sv", "ca", "el", "hu", "cs", "sr", "no", "is", "eu"}) CHECK_MSG(!lang_from_code(gone, none), "%s is not a language of the project", gone);
+    Lang l = Lang::En;
+    CHECK(lang_from_code("pt-br", l) && l == Lang::Pt);
+    CHECK(lang_from_code("fr-ca", l) && l == Lang::Fr);
+    for (std::size_t i = 0; i < kLangCount; ++i) CHECK(lang_fallback(static_cast<Lang>(i)) == static_cast<Lang>(i));
+    // no language has words in the files of `locales` any more: the eight keep their words in the tables
+    for (std::size_t i = 0; i < kLangCount; ++i)
+        for (std::size_t k = 0; k < kKeyCount; ++k) CHECK(locale_text(static_cast<Lang>(i), k) == nullptr);
+    CHECK(locale_text(static_cast<Lang>(40), 0) == nullptr && locale_text(Lang::En, kKeyCount) == nullptr);
 }
 
 static bool short_label(std::size_t key) {
@@ -145,16 +155,8 @@ static bool short_label(std::size_t key) {
 }
 
 static void every_text() {
-    for (std::size_t i = kBaseLangCount; i < kLangCount; ++i) {
+    for (std::size_t i = 0; i < kLangCount; ++i) {
         const Lang l = static_cast<Lang>(i);
-        const bool variant = (l == Lang::PtBr || l == Lang::FrCa);
-        std::size_t translated_count = 0;
-        for (std::size_t k = 0; k < kKeyCount; ++k) {
-            const char* own = locale_text(l, k);
-            if (own) ++translated_count;
-            if (!variant) CHECK_MSG(own != nullptr, "%s lacks %s", lang_code(l), kKeyNames[k]);
-        }
-        if (variant) CHECK_MSG(translated_count > 0 && translated_count < kKeyCount, "%s must hold only what changes", lang_code(l));
         for (const Entry& e : all_texts(l)) {
             std::vector<unsigned> cps;
             CHECK_MSG(e.text != nullptr && decode(e.text, cps) && !cps.empty(), "%s %s is empty or not UTF-8", lang_code(l), kKeyNames[e.key]);
@@ -171,41 +173,40 @@ static void every_text() {
             if (std::string(kKeyNames[e.key]) == "ui.JogX") CHECK_MSG(std::string(e.text).find('X') != std::string::npos, "%s JogX lost the axis", lang_code(l));
         }
     }
-    // the variants fall back to the language they vary, the others to English
-    CHECK(std::string(text(T::Pause, Lang::FrCa)) == text(T::Pause, Lang::Fr));
-    CHECK(std::string(text(T::Settings, Lang::FrCa)) == "Paramètres");
-    CHECK(std::string(text(T::Viewer, Lang::PtBr)) == text(T::Viewer, Lang::Pt));
-    CHECK(std::string(text(T::Settings, Lang::PtBr)) != text(T::Settings, Lang::Pt));  // Definições / Configurações
+    // a former variant is read as its main language, so it shows that language's words
+    Lang br = Lang::En, ca = Lang::En;
+    CHECK(lang_from_code("pt-br", br) && lang_from_code("fr-ca", ca));
+    CHECK(std::string(text(T::Pause, ca)) == text(T::Pause, Lang::Fr));
+    CHECK(std::string(text(T::Settings, ca)) == text(T::Settings, Lang::Fr));
+    CHECK(std::string(text(T::Viewer, br)) == text(T::Viewer, Lang::Pt));
+    CHECK(std::string(text(T::Settings, br)) == text(T::Settings, Lang::Pt));
     // the eight keep their own tables
     CHECK(std::string(text(T::Start, Lang::Es)) == "Iniciar" && std::string(text(T::Start, Lang::Ja)) == "開始" && std::string(text(T::Start, Lang::En)) == "Start");
-    CHECK(std::string(finding_text("hole_missing", Lang::De)) == "keine Bohrung" && std::string(finding_text("unknown_code", Lang::Pl)) == "unknown_code");
+    CHECK(std::string(finding_text("hole_missing", Lang::De)) == "keine Bohrung" && std::string(finding_text("unknown_code", Lang::Ja)) == "unknown_code");
 }
 
 // A text in the script of its language, not a copy of the English one.
 static void the_scripts() {
-    struct S {
-        Lang l;
-        unsigned lo, hi;
-    };
-    const S scripts[] = {{Lang::Bg, 0x400, 0x4FF}, {Lang::Ru, 0x400, 0x4FF}, {Lang::Uk, 0x400, 0x4FF}, {Lang::Sr, 0x400, 0x4FF}, {Lang::El, 0x370, 0x3FF}};
-    for (const S& s : scripts) {
-        std::size_t native = 0, letters = 0;
-        for (const Entry& e : all_texts(s.l)) {
+    for (const Lang l : {Lang::Zh, Lang::Ja}) {
+        std::size_t native = 0, total = 0;
+        for (const Entry& e : all_texts(l)) {
             std::vector<unsigned> cps;
             decode(e.text, cps);
+            ++total;
             for (unsigned cp : cps) {
-                if ((cp >= 'A' && cp <= 'Z') || (cp >= 'a' && cp <= 'z')) ++letters;
-                else if (cp >= s.lo && cp <= s.hi) ++native;
+                if (cp >= 0x3040) {
+                    ++native;
+                    break;
+                }
             }
         }
-        // the Latin letters left are the few that stay (hmi.cfg, mm, stop, the axes)
-        CHECK_MSG(native > 8 * letters, "%s is mostly not in its script (%zu native, %zu Latin)", lang_code(s.l), native, letters);
+        CHECK_MSG(native * 10 > total * 9, "%s is mostly not in its script (%zu of %zu texts)", lang_code(l), native, total);
     }
     // the others write Latin with their own letters
     const struct {
         Lang l;
         const char* letter;
-    } marks[] = {{Lang::Pl, "ł"}, {Lang::Cs, "ř"}, {Lang::Hu, "ő"}, {Lang::Ro, "ă"}, {Lang::Mt, "ħ"}, {Lang::Lv, "ā"}, {Lang::Lt, "ė"}, {Lang::Is, "ð"}};
+    } marks[] = {{Lang::Es, "ñ"}, {Lang::De, "ü"}, {Lang::Fr, "é"}, {Lang::Pt, "ç"}, {Lang::It, "à"}};
     for (const auto& m : marks) {
         bool found = false;
         for (const Entry& e : all_texts(m.l)) found = found || std::string(e.text).find(m.letter) != std::string::npos;
@@ -238,7 +239,7 @@ static void the_font() {
     }
     CHECK(lost == 0);
     CHECK(used.size() > 300);  // the languages really use many characters, so the range is not trivial
-    CHECK(kFontRangeCount > 20 && in_font('A') && in_font(0x4E2D) && in_font(0x3042) && in_font(0x411) && in_font(0x3B1) && in_font(0x142));
+    CHECK(kFontRangeCount > 20 && in_font('A') && in_font(0x4E2D) && in_font(0x3042));
     CHECK(!in_font(0x0627) && !in_font(0x0E01));  // Arabic and Thai are not offered
     unsigned previous_end = 0;
     for (std::size_t i = 0; i < kFontRangeCount; ++i) {  // the ranges are sorted and apart

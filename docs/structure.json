@@ -191,14 +191,14 @@
           "name": "locales.hpp  locales_gen.hpp  font_ranges.hpp",
           "tree_name": "locales.hpp locales_gen.hpp font_ranges.hpp",
           "desc": {
-            "en": "37 languages and the font ranges",
-            "es": "37 idiomas y rangos de fuente",
-            "it": "37 lingue e intervalli dei font",
-            "de": "37 Sprachen, Schriftbereiche",
-            "fr": "37 langues et plages de polices",
-            "pt": "37 idiomas e intervalos de letra",
-            "zh": "37 种语言与字体范围",
-            "ja": "37 言語とフォント範囲"
+            "en": "the eight languages and the font ranges",
+            "es": "los ocho idiomas y rangos de fuente",
+            "it": "le otto lingue e intervalli dei font",
+            "de": "die acht Sprachen, Schriftbereiche",
+            "fr": "les huit langues et plages de polices",
+            "pt": "os oito idiomas e intervalos de letra",
+            "zh": "8 种语言与字体范围",
+            "ja": "8 言語とフォント範囲"
           }
         },
         {
@@ -391,14 +391,14 @@
           "name": "test_locales.cpp",
           "tree_name": "test_locales.cpp",
           "desc": {
-            "en": "the 37 languages and the fonts",
-            "es": "los 37 idiomas y las fuentes",
-            "it": "le 37 lingue e i font",
-            "de": "die 37 Sprachen und die Schriften",
-            "fr": "les 37 langues et les polices",
-            "pt": "os 37 idiomas e os tipos de letra",
-            "zh": "37 种语言与字体",
-            "ja": "37 言語とフォント"
+            "en": "the eight languages and the fonts",
+            "es": "los ocho idiomas y las fuentes",
+            "it": "le otto lingue e i font",
+            "de": "die acht Sprachen und die Schriften",
+            "fr": "les huit langues et les polices",
+            "pt": "os oito idiomas e os tipos de letra",
+            "zh": "8 种语言与字体",
+            "ja": "8 言語とフォント"
           }
         },
         {
@@ -458,14 +458,14 @@
         {
           "name": "locales/",
           "desc": {
-            "en": "the texts of the 29 other languages, one file each",
-            "es": "los textos de los otros 29 idiomas, un fichero cada uno",
-            "it": "i testi delle altre 29 lingue, un file ciascuna",
-            "de": "die Texte der übrigen 29 Sprachen, je eine Datei",
-            "fr": "les textes des 29 autres langues, un fichier chacune",
-            "pt": "os textos das outras 29 línguas, um ficheiro cada",
-            "zh": "其余 29 种语言的文本，每种一个文件",
-            "ja": "残り 29 言語の文言（1 言語につき 1 ファイル）"
+            "en": "the names of the eight languages",
+            "es": "los nombres de los ocho idiomas",
+            "it": "i nomi delle otto lingue",
+            "de": "die Namen der acht Sprachen",
+            "fr": "les noms des huit langues",
+            "pt": "os nomes das oito línguas",
+            "zh": "8 种语言的名称",
+            "ja": "8 言語の名称"
           }
         },
         {

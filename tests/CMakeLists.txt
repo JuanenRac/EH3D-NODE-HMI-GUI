@@ -1,4 +1,4 @@
-# EH3D-NODE-HMI-GUI host tests: the settings file, the gate between the operator and the machine, the kind of machine, the voice, the quality check and the texts of the 37 languages, built with any C++17
+# EH3D-NODE-HMI-GUI host tests: the settings file, the gate between the operator and the machine, the kind of machine, the voice, the quality check and the texts of the eight languages, built with any C++17
 # compiler: cmake -S tests -B build/host && cmake --build build/host && ctest --test-dir build/host -C Debug
 # Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 cmake_minimum_required(VERSION 3.16)
@@ -21,7 +21,7 @@ add_executable(test_status test_status.cpp)
 add_executable(test_more test_more.cpp)
 add_executable(test_machine test_machine.cpp)
 add_executable(test_rack test_rack.cpp)
-
+
 add_executable(test_sim test_sim.cpp)
 add_executable(test_session test_session.cpp)
 add_executable(test_settings test_settings.cpp)

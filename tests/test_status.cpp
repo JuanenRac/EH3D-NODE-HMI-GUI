@@ -35,7 +35,7 @@ static void errors_of_the_settings_file() {
     CHECK(has(en, "hmi.cfg") && has(en, "line 2") && has(en, "(volume_percent)") && has(en, "out of range") && has(en, "+5 more"));
     const std::string es = cfg_report(p, Lang::Es);
     CHECK(has(es, "hmi.cfg") && has(es, "línea 2") && has(es, "fuera de rango") && !has(es, "out of range"));
-    CHECK(has(cfg_report(p, Lang::Ja), "行") && has(cfg_report(p, Lang::Ru), "строка"));
+    CHECK(has(cfg_report(p, Lang::Ja), "行") && has(cfg_report(p, Lang::De), "Zeile"));
     // a line with no key shows no key; no problem shows nothing
     std::vector<Problem> one;
     parse_settings("nothing here\n", one);
@@ -126,7 +126,7 @@ static void the_link() {
     Settings none;
     CHECK(has(link_note(Link::Lost, none, Lang::En), "server_host") && has(link_note(Link::Lost, none, Lang::En), "hmi.cfg"));
     CHECK(call_error_text(CallError::None, s, Lang::En).empty() && has(call_error_text(CallError::NoServer, s, Lang::Es), "server_host"));
-    for (CallError e : {CallError::Client, CallError::TooLong, CallError::Broke, CallError::Send, CallError::NoAnswer}) CHECK(!call_error_text(e, s, Lang::Pl).empty());
+    for (CallError e : {CallError::Client, CallError::TooLong, CallError::Broke, CallError::Send, CallError::NoAnswer}) CHECK(!call_error_text(e, s, Lang::De).empty());
 }
 
 static void the_notes() {

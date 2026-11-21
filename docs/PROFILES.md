@@ -16,7 +16,7 @@ Bungard screen, and every key of the profile must be one that the generic screen
 ## What is shared today
 
 The files of the core (`core/`), the host tests of the core (`tests/`), the sockets of the link to the server (`main/server_link.*`), the board (`main/board*`), the image confirmation,
-the `sdkconfig` files, the login of the application `hmi`, the table of refusals by code and the page of the settings of the server (`core/settings_*.hpp`, `docs/SETTINGS_CONTRACT.md`) and the texts of the 37 languages (`locales/`) are the same text in both repositories once the names of the projects are made equal. The firmware base of
+the `sdkconfig` files, the login of the application `hmi`, the table of refusals by code and the page of the settings of the server (`core/settings_*.hpp`, `docs/SETTINGS_CONTRACT.md`) and the texts of the eight languages (`locales/names.tsv`) are the same text in both repositories once the names of the projects are made equal. The firmware base of
 EH3D-COMMON copies them. `tools/check_profile_parity.py` compares them and fails on a difference that `tools/profile_parity_baseline.json` does not list, and on a listed difference
 that has been closed.
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Builds the fonts of the screen (main/fonts/eh3d_font_16.c and eh3d_font_24.c) and core/font_ranges.hpp.
 
-The fonts hold only the characters the screen can draw (see used_chars() in make_locales.py), so they stay small although the screen speaks thirty-seven languages:
-Latin, Latin Extended and Cyrillic come from Montserrat (the font of LVGL), Greek and what Montserrat lacks from DejaVu Sans, and Chinese and Japanese from Source Han Sans.
+The fonts hold only the characters the screen can draw (see used_chars() in make_locales.py), so they stay small although the screen speaks eight languages:
+Latin and Latin Extended come from Montserrat (the font of LVGL), Greek and what Montserrat lacks from DejaVu Sans, and Chinese and Japanese from Source Han Sans.
 The three fonts are the ones LVGL ships in scripts/built_in_font (they are in the folder managed_components after a first build; the variable EH3D_FONT_DIR can point to any other
 folder with the same three files). The symbols of LVGL (arrows, play, pause...) stay in the built-in Montserrat, which each font names as its fallback.
 Needs node with lv_font_conv (the variable LV_FONT_CONV names its program; else `npx lv_font_conv`) and the Python package fontTools.

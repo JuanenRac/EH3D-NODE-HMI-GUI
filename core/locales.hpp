@@ -1,8 +1,7 @@
 // EH3D-NODE-HMI-GUI - core/locales.hpp
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
-// The texts of the screen in the twenty-nine languages that are not in the tables of eight. Every text of the screen has a key (the names below, in the order of the enums T of
-// ui_text.hpp and Q of quality.hpp, then the words of the findings of the analyser); the files of the folder `locales` give one text per key and language and
-// tools/make_locales.py compiles them into locales_gen.hpp. A key that a file lacks is shown in English (see lang.hpp).
+// The names of the texts of the screen and of the languages. The eight languages of the project have their texts in the tables of ui_text.hpp and quality.hpp, so no language reads a file of the folder `locales` any more. Every text of the screen has a key (the names below, in the order of the enums T of
+// ui_text.hpp and Q of quality.hpp, then the words of the findings of the analyser); locales_gen.hpp holds the name of every language in itself (the selector of the settings).
 #pragma once
 
 #include <cstddef>
@@ -35,17 +34,13 @@ inline constexpr const char* const kKeyNames[kKeyCount] = {
 
 namespace hmi {
 
-/// The text of a key in a language of the twenty-nine; null for the eight of the tables and for a key that the file of the language lacks.
-inline const char* locale_text(Lang l, std::size_t key) {
-    const std::size_t i = static_cast<std::size_t>(l);
-    if (i < kBaseLangCount || i >= kLangCount || key >= kKeyCount) return nullptr;
-    return gen::kColumns[i - kBaseLangCount][key];
-}
+/// The text of a key in a language that is read from a file: null for every language of the project (the eight have their texts in the tables) and for a key that does not exist.
+inline const char* locale_text(Lang, std::size_t) { return nullptr; }
 
-/// The name of a language in itself, for the selector of the settings (English, Español, ... Polski, Српски).
+/// The name of a language in itself, for the selector of the settings (English, Español, ... 日本語).
 inline const char* lang_name(Lang l) { return gen::kLangNames[static_cast<std::size_t>(l)]; }
 
-/// A text of the screen: the one of the file of the language when it has it, else the one of the table of eight for the language it falls back to.
+/// A text of the screen: the one of the table of eight for the language (it falls back to itself).
 inline const char* translated(Lang l, std::size_t key, const Row& row) {
     if (const char* s = locale_text(l, key)) return s;
     return pick(row, l);

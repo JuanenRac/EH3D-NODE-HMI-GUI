@@ -498,17 +498,26 @@ static void link_task(void*) {
                 }
                 // the settings of the server: its contract is read now and then (one answer of some 250 KB, so rarely); a server that refuses it (the login is not an administrator) leaves the copy
                 // of the screen, read only. Nothing is ever written from here.
+                // A login that is not an administrator reads the light view instead (GET /api/v1/settings/values, a few KB, any login) with the ETag of the last answer: a 304 changes nothing on
+                // the page. Its values are in force, its texts are the copy of the screen; the hash of the contract of the server is compared with the copy's.
                 if (g_poller.due(g_settings.settings_contract, board::now_ms())) {
-                    hmi::Response cr;
-                    const bool got = srvlink::call(g_settings, hmi::contract_request(), cr, error, 0, 0);
-                    hmi::Loaded loaded = hmi::load_contract(got, error, cr);
-                    g_poller.done(loaded.live, g_settings.settings_poll_s, board::now_ms());
+                    static hmi::LightCache light_cache;
+                    static std::string light_role;
                     const std::string role = srvlink::role();
-                    xSemaphoreTake(g_lock, portMAX_DELAY);
-                    g_contract = std::move(loaded);
-                    g_contract_role = role;
-                    g_contract_new = true;
-                    xSemaphoreGive(g_lock);
+                    if (role != light_role) {  // another login: the answer held is not asked for by tag
+                        light_cache.clear();
+                        light_role = role;
+                    }
+                    const hmi::Fetch fetch = [](const hmi::Request& rq, hmi::Response& rs, hmi::CallError& err, hmi::Conditional& cond) { return srvlink::call(g_settings, rq, rs, err, 0, 0, cond.if_none_match, &cond.etag); };
+                    hmi::ReadResult read = hmi::read_settings(fetch, role, g_settings, light_cache);
+                    g_poller.done(read.loaded.live || read.loaded.light, hmi::read_interval_s(read.loaded, g_settings), board::now_ms());
+                    if (read.changed) {
+                        xSemaphoreTake(g_lock, portMAX_DELAY);
+                        g_contract = std::move(read.loaded);
+                        g_contract_role = role;
+                        g_contract_new = true;
+                        xSemaphoreGive(g_lock);
+                    }
                 }
             } else {
                 xSemaphoreTake(g_lock, portMAX_DELAY);

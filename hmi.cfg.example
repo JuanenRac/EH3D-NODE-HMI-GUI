@@ -64,6 +64,11 @@ stop_retry_ms = 1000
 settings_contract = on
 # how often the contract is read again, 30..86400 seconds
 settings_poll_s = 600
+# a login that is not an administrator reads the light view of the values in force instead (GET /api/v1/settings/values: any login, a few KB and never more than 16 KiB). The screen sends the ETag of the last answer back
+# and a 304 changes nothing on the page; the texts are those of the copy the screen carries, and the page warns when the contract hash of the server is not the hash of that copy. Reading changes nothing
+settings_values = on
+# how often the light view is asked for, 5..3600 seconds
+settings_values_poll_s = 30
 # SAFETY: this screen may change a setting of the server. It also needs a login as an administrator (server_user) and the key in the list below; a spoken order never changes one. Off
 settings_write = off
 # SAFETY: the keys of the security page this screen may change, like slice_enabled, design_run (up to 32); empty = none. The other keys are set in server.cfg and never written from the screen

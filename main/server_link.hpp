@@ -12,7 +12,9 @@ namespace srvlink {
 /// `timeout_ms` is how long it waits for the server in each try (0: `server_timeout_s` of the settings; the stop uses a short time and has tries of its own). `retries` is how many more
 /// tries follow a failure (-1: `server_retries` of the settings, 0: none); a request is sent again only when that is safe (see `hmi::retry_allowed`). The token is the one of the login
 /// when there is one, else the one of the settings; a 401 makes the screen forget the login.
-bool call(const hmi::Settings& settings, const hmi::Request& request, hmi::Response& response, hmi::CallError& error, int timeout_ms = 0, int retries = -1);
+/// `if_none_match` is the ETag of the answer the screen holds for a GET (sent as `If-None-Match` when it is a tag; a `304` comes back with no body); `etag`, when not null, receives the ETag the
+/// server gave (empty when there is none or it is not a tag).
+bool call(const hmi::Settings& settings, const hmi::Request& request, hmi::Response& response, hmi::CallError& error, int timeout_ms = 0, int retries = -1, const std::string& if_none_match = "", std::string* etag = nullptr);
 
 /// Logs in (`POST /auth/login`, application `hmi`) when the settings have a name and a password and there is no login, and renews the login in the last quarter of its life. Call it from
 /// the task of the link, once per round, after the health check. Returns the sentence to show the operator when a login was refused (in their language), else empty.

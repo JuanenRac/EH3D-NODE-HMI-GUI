@@ -119,6 +119,20 @@
         },
         {
           "desc": {
+            "en": "the light view of the values",
+            "es": "la vista ligera de los valores",
+            "it": "la vista leggera dei valori",
+            "de": "die leichte Ansicht der Werte",
+            "fr": "la vue légère des valeurs",
+            "pt": "a vista leve dos valores",
+            "zh": "精简值视图（含 ETag）",
+            "ja": "値の簡易表示（ETag 付き）"
+          },
+          "name": "settings_values.hpp",
+          "tree_name": "settings_values.hpp"
+        },
+        {
+          "desc": {
             "en": "the tools of a file and the ones switched off",
             "es": "las herramientas de un archivo y las desactivadas",
             "it": "gli utensili di un file e quelli disattivati",

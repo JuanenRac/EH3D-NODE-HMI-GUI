@@ -84,6 +84,8 @@ struct Settings {
     // the settings of the server drawn from its contract (see settings_contract.hpp and settings_page.hpp); reading them changes nothing, changing one needs all of the three SAFETY lines
     bool settings_contract = true;          // read the contract of the server now and then and show its settings (read only)
     std::uint32_t settings_poll_s = 600;    // how often the contract is read again, 30..86400 seconds
+    bool settings_values = true;            // a login that is not an administrator reads the light view of the values in force (GET /api/v1/settings/values) instead of showing only the copy
+    std::uint32_t settings_values_poll_s = 30;  // how often the light view is asked for (an ETag answer is a few bytes when nothing changed), 5..3600 seconds
     bool settings_write = false;            // SAFETY: this screen may change a setting of the server (it also needs an administrator login); off
     std::string settings_write_keys;        // SAFETY: the keys of the security page this screen may change, like "slice_enabled, design_run" (up to 32); empty: none
     bool settings_block_running = true;     // SAFETY: no change of a setting of the server while a job runs or waits
@@ -359,6 +361,10 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (flag()) s.settings_contract = b;
         } else if (key == "settings_poll_s") {
             if (num(30, 86400)) s.settings_poll_s = n;
+        } else if (key == "settings_values") {
+            if (flag()) s.settings_values = b;
+        } else if (key == "settings_values_poll_s") {
+            if (num(5, 3600)) s.settings_values_poll_s = n;
         } else if (key == "settings_write") {
             if (flag()) s.settings_write = b;
         } else if (key == "settings_write_keys") {

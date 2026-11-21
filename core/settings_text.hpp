@@ -24,6 +24,7 @@ enum class ST : unsigned {
     AskChange, AskAgain, AskWeak, Saved, SavedRestart, Refused, NotSent,
     BadNumber, BadWhole, BadText, BadChoice,
     NewKeys, RackWarn, BodyWarn,
+    SourceLight, NotAvailable, HashDiffers,
     Count
 };
 
@@ -121,6 +122,15 @@ inline const Row& settings_text_row(ST t) {
         {"The file is larger than the {mb} MB the server takes in a request.", "El archivo es mayor que los {mb} MB que el servidor admite en una petición.", "Il file supera i {mb} MB che il server accetta in una richiesta.",
          "Die Datei ist größer als die {mb} MB, die der Server pro Anfrage annimmt.", "Le fichier dépasse les {mb} Mo que le serveur accepte dans une requête.", "O ficheiro é maior do que os {mb} MB que o servidor aceita num pedido.",
          "文件大于服务器单次请求接受的 {mb} MB。", "ファイルがサーバーが1回のリクエストで受け付ける {mb} MB を超えています。"},
+        {"Values in force, read from the server (light view); texts from the copy kept in the screen", "Valores en vigor, leídos del servidor (vista ligera); textos de la copia guardada en la pantalla",
+         "Valori in vigore, letti dal server (vista leggera); testi dalla copia conservata nello schermo", "Aktuelle Werte, vom Server gelesen (leichte Ansicht); Texte aus der im Bildschirm gespeicherten Kopie",
+         "Valeurs en vigueur, lues sur le serveur (vue légère) ; textes de la copie conservée dans l'écran", "Valores em vigor, lidos do servidor (vista leve); textos da cópia guardada no ecrã",
+         "当前生效的值，读自服务器（精简视图）；文本来自屏幕内保存的副本", "現在有効な値（サーバーから取得、簡易表示）；文言は画面に保存したコピーから"},
+        {"Not shown by the server", "El servidor no lo muestra", "Il server non lo mostra", "Vom Server nicht angezeigt", "Non communiqué par le serveur", "O servidor não o mostra", "服务器未提供", "サーバーは表示しません"},
+        {"The list of settings of the server is not the copy this screen carries: texts and keys may be out of date.", "La lista de ajustes del servidor no es la copia que lleva esta pantalla: los textos y las claves pueden estar desactualizados.",
+         "L'elenco delle impostazioni del server non è la copia di questo schermo: testi e chiavi potrebbero non essere aggiornati.", "Die Einstellungsliste des Servers ist nicht die Kopie dieses Bildschirms: Texte und Schlüssel können veraltet sein.",
+         "La liste des réglages du serveur n'est pas la copie de cet écran : textes et clés peuvent être périmés.", "A lista de definições do servidor não é a cópia deste ecrã: os textos e as chaves podem estar desatualizados.",
+         "服务器的设置列表与此屏幕携带的副本不一致：文本和键可能已过期。", "サーバーの設定一覧はこの画面のコピーと一致しません：文言やキーが古い可能性があります。"},
     }};
     return rows[static_cast<std::size_t>(t)];
 }

@@ -992,6 +992,440 @@ static void bent_documents() {
     CHECK(!load_contract(true, CallError::None, answer(200, std::string(400000, 'x'))).live);
 }
 
+// ---- the light view of the values in force (GET /api/v1/settings/values) ---------------------------------------------------------------------------
+
+static const char* kSampleHash = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+
+/// The answer of the light route as the server writes it for the examples of its documentation.
+static std::string light_sample(const std::string& hash = kSampleHash, const std::string& extra = "") {
+    return std::string("{\"schema\":\"eh3d.settings.values/1\",\"server_version\":\"0.2.0\",\"contract_hash\":\"") + hash + "\",\"count\":" + (extra.empty() ? "7" : "8") +
+           ",\"settings\":{\"session_hours\":{\"v\":12,\"origin\":\"file\",\"editable\":false},"
+           "\"slice_enabled\":{\"v\":true,\"origin\":\"override\",\"editable\":true},"
+           "\"password_min_len\":{\"v\":12,\"origin\":\"override\",\"editable\":true},"
+           "\"data_dir\":{\"hidden\":true,\"origin\":\"file\",\"editable\":false},"
+           "\"listen\":{\"v\":\"127.0.0.1:18200\",\"origin\":\"file\",\"editable\":false},"
+           "\"future_secret\":{\"v\":\"***\",\"secret\":true,\"editable\":false},"
+           "\"allowed_hosts\":{\"v\":[\"a.example\",\"b.example\"],\"origin\":\"file\",\"editable\":false,\"truncated\":true}" + extra + "}}";
+}
+
+static void the_light_answer() {
+    LightValues lv;
+    CHECK(parse_light(light_sample(), lv) == LightParse::Ok);
+    CHECK(lv.server_version == "0.2.0" && lv.contract_hash == kSampleHash && lv.entries.size() == 7);
+    const LightEntry& hours = lv.entries.at("session_hours");
+    CHECK(hours.has_value && hours.value == SValue::of_int(12) && !hours.overridden && !hours.editable && !hours.secret && !hours.hidden);
+    const LightEntry& slice = lv.entries.at("slice_enabled");
+    CHECK(slice.has_value && slice.value == SValue::of_bool(true) && slice.overridden && slice.editable);
+    const LightEntry& dir = lv.entries.at("data_dir");
+    CHECK(!dir.has_value && dir.hidden);
+    const LightEntry& sec = lv.entries.at("future_secret");
+    CHECK(!sec.has_value && sec.secret);
+    const LightEntry& list = lv.entries.at("allowed_hosts");
+    CHECK(list.has_value && list.value.kind == SValue::Kind::List && list.value.list.size() == 2 && list.truncated);
+    CHECK(lv.entries.at("listen").value == SValue::of_text("127.0.0.1:18200"));
+    const Loaded l = loaded_from_light(lv);
+    CHECK(l.light && !l.live && l.has_values() && l.contract.settings.size() == 89 && l.values.size() == 5);
+    CHECK(l.hidden.count("data_dir") == 1 && l.secret_keys.count("future_secret") == 1 && l.truncated.count("allowed_hosts") == 1 && l.overridden.count("slice_enabled") == 1);
+    CHECK(l.values.count("data_dir") == 0 && l.values.count("future_secret") == 0);
+    CHECK(l.hash == HashState::Differs && l.server_hash == kSampleHash && l.server_version == "0.2.0");
+    // the answer of the server with the hash of the copy is the same document
+    CHECK(compare_hash(kContractCopyHash) == HashState::Same && std::string(kContractCopyHash).size() == 64 && is_sha256_hex(kContractCopyHash));
+    CHECK(compare_hash("") == HashState::Unknown && compare_hash("xyz") == HashState::Unknown && compare_hash(std::string(64, 'G')) == HashState::Unknown);
+    CHECK(compare_hash(std::string(64, 'A')) == HashState::Unknown);  // the server writes lower case
+    CHECK(compare_hash(kSampleHash) == HashState::Differs);
+}
+
+static void the_page_of_the_light_view() {
+    LightValues lv;
+    CHECK(parse_light(light_sample(kContractCopyHash), lv) == LightParse::Ok);
+    const Loaded l = loaded_from_light(lv);
+    Settings cfg;
+    cfg.settings_write = true;
+    cfg.settings_write_keys = "slice_enabled";
+    const PageView p = build_page(l, cfg, Lang::En, "operator", false);
+    CHECK(!p.live && p.source == "Values in force, read from the server (light view); texts from the copy kept in the screen (0.2.0)" && p.why.empty());
+    CHECK(p.row_count == 91 && p.editable_count == 0);  // 89 of the copy and two keys it does not know; the light view never opens a write
+    CHECK(p.warnings.size() == 1 && p.warnings[0] == "2 settings of the server are not in the copy of the screen; they are shown read only.");  // the same contract hash: no word about it
+    const RowView* hours = row_of(p, "session_hours");
+    CHECK(hours != nullptr && hours->value == "12 h" && !hours->editable && !hours->not_default);
+    const RowView* slice = row_of(p, "slice_enabled");
+    CHECK(slice != nullptr && slice->value == "On" && slice->not_default && slice->overridden && !slice->editable && slice->why == ReadOnlyWhy::Copy);
+    CHECK(row_of(p, "data_dir")->value == "Not shown by the server" && row_of(p, "listen")->value == "127.0.0.1:18200");
+    CHECK(row_of(p, "future_secret") != nullptr && row_of(p, "future_secret")->value == "Hidden" && row_of(p, "future_secret")->label == "future_secret");
+    CHECK(row_of(p, "allowed_hosts")->value == "a.example, b.example..." && row_of(p, "allowed_hosts")->label == "allowed_hosts");
+    CHECK(row_of(p, "rack_max_slots")->value == "-");  // the answer had no value for it
+    // the same answer for an administrator whose full contract could not be read: still read only
+    CHECK(build_page(l, cfg, Lang::En, "admin", false).editable_count == 0);
+    // another contract hash: one line says the copy of the screen is out of date, in every language
+    LightValues other;
+    CHECK(parse_light(light_sample(), other) == LightParse::Ok);
+    const Loaded od = loaded_from_light(other);
+    for (std::size_t i = 0; i < kLangCount; ++i) {
+        const PageView q = build_page(od, cfg, static_cast<Lang>(i), "", false);
+        CHECK(!q.warnings.empty() && q.warnings[0] == settings_text(ST::HashDiffers, static_cast<Lang>(i)) && text_in_font(q.warnings[0].c_str()));
+    }
+    CHECK(build_page(od, cfg, Lang::En, "", false).warnings[0] == "The list of settings of the server is not the copy this screen carries: texts and keys may be out of date.");
+    CHECK(build_page(od, cfg, Lang::Pt, "", false).warnings[0].find("definições") != std::string::npos);
+    // the keys the copy does not know (a newer server) are counted and drawn read only, hidden and secret ones included
+    LightValues newer;
+    CHECK(parse_light(light_sample(kContractCopyHash, ",\"brand_new\":{\"v\":5,\"origin\":\"file\",\"editable\":false}"), newer) == LightParse::Ok);
+    const PageView n = build_page(loaded_from_light(newer), cfg, Lang::En, "", false);
+    CHECK(n.warnings.size() == 1 && n.warnings[0].find("3 settings of the server are not in the copy") == 0);  // future_secret, allowed_hosts and brand_new are unknown to the copy
+    CHECK(row_of(n, "brand_new") != nullptr && row_of(n, "brand_new")->value == "5" && !row_of(n, "brand_new")->editable);
+    // an unknown hash says nothing
+    LightValues nohash;
+    CHECK(parse_light(light_sample(""), nohash) == LightParse::Ok && nohash.contract_hash.empty() && loaded_from_light(nohash).hash == HashState::Unknown);
+    // the full contract also tells its hash
+    Contract c = small_contract({make("flag")});
+    const Loaded same = load_contract(true, CallError::None, answer(200, contract_json(c, kContractSchema, std::string("\"server_version\":\"1\",\"contract_hash\":\"") + kContractCopyHash + "\",\"values\":{\"flag\":true}")));
+    CHECK(same.live && same.hash == HashState::Same && same.server_hash == kContractCopyHash);
+    const Loaded diff = load_contract(true, CallError::None, answer(200, contract_json(c, kContractSchema, std::string("\"contract_hash\":\"") + kSampleHash + "\",\"values\":{\"flag\":true}")));
+    CHECK(diff.live && diff.hash == HashState::Differs && build_page(diff, cfg, Lang::En, "admin", false).warnings.size() >= 1);
+    const Loaded bad = load_contract(true, CallError::None, answer(200, contract_json(c, kContractSchema, "\"contract_hash\":\"not-a-hash\",\"values\":{\"flag\":true}")));
+    CHECK(bad.live && bad.hash == HashState::Unknown && bad.server_hash.empty());
+    CHECK(load_contract(true, CallError::None, answer(200, contract_json(c, kContractSchema))).hash == HashState::Unknown);
+}
+
+/// A server that answers like EH3D-SERVER does for the contract and for the light view, and counts what it was asked.
+struct LightServer {
+    std::string role;                 // who is logged in (the contract is for an administrator)
+    bool admin_scope = true;          // an administrator token with admin:policy
+    bool down = false;                // no answer at all
+    bool broke = false;               // an answer that does not fit
+    bool give_etag = true;
+    std::map<std::string, std::string> values;  // key -> JSON of its value
+    int version = 1;                  // a change of any value makes a new tag
+    int full_calls = 0, light_calls = 0, not_modified = 0, light_with_tag = 0;
+    std::string last_tag;
+
+    std::string body() const {
+        std::string o = std::string("{\"schema\":\"eh3d.settings.values/1\",\"server_version\":\"0.2.0\",\"contract_hash\":\"") + kContractCopyHash + "\",\"count\":" + std::to_string(values.size()) + ",\"settings\":{";
+        bool first = true;
+        for (const auto& kv : values) {
+            o += std::string(first ? "" : ",") + json_quote(kv.first) + ":" + kv.second;
+            first = false;
+        }
+        return o + "}}";
+    }
+    std::string etag() const {
+        std::uint32_t h = 2166136261u;
+        for (char c : body()) h = (h ^ static_cast<unsigned char>(c)) * 16777619u;
+        char buf[24];
+        std::snprintf(buf, sizeof buf, "\"%08x\"", static_cast<unsigned>(h));
+        return buf;
+    }
+    bool operator()(const Request& r, Response& out, CallError& error, Conditional& cond) {
+        const std::string& inm = cond.if_none_match;
+        error = CallError::None;
+        out = Response();
+        if (down) { error = CallError::NoAnswer; return false; }
+        if (broke) { error = CallError::TooLong; return false; }
+        if (r.path == kContractPath) {
+            ++full_calls;
+            if (role != "admin" || !admin_scope) { out.status = 403; out.body = "{\"error\":\"forbidden_scope\",\"detail\":\"needs admin:policy\"}"; return true; }
+            out.status = 200;
+            out.body = contract_json(embedded_contract(), kContractSchema, std::string("\"server_version\":\"0.2.0\",\"contract_hash\":\"") + kContractCopyHash + "\",\"values\":{\"max_body_mb\":8}");
+            return true;
+        }
+        if (r.path == kLightPath) {
+            ++light_calls;
+            last_tag = inm;
+            if (!inm.empty()) ++light_with_tag;
+            if (role.empty()) { out.status = 401; out.body = "{\"error\":\"unauthorized\"}"; return true; }
+            if (!inm.empty() && inm == etag()) { ++not_modified; out.status = 304; return true; }
+            out.status = 200;
+            out.body = body();
+            if (give_etag) cond.etag = etag();
+            return true;
+        }
+        out.status = 404;
+        out.body = "{\"error\":\"not_found\"}";
+        return true;
+    }
+};
+
+static LightServer fresh_server(const std::string& role) {
+    LightServer s;
+    s.role = role;
+    s.values = {{"session_hours", "{\"v\":12,\"origin\":\"file\",\"editable\":false}"},
+                {"slice_enabled", "{\"v\":false,\"origin\":\"file\",\"editable\":true}"},
+                {"data_dir", "{\"hidden\":true,\"origin\":\"file\",\"editable\":false}"},
+                {"password_min_len", "{\"v\":12,\"origin\":\"file\",\"editable\":true}"}};
+    return s;
+}
+
+static void etag_and_not_modified() {
+    LightServer srv = fresh_server("operator");
+    Fetch fetch = [&srv](const Request& r, Response& out, CallError& e, Conditional& c) { return srv(r, out, e, c); };
+    LightCache cache;
+    Settings cfg;
+    ReadResult first = read_settings(fetch, "operator", cfg, cache);
+    CHECK(first.changed && first.loaded.light && first.loaded.why.empty() && first.loaded.values.at("session_hours") == SValue::of_int(12));
+    CHECK(srv.full_calls == 0 && srv.light_calls == 1 && srv.light_with_tag == 0 && cache.has() && cache.etag() == srv.etag());
+    // nothing changed: the screen sends the tag and the server answers 304; the page keeps what it shows
+    ReadResult again = read_settings(fetch, "operator", cfg, cache);
+    CHECK(!again.changed && srv.not_modified == 1 && srv.last_tag == srv.etag() && again.loaded.light && again.loaded.values.at("session_hours") == SValue::of_int(12));
+    ReadResult third = read_settings(fetch, "operator", cfg, cache);
+    CHECK(!third.changed && srv.not_modified == 2 && srv.light_calls == 3 && srv.full_calls == 0);
+    // a value changed: a new tag and a new answer
+    srv.values["session_hours"] = "{\"v\":24,\"origin\":\"override\",\"editable\":false}";
+    ReadResult changed = read_settings(fetch, "operator", cfg, cache);
+    CHECK(changed.changed && changed.loaded.values.at("session_hours") == SValue::of_int(24) && changed.loaded.overridden.count("session_hours") == 1 && cache.etag() == srv.etag());
+    // a server that gives no tag: every round reads the whole answer and nothing is asked by tag
+    LightServer plain = fresh_server("viewer");
+    plain.give_etag = false;
+    Fetch plain_fetch = [&plain](const Request& r, Response& out, CallError& e, Conditional& c) { return plain(r, out, e, c); };
+    LightCache plain_cache;
+    CHECK(read_settings(plain_fetch, "viewer", cfg, plain_cache).changed && !plain_cache.has());
+    CHECK(read_settings(plain_fetch, "viewer", cfg, plain_cache).changed && plain.light_with_tag == 0 && plain.not_modified == 0);
+    // an unreachable server drops the held answer; the next request is whole again
+    srv.down = true;
+    ReadResult gone = read_settings(fetch, "operator", cfg, cache);
+    CHECK(gone.changed && !gone.loaded.light && gone.loaded.why == "unreachable" && gone.loaded.contract.settings.size() == 89 && !cache.has());
+    srv.down = false;
+    const int before = srv.light_with_tag;
+    CHECK(read_settings(fetch, "operator", cfg, cache).loaded.light && srv.light_with_tag == before);
+    // the login changed: the held answer is forgotten
+    cache.clear();
+    CHECK(!cache.has() && cache.if_none_match().empty());
+    // the request on the wire
+    const Request lr = cache.request();
+    CHECK(lr.method == "GET" && lr.path == "/api/v1/settings/values" && lr.body.empty());
+    const std::string with_tag = wire(lr, "10.0.0.5", "tok", "eh3d-node-hmi-gui/0.1.1", "\"abc123\"");
+    CHECK(has(with_tag, "GET /api/v1/settings/values HTTP/1.1\r\n") && has(with_tag, "If-None-Match: \"abc123\"\r\n") && has(with_tag, "Authorization: Bearer tok\r\n"));
+    CHECK(!has(wire(lr, "h", "t"), "If-None-Match"));
+    CHECK(!has(wire(lr, "h", "t", "", "abc"), "If-None-Match") && !has(wire(lr, "h", "t", "", "\"a\r\nX: y\""), "If-None-Match"));  // not a tag: never sent
+    CHECK(!has(wire(Request{"PUT", kPolicyPath, "{}"}, "h", "t", "", "\"abc\""), "If-None-Match"));                                     // only a read is conditional
+    CHECK(request_carries_token(lr));
+    CHECK(answer_limit(lr) == 16384u && answer_limit({"GET", "/api/v1/settings/values?group=login", ""}) == 16384u && answer_limit(contract_request()) == 1024u * 1024u);
+}
+
+static void the_etag_header() {
+    Response r;
+    std::string tag;
+    CHECK(parse_response("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nETag: \"abc123\"\r\nContent-Length: 2\r\n\r\n{}", r, &tag) && r.status == 200 && tag == "\"abc123\"");
+    CHECK(parse_response("HTTP/1.1 200 OK\r\netag:   \"x9\"  \r\nContent-Length: 2\r\n\r\n{}", r, &tag) && tag == "\"x9\"");              // any case, spaces around
+    CHECK(parse_response("HTTP/1.1 200 OK\r\nETag: W/\"weak1\"\r\nContent-Length: 2\r\n\r\n{}", r, &tag) && tag == "W/\"weak1\"");
+    CHECK(parse_response("HTTP/1.1 304 Not Modified\r\nETag: \"abc123\"\r\nContent-Length: 0\r\n\r\n", r, &tag) && r.status == 304 && r.body.empty() && tag == "\"abc123\"");
+    CHECK(parse_response("HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\n{}", r, &tag) && tag.empty());                                       // none: cleared from the last answer
+    CHECK(parse_response("HTTP/1.1 200 OK\r\nETag: abc\r\nContent-Length: 2\r\n\r\n{}", r, &tag) && tag.empty());                         // not quoted
+    CHECK(parse_response("HTTP/1.1 200 OK\r\nETag: \"a\"b\"\r\nContent-Length: 2\r\n\r\n{}", r, &tag) && tag.empty());                    // a quote inside
+    CHECK(parse_response("HTTP/1.1 200 OK\r\nETag: \"\"\r\nContent-Length: 2\r\n\r\n{}", r, &tag) && tag.empty());                       // empty tag
+    CHECK(parse_response("HTTP/1.1 200 OK\r\nETag: \"" + std::string(200, 'a') + "\"\r\nContent-Length: 2\r\n\r\n{}", r, &tag) && tag.empty());  // too long
+    CHECK(parse_response("HTTP/1.1 200 OK\r\nETag: \"a b\"\r\nContent-Length: 2\r\n\r\n{}", r, &tag) && tag.empty());                    // a space inside
+    CHECK(etag_ok("\"a\"") && !etag_ok("") && !etag_ok("\"") && !etag_ok("W/") && !etag_ok("W/\"") && etag_ok("W/\"a\""));
+}
+
+static void who_reads_what() {
+    Settings cfg;
+    // an administrator reads the full contract and never asks for the light view
+    LightServer admin = fresh_server("admin");
+    Fetch fa = [&admin](const Request& r, Response& out, CallError& e, Conditional& c) { return admin(r, out, e, c); };
+    LightCache ca;
+    ReadResult ra = read_settings(fa, "admin", cfg, ca);
+    CHECK(ra.loaded.live && !ra.loaded.light && ra.loaded.hash == HashState::Same && admin.full_calls == 1 && admin.light_calls == 0 && ra.loaded.values.at("max_body_mb") == SValue::of_int(8));
+    // an administrator token without the scope of the policy: the light view stands in, with no complaint
+    LightServer scoped = fresh_server("admin");
+    scoped.admin_scope = false;
+    Fetch fs = [&scoped](const Request& r, Response& out, CallError& e, Conditional& c) { return scoped(r, out, e, c); };
+    LightCache cs;
+    ReadResult rs = read_settings(fs, "admin", cfg, cs);
+    CHECK(!rs.loaded.live && rs.loaded.light && rs.loaded.why.empty() && scoped.full_calls == 1 && scoped.light_calls == 1);
+    // an operator, a viewer and a login whose role is not known read the light view only
+    for (const char* role : {"operator", "viewer", ""}) {
+        LightServer s = fresh_server(*role ? role : "viewer");
+        Fetch f = [&s](const Request& r, Response& out, CallError& e, Conditional& c) { return s(r, out, e, c); };
+        LightCache c;
+        const ReadResult rr = read_settings(f, role, cfg, c);
+        CHECK(rr.loaded.light && s.full_calls == 0 && s.light_calls == 1 && rr.loaded.has_values());
+    }
+    // settings_values = off: the old arrangement, the full contract is tried and the copy is what remains
+    Settings off;
+    off.settings_values = false;
+    LightServer o = fresh_server("operator");
+    Fetch fo = [&o](const Request& r, Response& out, CallError& e, Conditional& c) { return o(r, out, e, c); };
+    LightCache co;
+    const ReadResult ro = read_settings(fo, "operator", off, co);
+    CHECK(!ro.loaded.live && !ro.loaded.light && ro.loaded.why == "forbidden_scope" && o.full_calls == 1 && o.light_calls == 0 && !ro.loaded.has_values());
+    CHECK(build_page(ro.loaded, off, Lang::En, "operator", false).why == "The server gives its settings to an administrator only.");
+    // no login at all: the server refuses and the copy is shown with the reason
+    LightServer none = fresh_server("");
+    Fetch fn = [&none](const Request& r, Response& out, CallError& e, Conditional& c) { return none(r, out, e, c); };
+    LightCache cn;
+    const ReadResult rn = read_settings(fn, "", cfg, cn);
+    CHECK(!rn.loaded.light && rn.loaded.why == "unauthorized" && rn.loaded.contract.settings.size() == 89 && !cn.has());
+    // an older server without the route: the copy and the code it gave
+    Fetch old = [](const Request&, Response& out, CallError& e, Conditional&) { e = CallError::None; out = Response(); out.status = 404; out.body = "{\"error\":\"not_found\"}"; return true; };
+    LightCache cold;
+    const ReadResult rold = read_settings(old, "operator", cfg, cold);
+    CHECK(!rold.loaded.light && rold.loaded.why == "not_found" && !rold.loaded.has_values());
+    // the poll time follows the source
+    cfg.settings_poll_s = 600;
+    cfg.settings_values_poll_s = 20;
+    CHECK(read_interval_s(rs.loaded, cfg) == 20 && read_interval_s(ra.loaded, cfg) == 600 && read_interval_s(rold.loaded, cfg) == 600);
+    // a poller that gives up quickly after a failure and waits the poll time of the light view after a good answer
+    ContractPoller p;
+    p.done(true, read_interval_s(rs.loaded, cfg), 0);
+    CHECK(!p.due(true, 19999) && p.due(true, 20000));
+}
+
+static void the_light_view_that_goes_wrong() {
+    Settings cfg;
+    // the answer is longer than what the screen keeps, or the sockets say so
+    LightServer s = fresh_server("viewer");
+    s.broke = true;
+    Fetch f = [&s](const Request& r, Response& out, CallError& e, Conditional& c) { return s(r, out, e, c); };
+    LightCache c;
+    CHECK(read_settings(f, "viewer", cfg, c).loaded.why == "toolong");
+    Loaded l;
+    Response big = answer(200, light_sample() + std::string(kLightMaxBytes, ' '));
+    CHECK(apply_light(true, CallError::None, big, "\"t\"", c, l) == LightResult::Failed && l.why == "toolong" && !c.has());
+    // a refusal with a code of the server, an error with no code, a 304 for a tag nobody sent
+    CHECK(apply_light(true, CallError::None, answer(403, "{\"error\":\"forbidden\"}"), "", c, l) == LightResult::Failed && l.why == "forbidden");
+    CHECK(apply_light(true, CallError::None, answer(500, "<html>oops</html>"), "", c, l) == LightResult::Failed && l.why == "http_500");
+    CHECK(apply_light(true, CallError::None, answer(500, "{\"error\":\"Has Spaces\"}"), "", c, l) == LightResult::Failed && l.why == "http_500");
+    CHECK(apply_light(true, CallError::None, answer(304, ""), "", c, l) == LightResult::Failed && l.why == "shape");
+    // a newer or another schema, text that is not JSON, JSON that is not an object
+    CHECK(apply_light(true, CallError::None, answer(200, "{\"schema\":\"eh3d.settings.values/2\",\"settings\":{}}"), "", c, l) == LightResult::Failed && l.why == "newer");
+    CHECK(apply_light(true, CallError::None, answer(200, "{\"schema\":\"eh3d.settings.contract/1\",\"settings\":{}}"), "", c, l) == LightResult::Failed && l.why == "shape");
+    CHECK(apply_light(true, CallError::None, answer(200, "not json"), "", c, l) == LightResult::Failed && l.why == "shape");
+    CHECK(apply_light(true, CallError::None, answer(200, "[1,2]"), "", c, l) == LightResult::Failed && l.why == "shape");
+    CHECK(apply_light(true, CallError::None, answer(200, ""), "", c, l) == LightResult::Failed && l.why == "shape");
+    for (const char* why : {"toolong", "shape", "newer", "forbidden", "http_500", "unreachable"}) CHECK(!why_copy_text(why, Lang::En).empty());
+    // hostile documents: each is refused whole and none is kept
+    const std::string hash = std::string(",\"contract_hash\":\"") + kSampleHash + "\"";
+    const std::string head = "{\"schema\":\"eh3d.settings.values/1\"" + hash;
+    LightValues lv;
+    CHECK(parse_light(head + ",\"settings\":[]}", lv) == LightParse::Malformed);                                       // settings is not an object
+    CHECK(parse_light(head + "}", lv) == LightParse::Malformed);                                                         // no settings
+    CHECK(parse_light(head + ",\"count\":2,\"settings\":{\"a\":{\"v\":1}}}", lv) == LightParse::Malformed);              // count is not the number of keys
+    CHECK(parse_light(head + ",\"count\":1.5,\"settings\":{\"a\":{\"v\":1}}}", lv) == LightParse::Malformed);
+    CHECK(parse_light(head + ",\"count\":\"1\",\"settings\":{\"a\":{\"v\":1}}}", lv) == LightParse::Malformed);
+    CHECK(parse_light(head + ",\"settings\":{\"A\":{\"v\":1}}}", lv) == LightParse::Malformed);                          // a key that is not a name
+    CHECK(parse_light(head + ",\"settings\":{\"a b\":{\"v\":1}}}", lv) == LightParse::Malformed);
+    CHECK(parse_light(head + ",\"settings\":{\"\":{\"v\":1}}}", lv) == LightParse::Malformed);
+    CHECK(parse_light(head + ",\"settings\":{\"" + std::string(49, 'a') + "\":{\"v\":1}}}", lv) == LightParse::Malformed);
+    CHECK(parse_light(head + ",\"settings\":{\"a\":5}}", lv) == LightParse::Malformed);                                  // an entry that is not an object
+    CHECK(parse_light(head + ",\"settings\":{\"a\":{\"v\":{\"x\":1}}}}", lv) == LightParse::Malformed);                  // a value that is an object
+    CHECK(parse_light(head + ",\"settings\":{\"a\":{\"v\":[{\"x\":1}]}}}", lv) == LightParse::Malformed);
+    CHECK(parse_light(head + ",\"settings\":{\"a\":{\"v\":\"" + std::string(kLightMaxText + 1, 'x') + "\"}}}", lv) == LightParse::Malformed);
+    std::string many = "[";
+    for (std::size_t i = 0; i <= kLightMaxItems; ++i) many += (i ? "," : "") + std::string("\"x\"");
+    CHECK(parse_light(head + ",\"settings\":{\"a\":{\"v\":" + many + "]}}}", lv) == LightParse::Malformed);
+    std::string keys = "";
+    for (std::size_t i = 0; i <= kLightMaxKeys; ++i) keys += (i ? "," : "") + std::string("\"k") + std::to_string(i) + "\":{\"v\":1}";
+    CHECK(parse_light(head + ",\"settings\":{" + keys + "}}", lv) == LightParse::Malformed);                             // more keys than the screen trusts
+    std::string deep;
+    for (int i = 0; i < 100; ++i) deep += "{\"a\":";
+    CHECK(parse_light(head + ",\"settings\":" + deep + "1" + std::string(100, '}') + "}", lv) == LightParse::NotJson);
+    // what is odd but harmless is kept: no value, a null, a hash that is not one, a long version
+    CHECK(parse_light(head + ",\"settings\":{\"a\":{\"origin\":\"file\"},\"b\":{\"v\":null},\"c\":{\"v\":1.5}}}", lv) == LightParse::Ok && !lv.entries.at("a").has_value && !lv.entries.at("b").has_value && lv.entries.at("c").value.kind == SValue::Kind::Text);
+    CHECK(parse_light("{\"schema\":\"eh3d.settings.values/1\",\"contract_hash\":\"nope\",\"server_version\":\"" + std::string(40, '9') + "\",\"settings\":{}}", lv) == LightParse::Ok && lv.contract_hash.empty() && lv.server_version.empty());
+    // a secret never shows: whatever the server sent in the place of its value, and the mark with no flag
+    CHECK(parse_light(head + ",\"settings\":{\"pw\":{\"v\":\"hunter2\",\"secret\":true},\"tok\":{\"v\":\"***\"},\"p\":{\"v\":\"/home/me\",\"hidden\":true}}}", lv) == LightParse::Ok);
+    CHECK(!lv.entries.at("pw").has_value && lv.entries.at("pw").secret && !lv.entries.at("tok").has_value && lv.entries.at("tok").secret && !lv.entries.at("p").has_value && lv.entries.at("p").hidden);
+    const Loaded sec = loaded_from_light(lv);
+    CHECK(sec.values.empty() && sec.secret_keys.size() == 2 && sec.hidden.size() == 1);
+    Settings plain;
+    const PageView pv = build_page(sec, plain, Lang::En, "viewer", false);
+    for (const GroupView& g : pv.groups)
+        for (const RowView& r : g.rows) CHECK(!has(r.value, "hunter2") && !has(r.value, "/home/me") && !has(r.note, "hunter2") && !has(r.label, "hunter2"));
+    CHECK(row_of(pv, "pw")->value == "Hidden" && row_of(pv, "tok")->value == "Hidden" && row_of(pv, "p")->value == "Not shown by the server");
+    // a key the copy marks secret is hidden even when the server sends its value
+    Setting known_secret = make("copysecret", SType::String);
+    known_secret.secret = true;
+    Loaded with_copy = loaded_from_light(lv);
+    with_copy.contract = small_contract({known_secret});
+    with_copy.values["copysecret"] = SValue::of_text("leaked");
+    CHECK(row_of(build_page(with_copy, plain, Lang::En, "viewer", false), "copysecret")->value == "Hidden");
+}
+
+static void the_light_view_settings_of_the_file() {
+    Settings d;
+    CHECK(d.settings_values && d.settings_values_poll_s == 30);
+    std::vector<Problem> problems;
+    Settings s = parse_settings("settings_values = off\nsettings_values_poll_s = 5\n", problems);
+    CHECK(problems.empty() && !s.settings_values && s.settings_values_poll_s == 5);
+    s = parse_settings("settings_values = on\nsettings_values_poll_s = 3600\n", problems);
+    CHECK(problems.empty() && s.settings_values && s.settings_values_poll_s == 3600);
+    for (const char* bad : {"settings_values = maybe", "settings_values = 2", "settings_values_poll_s = 4", "settings_values_poll_s = 3601", "settings_values_poll_s = x", "settings_values_poll_s = -1"}) {
+        problems.clear();
+        const Settings b = parse_settings(std::string(bad) + "\n", problems);
+        CHECK(problems.size() == 1 && b.settings_values && b.settings_values_poll_s == 30);  // a line that cannot be used changes nothing and is listed
+    }
+}
+
+/// A seeded storm: every round the login, the server and the answer change; whatever happens the screen shows something, never a secret, and the same seed gives the same run.
+static std::uint64_t light_storm(std::uint32_t seed, int rounds, int& fresh_count) {
+    Lcg rng{seed};
+    std::uint64_t trace = 1469598103934665603ull;
+    auto mix = [&trace](std::uint64_t v) { trace = (trace ^ v) * 1099511628211ull; };
+    LightServer srv = fresh_server("operator");
+    srv.values["pw"] = "{\"v\":\"canary-secret-value\",\"secret\":true,\"editable\":false}";
+    LightCache cache;
+    Settings cfg;
+    Fetch fetch = [&srv](const Request& r, Response& out, CallError& e, Conditional& c) { return srv(r, out, e, c); };
+    const char* roles[] = {"admin", "operator", "viewer", ""};
+    for (int i = 0; i < rounds; ++i) {
+        const std::uint32_t what = rng.below(10);
+        if (what == 0) srv.down = !srv.down;
+        else if (what == 1) srv.broke = !srv.broke;
+        else if (what == 2) srv.give_etag = !srv.give_etag;
+        else if (what == 3) srv.admin_scope = !srv.admin_scope;
+        else if (what == 4) srv.values["session_hours"] = "{\"v\":" + std::to_string(1 + rng.below(700)) + ",\"origin\":\"file\",\"editable\":false}";
+        else if (what == 5) cache.clear();
+        const std::string role = roles[rng.below(4)];
+        srv.role = role;
+        cfg.settings_values = rng.below(8) != 0;
+        const ReadResult rr = read_settings(fetch, role, cfg, cache);
+        CHECK(!rr.loaded.contract.settings.empty());
+        CHECK(rr.loaded.live || rr.loaded.light || !rr.loaded.why.empty());
+        const PageView pv = build_page(rr.loaded, cfg, Lang::En, role, false);
+        CHECK(pv.row_count >= 89 && pv.editable_count == 0);
+        for (const GroupView& g : pv.groups)
+            for (const RowView& r : g.rows) {
+                CHECK(!has(r.value, "canary-secret-value") && !has(r.note, "canary-secret-value"));
+                mix(std::hash<std::string>{}(r.key + r.value));
+            }
+        CHECK(!(rr.loaded.light && rr.loaded.values.count("pw") != 0));  // the value of a secret is never kept
+        if (rr.loaded.light && rr.changed) ++fresh_count;
+        mix(static_cast<std::uint64_t>(rr.changed) + (rr.loaded.light ? 2u : 0u) + (rr.loaded.live ? 4u : 0u) + rr.loaded.why.size() * 8u);
+    }
+    mix(static_cast<std::uint64_t>(srv.not_modified));
+    return trace;
+}
+
+static void a_seeded_light_storm() {
+    int a_fresh = 0, b_fresh = 0, c_fresh = 0;
+    const std::uint64_t a = light_storm(20261121u, 400, a_fresh);
+    const std::uint64_t b = light_storm(20261121u, 400, b_fresh);
+    const std::uint64_t c = light_storm(11u, 400, c_fresh);
+    CHECK(a == b && a_fresh == b_fresh);
+    CHECK(a != c);
+    CHECK(a_fresh > 0 && c_fresh > 0);
+}
+
+static void bent_light_documents() {
+    const std::string whole = light_sample(kContractCopyHash);
+    Lcg rng{777u};
+    int accepted = 0;
+    for (int i = 0; i < 400; ++i) {
+        std::string t = whole;
+        const std::uint32_t kind = rng.below(4);
+        if (kind == 0) t.resize(rng.below(static_cast<std::uint32_t>(t.size())));
+        else if (kind == 1) t[rng.below(static_cast<std::uint32_t>(t.size()))] = static_cast<char>(rng.below(256));
+        else if (kind == 2) t.insert(rng.below(static_cast<std::uint32_t>(t.size())), 1, "{}[]\",:\\"[rng.below(8)]);
+        else t.erase(rng.below(static_cast<std::uint32_t>(t.size())), 1 + rng.below(5));
+        LightCache cache;
+        Loaded l;
+        const LightResult r = apply_light(true, CallError::None, answer(200, t), "", cache, l);
+        CHECK(l.contract.settings.size() == 89);  // there is always something to show: the answer or the copy
+        if (r == LightResult::Fresh) { ++accepted; CHECK(l.light && l.values.count("future_secret") == 0); }
+        else CHECK(!l.why.empty());
+    }
+    CHECK(accepted > 0 && accepted < 400);
+}
+
 int main() {
     the_copy();
     the_round_trip();
@@ -1013,6 +1447,15 @@ int main() {
     the_texts();
     a_seeded_storm();
     bent_documents();
+    the_light_answer();
+    the_page_of_the_light_view();
+    etag_and_not_modified();
+    the_etag_header();
+    who_reads_what();
+    the_light_view_that_goes_wrong();
+    the_light_view_settings_of_the_file();
+    a_seeded_light_storm();
+    bent_light_documents();
     std::printf("settings: %d checks, %d failed\n", g_checks, g_failed);
     return g_failed == 0 ? 0 : 1;
 }

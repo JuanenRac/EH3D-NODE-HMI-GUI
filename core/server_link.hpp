@@ -206,22 +206,34 @@ struct Response {
     std::string body;
 };
 
+/// Whether a text is an entity tag the screen sends back or keeps: a quoted run of printable characters (`"abc"`, or weak `W/"abc"`), 3 to 100 characters, nothing that could end the line
+/// of a header.
+inline bool etag_ok(const std::string& t) {
+    const std::size_t from = t.compare(0, 2, "W/") == 0 ? 2 : 0;
+    if (t.size() < from + 3 || t.size() > 100 || t[from] != '"' || t.back() != '"') return false;
+    for (std::size_t i = from + 1; i + 1 < t.size(); ++i)
+        if (t[i] < 0x21 || t[i] > 0x7e || t[i] == '"') return false;
+    return true;
+}
+
 /// Why a call to the server did not come back with an answer (the screen says it in the language of the operator: see status.hpp).
 enum class CallError { None, NoServer, Client, TooLong, Broke, Send, NoAnswer };
 
 /// Who the screen says it is in every request (`name/version`, for example `eh3d-node-hmi-gui/0.0.5`): the server can tell the screens apart in its log.
 inline std::string client_id(const std::string& name, const std::string& version) { return version.empty() ? name : name + "/" + version; }
 
-/// The request as the text that goes on the wire; the token of the screen goes as a bearer token, and `client` (see `client_id`) as User-Agent and X-EH3D-Client.
-inline std::string wire(const Request& r, const std::string& host, const std::string& token, const std::string& client = "") {
+/// The request as the text that goes on the wire; the token of the screen goes as a bearer token, and `client` (see `client_id`) as User-Agent and X-EH3D-Client. `if_none_match` is the ETag of
+/// the answer the screen holds for a GET (`If-None-Match`; a `304` then comes back with no body); it goes only when it is a tag (`etag_ok`).
+inline std::string wire(const Request& r, const std::string& host, const std::string& token, const std::string& client = "", const std::string& if_none_match = "") {
     std::string s = r.method + " " + r.path + " HTTP/1.1\r\nHost: " + host + "\r\nAuthorization: Bearer " + token + "\r\nConnection: close\r\n";
     if (!client.empty()) s += "User-Agent: " + client + "\r\nX-EH3D-Client: " + client + "\r\n";
+    if (r.method == "GET" && etag_ok(if_none_match)) s += "If-None-Match: " + if_none_match + "\r\n";
     if (!r.body.empty()) s += "Content-Type: application/json\r\nContent-Length: " + std::to_string(r.body.size()) + "\r\n";
     return s + "\r\n" + r.body;
 }
 
 /// Reads the answer: the status and the body (cut at Content-Length when it is there). False while the answer is not whole yet.
-inline bool parse_response(const std::string& raw, Response& out) {
+inline bool parse_response(const std::string& raw, Response& out, std::string* etag = nullptr) {
     std::size_t split = raw.find("\r\n\r\n");
     if (split == std::string::npos || raw.compare(0, 5, "HTTP/") != 0) return false;
     std::size_t sp = raw.find(' ');
@@ -230,6 +242,7 @@ inline bool parse_response(const std::string& raw, Response& out) {
     if (status < 100 || status > 599) return false;
     std::string head = raw.substr(0, split);
     std::string body = raw.substr(split + 4);
+    const std::string original_head = head;
     for (char& c : head)
         if (c >= 'A' && c <= 'Z') c = static_cast<char>(c - 'A' + 'a');
     std::size_t cl = head.find("content-length:");
@@ -240,6 +253,16 @@ inline bool parse_response(const std::string& raw, Response& out) {
     }
     out.status = status;
     out.body = body;
+    if (etag != nullptr) etag->clear();
+    const std::size_t et = head.find("\r\netag:");
+    if (etag != nullptr && et != std::string::npos) {
+        std::size_t from = et + 7, to = original_head.find("\r\n", from);
+        if (to == std::string::npos) to = original_head.size();
+        while (from < to && original_head[from] == ' ') ++from;
+        while (to > from && original_head[to - 1] == ' ') --to;
+        const std::string tag = original_head.substr(from, to - from);
+        if (etag_ok(tag)) *etag = tag;
+    }
     return true;
 }
 

@@ -20,6 +20,7 @@
 #include "server_errors.hpp"
 #include "settings_contract.hpp"
 #include "settings_text.hpp"
+#include "settings_values.hpp"
 
 namespace hmi {
 
@@ -86,6 +87,7 @@ struct RowView {
     bool restart = false;     // a change is read when the server starts
     bool high_risk = false;   // a change asks twice
     bool not_default = false; // the value in force is not the default of the contract
+    bool overridden = false;  // the light view says it was changed through the security page and differs from server.cfg
 };
 
 struct GroupView {
@@ -118,27 +120,32 @@ inline std::string unit_short(const std::string& unit) {
 
 /// The value in force as the operator reads it: On or Off for a switch, the number with its unit, the list, the text; `-` when the server did not give one; Hidden for a secret.
 inline std::string display_value(const Setting& s, const Loaded& loaded, Lang l) {
-    if (s.secret) return settings_text(ST::Hidden, l);
+    if (s.secret || loaded.secret_keys.count(s.key) != 0) return settings_text(ST::Hidden, l);       // never the value, whatever the server sent
+    if (loaded.hidden.count(s.key) != 0) return settings_text(ST::NotAvailable, l);                  // the server does not give it (a path of the computer)
     const auto it = loaded.values.find(s.key);
-    if (!loaded.live || it == loaded.values.end() || it->second.kind == SValue::Kind::None) return "-";
+    if (!loaded.has_values() || it == loaded.values.end() || it->second.kind == SValue::Kind::None) return "-";
     const SValue& v = it->second;
+    std::string shown;
     switch (v.kind) {
-        case SValue::Kind::Bool: return settings_text(v.b ? ST::On : ST::Off, l);
+        case SValue::Kind::Bool: shown = settings_text(v.b ? ST::On : ST::Off, l); break;
         case SValue::Kind::Int: {
             const std::string unit = unit_short(s.unit);
-            return std::to_string(v.n) + (unit.empty() ? "" : " " + unit);
+            shown = std::to_string(v.n) + (unit.empty() ? "" : " " + unit);
+            break;
         }
         default: {
-            const std::string t = value_text(v);
-            return t.empty() ? "-" : t;
+            shown = value_text(v);
+            if (shown.empty()) return "-";
         }
     }
+    return loaded.truncated.count(s.key) != 0 ? shown + "..." : shown;  // the server cut a long text or list
 }
 
 /// The lines the page adds about what the server says and what hmi.cfg says do not fit.
 inline std::vector<std::string> cross_check_lines(const Loaded& loaded, const Settings& cfg, Lang l) {
     std::vector<std::string> out;
-    if (!loaded.live) return out;
+    if (!loaded.has_values()) return out;
+    if (loaded.hash == HashState::Differs) out.push_back(settings_text(ST::HashDiffers, l));
     const Drift drift = contract_drift(loaded);
     if (!drift.newer_in_server.empty()) out.push_back(fill(settings_text(ST::NewKeys, l), {{"n", std::to_string(drift.newer_in_server.size())}}));
     const auto slots = loaded.values.find("rack_max_slots");
@@ -154,7 +161,7 @@ inline std::vector<std::string> cross_check_lines(const Loaded& loaded, const Se
 /// The line to show when a file of `bytes` is larger than what the server takes in one request (`max_body_mb`); empty when it fits or the server did not say.
 inline std::string body_warning(std::uint64_t bytes, const Loaded& loaded, Lang l) {
     const auto it = loaded.values.find("max_body_mb");
-    if (!loaded.live || it == loaded.values.end() || it->second.kind != SValue::Kind::Int || it->second.n <= 0) return "";
+    if (!loaded.has_values() || it == loaded.values.end() || it->second.kind != SValue::Kind::Int || it->second.n <= 0) return "";
     const std::uint64_t limit = static_cast<std::uint64_t>(it->second.n) * 1024u * 1024u;
     return bytes > limit ? fill(settings_text(ST::BodyWarn, l), {{"mb", std::to_string(it->second.n)}}) : "";
 }
@@ -173,13 +180,18 @@ inline std::string why_copy_text(const std::string& why, Lang l) {
 inline PageView build_page(const Loaded& loaded, const Settings& cfg, Lang l, const std::string& role, bool job_running) {
     PageView v;
     v.live = loaded.live;
-    v.source = settings_text(loaded.live ? ST::SourceLive : ST::SourceCopy, l);
-    if (loaded.live && !loaded.server_version.empty()) v.source += " (" + loaded.server_version + ")";
+    v.source = settings_text(loaded.live ? ST::SourceLive : loaded.light ? ST::SourceLight : ST::SourceCopy, l);
+    if (loaded.has_values() && !loaded.server_version.empty()) v.source += " (" + loaded.server_version + ")";
     v.why = why_copy_text(loaded.why, l);
     const WritePolicy policy = write_policy(cfg);
     Contract view = loaded.contract;
-    if (loaded.live)
+    if (loaded.has_values()) {
         for (const Setting& extra : unlisted_settings(loaded.contract, loaded.values)) view.settings.push_back(extra);
+        // keys of the light view that the contract does not list and whose value the server keeps back: drawn read only, with no value
+        for (const std::set<std::string>* kept : {&loaded.secret_keys, &loaded.hidden})
+            for (const std::string& key : *kept)
+                if (loaded.contract.find(key) == nullptr) view.settings.push_back(generic_setting(key, SValue()));
+    }
     for (const SettingsGroup& g : group_settings(view)) {
         GroupView gv;
         gv.id = g.id;
@@ -195,7 +207,8 @@ inline PageView build_page(const Loaded& loaded, const Settings& cfg, Lang l, co
             r.restart = s.apply == Apply::Restart;
             r.high_risk = is_high_risk(s);
             const auto val = loaded.values.find(s.key);
-            r.not_default = loaded.live && !s.secret && s.has_default && val != loaded.values.end() && val->second.kind != SValue::Kind::None && val->second != s.def;
+            r.not_default = loaded.has_values() && !s.secret && loaded.truncated.count(s.key) == 0 && s.has_default && val != loaded.values.end() && val->second.kind != SValue::Kind::None && val->second != s.def;
+            r.overridden = loaded.has_values() && loaded.overridden.count(s.key) != 0;
             if (!r.editable) r.note = settings_text(read_only_text(r.why), l);
             else if (r.restart) r.note = settings_text(ST::RestartTag, l);
             gv.rows.push_back(std::move(r));

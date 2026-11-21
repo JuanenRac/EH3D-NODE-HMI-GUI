@@ -112,6 +112,7 @@ def header(doc: dict, digest: str) -> str:
            "    const char* values_json;  // the choices of an enum as a JSON array; null when none",
            "    Row label;", "    Row help;", "    Row warning;", "};", "",
            f"inline constexpr const char* kContractCopySchema = {c_string(doc['schema'])};",
+           f"inline constexpr const char* kContractCopyHash = {c_string(digest)};  // sha256 of docs/settings-contract.json with LF line ends: the `contract_hash` of the server when it is the same document",
            f"inline constexpr std::size_t kContractCopyGroupCount = {len(doc['groups'])};",
            f"inline constexpr std::size_t kContractCopySettingCount = {len(doc['settings'])};", "",
            "inline const ContractGroupRow kContractCopyGroups[kContractCopyGroupCount] = {"]

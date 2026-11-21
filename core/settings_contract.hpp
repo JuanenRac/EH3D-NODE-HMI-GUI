@@ -12,6 +12,7 @@
 #include <cmath>
 #include <cstddef>
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -30,6 +31,9 @@ inline constexpr const char* kContractSchemaFamily = "eh3d.settings.contract/";
 
 /// The route that reads the contract and the only route the screen writes a setting through. A contract that names another route for a key makes the key read only here.
 inline constexpr const char* kContractPath = "/api/v1/settings/contract";
+/// The light, read-only view of the values in force (a few kilobytes, any login): see settings_values.hpp. The server never sends more than `kLightMaxBytes` of it.
+inline constexpr const char* kLightPath = "/api/v1/settings/values";
+inline constexpr std::size_t kLightMaxBytes = 16u * 1024u;
 inline constexpr const char* kPolicyPath = "/api/v1/auth/policy";
 
 enum class SType { Boolean, Integer, String, List, Enum, Unknown };
@@ -275,12 +279,38 @@ inline const Contract& embedded_contract() {
     return copy;
 }
 
-/// The contract the page uses and where it came from: the live one (with the values in force) or the copy of the screen (no values), and why the live one was not used.
+/// Whether the contract of the server is the copy the screen carries: `Same` (the `contract_hash` of the server is the SHA-256 of the copy), `Differs` (the copy is out of date) or `Unknown`
+/// (the server gave none, or one that is not a SHA-256).
+enum class HashState { Unknown, Same, Differs };
+
+/// A SHA-256 as the server writes it: 64 lower-case hexadecimal characters.
+inline bool is_sha256_hex(const std::string& t) {
+    if (t.size() != 64) return false;
+    for (char c : t)
+        if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))) return false;
+    return true;
+}
+
+inline HashState compare_hash(const std::string& server_hash) {
+    if (!is_sha256_hex(server_hash)) return HashState::Unknown;
+    return server_hash == kContractCopyHash ? HashState::Same : HashState::Differs;
+}
+
+/// The contract the page uses and where it came from: the live one (with the values in force), the copy of the screen with the values of the light view (`light`) or the copy of the screen
+/// alone (no values), and why the live one was not used.
 struct Loaded {
     Contract contract;
     bool live = false;
-    std::map<std::string, SValue> values;
+    bool light = false;  // the values are those of GET /settings/values (any login) and the texts those of the copy of the screen
+    std::map<std::string, SValue> values;  // never holds a secret or a hidden key
+    std::set<std::string> secret_keys;     // light view: the server marked them secret (their value is never kept)
+    std::set<std::string> hidden;          // light view: the server does not give their value (a path of the computer)
+    std::set<std::string> truncated;       // light view: a long text or list was cut by the server
+    std::set<std::string> overridden;      // light view: changed through the security page, differs from server.cfg
+    std::string server_hash;               // the contract_hash the server gave (64 hex characters), empty when none or not valid
+    HashState hash = HashState::Unknown;
     std::string server_version;
+    bool has_values() const { return live || light; }
     /// Empty for a live contract. Else why the copy is shown: `unreachable` (no answer), `toolong` (the answer did not fit), `shape` (not a document the screen draws), `newer` (a newer
     /// schema), the code of a refusal of the server (`forbidden`, `unauthorized`, ...) or `http_<status>`.
     std::string why;
@@ -289,7 +319,11 @@ struct Loaded {
 inline Request contract_request() { return {"GET", kContractPath, ""}; }
 
 /// How many bytes of an answer the sockets of the link keep for a request: the contract with its texts in eight languages is far longer than a fleet, so it has a larger room.
-inline std::size_t answer_limit(const Request& r) { return r.path == kContractPath ? 1024u * 1024u : 256u * 1024u; }
+inline std::size_t answer_limit(const Request& r) {
+    if (r.path == kContractPath) return 1024u * 1024u;
+    if (r.path.compare(0, std::char_traits<char>::length(kLightPath), kLightPath) == 0) return kLightMaxBytes;  // with or without `?keys=` / `?group=`
+    return 256u * 1024u;
+}
 
 /// What the page uses after a try to read the contract: the live document when the server gave one the screen understands, else the copy of the screen and the reason.
 inline Loaded load_contract(bool reached, CallError error, const Response& r) {
@@ -317,6 +351,9 @@ inline Loaded load_contract(bool reached, CallError error, const Response& r) {
     out.contract = std::move(live);
     out.live = true;
     out.server_version = root.str("server_version");
+    const std::string server_hash = root.str("contract_hash");
+    if (is_sha256_hex(server_hash)) out.server_hash = server_hash;
+    out.hash = compare_hash(out.server_hash);
     if (const Json* values = root.get("values")) {
         if (values->type == Json::Type::Object)
             for (const auto& kv : values->o) out.values[kv.first] = detail::value_of(kv.second);
@@ -393,14 +430,19 @@ struct Drift {
 
 inline Drift contract_drift(const Loaded& loaded) {
     Drift d;
-    if (!loaded.live) return d;
+    if (!loaded.has_values()) return d;
     const Contract& copy = embedded_contract();
     for (const Setting& s : loaded.contract.settings)
         if (copy.find(s.key) == nullptr) d.newer_in_server.push_back(s.key);
-    for (const auto& kv : loaded.values)
-        if (loaded.contract.find(kv.first) == nullptr && copy.find(kv.first) == nullptr) d.newer_in_server.push_back(kv.first);
-    for (const Setting& s : copy.settings)
-        if (loaded.contract.find(s.key) == nullptr) d.gone_from_server.push_back(s.key);
+    std::set<std::string> reported;  // a key of the values, or one the light view marks secret or hidden, that no contract lists
+    for (const auto& kv : loaded.values) reported.insert(kv.first);
+    for (const std::string& k : loaded.secret_keys) reported.insert(k);
+    for (const std::string& k : loaded.hidden) reported.insert(k);
+    for (const std::string& k : reported)
+        if (loaded.contract.find(k) == nullptr && copy.find(k) == nullptr) d.newer_in_server.push_back(k);
+    if (loaded.live)
+        for (const Setting& s : copy.settings)
+            if (loaded.contract.find(s.key) == nullptr) d.gone_from_server.push_back(s.key);
     return d;
 }
 

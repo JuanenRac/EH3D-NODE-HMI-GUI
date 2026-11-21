@@ -4,6 +4,7 @@
 
 #include <atomic>
 #include <mutex>
+#include <strings.h>
 
 #include "esp_http_client.h"
 #include "freertos/FreeRTOS.h"
@@ -28,10 +29,20 @@ esp_http_method_t method_of(const std::string& m) {
     return HTTP_METHOD_GET;
 }
 
+/// Keeps the ETag of the answer: the client tells each header as it reads them (the names come in any case).
+esp_err_t on_http_event(esp_http_client_event_t* evt) {
+    if (evt->event_id == HTTP_EVENT_ON_HEADER && evt->user_data != nullptr && evt->header_key != nullptr && evt->header_value != nullptr && strcasecmp(evt->header_key, "ETag") == 0)
+        static_cast<std::string*>(evt->user_data)->assign(evt->header_value);
+    return ESP_OK;
+}
+
 /// One try: the request goes out once and the answer is read. False with `error` when no whole answer came.
-bool call_once(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, hmi::CallError& error, int timeout_ms) {
+bool call_once(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, hmi::CallError& error, int timeout_ms, const std::string& if_none_match, std::string& etag) {
     error = hmi::CallError::None;
+    etag.clear();
     esp_http_client_config_t cfg = {};
+    cfg.event_handler = on_http_event;
+    cfg.user_data = &etag;
     cfg.host = s.server_host.c_str();
     cfg.port = s.server_port;
     cfg.path = r.path.c_str();
@@ -58,6 +69,7 @@ bool call_once(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out
             esp_http_client_set_header(c, "Authorization", bearer.c_str());
         }
     }
+    if (r.method == "GET" && hmi::etag_ok(if_none_match)) esp_http_client_set_header(c, "If-None-Match", if_none_match.c_str());
     if (!r.body.empty()) esp_http_client_set_header(c, "Content-Type", "application/json");
     bool ok = false;
     if (esp_http_client_open(c, static_cast<int>(r.body.size())) == ESP_OK) {
@@ -65,6 +77,7 @@ bool call_once(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out
             esp_http_client_fetch_headers(c);
             out.status = esp_http_client_get_status_code(c);
             out.body.clear();
+            if (!hmi::etag_ok(etag)) etag.clear();
             char buf[512];
             int n;
             ok = true;
@@ -96,7 +109,7 @@ void set_verdict(hmi::Health verdict) { g_verdict.store(static_cast<int>(verdict
 
 void set_client(const std::string& client) { g_client = client; }
 
-bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, hmi::CallError& error, int timeout_ms, int retries) {
+bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, hmi::CallError& error, int timeout_ms, int retries, const std::string& if_none_match, std::string* etag) {
     error = hmi::CallError::None;
     if (s.server_host.empty()) {
         error = hmi::CallError::NoServer;
@@ -112,7 +125,9 @@ bool call(const hmi::Settings& s, const hmi::Request& r, hmi::Response& out, hmi
     bool ok = false;
     for (int attempt = 0;; ++attempt) {
         out = hmi::Response();
-        ok = call_once(s, r, out, error, timeout_ms);
+        std::string tag;
+        ok = call_once(s, r, out, error, timeout_ms, if_none_match, tag);
+        if (etag != nullptr) *etag = tag;
         const bool again = ok ? hmi::retry_allowed(r.method, hmi::CallError::None, out.status) : hmi::retry_allowed(r.method, error, 0);
         if (!again || attempt >= retries) break;
         vTaskDelay(pdMS_TO_TICKS(hmi::retry_wait_ms(static_cast<unsigned>(attempt) + 1)));

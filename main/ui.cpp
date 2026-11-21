@@ -644,7 +644,7 @@ void show_server_settings(const hmi::PageView& page, const hmi::Settings&) {
         for (const auto& r : g.rows) {
             const std::string line = r.label + "   " + r.value;
             lv_obj_t* b = lv_list_add_button(g_srv_list, nullptr, line.c_str());
-            if (r.not_default) lv_obj_set_style_text_color(b, kAmber, 0);  // a value that is not the default stands out
+            if (r.not_default || r.overridden) lv_obj_set_style_text_color(b, kAmber, 0);  // a value that is not the default, or was changed through the security page, stands out
         }
     }
 }

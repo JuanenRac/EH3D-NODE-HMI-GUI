@@ -336,7 +336,7 @@ def _keys(v):
     return "" if ok else "up to 32 key names of lower-case letters, digits and underscores, separated by commas"
 
 
-RULES.update({"settings_contract": _flag, "settings_poll_s": _num(30, 86400), "settings_write": _flag, "settings_write_keys": _keys, "settings_block_running": _flag})
+RULES.update({"settings_contract": _flag, "settings_poll_s": _num(30, 86400), "settings_values": _flag, "settings_values_poll_s": _num(5, 3600), "settings_write": _flag, "settings_write_keys": _keys, "settings_block_running": _flag})
 if HAS_MACHINE_KIND:
     RULES["machine_kind"] = lambda v: "" if v in ("cnc", "laser", "pnp") else "not cnc, laser or pnp"
 

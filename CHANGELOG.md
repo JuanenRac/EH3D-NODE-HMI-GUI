@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.2] - The settings of the server drawn from its contract and its light view of the values in force, a login for the touch screen and the newest refusal codes in eight languages
+
 - **The settings of the server are shown with their values in force to a login that is not an administrator:** `core/settings_values.hpp` reads the light view (`GET /api/v1/settings/values`, any login: the `hmi` application of an operator included, a few kilobytes and never more than 16 KiB) and the page draws the values with the labels and warnings of the copy the screen carries, read only. An administrator still reads the full contract; one whose token cannot read it falls back to the light view. Until now these logins saw the copy with no value at all.
 - **`ETag` and `304`:** the link sends the tag of the last answer in `If-None-Match` and keeps the page when the server answers `304` (a few bytes instead of a few kilobytes); the tag is forgotten when the login changes or a read fails, and a header that is not a tag (a quote inside, a space, more than 100 characters, a break of line) is never sent or kept. The sockets keep 16 KiB for this route and report an answer over it as too long.
 - **The page says when its copy of the contract is out of date:** the generator writes the SHA-256 of the contract it was made from (`kContractCopyHash`) and the page compares it with the `contract_hash` that the server gives in the light view and in the full contract; when they differ it warns that texts and keys may be out of date. A hash that is not 64 lower-case hexadecimal characters says nothing.

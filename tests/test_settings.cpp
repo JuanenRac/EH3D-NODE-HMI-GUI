@@ -598,6 +598,12 @@ static void the_steps_of_a_change() {
     // a read-only setting and a spoken order start nothing
     CHECK(e.begin(low, SValue::of_bool(true), ReadOnlyWhy::Role, false, 0, 8000) == BeginResult::ReadOnly && e.step() == EditStep::Idle);
     CHECK(e.begin(low, SValue::of_bool(true), ReadOnlyWhy::None, true, 0, 8000) == BeginResult::ByVoice && e.step() == EditStep::Idle);
+    // a touch that comes when the time of a question is over sends nothing, even before the next tick
+    SettingsEditor late;
+    CHECK(late.begin(low, SValue::of_bool(true), ReadOnlyWhy::None, false, 1000, 8000) == BeginResult::Started);
+    CHECK(!late.confirm(9000, out) && late.step() == EditStep::Idle);
+    CHECK(late.begin(risky, SValue::of_bool(true), ReadOnlyWhy::None, false, 0, 8000) == BeginResult::Started);
+    CHECK(!late.confirm(100, out) && !late.confirm(8100, out) && late.step() == EditStep::Idle);
     // a question nobody answered is given up by itself
     CHECK(e.begin(risky, SValue::of_bool(true), ReadOnlyWhy::None, false, 1000, 8000) == BeginResult::Started);
     CHECK(!e.tick(8999) && e.step() == EditStep::Ask && e.remaining_ms(8999) == 1);

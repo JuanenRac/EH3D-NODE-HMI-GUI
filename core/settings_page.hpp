@@ -305,8 +305,10 @@ public:
         return false;
     }
 
-    /// The operator touched Confirm. A risky setting asks a second time first; the answer of the last question gives the request to send (and true).
+    /// The operator touched Confirm. A risky setting asks a second time first; the answer of the last question gives the request to send (and true). A touch that comes when the
+    /// time of the question is over gives it up and sends nothing, also when `tick` has not run yet.
     bool confirm(std::uint32_t now_ms, Request& out) {
+        if (tick(now_ms)) return false;
         if (step_ == EditStep::Ask && is_high_risk(setting_)) {
             step_ = EditStep::AskRisk;
             deadline_ms_ = now_ms + timeout_ms_;

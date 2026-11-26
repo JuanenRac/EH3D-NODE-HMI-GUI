@@ -217,6 +217,7 @@ def problems_of(root: Path, state: dict) -> list[str]:
     elif evidence not in EVIDENCE_LEVELS:
         problems.append(f"{root.name}: manifest evidence {evidence!r} is not one of {', '.join(EVIDENCE_LEVELS)}")
     problems.extend(hydra_problems(root, manifest))
+    problems.extend(maturity_problems(root, manifest))
     for item in state["items"]:
         if item["light"] not in ORDER:
             problems.append(f"{root.name}: row {item['label']!r} holds {item['light']!r}, not a light")
@@ -232,6 +233,31 @@ def problems_of(root: Path, state: dict) -> list[str]:
             problems.append(f"{root.name}/{name}: no Project status table")
         elif lights_of(table[1]) != english:
             problems.append(f"{root.name}/{name}: the lights differ from README.md")
+    return problems
+
+
+MATURITY_BADGE = re.compile(r"img\.shields\.io/badge/Maturity-([A-Za-z]+)-")
+MATURITY_ROW = re.compile(r"^\|\s*Maturity\s*\|\s*([^|]+?)\s*\|", re.MULTILINE)
+
+
+def maturity_problems(root: Path, manifest: dict) -> list[str]:
+    """The maturity badge of every README (and the Maturity row of the English one) says what the manifest says."""
+    wanted = str(manifest.get("maturity", "")).strip().lower()
+    if not wanted:
+        return []
+    problems = []
+    for name in LANGUAGE_FILES:
+        path = root / name
+        if not path.is_file():
+            continue
+        text = path.read_bytes().decode("utf-8")
+        for found in MATURITY_BADGE.findall(text):
+            if found.lower() != wanted:
+                problems.append(f"{root.name}/{name}: the Maturity badge says {found.lower()} but the manifest says {wanted}")
+        if name == "README.md":
+            for found in MATURITY_ROW.findall(text):
+                if found.strip().lower() != wanted:
+                    problems.append(f"{root.name}/{name}: the Maturity row says {found.strip().lower()} but the manifest says {wanted}")
     return problems
 
 

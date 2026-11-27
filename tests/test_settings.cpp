@@ -179,7 +179,8 @@ static void the_copy() {
         CHECK(control_kind(s) != ControlKind::Generic);  // every setting of the copy has a control the screen knows
         CHECK(!s.secret);
         for (std::size_t i = 0; i < kBaseLangCount; ++i) CHECK(!s.label[i].empty() && !s.help[i].empty() && !s.warning[i].empty());
-        CHECK(text_in_font(s.label[0].c_str()));  // the English text can always be drawn
+        for (std::size_t i = 0; i < kBaseLangCount; ++i)  // every language of the copy can be drawn
+            CHECK(text_in_font(s.label[i].c_str()) && text_in_font(s.help[i].c_str()) && text_in_font(s.warning[i].c_str()));
         if (s.via == "policy") {
             ++policy;
             CHECK(has_trusted_route(s) && s.role == "admin" && s.scope == "admin:policy");
@@ -811,7 +812,7 @@ static void the_texts() {
         }
         CHECK(text_in_font(row[0]));
     }
-    CHECK(not_drawable >= 0);
+    CHECK(not_drawable == 0);  // every sentence of every language is drawn as it is written
     // the formal register of the three languages that have one
     for (unsigned t = 0; t < static_cast<unsigned>(ST::Count); ++t) {
         const Row& row = settings_text_row(static_cast<ST>(t));

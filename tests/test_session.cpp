@@ -68,7 +68,7 @@ static void the_font_rule() {
             }
         }
     }
-    CHECK(not_drawable > 0);  // until the fonts are built with the characters of the table, Chinese and Japanese fall back to English
+    CHECK(not_drawable == 0);  // the fonts hold the characters of the table, so no language falls back to English
 }
 
 static void the_line_of_a_refusal() {

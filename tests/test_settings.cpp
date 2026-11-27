@@ -1,4 +1,4 @@
-// EH3D-NODE-HMI-GUI - host tests of the settings of the server drawn from its contract: the copy the screen carries (106 settings in 17 groups), the live document and what the screen does
+// EH3D-NODE-HMI-GUI - host tests of the settings of the server drawn from its contract: the copy the screen carries (107 settings in 17 groups), the live document and what the screen does
 // when it is not one it understands, the control of each type, what is checked before anything is sent, who may change what on a touch screen next to a machine, the steps of a change
 // (twice for a risky setting, a third time for a value the server calls looser than recommended, never by voice), the answers of the server by code, the texts in the eight languages
 // of the tables and a seeded storm of failures against a simulated server. The clock is a number and the seed is fixed, so every run is the same.
@@ -163,7 +163,7 @@ static Loaded live_loaded(const Contract& c, const std::map<std::string, SValue>
 static void the_copy() {
     const Contract& c = embedded_contract();
     CHECK(c.schema == kContractSchema);
-    CHECK(c.settings.size() == 106 && kContractCopySettingCount == 106);
+    CHECK(c.settings.size() == 107 && kContractCopySettingCount == 107);
     CHECK(c.groups.size() == 17 && kContractCopyGroupCount == 17);
     std::set<std::string> keys, groups;
     for (const ContractGroup& g : c.groups) {
@@ -198,7 +198,7 @@ static void the_copy() {
         if (s.type == SType::Boolean && s.has_default) CHECK(s.def.kind == SValue::Kind::Bool);
         if (s.type == SType::Integer && s.has_default) CHECK(s.def.kind == SValue::Kind::Int);
     }
-    CHECK(policy == 19 && file == 87);
+    CHECK(policy == 19 && file == 88);
     // the keys the screen reasons about are there with the type it expects
     const Setting* body = c.find("max_body_mb");
     CHECK(body != nullptr && body->type == SType::Integer && body->min == 1 && body->max == 256 && body->unit == "megabytes");
@@ -216,7 +216,7 @@ static void the_copy() {
     CHECK(grouped.size() == 17);
     std::size_t total = 0;
     for (const SettingsGroup& g : grouped) total += g.settings.size();
-    CHECK(total == 106);
+    CHECK(total == 107);
     CHECK(grouped[0].id == c.groups[0].id && grouped[0].id == "network");
 }
 
@@ -239,7 +239,7 @@ static void the_round_trip() {
     const Loaded l = load_contract(true, CallError::None, answer(200, contract_json(copy, kContractSchema, values)));
     CHECK(l.live && l.why.empty() && l.server_version == "0.2.0");
     CHECK(l.values.size() == 5 && l.values.at("max_body_mb").n == 8 && !l.values.at("network_open").b && l.values.at("auth_extra_apps").list.size() == 2 && l.values.at("mdns_name").s == "eh3d");
-    CHECK(l.contract.settings.size() == 106);
+    CHECK(l.contract.settings.size() == 107);
 }
 
 // ---- documents the screen does not draw ---------------------------------------------------------------------------------------------------------
@@ -275,7 +275,7 @@ static void loading_the_live_contract() {
     const Contract& copy = embedded_contract();
     // nobody answered, the answer was too long, a refusal, an answer that is no document: the copy of the screen, read only, and the reason
     Loaded l = load_contract(false, CallError::NoAnswer, Response());
-    CHECK(!l.live && l.why == "unreachable" && l.contract.settings.size() == 106 && l.values.empty());
+    CHECK(!l.live && l.why == "unreachable" && l.contract.settings.size() == 107 && l.values.empty());
     l = load_contract(false, CallError::NoServer, Response());
     CHECK(!l.live && l.why == "unreachable");
     l = load_contract(false, CallError::TooLong, Response());
@@ -293,7 +293,7 @@ static void loading_the_live_contract() {
     l = load_contract(true, CallError::None, answer(200, "<html>a router</html>"));
     CHECK(!l.live && l.why == "shape");
     l = load_contract(true, CallError::None, answer(200, contract_json(copy, "eh3d.settings.contract/2")));
-    CHECK(!l.live && l.why == "newer" && l.contract.settings.size() == 106);
+    CHECK(!l.live && l.why == "newer" && l.contract.settings.size() == 107);
     l = load_contract(true, CallError::None, answer(200, "{\"schema\":\"eh3d.settings.contract/1\",\"groups\":[],\"settings\":[{\"key\":\"a\"}]}"));
     CHECK(!l.live && l.why == "shape");
     // the reasons are told in the language of the operator
@@ -544,7 +544,7 @@ static void the_write_policy() {
     // every reason has a sentence in every language
     for (ReadOnlyWhy w : {ReadOnlyWhy::File, ReadOnlyWhy::Secret, ReadOnlyWhy::Copy, ReadOnlyWhy::Route, ReadOnlyWhy::Generic, ReadOnlyWhy::Role, ReadOnlyWhy::Disabled, ReadOnlyWhy::NotListed, ReadOnlyWhy::Running})
         for (std::size_t l = 0; l < kBaseLangCount; ++l) CHECK(!settings_text(read_only_text(w), static_cast<Lang>(l)).empty());
-    // with the whole copy: of the 106 settings the screen can change none by default, and with every switch open exactly the 19 keys of the security page
+    // with the whole copy: of the 107 settings the screen can change none by default, and with every switch open exactly the 19 keys of the security page
     int by_default = 0, all_open = 0;
     std::set<std::string> all_keys;
     for (const Setting& s2 : c.settings) all_keys.insert(s2.key);
@@ -642,7 +642,7 @@ static void the_page_of_the_copy() {
     Settings cfg;
     const PageView p = build_page(copy, cfg, Lang::En, "operator", false);
     CHECK(!p.live && p.source == "Copy kept in the screen: read only, without values" && p.why == "The server gives its settings to an administrator only.");
-    CHECK(p.groups.size() == 17 && p.row_count == 106 && p.editable_count == 0 && p.warnings.empty());
+    CHECK(p.groups.size() == 17 && p.row_count == 107 && p.editable_count == 0 && p.warnings.empty());
     for (const GroupView& g : p.groups) {
         CHECK(!g.label.empty());
         for (const RowView& r : g.rows) {
@@ -658,7 +658,7 @@ static void the_page_of_the_copy() {
     // every language shows its own labels (or the English ones when the fonts cannot draw them)
     for (std::size_t l = 0; l < kLangCount; ++l) {
         const PageView q = build_page(copy, cfg, static_cast<Lang>(l), "", false);
-        CHECK(q.row_count == 106);
+        CHECK(q.row_count == 107);
         for (const GroupView& g : q.groups) {
             CHECK(!g.label.empty());
             for (const RowView& r : g.rows) CHECK(!r.label.empty() && text_in_font(r.label.c_str()) && text_in_font(r.note.c_str()));
@@ -1034,7 +1034,7 @@ static void the_light_answer() {
     CHECK(list.has_value && list.value.kind == SValue::Kind::List && list.value.list.size() == 2 && list.truncated);
     CHECK(lv.entries.at("listen").value == SValue::of_text("127.0.0.1:18200"));
     const Loaded l = loaded_from_light(lv);
-    CHECK(l.light && !l.live && l.has_values() && l.contract.settings.size() == 106 && l.values.size() == 5);
+    CHECK(l.light && !l.live && l.has_values() && l.contract.settings.size() == 107 && l.values.size() == 5);
     CHECK(l.hidden.count("data_dir") == 1 && l.secret_keys.count("future_secret") == 1 && l.truncated.count("allowed_hosts") == 1 && l.overridden.count("slice_enabled") == 1);
     CHECK(l.values.count("data_dir") == 0 && l.values.count("future_secret") == 0);
     CHECK(l.hash == HashState::Differs && l.server_hash == kSampleHash && l.server_version == "0.2.0");
@@ -1054,7 +1054,7 @@ static void the_page_of_the_light_view() {
     cfg.settings_write_keys = "slice_enabled";
     const PageView p = build_page(l, cfg, Lang::En, "operator", false);
     CHECK(!p.live && p.source == "Values in force, read from the server (light view); texts from the copy kept in the screen (0.2.0)" && p.why.empty());
-    CHECK(p.row_count == 108 && p.editable_count == 0);  // 106 of the copy and two keys it does not know; the light view never opens a write
+    CHECK(p.row_count == 109 && p.editable_count == 0);  // 107 of the copy and two keys it does not know; the light view never opens a write
     CHECK(p.warnings.size() == 1 && p.warnings[0] == "2 settings of the server are not in the copy of the screen; they are shown read only.");  // the same contract hash: no word about it
     const RowView* hours = row_of(p, "session_hours");
     CHECK(hours != nullptr && hours->value == "12 h" && !hours->editable && !hours->not_default);
@@ -1191,7 +1191,7 @@ static void etag_and_not_modified() {
     // an unreachable server drops the held answer; the next request is whole again
     srv.down = true;
     ReadResult gone = read_settings(fetch, "operator", cfg, cache);
-    CHECK(gone.changed && !gone.loaded.light && gone.loaded.why == "unreachable" && gone.loaded.contract.settings.size() == 106 && !cache.has());
+    CHECK(gone.changed && !gone.loaded.light && gone.loaded.why == "unreachable" && gone.loaded.contract.settings.size() == 107 && !cache.has());
     srv.down = false;
     const int before = srv.light_with_tag;
     CHECK(read_settings(fetch, "operator", cfg, cache).loaded.light && srv.light_with_tag == before);
@@ -1263,7 +1263,7 @@ static void who_reads_what() {
     Fetch fn = [&none](const Request& r, Response& out, CallError& e, Conditional& c) { return none(r, out, e, c); };
     LightCache cn;
     const ReadResult rn = read_settings(fn, "", cfg, cn);
-    CHECK(!rn.loaded.light && rn.loaded.why == "unauthorized" && rn.loaded.contract.settings.size() == 106 && !cn.has());
+    CHECK(!rn.loaded.light && rn.loaded.why == "unauthorized" && rn.loaded.contract.settings.size() == 107 && !cn.has());
     // an older server without the route: the copy and the code it gave
     Fetch old = [](const Request&, Response& out, CallError& e, Conditional&) { e = CallError::None; out = Response(); out.status = 404; out.body = "{\"error\":\"not_found\"}"; return true; };
     LightCache cold;
@@ -1391,7 +1391,7 @@ static std::uint64_t light_storm(std::uint32_t seed, int rounds, int& fresh_coun
         CHECK(!rr.loaded.contract.settings.empty());
         CHECK(rr.loaded.live || rr.loaded.light || !rr.loaded.why.empty());
         const PageView pv = build_page(rr.loaded, cfg, Lang::En, role, false);
-        CHECK(pv.row_count >= 106 && pv.editable_count == 0);
+        CHECK(pv.row_count >= 107 && pv.editable_count == 0);
         for (const GroupView& g : pv.groups)
             for (const RowView& r : g.rows) {
                 CHECK(!has(r.value, "canary-secret-value") && !has(r.note, "canary-secret-value"));
@@ -1429,7 +1429,7 @@ static void bent_light_documents() {
         LightCache cache;
         Loaded l;
         const LightResult r = apply_light(true, CallError::None, answer(200, t), "", cache, l);
-        CHECK(l.contract.settings.size() == 106);  // there is always something to show: the answer or the copy
+        CHECK(l.contract.settings.size() == 107);  // there is always something to show: the answer or the copy
         if (r == LightResult::Fresh) { ++accepted; CHECK(l.light && l.values.count("future_secret") == 0); }
         else CHECK(!l.why.empty());
     }

@@ -8,6 +8,7 @@
 
 #include "lvgl.h"
 
+#include "../core/server_errors.hpp"
 #include "../core/ui_text.hpp"
 
 // the fonts of the screen (tools/make_fonts.py): the characters of the eight languages, with the symbols of LVGL as fallback
@@ -58,6 +59,9 @@ lv_obj_t* g_resume_button = nullptr;
 lv_obj_t* g_continue_button = nullptr;
 lv_obj_t* g_toolchange_button = nullptr;
 lv_obj_t* g_over_label = nullptr;
+lv_obj_t* g_format_button = nullptr;
+std::size_t g_format = 0;
+hmi::Lang g_format_lang = hmi::Lang::En;
 bool g_over_refuse = false;
 lv_obj_t* g_move_buttons[10] = {nullptr};
 int g_move_count = 0;
@@ -220,6 +224,15 @@ void on_spindle_over(lv_event_t*) {
     Request r;
     r.what = What::SetSpindleOver;
     r.refuse = g_over_refuse;
+    send(r);
+}
+
+void on_drill_format(lv_event_t*) {
+    g_format = (g_format + 1) % hmi::kDrillFormatCount;
+    lv_label_set_text(lv_obj_get_child(g_format_button, 0), hmi::drill_format_label(g_format, g_format_lang).c_str());
+    Request r;
+    r.what = What::SetDrillFormat;
+    r.format = static_cast<int>(g_format);
     send(r);
 }
 
@@ -388,6 +401,15 @@ void build(const hmi::Settings& s, const hmi::Layout& layout, void (*post)(const
         lv_obj_t* box = card(set, hmi::text(T::Spindle, s.language));
         lv_obj_set_size(box, LV_PCT(100), LV_SIZE_CONTENT);
         g_over_label = button(box, hmi::text(g_over_refuse ? T::OverRefuse : T::OverClip, s.language), on_spindle_over, nullptr, kSlate, 220, 64);
+    }
+
+    // the number format of a drilling file that declares none: each press takes the next one, the first is no choice; kept until the next start, hmi.cfg (drill_format) holds the lasting choice
+    if (hmi::controls_for(s.machine).spindle) {
+        g_format = hmi::drill_format_index(s.drill_format);
+        g_format_lang = s.language;
+        lv_obj_t* box = card(set, hmi::drill_format_title(s.language));
+        lv_obj_set_size(box, LV_PCT(100), LV_SIZE_CONTENT);
+        g_format_button = button(box, hmi::drill_format_label(g_format, s.language).c_str(), on_drill_format, nullptr, kSlate, 260, 64);
     }
 
     // the settings of the server, drawn from its contract: read only

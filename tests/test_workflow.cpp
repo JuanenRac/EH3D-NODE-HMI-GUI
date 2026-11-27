@@ -165,6 +165,11 @@ static void the_flow_of_a_job() {
     CHECK(w.choose("board.NCD", "M48\n", why) && w.stage() == Stage::FileChosen);
     CHECK(w.create_request("").path.empty());  // no machine set in the settings
     Request create = w.create_request("m1");
+    // the format of a drilling file goes only when it was chosen
+    CHECK(create.body.find("drill_format") == std::string::npos);
+    w.set_drill_format("mils");
+    CHECK(w.create_request("m1").body.find("\"drill_format\":\"mils\"") != std::string::npos);
+    w.set_drill_format("");
     CHECK(create.path == "/api/v1/machines/m1/jobs");
     CHECK(w.start_request().path.empty());  // nothing starts before the server has the job ready
 

@@ -124,8 +124,11 @@ public:
         places_ = places;
         rack_check_ = s.rack_check;
         rack_chain_ = s.rack_chain;
+        drill_format_ = s.drill_format;
         rack_fill();
     }
+    /// The number format of the drilling files that declare none, for the jobs sent from now on (empty: no choice).
+    void set_drill_format(const std::string& format) { drill_format_ = format; }
     /// True when the machine changes the tools itself (the model of the fleet says so) and the places of the bar count.
     bool atc() const { return changes_tools_itself(model_); }
     const std::vector<int>& rack_places() const { return places_; }
@@ -211,7 +214,7 @@ public:
         if (s.gcode) return job_gcode_request(machine, s.name, s.text, s.skip);
         RackPlan plan;
         const RackPlan* rack = rack_for_request(plan) ? &plan : nullptr;
-        return job_request(machine, s.route, s.name, s.text, s.tools, s.sw.off(), s.skip, rack);
+        return job_request(machine, s.route, s.name, s.text, s.tools, s.sw.off(), s.skip, rack, drill_format_);
     }
     /// True when the operator switched off every tool of the program in turn.
     bool nothing_to_do() const { return stage_ == Stage::FileChosen && slots_[cur_].loaded && slots_[cur_].sw.nothing_left(); }
@@ -596,6 +599,7 @@ private:
     bool no_work_ = false, resume_sent_ = false;
     RackAssignment rack_;
     std::vector<int> places_ = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+    std::string drill_format_;
     bool rack_check_ = true, rack_chain_ = true, rack_fallback_ = false, rack_retry_ = false;
     RackReply rack_reply_ = RackReply::NotSent;
     int stages_done_ = 0;

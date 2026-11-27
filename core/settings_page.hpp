@@ -114,6 +114,8 @@ inline std::string unit_short(const std::string& unit) {
     if (unit == "megabytes") return "MB";
     if (unit == "kilobytes") return "KB";
     if (unit == "gigabytes") return "GB";
+    if (unit == "millimetres") return "mm";
+    if (unit == "micrometres") return "\xC2\xB5m";
     if (unit == "lines" || unit == "places") return "";
     return unit;
 }

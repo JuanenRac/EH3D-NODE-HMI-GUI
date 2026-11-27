@@ -31,6 +31,7 @@ enum class T : unsigned {
     Tools, TimeLeft, EstTime, AtcAuto, AtcByHand, PutTool, WarnTiny, WarnFar, WarnScale, WarnCourse, WfRunning,
     Elapsed, EndsAt, Routed, Changes, StageDone, FollowRouting, BoardOut, JogLimit, JogRaise, WhyJobRunning, Continuous, RackTitle, RackNoSlot, RackShared, RackUndefined, RackNotChained,
     WhyNoSpindleHere, SrvDegraded,
+    ResumeStarts, ResumeRefused,
     Count
 };
 
@@ -162,6 +163,8 @@ inline const Row& text_row(T t) {
         {"The server did not chain the tool changes: put the tools in the bar in job order", "El servidor no encadenó los cambios: ponga las herramientas en la barra por orden", "Il server non ha concatenato i cambi: metti gli utensili nella barra in ordine di lavoro", "Der Server verkettete die Wechsel nicht: Werkzeuge in Auftragsfolge in die Leiste legen", "Outils non enchaînés : mettez-les dans la barre dans l'ordre du travail", "O servidor não encadeou as trocas: ponha as ferramentas na barra pela ordem do trabalho", "服务器没有连接换刀：请按作业顺序把刀具放入刀库", "サーバーが工具交換を連鎖しませんでした：ジョブの順にバーへ工具を置いてください"},
         {"This kind of machine has no spindle for the screen to start.", "Este tipo de máquina no tiene un husillo que la pantalla pueda arrancar.", "Questo tipo di macchina non ha un mandrino che lo schermo possa avviare.", "Diese Art Maschine hat keine Spindel, die der Bildschirm starten könnte.", "Ce type de machine n'a pas de broche que l'écran puisse démarrer.", "Este tipo de máquina não tem um fuso que o ecrã possa arrancar.", "这类机床没有可由屏幕启动的主轴。", "この種類のマシンには、画面から始動できるスピンドルがありません。"},
         {"The server answers but says it is not well", "El servidor responde pero dice que no está bien", "Il server risponde ma dice di non stare bene", "Der Server antwortet, meldet aber, dass es ihm nicht gut geht", "Le serveur répond mais dit qu'il ne va pas bien", "O servidor responde mas diz que não está bem", "服务器有响应，但表示状态不佳", "サーバーは応答しますが、不調だと伝えています"},
+        {"On continue the machine goes back and starts the spindle if it was on: keep clear", "Al seguir, la máquina vuelve y arranca el husillo si estaba en marcha: apártese", "Riprendendo, la macchina torna e avvia il mandrino se era acceso: stare lontani", "Beim Fortsetzen fährt die Maschine zurück und startet die Spindel wieder: Abstand!", "À la reprise, la machine revient et relance la broche si elle tournait : écartez-vous", "Ao continuar, a máquina volta e arranca o fuso se estava ligado: afaste-se", "继续后机床会返回停止处，原先开着的主轴会启动：请远离", "続行するとマシンは停止位置に戻り、回っていたスピンドルが始動します。離れてください"},
+        {"The server does not go on by itself", "El servidor no continúa por sí solo", "Il server non riprende da solo", "Der Server setzt nicht selbst fort", "Le serveur ne reprend pas seul", "O servidor não continua sozinho", "服务器无法自行继续", "サーバーは自動で続行しません"},
     }};
     return rows[static_cast<std::size_t>(t)];
 }

@@ -99,4 +99,12 @@ inline std::string reason_note(const std::string& why, Lang l) {
     return known.empty() ? why : known;
 }
 
+/// The note of a `resume-from` the server refused. For `bad_request` the server says why it does not go on by itself: that reason is kept after the words of the
+/// screen (it is the server's own text). Any other refusal is told as `reason_note` tells it.
+inline std::string resume_note(const std::string& why, Lang l) {
+    const std::string refused = "bad_request: ";
+    if (why.size() > refused.size() && why.compare(0, refused.size(), refused) == 0) return std::string(text(T::ResumeRefused, l)) + ": " + why.substr(refused.size());
+    return reason_note(why, l);
+}
+
 }  // namespace hmi

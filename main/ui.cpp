@@ -712,6 +712,7 @@ void show_flow(const FlowState& flow, const hmi::Settings& s) {
     }
     if (!flow.resumed_from.empty() && !flow.stopped) text += std::string(text.empty() ? "" : "\n") + hmi::text(T::ResumedFrom, s.language) + ": " + flow.resumed_from;
     if (!flow.next.empty()) text += std::string(text.empty() ? "" : "\n") + hmi::text(T::Next, s.language) + ": " + flow.next;
+    if (flow.resume_wait) text += std::string(text.empty() ? "" : "\n") + LV_SYMBOL_WARNING + " " + hmi::text(T::ResumeStarts, s.language);
     lv_label_set_text(g_flow_label, text.c_str());
     if (flow.can_resume) lv_obj_remove_flag(g_resume_button, LV_OBJ_FLAG_HIDDEN); else lv_obj_add_flag(g_resume_button, LV_OBJ_FLAG_HIDDEN);
     if (g_continue_button != nullptr) {

@@ -461,6 +461,12 @@ static void a_job_is_held_and_a_stop_reaches_the_job_of_the_machine() {
     w.on_fleet(fleet_of("j42", "waiting", 30, "resume"), "m1");
     CHECK(w.held() && w.release_request().path == "/api/v1/jobs/j42/resume");
     CHECK(w.resume_wait());  // a job that goes on after a stop: the screen says what letting it go does
+    CHECK(!w.power_wait());
+    // the second question, before the spindle or the laser goes on, is read from the answer of the server and said apart
+    FleetView second;
+    CHECK(parse_fleet("{\"machines\":[{\"id\":\"m1\",\"state\":\"waiting\",\"job\":{\"id\":\"j42\",\"pause\":{\"kind\":\"resume\",\"power_on\":true}}}]}", second));
+    w.on_fleet(second, "m1");
+    CHECK(w.power_wait() && w.held());
     w.on_fleet(fleet_of("j42", "busy", 31, ""), "m1");
     CHECK(w.stage() == Stage::Running && !w.held() && w.release_request().path.empty());
     // the tool change is answered with confirm, not with resume

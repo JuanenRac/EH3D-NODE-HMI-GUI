@@ -74,6 +74,7 @@ struct FlowState {
     bool failed = false;     // the stopped job failed (the server's reason is in `message`) instead of being cancelled
     bool can_resume = false;
     bool held = false;       // the job is held by the operator (pause): the button that lets it go on
+    bool power_wait = false;   // that job waits a second time, before the spindle or the laser goes on again
     bool resume_wait = false;  // the job goes on after a stop and waits before its first move: what letting it go does is said
     bool tool_wait = false;  // the job waits at a tool change: the button that answers it
     bool route = false;     // the program in turn is a routing one

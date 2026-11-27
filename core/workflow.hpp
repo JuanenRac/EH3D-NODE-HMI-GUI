@@ -272,6 +272,8 @@ public:
     /// True while a job that goes on after a stop waits before its first move: once it is let go, the server moves the machine back to where it stopped and
     /// starts the spindle the program had on, so the screen says it first.
     bool resume_wait() const { return stage_ == Stage::Waiting && pause_ == "resume"; }
+    /// True while that job waits a second time, before the server switches the spindle or the laser on again.
+    bool power_wait() const { return resume_wait() && power_on_; }
     /// True while the job waits for the operator at a tool change.
     bool tool_wait() const { return stage_ == Stage::Waiting && !held(); }
     /// The request that lets a held job go on.
@@ -328,6 +330,7 @@ public:
                 stage_ = (m.state == "waiting" || !m.pause_kind.empty()) ? Stage::Waiting : Stage::Running;
                 pause_ = m.pause_kind;
                 question_ = m.pause_question;
+                power_on_ = m.pause_power_on;
             } else if (stage_ == Stage::Running || stage_ == Stage::Waiting) {
                 // the machine has another job or none: ours is over; how it ended (done, stopped, failed) is asked of the server next
                 stage_ = Stage::Finished;
@@ -587,6 +590,7 @@ private:
     PlanView plan_;
     std::string model_;
     int steps_done_ = 0, steps_total_ = 0, pause_tool_ = 0;
+    bool power_on_ = false;
     double estimate_s_ = 0;
     ResumeApi api_ = ResumeApi::Unknown;
     bool no_work_ = false, resume_sent_ = false;

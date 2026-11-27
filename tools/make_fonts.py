@@ -73,6 +73,11 @@ def converter() -> list[str]:
     return [npx, "--yes", "lv_font_conv@1.5.3"]
 
 
+def compact(text: str) -> str:
+    """The lines of numbers of a font without their indentation and blanks: the same C, about a quarter smaller (a tracked file has a size limit)."""
+    return re.sub(r"(?m)^[ \t]+(0x[0-9a-f]+(?:, *0x[0-9a-f]+)*,?)[ \t]*$", lambda m: m.group(1).replace(" ", ""), text)
+
+
 def build(size: int, parts: list[set[int]]) -> Path:
     out = ROOT / "main" / "fonts" / f"eh3d_font_{size}.c"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -91,7 +96,7 @@ def build(size: int, parts: list[set[int]]) -> Path:
     if marker not in text:
         raise SystemExit("the generated font has no guard to place the declaration of the fallback before")
     text = text.replace(marker, f"/* the symbols of LVGL (arrows, play, pause) stay in the built-in font */\nLV_FONT_DECLARE({fallback})\n\n" + marker, 1)
-    out.write_text(text, encoding="utf-8", newline="\n")
+    out.write_text(compact(text), encoding="utf-8", newline="\n")
     return out
 
 

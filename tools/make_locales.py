@@ -22,8 +22,11 @@ GEN = ROOT / "core" / "locales_gen.hpp"
 RANGES = ROOT / "core" / "font_ranges.hpp"
 
 BASE = ["en", "es", "it", "de", "fr", "pt", "zh", "ja"]
-# Files that hold text the screen draws (the literals of these files must be in the font as well).
-LITERAL_FILES = ["core/ui_text.hpp", "core/quality.hpp", "core/keyboard.hpp", "main/ui.cpp"]
+# Files that can hold text the screen draws: every header of the core (the tables of the texts, the refusals of the server, the settings of the server, the
+# sentences of the speaker...) and the sources of the screen. Their literals must be in the font as well, so that no text of a language is shown in English
+# for lack of its characters. The two generated files that are not texts are left out.
+LITERAL_FOLDERS = [("core", "*.hpp"), ("main", "*.cpp"), ("main", "*.hpp")]
+NOT_TEXT = {"font_ranges.hpp", "locales_gen.hpp"}
 
 
 def key_names() -> list[str]:
@@ -55,7 +58,8 @@ def literal_chars() -> set[str]:
     chars: set[str] = set()
     # EH3D_EXTRA_LITERALS: more files (separated like a PATH) whose literals the fonts must hold too: the two touch screens share one set of fonts, so each is built with the literals of the other
     extra = [Path(p) for p in os.environ.get("EH3D_EXTRA_LITERALS", "").split(os.pathsep) if p]
-    for source in [ROOT / rel for rel in LITERAL_FILES] + extra:
+    own = [p for folder, pattern in LITERAL_FOLDERS for p in sorted((ROOT / folder).glob(pattern)) if p.name not in NOT_TEXT]
+    for source in own + extra:
         text = source.read_text(encoding="utf-8")
         for lit in re.findall(r'"((?:[^"\\\n]|\\.)*)"', text):
             chars.update(re.sub(r"\\.", "", lit))

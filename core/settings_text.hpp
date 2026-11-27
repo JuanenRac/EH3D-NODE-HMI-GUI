@@ -2,7 +2,7 @@
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 // The sentences of the page of the settings of the server, in the eight languages of the tables (the order of lang.hpp: en, es, it, de, fr, pt, zh, ja); the two former variants and any other code show the
 // English ones, like the refusals of the server (server_errors.hpp). A text with a character that the fonts of the screen do not hold is not drawn (it would be boxes): the English
-// text is shown instead until the fonts are built with the characters of this file. `{name}` holes are filled by `fill`. The words hmi.cfg, server.cfg and the names of the keys never change.
+// text is shown instead. The fonts hold the characters of this file, and the host tests fail when a sentence cannot be drawn. `{name}` holes are filled by `fill`. The words hmi.cfg, server.cfg and the names of the keys never change.
 #pragma once
 
 #include <array>

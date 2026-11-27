@@ -3,7 +3,7 @@
 // What the screen says when the server refuses: the server answers `{"error": "<code>", "detail": "..."}` and the screen shows the text of the code in the language of the operator
 // (the table is core/server_errors_gen.hpp, in the eight languages of the tables; the languages the project does not have are not offered). A code the table does not have (a newer server) is shown
 // as the code itself and its detail, so nothing is hidden. A text with a character that the fonts of the screen do not hold is not drawn (it would be boxes): the English text is
-// shown instead until the fonts are built with the characters of the table.
+// shown instead. The fonts hold the characters of the table, and the host tests fail when a text of it cannot be drawn.
 #pragma once
 
 #include <cstddef>

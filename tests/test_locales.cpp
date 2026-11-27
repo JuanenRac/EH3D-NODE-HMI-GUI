@@ -12,6 +12,7 @@
 #include "../core/keyboard.hpp"
 #include "../core/quality.hpp"
 #include "../core/ui_text.hpp"
+#include "../core/voice.hpp"
 
 using namespace hmi;
 
@@ -233,6 +234,13 @@ static void the_font() {
         used.insert(cps.begin(), cps.end());
         for (const std::string& row : letter_rows(l)) {
             decode(row.c_str(), cps);
+            used.insert(cps.begin(), cps.end());
+        }
+    }
+    // the sentences of the speaker are drawn too
+    for (std::size_t i = 0; i < kLangCount; ++i) {
+        for (const Alert a : {Alert::JobDone, Alert::ToolChange, Alert::Error, Alert::LinkLost, Alert::HardwareStop, Alert::Armed}) {
+            decode(alert_text(a, static_cast<Lang>(i)), cps);
             used.insert(cps.begin(), cps.end());
         }
     }

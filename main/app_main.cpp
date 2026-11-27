@@ -554,6 +554,7 @@ static void refresh_job() {
     flow.held = g_flow.held();
     flow.resume_wait = g_flow.resume_wait();
     flow.power_wait = g_flow.power_wait();
+    flow.plunge_wait = g_flow.plunge_wait();
     flow.tool_wait = g_flow.tool_wait();
     xSemaphoreGive(g_lock);
     ui::show_job(tools, spindle, advice, g_settings);

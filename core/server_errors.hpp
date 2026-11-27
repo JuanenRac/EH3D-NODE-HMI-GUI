@@ -69,7 +69,7 @@ inline bool needs_drill_format(const std::string& code, const std::string& detai
 
 /// What the screen says then, in the eight languages of the tables: where to choose the format.
 inline std::string drill_format_note(Lang l) {
-    static const char* const texts[8] = {
+    static const Row texts = {
         "The drill file does not say its number format: choose it in the settings of the screen",
         "El taladrado no dice su formato num\u00e9rico: el\u00edjalo en los ajustes de la pantalla",
         "La foratura non dice il formato numerico: sceglierlo nelle impostazioni dello schermo",
@@ -85,14 +85,14 @@ inline std::string drill_format_note(Lang l) {
 
 /// The title of the choice of the number format in the settings of the screen.
 inline const char* drill_format_title(Lang l) {
-    static const char* const texts[8] = {"Drill file format", "Formato de taladrado", "Formato foratura", "Bohrformat", "Format de per\u00e7age", "Formato de fura\u00e7\u00e3o", "钻孔格式", "ドリル書式"};
+    static const Row texts = {"Drill file format", "Formato de taladrado", "Formato foratura", "Bohrformat", "Format de per\u00e7age", "Formato de fura\u00e7\u00e3o", "钻孔格式", "ドリル書式"};
     const char* wanted = pick(texts, l);
     return text_in_font(wanted) ? wanted : texts[0];
 }
 /// The words of a choice (its place in `kDrillFormats`): the name of the format, or that none is chosen.
 inline std::string drill_format_label(std::size_t place, Lang l) {
     if (place > 0 && place < kDrillFormatCount) return kDrillFormats[place];
-    static const char* const texts[8] = {"Not chosen", "Sin elegir", "Non scelto", "Nicht gew\u00e4hlt", "Non choisi", "N\u00e3o escolhido", "未选择", "未選択"};
+    static const Row texts = {"Not chosen", "Sin elegir", "Non scelto", "Nicht gew\u00e4hlt", "Non choisi", "N\u00e3o escolhido", "未选择", "未選択"};
     const char* wanted = pick(texts, l);
     return text_in_font(wanted) ? wanted : texts[0];
 }

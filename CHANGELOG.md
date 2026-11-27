@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The contract of the settings of the server is the current one:** `answer_needs_question` is now on by default there (an answer to a job names its question, as this program already sends it). No other change.
+
 - **The summary of a drilling file supposes nothing about its numbers:** the screen reads them as the file declares them and, for what it leaves open, with the format chosen in `drill_format`. When neither says enough, or the choice cannot be what the file says, the holes and the tools are still counted but the size of the board is shown as not known, with no warning against the table, and a diameter with no unit is not shown. Before, coordinates without a point were taken as thousandths. Choosing the format reads a file not yet sent again and keeps the tools switched off. Host-tested only; not seen on a module.
 - **The documents say what exists today:** the releases carry firmware images built in GitHub Actions that have not been flashed or run on a module, the client of EH3D-SERVER is written and tested on a computer, and the copy of the settings contract has 107 settings (19 through the security page, 88 by file).
 - **Third-party notices:** `docs/THIRD_PARTY_NOTICES` holds the licences and copyright notices of ESP-IDF, of the third-party code inside it and of the components the firmware is built with, made by `tools/third_party_notices.py` from the build of every board. The CI fails when a declared dependency is not listed.

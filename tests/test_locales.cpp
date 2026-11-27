@@ -86,7 +86,7 @@ static std::vector<Entry> all_texts(Lang l) {
 static bool count_is(std::size_t a, std::size_t b) { return a == b; }
 
 static void the_keys() {
-    CHECK(count_is(kKeyCount, 165));  // (the enums are tied to the counts by static_assert in ui_text.hpp and quality.hpp)
+    CHECK(count_is(kKeyCount, 166));  // (the enums are tied to the counts by static_assert in ui_text.hpp and quality.hpp)
     // the order of the names follows the enums: every name checked against the enum it stands for
     const char* ui[] = {"Viewer", "Job", "Machine", "Settings", "Fleet", "Start", "Pause", "Stop", "Home", "Confirm", "Cancel", "Armed", "NotArmed", "StopPressed", "AckRelease", "Language", "Voice",
                         "Brightness", "Volume", "JogX", "JogY", "JogZ", "Spindle", "AskMove", "AskSpindle", "WhyHardwareStop", "WhyNotArmed", "WhyVoiceOff", "WhyNoStop", "WhySpindle", "Feed",

@@ -198,7 +198,7 @@ static void the_copy() {
         if (s.type == SType::Boolean && s.has_default) CHECK(s.def.kind == SValue::Kind::Bool);
         if (s.type == SType::Integer && s.has_default) CHECK(s.def.kind == SValue::Kind::Int);
     }
-    CHECK(policy == 19 && file == 86);
+    CHECK(policy == 19 && file == 87);
     // the keys the screen reasons about are there with the type it expects
     const Setting* body = c.find("max_body_mb");
     CHECK(body != nullptr && body->type == SType::Integer && body->min == 1 && body->max == 256 && body->unit == "megabytes");
@@ -1054,7 +1054,7 @@ static void the_page_of_the_light_view() {
     cfg.settings_write_keys = "slice_enabled";
     const PageView p = build_page(l, cfg, Lang::En, "operator", false);
     CHECK(!p.live && p.source == "Values in force, read from the server (light view); texts from the copy kept in the screen (0.2.0)" && p.why.empty());
-    CHECK(p.row_count == 107 && p.editable_count == 0);  // 106 of the copy and two keys it does not know; the light view never opens a write
+    CHECK(p.row_count == 108 && p.editable_count == 0);  // 106 of the copy and two keys it does not know; the light view never opens a write
     CHECK(p.warnings.size() == 1 && p.warnings[0] == "2 settings of the server are not in the copy of the screen; they are shown read only.");  // the same contract hash: no word about it
     const RowView* hours = row_of(p, "session_hours");
     CHECK(hours != nullptr && hours->value == "12 h" && !hours->editable && !hours->not_default);

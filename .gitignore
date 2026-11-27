@@ -34,3 +34,7 @@ Thumbs.db
 .DS_Store
 .idea/
 .vscode/
+
+# the table of the touch controller is provided by the user and has no licence: never in the repository
+gsl3680.fw
+gsl3680_firmware.h

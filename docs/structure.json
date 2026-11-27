@@ -175,6 +175,20 @@
         },
         {
           "desc": {
+            "en": "the touch table and its packets",
+            "es": "la tabla del táctil y sus paquetes",
+            "it": "la tabella del touch e i pacchetti",
+            "de": "Touch-Tabelle und Datenpakete",
+            "fr": "la table du tactile et ses paquets",
+            "pt": "a tabela do tátil e os pacotes",
+            "zh": "触摸数据表和数据包",
+            "ja": "タッチのテーブルとパケット"
+          },
+          "name": "gsl3680.hpp",
+          "tree_name": "gsl3680.hpp"
+        },
+        {
+          "desc": {
             "en": "texts, keyboards and notices",
             "es": "textos, teclados y avisos",
             "it": "testi, tastiere e avvisi",
@@ -299,6 +313,20 @@
           },
           "name": "module_p4.c  module_p4.h",
           "tree_name": "module_p4.c module_p4.h"
+        },
+        {
+          "desc": {
+            "en": "the GSL3680 touch controller",
+            "es": "el controlador táctil GSL3680",
+            "it": "il controller touch GSL3680",
+            "de": "der Touch-Controller GSL3680",
+            "fr": "le contrôleur tactile GSL3680",
+            "pt": "o controlador tátil GSL3680",
+            "zh": "GSL3680 触摸控制器",
+            "ja": "タッチコントローラー GSL3680"
+          },
+          "name": "touch_gsl3680.cpp",
+          "tree_name": "touch_gsl3680.cpp"
         },
         {
           "desc": {
@@ -428,6 +456,20 @@
           },
           "name": "test_settings.cpp",
           "tree_name": "test_settings.cpp"
+        },
+        {
+          "desc": {
+            "en": "the table and packets of the touch",
+            "es": "la tabla y los paquetes del táctil",
+            "it": "tabella e pacchetti del touch",
+            "de": "Tabelle und Pakete des Touch",
+            "fr": "table et paquets du tactile",
+            "pt": "tabela e pacotes do tátil",
+            "zh": "触摸数据表和数据包",
+            "ja": "タッチのテーブルとパケット"
+          },
+          "name": "test_touch.cpp",
+          "tree_name": "test_touch.cpp"
         },
         {
           "name": "test_machine.cpp",

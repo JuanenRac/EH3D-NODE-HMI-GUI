@@ -146,7 +146,7 @@ def build_components(descriptions: list[Path]) -> tuple[str, Path, dict[str, Pat
     return version, idf_path, managed, own
 
 
-def render(version: str, idf_path: Path, managed: dict[str, Path], own: set[str], screen_fonts: list[tuple[str, str, str]]) -> str:
+def render(version: str, idf_path: Path, managed: dict[str, Path], own: set[str], screen_fonts: list[tuple[str, str, str]], adapted: list[tuple[str, str]] = []) -> str:
     rows = []
     used: dict[str, tuple[str, list[str]]] = {}
 
@@ -174,6 +174,9 @@ def render(version: str, idf_path: Path, managed: dict[str, Path], own: set[str]
     for name, licence, text in screen_fonts:
         used.setdefault(" ".join(text.split()), (text, []))[1].append(f"font {name}")
         rows.append(f"{name} | font | {licence}")
+    for name, text in adapted:
+        used.setdefault(" ".join(text.split()), (text, []))[1].append(f"code adapted from {name}")
+        rows.append(f"{name} | adapted code | {kind([text])}")
     lines = ["Third-party notices", "===================", "", MARKER, "",
              "The firmware is built with ESP-IDF (Espressif Systems) and the components below. ESP-IDF holds third-party code of",
              "its own (FreeRTOS, lwIP, Mbed TLS, newlib and others); the licence and copyright files of every ESP-IDF component",
@@ -216,7 +219,8 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if found else 0
     if not args.descriptions:
         parser.error("give the project_description.json of every board")
-    written = render(*build_components(args.descriptions), font_texts(fonts(root)))
+    adapted = [(path.stem, clean(path.read_text(encoding="utf-8"))) for path in sorted((root / "docs" / "licenses").glob("*.txt"))]
+    written = render(*build_components(args.descriptions), font_texts(fonts(root)), adapted)
     missing = problems(written, names)
     if missing:
         raise SystemExit("the build does not hold what is declared: " + "; ".join(missing))

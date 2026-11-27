@@ -210,7 +210,7 @@ static void the_copy() {
     // the settings of a stop and of going on are in the copy, and their lengths are written with the international symbols
     for (const char* k : {"grbl_stop_wait_s", "resume_safe_z_mm", "resume_spindle_wait_s", "resume_plunge_feed_mm_min", "resume_position_tolerance_um"}) CHECK(c.find(k) != nullptr);
     const Setting* z = c.find("resume_safe_z_mm");
-    CHECK(z != nullptr && unit_short(z->unit) == "mm" && unit_short("micrometres") == "Âµm" && unit_short("mm/min") == "mm/min" && text_in_font("Âµm"));
+    CHECK(z != nullptr && unit_short(z->unit) == "mm" && unit_short("micrometres") == "\xC2\xB5m" && unit_short("mm/min") == "mm/min" && text_in_font("\xC2\xB5m"));
     // the groups come in the order of the contract and hold every setting
     const std::vector<SettingsGroup> grouped = group_settings(c);
     CHECK(grouped.size() == 17);

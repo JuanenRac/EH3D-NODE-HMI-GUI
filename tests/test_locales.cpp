@@ -154,7 +154,8 @@ static bool short_label(std::size_t key) {
     const std::string name = kKeyNames[key];
     if (name.compare(0, 2, "f.") == 0) return false;
     const char* sentences[] = {"ui.Why", "ui.Ask", "ui.StopPressed", "ui.AckRelease", "ui.SpindleCut", "ui.BoardTooBig", "q.NeedServer", "q.HoleWidth", "q.Title", "q.Calibrate",
-                              "ui.Ord", "ui.Cfg", "ui.Srv", "ui.Note", "ui.Err", "ui.Wf", "ui.Over", "ui.CancelsIn", "ui.Atc", "ui.Warn", "ui.Rack", "ui.Stage", "ui.BoardOut", "ui.Jog", "ui.WhyJob"};  // (the last ones fill a whole line)
+                              "ui.Ord", "ui.Cfg", "ui.Srv", "ui.Note", "ui.Err", "ui.Wf", "ui.Over", "ui.CancelsIn", "ui.Atc", "ui.Warn", "ui.Rack", "ui.Stage", "ui.BoardOut", "ui.Jog", "ui.WhyJob",
+                              "ui.ResumeStarts", "ui.ResumeRefused"};  // (the last ones fill a whole line)
     for (const char* s : sentences) {
         if (name.compare(0, std::strlen(s), s) == 0) return false;
     }

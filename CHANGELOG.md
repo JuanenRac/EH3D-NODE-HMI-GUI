@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Before the tool goes down into the work:** when a job that goes on after a stop waits with `pause.plunge`, the screen says that continuing takes the tool down, in the eight languages. Host-tested only; the screen itself has not been looked at on a board.
 - **The copy of the settings contract has `grbl_spindle_stop_on_pause`** (off by default: a pause of a GRBL machine also stops the spindle and the coolant), with the label and help of the server in the eight languages. Not tried on a screen.
 - **The second question before the spindle or the laser goes on:** when a job that goes on after a stop waits with `pause.power_on`, the screen says that continuing again switches the spindle or the laser on, in the eight languages. It needs a server with that question. Host-tested only.
 

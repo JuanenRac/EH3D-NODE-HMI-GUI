@@ -466,7 +466,12 @@ static void a_job_is_held_and_a_stop_reaches_the_job_of_the_machine() {
     FleetView second;
     CHECK(parse_fleet("{\"machines\":[{\"id\":\"m1\",\"state\":\"waiting\",\"job\":{\"id\":\"j42\",\"pause\":{\"kind\":\"resume\",\"power_on\":true}}}]}", second));
     w.on_fleet(second, "m1");
-    CHECK(w.power_wait() && w.held());
+    CHECK(w.power_wait() && w.held() && !w.plunge_wait());
+    // the question before the tool goes down is read and said apart too
+    FleetView third;
+    CHECK(parse_fleet("{\"machines\":[{\"id\":\"m1\",\"state\":\"waiting\",\"job\":{\"id\":\"j42\",\"pause\":{\"kind\":\"resume\",\"plunge\":true}}}]}", third));
+    w.on_fleet(third, "m1");
+    CHECK(w.plunge_wait() && w.held() && !w.power_wait());
     w.on_fleet(fleet_of("j42", "busy", 31, ""), "m1");
     CHECK(w.stage() == Stage::Running && !w.held() && w.release_request().path.empty());
     // the tool change is answered with confirm, not with resume

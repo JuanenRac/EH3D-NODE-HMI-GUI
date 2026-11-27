@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.1.3` |
 | Maturity | Scaffolding |
-| Tests | 13 host test programs (232671 checks counted) |
+| Tests | 13 host test programs (232677 checks counted) |
 | Stack | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | On real hardware | No: the firmware has not been built or flashed, and nothing has been connected to a machine |
 
@@ -45,7 +45,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Software | 🟠 | The ESP-IDF project (ESP32-P4, LVGL 9, the settings file in its own partition) is written; it has not been built or flashed. |
-| Tests | 🟡 | 13 host test programs pass (`ctest`): 232671 checks in the settings file, the gate, the spoken orders and alerts, the keyboards, the recorded notices, the server client and the texts of the screens in eight languages. |
+| Tests | 🟡 | 13 host test programs pass (`ctest`): 232677 checks in the settings file, the gate, the spoken orders and alerts, the keyboards, the recorded notices, the server client and the texts of the screens in eight languages. |
 | Safety rules | 🟡 | Every move and spindle order goes through the gate: confirmation on the screen, hardware-stop latch that only an acknowledgement on the screen clears once the button is up, no move while the link is not armed. Covered by tests; never run with a real stop button. |
 | Voice | 🟡 | Spoken orders and alerts are recognised and phrased in eight languages and tested as text; no microphone or speaker has been used. |
 | Screens | 🟠 | The machine, job (microSD), machines-and-stations and settings screens are written, lying down and standing up, in the look of the desktop program; the viewer tab is still an empty card. Only a drawing of the layout exists, not a capture of a module. |
@@ -175,6 +175,7 @@ Everything tuned is a line of `hmi.cfg` (copy `hmi.cfg.example` to the `config` 
 | `spindle_max_rpm` | 24000 | 0 - 65535 | the highest spindle speed it asks for (0: it never starts the spindle) |
 | `spindle_rpm` | 12000 | 0 - 65535 | the turns the spindle button asks for (0: the speed the job says); the gate cuts it to what the spindle gives |
 | `spindle_over` | clip | clip / refuse | an order for more turns than the spindle gives: cut to its top speed and say so, or refuse it |
+| `drill_format` | ask | ask / mils / inch-2.4-tz / inch-2.4-lz / metric-3.3-tz / metric-3.3-lz | the number format of a drilling file that declares none; sent as `drill_format` of the job. Also chosen in the settings of the screen until the next start |
 | `hw_stop_required` | on | on / off | control the machine only while the hardware stop input is wired and released |
 | `voice_orders` | off | on / off | accept spoken orders |
 | `voice_confirm` | off | on / off | accept a spoken yes as the confirmation of a move |

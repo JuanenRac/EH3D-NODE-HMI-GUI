@@ -329,7 +329,7 @@ inline Request job_resume_from_request(const std::string& id) { return {"POST", 
 /// A drilling or routing job made of the text of the file of the card (and its tool table when there is one); the server plans it and keeps
 /// it ready: nothing starts until `job_start_request` is sent, and that goes through the gate of the screen.
 inline Request job_request(const std::string& machine, bool route, const std::string& name, const std::string& file_text, const std::string& tools_text,
-                           const std::vector<int>& skip_tools = {}, int skip = 0, const RackPlan* rack = nullptr) {
+                           const std::vector<int>& skip_tools = {}, int skip = 0, const RackPlan* rack = nullptr, const std::string& drill_format = {}) {
     std::string files = std::string("{") + json_quote(route ? "plt" : "ncd") + ":" + json_quote(file_text);
     if (!tools_text.empty()) files += std::string(",") + json_quote(route ? "rtd" : "dtd") + ":" + json_quote(tools_text);
     files += "}";
@@ -340,6 +340,8 @@ inline Request job_request(const std::string& machine, bool route, const std::st
         for (std::size_t i = 0; i < skip_tools.size(); ++i) body += (i ? "," : "") + std::to_string(skip_tools[i]);
         body += "]";
     }
+    // the format of a drilling file that does not declare one goes only when it was chosen
+    if (!route && !drill_format.empty()) body += ",\"drill_format\":" + json_quote(drill_format);
     // how many holes (or paths) are already done: a job that goes on after a stop does only the rest
     if (skip > 0) body += ",\"skip\":" + std::to_string(skip);
     // the bar of the tool changer (chaining and places of the tools): the request of the second version; without it the request is the one of the first version

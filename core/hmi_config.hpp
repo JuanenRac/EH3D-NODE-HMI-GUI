@@ -54,6 +54,7 @@ struct Settings {
     std::uint32_t jog_max_mm = 20;          // the longest single jog the screen sends, 1..200
     std::uint32_t spindle_max_rpm = 24000;  // the highest speed the screen asks for, 0..65535 (0: the screen never starts the spindle)
     std::uint32_t spindle_rpm = 12000;     // the turns the spindle button asks for, 0..65535 (0: the speed the job says); the gate cuts it to what the spindle gives
+    std::string drill_format;               // how a drilling file that declares no number format is read (`drill_format` of the job); empty: nobody chose, the server refuses such a file
     SpindleOver spindle_over = SpindleOver::Clip;  // clip: an order for more turns than the spindle gives is cut to its top speed and the screen says so; refuse: it is refused
     bool hw_stop_required = true;           // the screen controls the machine only while the hardware stop input is wired and released
     std::uint32_t link_idle_ms = 3000;      // the link is lost when the machine stays quiet this long, 200..60000
@@ -105,6 +106,16 @@ struct Settings {
 
 /// Why a line of the settings file cannot be used: the screen says it in the language of the operator (the English `what` is for the log).
 enum class CfgReason { NotPair, Range, OnOff, Choice, Token, Unknown };
+
+/// The number formats a drilling file that declares none can be read with. The first entry is no choice: nothing is chosen until a person does.
+inline constexpr const char* kDrillFormats[] = {"", "mils", "inch-2.4-tz", "inch-2.4-lz", "metric-3.3-tz", "metric-3.3-lz"};
+inline constexpr std::size_t kDrillFormatCount = sizeof(kDrillFormats) / sizeof(kDrillFormats[0]);
+/// The place of a format in the list; 0 (no choice) for a text that is none of them.
+inline std::size_t drill_format_index(const std::string& name) {
+    for (std::size_t i = 1; i < kDrillFormatCount; ++i)
+        if (name == kDrillFormats[i]) return i;
+    return 0;
+}
 
 struct Problem {
     int line = 0;
@@ -271,6 +282,10 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (num(0, 65535)) s.spindle_max_rpm = n;
         } else if (key == "spindle_rpm") {
             if (num(0, 65535)) s.spindle_rpm = n;
+        } else if (key == "drill_format") {
+            if (val == "ask") s.drill_format.clear();
+            else if (drill_format_index(val) != 0) s.drill_format = val;
+            else bad("not ask, mils, inch-2.4-tz, inch-2.4-lz, metric-3.3-tz or metric-3.3-lz");
         } else if (key == "spindle_over") {
             if (val == "clip") s.spindle_over = SpindleOver::Clip;
             else if (val == "refuse") s.spindle_over = SpindleOver::Refuse;

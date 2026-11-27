@@ -31,7 +31,7 @@ struct State {
     std::string note;  // the line under the buttons: why something was refused, what the server answered
 };
 
-enum class What { Action, AckRelease, Confirm, Cancel, SetOrientation, SetLanguage, OpenCard, SendJob, RefreshCard, LightSet, InspectRun, InspectPreset, InspectCalibrate, ToggleTool, Resume, SetSpindleOver };
+enum class What { Action, AckRelease, Confirm, Cancel, SetOrientation, SetLanguage, OpenCard, SendJob, RefreshCard, LightSet, InspectRun, InspectPreset, InspectCalibrate, ToggleTool, Resume, SetSpindleOver, SetDrillFormat };
 
 /// What the operator did on the screen; the application runs it through the gate.
 struct Request {
@@ -44,6 +44,7 @@ struct Request {
     int hole = 0;         // InspectRun: the index in hmi::kHoleWidths
     int preset = 0;       // InspectPreset: 0 standard, 1 fine pitch, 2 prototype
     int tool = 0;         // ToggleTool: the number of the tool (the pen of a routing file) to switch off or on
+    int format = 0;       // SetDrillFormat: the place of the format in hmi::kDrillFormats
     bool refuse = false;  // SetSpindleOver: true = refuse an order beyond the spindle, false = cut it to the top speed
 };
 

@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.1.3` |
 | Maturité | Échafaudage |
-| Tests | 13 programmes de test sur ordinateur (232671 vérifications comptées) |
+| Tests | 13 programmes de test sur ordinateur (232677 vérifications comptées) |
 | Pile technique | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Sur du matériel réel | Non : le firmware n'a été ni compilé ni flashé et rien n'a été branché sur une machine |
 
@@ -45,7 +45,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Logiciel | 🟠 | Le projet ESP-IDF (ESP32-P4, LVGL 9, le fichier de réglages dans sa propre partition) est écrit ; il n'a été ni compilé ni flashé. |
-| Tests | 🟡 | 13 programmes de test sur ordinateur réussissent (`ctest`) : 232671 vérifications du fichier de réglages, de la porte, des ordres et alertes vocaux, des claviers, des avis enregistrés, du client du serveur et des textes des écrans en huit langues. |
+| Tests | 🟡 | 13 programmes de test sur ordinateur réussissent (`ctest`) : 232677 vérifications du fichier de réglages, de la porte, des ordres et alertes vocaux, des claviers, des avis enregistrés, du client du serveur et des textes des écrans en huit langues. |
 | Règles de sécurité | 🟡 | Tout déplacement et tout ordre de broche passent par la porte : confirmation à l'écran, verrou de l'arrêt matériel que seul un acquittement à l'écran lève une fois le bouton relâché, aucun déplacement si la liaison n'est pas armée. Couvert par des tests ; jamais essayé avec un vrai bouton d'arrêt. |
 | Voix | 🟡 | Les ordres et alertes vocaux sont reconnus et formulés en huit langues et testés comme du texte ; aucun micro ni haut-parleur n'a été utilisé. |
 | Écrans | 🟠 | Les écrans machine, travail (microSD), machines et stations et réglages sont écrits, en paysage et en portrait, avec l'aspect du programme de bureau ; l'onglet vue est encore une carte vide. Il n'existe qu'un dessin de la mise en page, pas une capture d'un module. |
@@ -175,6 +175,7 @@ Tout ce qui est ajusté est une ligne de `hmi.cfg` (copiez `hmi.cfg.example` dan
 | `spindle_max_rpm` | 24000 | 0 - 65535 | la vitesse de broche maximale demandée (0 : ne démarre jamais la broche) |
 | `spindle_rpm` | 12000 | 0 - 65535 | les tours que demande le bouton de la broche (0 : la vitesse du travail) ; la porte les ramène à ce que donne la broche |
 | `spindle_over` | clip | clip / refuse | un ordre qui demande plus de tours que la broche n'en donne : ramené à sa vitesse maximale avec avertissement, ou refusé |
+| `drill_format` | ask | ask / mils / inch-2.4-tz / inch-2.4-lz / metric-3.3-tz / metric-3.3-lz | le format numérique d'un perçage qui ne le déclare pas ; envoyé comme `drill_format` du travail. Se choisit aussi dans les réglages de l'écran jusqu'au prochain démarrage |
 | `hw_stop_required` | on | on / off | ne pilote la machine que si l'entrée d'arrêt matériel est câblée et relâchée |
 | `voice_orders` | off | on / off | accepte les ordres vocaux |
 | `voice_confirm` | off | on / off | accepte un oui parlé comme confirmation d'un déplacement |

@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.1.3` |
 | Reifegrad | Gerüst |
-| Tests | 13 Host-Testprogramme (232671 Prüfungen gezählt) |
+| Tests | 13 Host-Testprogramme (232677 Prüfungen gezählt) |
 | Technologie-Stack | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Auf echter Hardware | Nein: die Firmware wurde weder gebaut noch geflasht, und nichts wurde an eine Maschine angeschlossen |
 
@@ -45,7 +45,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Software | 🟠 | Das ESP-IDF-Projekt (ESP32-P4, LVGL 9, die Einstellungsdatei in einer eigenen Partition) ist geschrieben; es wurde weder gebaut noch geflasht. |
-| Tests | 🟡 | 13 Host-Testprogramme bestehen (`ctest`): 232671 Prüfungen zu Einstellungsdatei, Tor, gesprochenen Befehlen und Hinweisen, den Tastaturen, den aufgenommenen Hinweisen, dem Server-Client und den Bildschirmtexten in acht Sprachen. |
+| Tests | 🟡 | 13 Host-Testprogramme bestehen (`ctest`): 232677 Prüfungen zu Einstellungsdatei, Tor, gesprochenen Befehlen und Hinweisen, den Tastaturen, den aufgenommenen Hinweisen, dem Server-Client und den Bildschirmtexten in acht Sprachen. |
 | Sicherheitsregeln | 🟡 | Jede Bewegung und jeder Spindelbefehl läuft durch das Tor: Bestätigung auf dem Bildschirm, Hardware-Stopp-Sperre, die bei losgelassenem Taster nur eine Quittung auf dem Bildschirm löst, keine Bewegung bei nicht scharfer Verbindung. Durch Tests gedeckt; nie mit einem echten Stopp-Taster erprobt. |
 | Sprache | 🟡 | Gesprochene Befehle und Hinweise werden in acht Sprachen erkannt und formuliert und als Text getestet; es wurde kein Mikrofon und kein Lautsprecher benutzt. |
 | Bildschirme | 🟠 | Die Bildschirme Maschine, Auftrag (microSD), Maschinen und Stationen und Einstellungen sind geschrieben, im Quer- und im Hochformat, im Aussehen des Desktop-Programms; der Reiter Ansicht ist noch eine leere Karte. Es gibt nur eine Zeichnung des Layouts, keine Aufnahme eines Moduls. |
@@ -175,6 +175,7 @@ Alles Abgestimmte ist eine Zeile in `hmi.cfg` (kopiere `hmi.cfg.example` in die 
 | `spindle_max_rpm` | 24000 | 0 - 65535 | die höchste angeforderte Spindeldrehzahl (0: startet nie die Spindel) |
 | `spindle_rpm` | 12000 | 0 - 65535 | die Drehzahl, die die Spindeltaste anfordert (0: die Drehzahl des Auftrags); das Tor kürzt sie auf das, was die Spindel liefert |
 | `spindle_over` | clip | clip / refuse | ein Befehl mit mehr Drehzahl, als die Spindel liefert: auf ihre Höchstdrehzahl kürzen und melden, oder ablehnen |
+| `drill_format` | ask | ask / mils / inch-2.4-tz / inch-2.4-lz / metric-3.3-tz / metric-3.3-lz | das Zahlenformat einer Bohrdatei ohne Angabe; wird als `drill_format` des Auftrags gesendet. Auch in den Einstellungen des Bildschirms bis zum nächsten Start wählbar |
 | `hw_stop_required` | on | on / off | steuert die Maschine nur bei verdrahtetem und gelöstem Hardware-Stopp-Eingang |
 | `voice_orders` | off | on / off | nimmt gesprochene Befehle an |
 | `voice_confirm` | off | on / off | nimmt ein gesprochenes Ja als Bestätigung einer Bewegung an |

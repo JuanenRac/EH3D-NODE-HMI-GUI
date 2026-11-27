@@ -49,6 +49,8 @@ spindle_max_rpm = 24000
 spindle_rpm = 12000
 # an order for more turns than the spindle gives: clip (cut to its top speed and say so) or refuse
 spindle_over = clip
+# the number format of a drilling file that declares none: ask (the server refuses such a file), mils, inch-2.4-tz, inch-2.4-lz, metric-3.3-tz or metric-3.3-lz
+drill_format = ask
 # control the machine only while the hardware stop input is wired and released
 hw_stop_required = on
 # 200..60000

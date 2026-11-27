@@ -30,7 +30,7 @@
 |---|---|
 | Versión | `0.1.3` |
 | Madurez | Andamiaje |
-| Pruebas | 13 programas de prueba en el ordenador (232671 comprobaciones contadas) |
+| Pruebas | 13 programas de prueba en el ordenador (232677 comprobaciones contadas) |
 | Pila tecnológica | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | En hardware real | No: el firmware no se ha compilado ni grabado y nada se ha conectado a una máquina |
 
@@ -45,7 +45,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Software | 🟠 | El proyecto ESP-IDF (ESP32-P4, LVGL 9, el fichero de ajustes en su propia partición) está escrito; no se ha compilado ni grabado. |
-| Pruebas | 🟡 | Pasan 13 programas de prueba en el ordenador (`ctest`): 232671 comprobaciones del fichero de ajustes, la compuerta, las órdenes y avisos por voz, los teclados, los avisos grabados, el cliente del servidor y los textos de las pantallas en ocho idiomas. |
+| Pruebas | 🟡 | Pasan 13 programas de prueba en el ordenador (`ctest`): 232677 comprobaciones del fichero de ajustes, la compuerta, las órdenes y avisos por voz, los teclados, los avisos grabados, el cliente del servidor y los textos de las pantallas en ocho idiomas. |
 | Reglas de seguridad | 🟡 | Todo movimiento y toda orden de husillo pasan por la compuerta: confirmación en la pantalla, pestillo de la parada por hardware que solo borra un reconocimiento en la pantalla cuando el pulsador está suelto, ningún movimiento con el enlace sin armar. Cubierto por pruebas; nunca probado con un pulsador de parada real. |
 | Voz | 🟡 | Las órdenes y avisos por voz se reconocen y se formulan en ocho idiomas y se prueban como texto; no se ha usado ningún micrófono ni altavoz. |
 | Pantallas | 🟠 | Las pantallas de máquina, trabajo (microSD), máquinas y estaciones y ajustes están escritas, en horizontal y en vertical, con el aspecto del programa de escritorio; la pestaña del visor sigue siendo una tarjeta vacía. Solo existe un dibujo del diseño, no una captura de un módulo. |
@@ -175,6 +175,7 @@ Todo lo afinado es una línea de `hmi.cfg` (copia `hmi.cfg.example` a la partici
 | `spindle_max_rpm` | 24000 | 0 - 65535 | la velocidad máxima de husillo que pide (0: nunca arranca el husillo) |
 | `spindle_rpm` | 12000 | 0 - 65535 | las vueltas que pide el botón del husillo (0: la velocidad que dice el trabajo); la compuerta las recorta a lo que da el husillo |
 | `spindle_over` | clip | clip / refuse | una orden con más vueltas de las que da el husillo: se recorta a su velocidad máxima y se avisa, o se rechaza |
+| `drill_format` | ask | ask / mils / inch-2.4-tz / inch-2.4-lz / metric-3.3-tz / metric-3.3-lz | el formato numérico de un taladrado que no lo declara; viaja como `drill_format` del trabajo. También se elige en los ajustes de la pantalla hasta el siguiente arranque |
 | `hw_stop_required` | on | on / off | maneja la máquina solo con la entrada de parada por hardware cableada y suelta |
 | `voice_orders` | off | on / off | acepta órdenes por voz |
 | `voice_confirm` | off | on / off | acepta un sí hablado como confirmación de un movimiento |

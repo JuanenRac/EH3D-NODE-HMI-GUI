@@ -86,6 +86,12 @@ static void the_line_of_a_refusal() {
     CHECK(reason_note("unauthorized: bad token", Lang::Es) == server_error_text("unauthorized", Lang::Es));
     CHECK(reason_note("unauthorized", Lang::Fr) == server_error_text("unauthorized", Lang::Fr));
     CHECK(reason_note("The file is empty", Lang::En) == "The file is empty");
+    // a drilling file with no declared format is told with where to choose it, in each of the eight languages; any other bad drilling file keeps the words of its code
+    const std::string refused = "bad_ncd: EH3D-FORMATS-014: line 3: the format is not declared (drill_format)";
+    CHECK(reason_note(refused, Lang::En).find("choose it in the settings") != std::string::npos);
+    CHECK(reason_note(refused, Lang::Es).find("(EH3D-FORMATS-014)") != std::string::npos && reason_note(refused, Lang::Es) != reason_note(refused, Lang::En));
+    CHECK(error_note(refusal(422, "{\"error\":\"bad_ncd\",\"detail\":\"EH3D-FORMATS-014: line 3\"}"), Lang::Fr) == drill_format_note(Lang::Fr));
+    CHECK(reason_note("bad_ncd: line 3 is not a hole", Lang::En) == server_error_text("bad_ncd", Lang::En));
     // a job the server does not go on with by itself: its reason is kept after the words of the screen; any other refusal is told as before
     CHECK(resume_note("bad_request: the stop was not confirmed", Lang::En) == "The server does not go on by itself: the stop was not confirmed");
     CHECK(resume_note("bad_request: G91", Lang::Es) == std::string(text(T::ResumeRefused, Lang::Es)) + ": G91");

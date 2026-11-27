@@ -738,6 +738,12 @@ extern "C" void app_main() {
                 case ui::What::SetSpindleOver:
                     g_settings.spindle_over = r.refuse ? hmi::SpindleOver::Refuse : hmi::SpindleOver::Clip;  // kept until the next start: hmi.cfg (spindle_over = ...) holds the lasting choice
                     break;
+                case ui::What::SetDrillFormat:
+                    g_settings.drill_format = hmi::kDrillFormats[static_cast<std::size_t>(r.format) % hmi::kDrillFormatCount];  // kept until the next start: hmi.cfg (drill_format = ...) holds the lasting choice
+                    xSemaphoreTake(g_lock, portMAX_DELAY);
+                    g_flow.set_drill_format(g_settings.drill_format);
+                    xSemaphoreGive(g_lock);
+                    break;
                 case ui::What::Resume: {
                     std::string why;
                     xSemaphoreTake(g_lock, portMAX_DELAY);

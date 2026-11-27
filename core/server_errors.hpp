@@ -11,6 +11,7 @@
 #include <string>
 
 #include "font_ranges.hpp"
+#include "hmi_config.hpp"
 #include "lang.hpp"
 #include "server_errors_gen.hpp"
 #include "server_link.hpp"
@@ -63,6 +64,39 @@ inline std::string server_error_text(const std::string& code, Lang l) {
     return text_in_font(wanted) ? wanted : row->texts[0];
 }
 
+/// Whether the server refused a drilling file because it does not declare how its numbers are written (or the chosen format does not fit it).
+inline bool needs_drill_format(const std::string& code, const std::string& detail) { return code == "bad_ncd" && detail.find("EH3D-FORMATS-014") != std::string::npos; }
+
+/// What the screen says then, in the eight languages of the tables: where to choose the format.
+inline std::string drill_format_note(Lang l) {
+    static const Row texts = {
+        "The drill file does not say its number format: choose it in the settings of the screen",
+        "El taladrado no dice su formato num\u00e9rico: el\u00edjalo en los ajustes de la pantalla",
+        "La foratura non dice il formato numerico: sceglierlo nelle impostazioni dello schermo",
+        "Die Bohrdatei nennt ihr Zahlenformat nicht: in den Einstellungen des Bildschirms w\u00e4hlen",
+        "Le per\u00e7age ne dit pas son format : choisissez-le dans les r\u00e9glages de l'\u00e9cran",
+        "A fura\u00e7\u00e3o n\u00e3o diz o formato num\u00e9rico: escolha-o nas defini\u00e7\u00f5es do ecr\u00e3",
+        "钻孔文件未声明数值格式：请在屏幕设置中选择",
+        "ドリルファイルに数値の書式がありません。画面の設定で選んでください",
+    };
+    const char* wanted = pick(texts, l);
+    return std::string(text_in_font(wanted) ? wanted : texts[0]) + " (EH3D-FORMATS-014)";
+}
+
+/// The title of the choice of the number format in the settings of the screen.
+inline const char* drill_format_title(Lang l) {
+    static const Row texts = {"Drill file format", "Formato de taladrado", "Formato foratura", "Bohrformat", "Format de per\u00e7age", "Formato de fura\u00e7\u00e3o", "钻孔格式", "ドリル書式"};
+    const char* wanted = pick(texts, l);
+    return text_in_font(wanted) ? wanted : texts[0];
+}
+/// The words of a choice (its place in `kDrillFormats`): the name of the format, or that none is chosen.
+inline std::string drill_format_label(std::size_t place, Lang l) {
+    if (place > 0 && place < kDrillFormatCount) return kDrillFormats[place];
+    static const Row texts = {"Not chosen", "Sin elegir", "Non scelto", "Nicht gew\u00e4hlt", "Non choisi", "N\u00e3o escolhido", "未选择", "未選択"};
+    const char* wanted = pick(texts, l);
+    return text_in_font(wanted) ? wanted : texts[0];
+}
+
 namespace detail {
 /// Whether a text is shaped like a code of the server (lower case letters, digits and underscores).
 inline bool looks_like_code(const std::string& s) {
@@ -79,6 +113,7 @@ inline std::string error_note(const Response& r, Lang l) {
     Json j;
     if (parse_json(r.body, j) && j.type == Json::Type::Object) {
         const std::string code = j.str("error");
+        if (needs_drill_format(code, j.str("detail"))) return drill_format_note(l);
         if (!code.empty()) {
             const std::string known = server_error_text(code, l);
             if (!known.empty()) return known;
@@ -94,6 +129,7 @@ inline std::string reason_note(const std::string& why, Lang l) {
     if (plain != why) return plain;
     const std::size_t cut = why.find(": ");
     const std::string code = cut == std::string::npos ? why : why.substr(0, cut);
+    if (needs_drill_format(code, why)) return drill_format_note(l);
     if (!detail::looks_like_code(code)) return why;
     const std::string known = server_error_text(code, l);
     return known.empty() ? why : known;

@@ -30,7 +30,7 @@
 |---|---|
 | Versione | `0.1.3` |
 | Maturità | Impalcatura |
-| Test | 13 programmi di test sul computer (232671 controlli contati) |
+| Test | 13 programmi di test sul computer (232677 controlli contati) |
 | Stack tecnologico | C++17, ESP-IDF 5.5, LVGL 9, ESP32-P4 |
 | Su hardware reale | No: il firmware non è stato compilato né scritto e nulla è stato collegato a una macchina |
 
@@ -45,7 +45,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Software | 🟠 | Il progetto ESP-IDF (ESP32-P4, LVGL 9, il file delle impostazioni in una partizione propria) è scritto; non è stato compilato né scritto sul chip. |
-| Test | 🟡 | 13 programmi di test sul computer passano (`ctest`): 232671 controlli sul file delle impostazioni, il varco, gli ordini e gli avvisi vocali, le tastiere, gli avvisi registrati, il client del server e i testi delle schermate in otto lingue. |
+| Test | 🟡 | 13 programmi di test sul computer passano (`ctest`): 232677 controlli sul file delle impostazioni, il varco, gli ordini e gli avvisi vocali, le tastiere, gli avvisi registrati, il client del server e i testi delle schermate in otto lingue. |
 | Regole di sicurezza | 🟡 | Ogni movimento e ogni ordine al mandrino passa dal varco: conferma sullo schermo, blocco dell'arresto hardware che solo una conferma sullo schermo toglie a pulsante rilasciato, nessun movimento con il collegamento non armato. Coperto da test; mai provato con un vero pulsante di arresto. |
 | Voce | 🟡 | Ordini e avvisi vocali sono riconosciuti e formulati in otto lingue e provati come testo; nessun microfono o altoparlante è stato usato. |
 | Schermate | 🟠 | Le schermate macchina, lavoro (microSD), macchine e stazioni e impostazioni sono scritte, in orizzontale e in verticale, con l'aspetto del programma desktop; la scheda della vista è ancora una scheda vuota. Esiste solo un disegno del layout, non una cattura di un modulo. |
@@ -175,6 +175,7 @@ Tutto ciò che si regola è una riga di `hmi.cfg` (copia `hmi.cfg.example` nella
 | `spindle_max_rpm` | 24000 | 0 - 65535 | la velocità massima del mandrino richiesta (0: non avvia mai il mandrino) |
 | `spindle_rpm` | 12000 | 0 - 65535 | i giri che chiede il pulsante del mandrino (0: la velocità del lavoro); il varco li riduce a ciò che il mandrino dà |
 | `spindle_over` | clip | clip / refuse | un ordine con più giri di quelli che il mandrino dà: ridotto alla sua velocità massima con avviso, oppure rifiutato |
+| `drill_format` | ask | ask / mils / inch-2.4-tz / inch-2.4-lz / metric-3.3-tz / metric-3.3-lz | il formato numerico di una foratura che non lo dichiara; inviato come `drill_format` del lavoro. Si sceglie anche nelle impostazioni dello schermo fino al prossimo avvio |
 | `hw_stop_required` | on | on / off | comanda la macchina solo con l'ingresso di arresto hardware collegato e rilasciato |
 | `voice_orders` | off | on / off | accetta ordini vocali |
 | `voice_confirm` | off | on / off | accetta un sì parlato come conferma di un movimento |

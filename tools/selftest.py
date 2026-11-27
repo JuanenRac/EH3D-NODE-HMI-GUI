@@ -322,6 +322,7 @@ RULES = {
     "confirm_moves": _flag, "confirm_timeout_ms": _num(1000, 60000), "jog_max_mm": _num(1, 200),
     "spindle_max_rpm": _num(0, 65535), "spindle_rpm": _num(0, 65535),
     "spindle_over": lambda v: "" if v in ("clip", "refuse") else "not clip or refuse",
+    "drill_format": lambda v: "" if v in ("ask", "mils", "inch-2.4-tz", "inch-2.4-lz", "metric-3.3-tz", "metric-3.3-lz") else "not ask, mils, inch-2.4-tz, inch-2.4-lz, metric-3.3-tz or metric-3.3-lz",
     "hw_stop_required": _flag, "link_idle_ms": _num(200, 60000), "stale_after_s": _num(2, 3600), "stop_retries": _num(0, 100), "stop_retry_ms": _num(200, 10000),
     "voice_alerts": _flag, "voice_orders": _flag, "voice_confirm": _flag,
     "volume_percent": _num(0, 100), "mic_gain_percent": _num(0, 100),

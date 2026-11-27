@@ -695,6 +695,8 @@ void show_job(const hmi::ToolSwitch& tools, const hmi::SpindleView& spindle, con
         std::snprintf(line, sizeof line, "%s%s: %s %d-%d rpm", text.empty() ? "" : "\n", hmi::text(T::Spindle, s.language), spindle.kind.c_str(), spindle.min_rpm, spindle.max_rpm);
         text += line;
     }
+    // a drilling file whose size cannot be told: said, so that no warning about the table is not taken for a board that fits
+    if (file.format_unknown) text += std::string(text.empty() ? "" : "\n") + LV_SYMBOL_WARNING + " " + hmi::drill_size_unknown_note(s.language);
     // the board against the table of the machine: said only when it fits neither lying nor turned; nothing is blocked (the server refuses what lies outside the table)
     if (advice.fit.kind == hmi::FitKind::TooBig) {
         char line[200];

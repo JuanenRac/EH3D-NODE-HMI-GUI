@@ -11,7 +11,7 @@ say so and the login of the screen is an administrator.
 ## What the screen shows
 
 The page of the settings has a block "Server settings": one line telling where the values come from, one line saying why, when the copy is shown, any warning about what the server and
-`hmi.cfg` disagree on, and then the 15 groups of the contract with every setting (89 today) and its value in force. A value that is not the default of the contract is drawn in amber.
+`hmi.cfg` disagree on, and then the 17 groups of the contract with every setting (105 today) and its value in force. A value that is not the default of the contract is drawn in amber.
 A switch is On or Off, a number has its unit (`12 h`, `8 MB`), a list is its items, a secret is `Hidden` (the screen never asks for it and never shows what the server might send).
 
 * **Live contract.** The link asks `GET /api/v1/settings/contract` after the first reading of the fleet and then every `settings_poll_s` seconds (600 by default). The answer is about
@@ -44,7 +44,7 @@ text or list is cut (`truncated`). It has no text, so the page keeps the labels 
 
 ## What the screen may change
 
-Of the 89 settings, 70 are set in `server.cfg` and read when the server starts: the screen shows them and says where they are set, and never writes them. The other 19 are the keys of the
+Of the 105 settings, 86 are set in `server.cfg` and read when the server starts: the screen shows them and says where they are set, and never writes them. The other 19 are the keys of the
 security page, written through `PUT /api/v1/auth/policy`. The screen changes one of those only when **all** of this holds:
 
 1. The contract is the live one (the copy never writes).
@@ -73,7 +73,7 @@ is read after a restart), refused (the text of the code in the eight languages),
 | Slicing, Bambu Lab printers, Design program | 6 + 3 + 5 | 1 + 1 + 1 | `slice_enabled`, `bambu_lan_enabled`, `design_run` are the switches of a feature; list one only for a commissioning visit with an administrator at the screen |
 | Computing tasks, Artifacts, Project store, Shared catalogs, Events and queues | 33 | 0 | read only |
 
-The default is that the screen changes none of the 89: that is the recommended setup for a screen left next to a machine. The right place to change the security of the server is Studio, in
+The default is that the screen changes none of the 105: that is the recommended setup for a screen left next to a machine. The right place to change the security of the server is Studio, in
 the office, with a person logged in. `settings_write_keys` exists for the visit where an administrator stands at the screen.
 
 ## The lines of `hmi.cfg`
@@ -94,7 +94,7 @@ A line that cannot be used is reported and changes nothing, so a typing mistake 
 
 * `tools/gen_settings_contract.py` writes `core/settings_contract_gen.hpp` from `docs/settings-contract.json` of the server (the eight texts in the order of the tables of the screen) and
   refuses a document the screen would not understand. With the server next to this repository `--check` fails when the file is not the one the server gives; without it the check is skipped.
-* `tests/test_settings.cpp` is the guard that does not need the server: the copy has 89 settings in 15 groups, 19 through the policy and 70 in the file, every one with a label, a help and a
+* `tests/test_settings.cpp` is the guard that does not need the server: the copy has 105 settings in 17 groups, 19 through the policy and 86 in the file, every one with a label, a help and a
   warning in the eight languages and a control the screen knows; the copy written as the server writes it and read again by the code that reads the live answer is the same;
   the rules of who may change what, the steps of a change, the answers by code, the texts and a seeded storm of failures against a simulated server.
 * A key the server adds is shown the next time the contract is read; the file is regenerated with the next copy of the server's contract.

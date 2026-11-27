@@ -269,6 +269,9 @@ public:
     Request pause_request() const { return stage_ == Stage::Running ? job_pause_request(job_id_) : Request{}; }
     /// True while the operator's hold keeps the job waiting (the server shows it waiting with a `hold` or `resume` pause), as opposed to a tool change.
     bool held() const { return stage_ == Stage::Waiting && (pause_ == "hold" || pause_ == "resume"); }
+    /// True while a job that goes on after a stop waits before its first move: once it is let go, the server moves the machine back to where it stopped and
+    /// starts the spindle the program had on, so the screen says it first.
+    bool resume_wait() const { return stage_ == Stage::Waiting && pause_ == "resume"; }
     /// True while the job waits for the operator at a tool change.
     bool tool_wait() const { return stage_ == Stage::Waiting && !held(); }
     /// The request that lets a held job go on.

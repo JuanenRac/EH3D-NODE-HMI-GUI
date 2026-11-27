@@ -25,7 +25,7 @@ inline constexpr const char* kLightSchema = "eh3d.settings.values/1";
 inline constexpr const char* kLightSchemaFamily = "eh3d.settings.values/";
 /// What stands in the place of the value of a secret key.
 inline constexpr const char* kSecretMark = "***";
-/// The most keys one answer may have (the contract has 89), the longest text of a value and the most items of a list that the screen accepts: more is a document it does not trust.
+/// The most keys one answer may have (the contract has 105), the longest text of a value and the most items of a list that the screen accepts: more is a document it does not trust.
 inline constexpr std::size_t kLightMaxKeys = 256;
 inline constexpr std::size_t kLightMaxText = 1024;
 inline constexpr std::size_t kLightMaxItems = 64;

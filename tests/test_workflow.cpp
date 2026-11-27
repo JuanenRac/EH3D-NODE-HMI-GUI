@@ -460,6 +460,7 @@ static void a_job_is_held_and_a_stop_reaches_the_job_of_the_machine() {
     CHECK(w.confirm_request().path.empty());  // a held job is not at a tool change
     w.on_fleet(fleet_of("j42", "waiting", 30, "resume"), "m1");
     CHECK(w.held() && w.release_request().path == "/api/v1/jobs/j42/resume");
+    CHECK(w.resume_wait());  // a job that goes on after a stop: the screen says what letting it go does
     w.on_fleet(fleet_of("j42", "busy", 31, ""), "m1");
     CHECK(w.stage() == Stage::Running && !w.held() && w.release_request().path.empty());
     // the tool change is answered with confirm, not with resume

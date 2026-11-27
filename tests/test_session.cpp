@@ -86,6 +86,11 @@ static void the_line_of_a_refusal() {
     CHECK(reason_note("unauthorized: bad token", Lang::Es) == server_error_text("unauthorized", Lang::Es));
     CHECK(reason_note("unauthorized", Lang::Fr) == server_error_text("unauthorized", Lang::Fr));
     CHECK(reason_note("The file is empty", Lang::En) == "The file is empty");
+    // a job the server does not go on with by itself: its reason is kept after the words of the screen; any other refusal is told as before
+    CHECK(resume_note("bad_request: the stop was not confirmed", Lang::En) == "The server does not go on by itself: the stop was not confirmed");
+    CHECK(resume_note("bad_request: G91", Lang::Es) == std::string(text(T::ResumeRefused, Lang::Es)) + ": G91");
+    CHECK(resume_note("unauthorized: bad token", Lang::Es) == server_error_text("unauthorized", Lang::Es));
+    CHECK(resume_note("bad_request", Lang::Fr) == reason_note("bad_request", Lang::Fr));
     CHECK(reason_note("brand_new_code: why", Lang::En) == "brand_new_code: why");
     CHECK(reason_note("", Lang::En).empty() && reason_note("Some Sentence: with colon", Lang::Es) == "Some Sentence: with colon");
     CHECK(reason_note(reasons::kEmptyFile, Lang::Es) == reason_text(reasons::kEmptyFile, Lang::Es));

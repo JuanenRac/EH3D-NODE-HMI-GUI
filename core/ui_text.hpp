@@ -31,7 +31,7 @@ enum class T : unsigned {
     Tools, TimeLeft, EstTime, AtcAuto, AtcByHand, PutTool, WarnTiny, WarnFar, WarnScale, WarnCourse, WfRunning,
     Elapsed, EndsAt, Routed, Changes, StageDone, FollowRouting, BoardOut, JogLimit, JogRaise, WhyJobRunning, Continuous, RackTitle, RackNoSlot, RackShared, RackUndefined, RackNotChained,
     WhyNoSpindleHere, SrvDegraded,
-    ResumeStarts, ResumeRefused, PowerStarts,
+    ResumeStarts, ResumeRefused, PowerStarts, PlungeStarts,
     Count
 };
 
@@ -166,6 +166,7 @@ inline const Row& text_row(T t) {
         {"On continue the machine goes back and starts the spindle if it was on: keep clear", "Al seguir, la máquina vuelve y arranca el husillo si estaba en marcha: apártese", "Riprendendo, la macchina torna e avvia il mandrino se era acceso: stare lontani", "Beim Fortsetzen fährt die Maschine zurück und startet die Spindel wieder: Abstand!", "À la reprise, la machine revient et relance la broche si elle tournait : écartez-vous", "Ao continuar, a máquina volta e arranca o fuso se estava ligado: afaste-se", "继续后机床会返回停止处，原先开着的主轴会启动：请远离", "続行するとマシンは停止位置に戻り、回っていたスピンドルが始動します。離れてください"},
         {"The server does not go on by itself", "El servidor no continúa por sí solo", "Il server non riprende da solo", "Der Server setzt nicht selbst fort", "Le serveur ne reprend pas seul", "O servidor não continua sozinho", "服务器无法自行继续", "サーバーは自動で続行しません"},
         {"Continue again to switch the spindle or the laser on: keep clear", "Al seguir otra vez se enciende el husillo o el láser: apártese", "Continuando ancora si accende il mandrino o il laser: stare lontani", "Beim erneuten Fortsetzen gehen Spindel oder Laser an: Abstand!", "En continuant encore, la broche ou le laser s'allume : écartez-vous", "Ao continuar de novo, o fuso ou o laser liga-se: afaste-se", "再次继续将开启主轴或激光：请远离", "もう一度続行するとスピンドルかレーザーが始動します。離れてください"},
+        {"Continue again to take the tool down into the work: keep clear", "Al seguir otra vez la herramienta baja a la pieza: apártese", "Continuando ancora l'utensile scende nel pezzo: stare lontani", "Beim erneuten Fortsetzen taucht das Werkzeug ein: Abstand!", "En continuant encore, l'outil descend dans la pièce : écartez-vous", "Ao continuar de novo, a ferramenta desce para a peça: afaste-se", "再次继续后刀具下到工件：请远离", "もう一度続行すると工具がワークへ下ります：離れてください"},
     }};
     return rows[static_cast<std::size_t>(t)];
 }

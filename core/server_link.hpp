@@ -651,6 +651,7 @@ struct MachineRow {
     int pause_tool = 0;                    // the tool the job waits for at a tool change (0 when the server does not say it)
     std::string pause_question;            // the identifier of what the job asks now (empty when the server does not say it)
     bool pause_power_on = false;           // the job waits before the server switches the spindle or the laser on again (`pause.power_on`)
+    bool pause_plunge = false;             // the job waits before the server takes the tool down into the work again (`pause.plunge`)
     int steps_done = 0, steps_total = 0;   // the holes (paths) of the job done and in all; the lines of a G-code program
     double estimate_s = 0;                 // how long the movements of the job take, as the server estimated it (0: not said)
     // what the server may say about the head and the tool while the job runs (every one is optional: an answer without them leaves the card with dashes)
@@ -700,6 +701,8 @@ inline bool parse_fleet(const std::string& body, FleetView& out) {
                 r.pause_question = pause->str("question");
                 const Json* power = pause->get("power_on");
                 r.pause_power_on = power && power->type == Json::Type::Bool && power->b;
+                const Json* plunge = pause->get("plunge");
+                r.pause_plunge = plunge && plunge->type == Json::Type::Bool && plunge->b;
                 r.pause_tool = static_cast<int>(pause->int_in("tool", -1000000000L, 1000000000L));
             }
             const bool lines = job->str("kind") == "gcode";

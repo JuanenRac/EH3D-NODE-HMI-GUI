@@ -11,7 +11,7 @@ say so and the login of the screen is an administrator.
 ## What the screen shows
 
 The page of the settings has a block "Server settings": one line telling where the values come from, one line saying why, when the copy is shown, any warning about what the server and
-`hmi.cfg` disagree on, and then the 17 groups of the contract with every setting (105 today) and its value in force. A value that is not the default of the contract is drawn in amber.
+`hmi.cfg` disagree on, and then the 17 groups of the contract with every setting (107 today) and its value in force. A value that is not the default of the contract is drawn in amber.
 A switch is On or Off, a number has its unit (`12 h`, `8 MB`), a list is its items, a secret is `Hidden` (the screen never asks for it and never shows what the server might send).
 
 * **Live contract.** The link asks `GET /api/v1/settings/contract` after the first reading of the fleet and then every `settings_poll_s` seconds (600 by default). The answer is about
@@ -44,7 +44,7 @@ text or list is cut (`truncated`). It has no text, so the page keeps the labels 
 
 ## What the screen may change
 
-Of the 105 settings, 86 are set in `server.cfg` and read when the server starts: the screen shows them and says where they are set, and never writes them. The other 19 are the keys of the
+Of the 107 settings, 88 are set in `server.cfg` and read when the server starts: the screen shows them and says where they are set, and never writes them. The other 19 are the keys of the
 security page, written through `PUT /api/v1/auth/policy`. The screen changes one of those only when **all** of this holds:
 
 1. The contract is the live one (the copy never writes).
@@ -73,7 +73,7 @@ is read after a restart), refused (the text of the code in the eight languages),
 | Slicing, Bambu Lab printers, Design program | 6 + 3 + 5 | 1 + 1 + 1 | `slice_enabled`, `bambu_lan_enabled`, `design_run` are the switches of a feature; list one only for a commissioning visit with an administrator at the screen |
 | Computing tasks, Artifacts, Project store, Shared catalogs, Events and queues | 33 | 0 | read only |
 
-The default is that the screen changes none of the 105: that is the recommended setup for a screen left next to a machine. The right place to change the security of the server is Studio, in
+The default is that the screen changes none of the 107: that is the recommended setup for a screen left next to a machine. The right place to change the security of the server is Studio, in
 the office, with a person logged in. `settings_write_keys` exists for the visit where an administrator stands at the screen.
 
 ## The lines of `hmi.cfg`
@@ -94,7 +94,7 @@ A line that cannot be used is reported and changes nothing, so a typing mistake 
 
 * `tools/gen_settings_contract.py` writes `core/settings_contract_gen.hpp` from `docs/settings-contract.json` of the server (the eight texts in the order of the tables of the screen) and
   refuses a document the screen would not understand. With the server next to this repository `--check` fails when the file is not the one the server gives; without it the check is skipped.
-* `tests/test_settings.cpp` is the guard that does not need the server: the copy has 105 settings in 17 groups, 19 through the policy and 86 in the file, every one with a label, a help and a
+* `tests/test_settings.cpp` is the guard that does not need the server: the copy has 107 settings in 17 groups, 19 through the policy and 88 in the file, every one with a label, a help and a
   warning in the eight languages and a control the screen knows; the copy written as the server writes it and read again by the code that reads the live answer is the same;
   the rules of who may change what, the steps of a change, the answers by code, the texts and a seeded storm of failures against a simulated server.
 * A key the server adds is shown the next time the contract is read; the file is regenerated with the next copy of the server's contract.
@@ -102,5 +102,5 @@ A line that cannot be used is reported and changes nothing, so a typing mistake 
 ## What has not run
 
 The core (`core/settings_contract.hpp`, `core/settings_values.hpp`, `core/settings_text.hpp`, `core/settings_page.hpp`) is tested on a computer, including with AddressSanitizer and UBSan. The firmware that reads the
-contract and draws the block is written but has not been built or run on the module: the controls that change a setting (a switch, a number pad) are not drawn yet, so today the
-page is read only on the screen even with every line of `hmi.cfg` open. A text with a character that the fonts of the screen do not hold is shown in English; the fonts hold the characters of the eight languages of the copy the screen carries, and a text of a newer server with another character is shown in English until the fonts are built again. The new fonts have not been seen on the module. The parse of the answer (some 250 KB) has not been measured on the module. The reading of the `ETag` header in the sockets (`main/server_link.cpp`) and the light view on the module have not been built or run against a real server; the light view and its `304` are tested against a simulated server.
+contract and draws the block is part of the firmware that is built, but it has not been run on the module: the controls that change a setting (a switch, a number pad) are not drawn yet, so today the
+page is read only on the screen even with every line of `hmi.cfg` open. A text with a character that the fonts of the screen do not hold is shown in English; the fonts hold the characters of the eight languages of the copy the screen carries, and a text of a newer server with another character is shown in English until the fonts are built again. The new fonts have not been seen on the module. The parse of the answer (some 250 KB) has not been measured on the module. The reading of the `ETag` header in the sockets (`main/server_link.cpp`) and the light view on the module have not been run on a module or against a real server; the light view and its `304` are tested against a simulated server.

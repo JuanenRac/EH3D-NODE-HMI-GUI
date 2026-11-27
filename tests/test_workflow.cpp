@@ -9,6 +9,7 @@
 #include "../core/job_memory.hpp"
 #include "../core/orientation.hpp"
 #include "../core/sdfiles.hpp"
+#include "../core/server_errors.hpp"
 #include "../core/server_link.hpp"
 #include "../core/workflow.hpp"
 
@@ -563,8 +564,8 @@ static void the_box_of_a_file_and_the_table() {
     FileSummary d = summarize_drill("M48\nMETRIC\nT1C0.8\n%\nT1\nX010.0Y020.0\nX110.5Y070.0\nM30\n");
     CHECK(d.box.known && near_to(d.box.width(), 100.5) && near_to(d.box.depth(), 50.0));
     // a Bungard file in whole thousandths of an inch: 2.050 in to 4.050 in is 50.8 mm; a coordinate left out holds the one before
-    FileSummary i = summarize_drill("INCH\nT1C0.03\nT1\nX02050Y01538\nX04050\nY02538\n");
-    CHECK(i.box.known && near_to(i.box.width(), 50.8) && near_to(i.box.depth(), 25.4));
+    FileSummary i = summarize_drill("INCH\nT1C0.03\nT1\nX02050Y01538\nX04050\nY02538\n", "mils");
+    CHECK(i.box.known && !i.format_unknown && near_to(i.box.width(), 50.8) && near_to(i.box.depth(), 25.4));
     // a file with no coordinates has no box
     CHECK(!summarize_drill("M48\nT1C0.8\n%\nT1\nM30\n").box.known);
     // a routing file: plotter steps, 40 to the millimetre; the moves of the pen up count too
@@ -682,6 +683,76 @@ static void the_notes_of_the_server_about_a_job() {
 }
 
 // A drilling file whose tools are used in another order than their numbers: T3 first, then T1, then T2 (the order the server works them in).
+static void a_drilling_file_that_does_not_say_its_numbers() {
+    // an INCH header with nothing else, and no header at all: without a choice the holes are counted and the size is not known
+    const std::string inch = "M48\nINCH\nT1C0.03\n%\nT1\nX1000Y1000\nX2000Y3000\nM30\n";
+    const std::string bare = "%\nT06\nX1000Y1000\nX2000Y3000\nM30\n";
+    for (const std::string& text : {inch, bare}) {
+        const FileSummary s = summarize_drill(text);
+        CHECK(s.format_unknown && !s.box.known && s.total == 2);
+        CHECK(fit_on_table(s.box, 10, 10).kind == FitKind::Unknown);
+        // each choice gives its own size: ten times apart for the two inch readings of the same digits
+        const FileSummary mils = summarize_drill(text, "mils");
+        CHECK(!mils.format_unknown && near_to(mils.box.width(), 25.4) && near_to(mils.box.depth(), 50.8));
+        const FileSummary tz = summarize_drill(text, "inch-2.4-tz");
+        CHECK(near_to(tz.box.width(), 2.54) && near_to(tz.box.depth(), 5.08));
+        const FileSummary lz = summarize_drill(text, "inch-2.4-lz");
+        CHECK(near_to(lz.box.width(), 254) && near_to(lz.box.depth(), 508));
+        // a text that is no format is no choice
+        CHECK(summarize_drill(text, "inch").format_unknown && summarize_drill(text, "inch-0.4-tz").format_unknown && summarize_drill(text, "inch-2.4-xx").format_unknown);
+    }
+    // a file with no header at all takes the metric choice too (the one that says INCH does not, see below)
+    const FileSummary metric = summarize_drill(bare, "metric-3.3-tz");
+    CHECK(!metric.format_unknown && near_to(metric.box.width(), 1) && near_to(metric.box.depth(), 2));
+    // a diameter with no unit named is not known without a choice, nor with a choice that does not fit the file
+    const std::string no_unit = "M48\nT1C0.8\n%\nT1\nX1000Y1000\n";
+    CHECK(summarize_drill(no_unit).tools[0].diameter_mm == 0);
+    CHECK(near_to(summarize_drill(no_unit, "metric-3.3-tz").tools[0].diameter_mm, 0.8));
+    CHECK(near_to(summarize_drill(inch).tools[0].diameter_mm, 0.762));
+    const FileSummary misfit = summarize_drill("M48\n;FILE_FORMAT=2:4\nT1C0.8\n%\nT1\nX1000Y1000\n", "mils");
+    CHECK(misfit.format_unknown && misfit.tools[0].diameter_mm == 0);
+
+    // what the file declares wins over the choice, and a choice that cannot be what it says leaves the size unknown
+    const std::string declared = "M48\nMETRIC,TZ,000.000\nT1C0.8\n%\nT1\nX1000Y2000\nX3000Y5000\n";
+    const FileSummary d = summarize_drill(declared, "inch-2.4-lz");
+    CHECK(!d.format_unknown && near_to(d.box.width(), 2) && near_to(d.box.depth(), 3));
+    const FileSummary lz = summarize_drill("M48\nINCH,LZ\n%\nT1\nX01Y01\nX02Y02\n", "inch-2.4-tz");  // the zeros of the header, the digits of the choice
+    CHECK(!lz.format_unknown && near_to(lz.box.width(), 25.4) && near_to(lz.box.depth(), 25.4));
+    CHECK(summarize_drill("M48\nMETRIC\n%\nT1\nX1000Y1000\n", "mils").format_unknown);
+    CHECK(summarize_drill(inch, "metric-3.3-tz").format_unknown);
+    // `;FILE_FORMAT` gives the digits (also written with a blank); a number that fills them needs nothing said of the zeros
+    const FileSummary full = summarize_drill("M48\n; FILE_FORMAT=3:3\nMETRIC\n%\nT1\nX001000Y-002000\nX003000Y000000\n");
+    CHECK(!full.format_unknown && near_to(full.box.width(), 2) && near_to(full.box.depth(), 2));
+    CHECK(summarize_drill("M48\n;FILE_FORMAT=3:3\nMETRIC\n%\nT1\nX1000Y2000\n").format_unknown);
+    // M71 and M72 name the unit; with the unit known, numbers with a point and zeros need no format
+    CHECK(near_to(summarize_drill("M71\nT1\nX1.5Y0\nX4.0Y0\n").box.width(), 2.5));
+    CHECK(near_to(summarize_drill("M72,TZ\n;FILE_FORMAT=2:4\nT1\nX10000Y0\nX20000Y0\n").box.width(), 25.4));
+    CHECK(summarize_drill("M72,TZ\nT1\nX10000Y0\nX20000Y0\n").format_unknown);  // the unit and the zeros, but no digits
+    CHECK(!summarize_drill("M48\nMETRIC\n%\nT1\nX0Y0\n").format_unknown);
+
+    // the screen follows the setting: choosing the format reads the file again and keeps the tools switched off
+    Workflow w;
+    std::string why;
+    const std::string two = "M48\nINCH\nT1C0.03\nT2C0.04\n%\nT1\nX1000Y1000\nT2\nX2000Y3000\nM30\n";
+    CHECK(w.choose("board.NCD", two, why) && w.tool_switch().summary().format_unknown);
+    CHECK(w.advice(TableSize{200, 200}).fit.kind == FitKind::Unknown);
+    CHECK(w.toggle_tool(2));
+    w.set_drill_format("mils");
+    CHECK(!w.tool_switch().summary().format_unknown && w.tool_switch().is_off(2));
+    CHECK(w.advice(TableSize{200, 200}).fit.kind == FitKind::Fits && near_to(w.advice(TableSize{200, 200}).board_w, 25.4));
+    w.set_drill_format("");
+    CHECK(w.tool_switch().summary().format_unknown && w.tool_switch().is_off(2));
+    // a file chosen after the setting is read with it
+    w.set_drill_format("inch-2.4-lz");
+    CHECK(w.choose("other.NCD", two, why) && near_to(w.advice(TableSize{200, 200}).board_w, 254));
+    // once the job is made it keeps the summary it was sent with
+    CHECK(w.on_created(ok(201, "{\"id\":\"j1\"}"), why));
+    w.set_drill_format("mils");
+    CHECK(near_to(w.advice(TableSize{200, 200}).board_w, 254));
+    CHECK(std::strlen(drill_size_unknown_note(Lang::En)) > 0 && std::string(drill_size_unknown_note(Lang::Es)) != drill_size_unknown_note(Lang::En));
+    CHECK(std::string(drill_size_unknown_note(Lang::Zh)) != drill_size_unknown_note(Lang::En) && std::string(drill_size_unknown_note(Lang::Ja)) != drill_size_unknown_note(Lang::En));
+}
+
 static const char* kDrillOrder = "M48\nMETRIC\nT1C0.8\nT2C1.0\nT3C0.6\n%\nT3\nX1Y1\nX2Y2\nT1\nX3Y3\nX4Y4\nX5Y5\nT2\nX6Y6\nM30\n";
 
 static void the_bar_of_the_job_and_the_model() {
@@ -835,6 +906,7 @@ int main() {
     the_notes_of_the_server_about_a_job();
     the_bar_of_the_job_and_the_model();
     the_plan_the_server_made();
+    a_drilling_file_that_does_not_say_its_numbers();
     std::printf("%d checks, %d failed\n", g_checks, g_failed);
     return g_failed == 0 ? 0 : 1;
 }

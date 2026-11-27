@@ -76,7 +76,7 @@ public:
         s.gcode = gcode;
         s.name = name;
         s.text = text;
-        if (!gcode) s.sw.reset(route ? summarize_route(text) : summarize_drill(text));  // every tool starts on; a G-code program has no tools to switch
+        if (!gcode) s.sw.reset(route ? summarize_route(text) : summarize_drill(text, drill_format_));  // every tool starts on; a G-code program has no tools to switch
         last_ = route ? 1 : 0;
         cur_ = first_to_do();
         job_id_.clear();
@@ -125,10 +125,15 @@ public:
         rack_check_ = s.rack_check;
         rack_chain_ = s.rack_chain;
         drill_format_ = s.drill_format;
+        reread_drill();
         rack_fill();
     }
-    /// The number format of the drilling files that declare none, for the jobs sent from now on (empty: no choice).
-    void set_drill_format(const std::string& format) { drill_format_ = format; }
+    /// The number format of the drilling files that declare none, for the jobs sent from now on (empty: no choice). The summary of a drilling file still to send is read again.
+    void set_drill_format(const std::string& format) {
+        drill_format_ = format;
+        reread_drill();
+        rack_fill();
+    }
     /// True when the machine changes the tools itself (the model of the fleet says so) and the places of the bar count.
     bool atc() const { return changes_tools_itself(model_); }
     const std::vector<int>& rack_places() const { return places_; }
@@ -547,6 +552,13 @@ private:
         if (!rack_chain_ || rack_fallback_ || !atc() || !slots_[cur_].loaded || slots_[cur_].gcode) return false;
         out = plan_rack(program_tools(0, true), program_tools(1, true), cur_ == 1, rack_);
         return out.present();
+    }
+
+    /// Reads the drilling file again with the format in force; one already sent to the server (ready, in the machine or done) keeps the summary it was sent with.
+    void reread_drill() {
+        Slot& s = slots_[0];
+        if (!s.loaded || s.gcode || s.done || stage_ == Stage::Ready || stage_ == Stage::Running || stage_ == Stage::Waiting) return;
+        s.sw.reread(summarize_drill(s.text, drill_format_));
     }
 
     /// Takes the places of a program away when it has no file any more (a new job replaced it).

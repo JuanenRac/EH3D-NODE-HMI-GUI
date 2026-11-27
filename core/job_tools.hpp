@@ -9,6 +9,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace hmi {
@@ -47,6 +48,7 @@ struct FileSummary {
     std::vector<ToolInfo> tools;  // by number
     int total = 0;                // the holes or the cuts of every tool
     int uses = 0;                 // how many tools have had their first hole or cut so far (gives `ToolInfo::use`)
+    bool format_unknown = false;  // a drilling file whose numbers cannot be read without supposing (neither the file nor a choice says how): the box is not known
 };
 
 namespace detail {
@@ -68,25 +70,147 @@ inline void count_step(FileSummary& s, ToolInfo& t) {
 
 inline bool is_digit(char c) { return c >= '0' && c <= '9'; }
 
-/// The number after an axis letter of a drilling line (`X02050Y01538`, `X1.25Y-3.5`). A number with a point is as written; one without is taken in thousandths, as the
-/// files of the Bungard programs and the usual 2.3 and 3.3 formats write them. False when the letter is not there or has no digits.
-inline bool axis_value(const std::string& line, char axis, double& out) {
+/// The most digits on either side of the point of a number format.
+constexpr int kMaxFormatDigits = 6;
+
+/// How the coordinates of a drilling file are written, as far as it is said: by the header of the file, completed with the format somebody chose (`drill_format`).
+/// The rules are those the suite reads the same file with: what the file declares wins, and nothing is supposed.
+struct DrillNumbers {
+    int unit = 0;                    // how the numbers are measured: 0 not said, 1 millimetres, 2 inches
+    int unit_said = 0;               // the unit the header names (an `INCH` with nothing else names it and still leaves the numbers open)
+    int integer = 0, decimal = 0;    // the digits before and after the point; 0 not said
+    bool trailing_left_out = false;  // `LZ`: the leading zeros are written and the trailing ones left out
+    bool zeros_said = false;         // the header says `LZ` or `TZ`
+    bool plain_inch = false;         // `INCH` or `M72` with no option
+
+    /// Takes a header line (upper case, without blanks): `INCH,LZ`, `METRIC,TZ,000.000`, `M71`, `M72` or `;FILE_FORMAT=2:4`; false when it is none of them.
+    bool header(const std::string& line) {
+        if (line.compare(0, 13, ";FILE_FORMAT=") == 0) {
+            const std::size_t colon = line.find(':', 13);
+            if (colon != std::string::npos) {
+                const int i = std::atoi(line.c_str() + 13), d = std::atoi(line.c_str() + colon + 1);
+                if (i >= 1 && i <= kMaxFormatDigits && d >= 1 && d <= kMaxFormatDigits) {
+                    integer = i;
+                    decimal = d;
+                    if (plain_inch) unit = 2;
+                }
+            }
+            return true;
+        }
+        std::size_t comma = line.find(',');
+        const std::string head = line.substr(0, comma);
+        if (head == "METRIC" || head == "M71") unit = 1;
+        else if (head == "INCH" || head == "M72") {
+            unit = 2;
+            plain_inch = true;
+        } else {
+            return false;
+        }
+        unit_said = unit;
+        bool options = false;
+        while (comma != std::string::npos) {
+            options = true;
+            const std::size_t from = comma + 1;
+            comma = line.find(',', from);
+            const std::string part = line.substr(from, comma == std::string::npos ? std::string::npos : comma - from);
+            if (part == "LZ" || part == "TZ") {
+                trailing_left_out = part == "LZ";
+                zeros_said = true;
+            } else {
+                const std::size_t point = part.find('.');
+                if (point != std::string::npos && part.find_first_not_of("0123456789.") == std::string::npos) {
+                    integer = static_cast<int>(point);
+                    decimal = static_cast<int>(part.size() - point - 1);
+                }
+            }
+        }
+        if (options) plain_inch = false;
+        if (plain_inch) unit = 0;  // no options: other programs read it in more than one way
+        return true;
+    }
+};
+
+/// A format somebody chose for a file that does not say it (the names of `drill_format`: `mils`, `inch-2.4-tz`, `metric-3.3-lz`...).
+struct ChosenFormat {
+    bool set = false, mils = false, metric = false, trailing_left_out = false;
+    int integer = 3, decimal = 3;
+};
+
+/// The format with this name; not set for an empty text or any other.
+inline ChosenFormat chosen_format(const std::string& name) {
+    ChosenFormat c;
+    if (name == "mils") {
+        c.set = c.mils = true;
+        return c;
+    }
+    const bool metric = name.compare(0, 7, "metric-") == 0;
+    if (!metric && name.compare(0, 5, "inch-") != 0) return c;
+    const std::string rest = name.substr(metric ? 7 : 5);  // "2.4-tz"
+    if (rest.size() != 6 || !is_digit(rest[0]) || rest[1] != '.' || !is_digit(rest[2]) || rest[3] != '-') return c;
+    const std::string zeros = rest.substr(4);
+    c.integer = rest[0] - '0';
+    c.decimal = rest[2] - '0';
+    if (c.integer < 1 || c.integer > kMaxFormatDigits || c.decimal < 1 || c.decimal > kMaxFormatDigits || (zeros != "tz" && zeros != "lz")) return c;
+    c.metric = metric;
+    c.trailing_left_out = zeros == "lz";
+    c.set = true;
+    return c;
+}
+
+/// What the header leaves open taken from the choice; false when the choice cannot be what the header says.
+inline bool complete_numbers(DrillNumbers& n, const ChosenFormat& c) {
+    const int unit = c.metric ? 1 : 2;
+    if (n.unit_said != 0 && n.unit_said != unit) return false;
+    if (c.mils && ((n.decimal != 0 && n.decimal != 3) || (n.zeros_said && n.trailing_left_out))) return false;
+    n.unit = unit;
+    if (n.decimal == 0) {
+        n.integer = c.integer;
+        n.decimal = c.decimal;
+    }
+    if (!n.zeros_said) n.trailing_left_out = c.trailing_left_out;
+    return true;
+}
+
+/// The text of the number after an axis letter of a drilling line (`X02050Y01538`, `X1.25Y-3.5`); empty when the letter is not there or has no digits.
+inline std::string axis_text(const std::string& line, char axis) {
     const std::size_t p = line.find(axis);
-    if (p == std::string::npos) return false;
+    if (p == std::string::npos) return "";
     std::size_t q = p + 1;
     const std::size_t start = q;
     if (q < line.size() && (line[q] == '-' || line[q] == '+')) ++q;
-    bool point = false;
     std::size_t digits = 0;
     while (q < line.size() && (is_digit(line[q]) || line[q] == '.')) {
-        if (line[q] == '.') point = true;
-        else ++digits;
+        if (line[q] != '.') ++digits;
         ++q;
     }
-    if (digits == 0) return false;
-    out = std::strtod(line.substr(start, q - start).c_str(), nullptr);
-    if (!point) out /= 1000.0;
-    return true;
+    return digits == 0 ? std::string() : line.substr(start, q - start);
+}
+
+/// Whether reading this number takes something that is not said: the unit, the digits, or the side of the zeros of a number that does not fill the digits.
+/// With the unit known, a number with a point, and a zero, mean the same whatever the format.
+inline bool needs_supposing(const std::string& number, const DrillNumbers& n) {
+    if (n.unit == 0) return true;
+    if (number.find('.') != std::string::npos || number.find_first_of("123456789") == std::string::npos) return false;
+    if (n.decimal == 0) return true;
+    const std::size_t written = number.size() - (number[0] == '-' || number[0] == '+' ? 1 : 0);
+    return !n.zeros_said && written < static_cast<std::size_t>(n.integer + n.decimal);
+}
+
+/// The number in millimetres, for a format that says all it takes.
+inline double axis_mm(const std::string& number, const DrillNumbers& n) {
+    double value = std::strtod(number.c_str(), nullptr);
+    if (number.find('.') == std::string::npos) {
+        const bool negative = number[0] == '-';
+        std::string digits = number.substr(number[0] == '-' || number[0] == '+' ? 1 : 0);
+        const int integer = n.decimal != 0 ? n.integer : (n.unit == 1 ? 3 : 2);
+        const int decimal = n.decimal != 0 ? n.decimal : (n.unit == 1 ? 3 : 4);
+        if (n.trailing_left_out)
+            while (static_cast<int>(digits.size()) < std::min(integer + decimal, 2 * kMaxFormatDigits)) digits += '0';
+        value = std::strtod(digits.c_str(), nullptr);
+        for (int i = 0; i < decimal; ++i) value /= 10.0;
+        if (negative) value = -value;
+    }
+    return value * (n.unit == 2 ? 25.4 : 1.0);
 }
 
 inline std::string upper_trim(const std::string& line) {
@@ -100,46 +224,80 @@ inline std::string upper_trim(const std::string& line) {
 
 }  // namespace detail
 
-/// The summary of a drilling file (Excellon: `T1C0.8` declares a tool, a line `T1` chooses it and each `X..Y..` line is a hole).
-inline FileSummary summarize_drill(const std::string& text) {
+namespace detail {
+
+/// One reading of a drilling file. `chosen` completes what the header leaves open (not set: only what the file says). `supposed` tells that a coordinate needed
+/// something nobody said, and `misfit` that the chosen format cannot be what the header says; in both cases the box of this reading is not to be believed.
+inline FileSummary read_drill(const std::string& text, const ChosenFormat& chosen, bool& supposed, bool& misfit) {
     FileSummary s;
-    bool inch = false;
+    DrillNumbers numbers;
     int current = -1;
     double x = 0, y = 0;
     bool has_x = false, has_y = false;  // a coordinate holds until the next one is written
+    std::vector<std::pair<int, double>> diameters;  // as written: their unit is known at the end
     std::size_t pos = 0;
+    supposed = misfit = false;
     while (pos <= text.size() && s.tools.size() < 64) {
         std::size_t end = text.find('\n', pos);
         if (end == std::string::npos) end = text.size();
-        const std::string line = detail::upper_trim(text.substr(pos, end - pos));
+        const std::string line = upper_trim(text.substr(pos, end - pos));
         pos = end + 1;
-        if (line.empty() || line[0] == ';') continue;
-        if (line.compare(0, 4, "INCH") == 0 || line.find(",INCH") != std::string::npos) inch = true;
-        if (line.compare(0, 6, "METRIC") == 0 || line.find(",METRIC") != std::string::npos) inch = false;
+        if (line.empty() || numbers.header(line) || line[0] == ';') continue;
         if (line.rfind("M30", 0) == 0) break;
-        if (line[0] == 'T' && line.size() > 1 && detail::is_digit(line[1])) {
+        if (line[0] == 'T' && line.size() > 1 && is_digit(line[1])) {
             std::size_t i = 1;
-            while (i < line.size() && detail::is_digit(line[i])) ++i;
+            while (i < line.size() && is_digit(line[i])) ++i;
             const int number = std::atoi(line.substr(1, i - 1).c_str());
             const std::size_t c = line.find('C', i);
             if (c != std::string::npos && c + 1 < line.size()) {
-                double d = std::strtod(line.c_str() + c + 1, nullptr);  // a declaration: T1C0.8
-                if (inch) d *= 25.4;
-                if (number > 0 && d > 0) detail::tool_entry(s, number).diameter_mm = d;
+                const double d = std::strtod(line.c_str() + c + 1, nullptr);  // a declaration: T1C0.8
+                if (number > 0 && d > 0) {
+                    tool_entry(s, number);
+                    diameters.emplace_back(number, d);
+                }
             } else {
                 current = number > 0 ? number : -1;  // a choice: T1 (T0 puts the tool away)
-                if (current > 0) detail::tool_entry(s, current);
+                if (current > 0) tool_entry(s, current);
             }
         } else if ((line[0] == 'X' || line[0] == 'Y') && current > 0) {
-            detail::count_step(s, detail::tool_entry(s, current));
-            double v = 0;
-            if (detail::axis_value(line, 'X', v)) { x = v; has_x = true; }
-            if (detail::axis_value(line, 'Y', v)) { y = v; has_y = true; }
-            if (has_x && has_y) s.box.add(x * (inch ? 25.4 : 1.0), y * (inch ? 25.4 : 1.0));
+            count_step(s, tool_entry(s, current));
+            DrillNumbers used = numbers;
+            if (chosen.set && !complete_numbers(used, chosen)) {
+                misfit = true;
+                continue;
+            }
+            const std::string tx = axis_text(line, 'X'), ty = axis_text(line, 'Y');
+            // with a choice nothing more is supposed: it says what the header left open, and the side of the zeros is its own
+            if (!chosen.set && ((!tx.empty() && needs_supposing(tx, used)) || (!ty.empty() && needs_supposing(ty, used)))) supposed = true;
+            if (!tx.empty()) { x = axis_mm(tx, used); has_x = true; }
+            if (!ty.empty()) { y = axis_mm(ty, used); has_y = true; }
+            if (has_x && has_y) s.box.add(x, y);
         }
     }
+    // a diameter has the unit the file names, else that of a choice that fits the file; with neither it is not known
+    const int unit = numbers.unit_said != 0 ? numbers.unit_said : (chosen.set && !misfit ? (chosen.metric ? 1 : 2) : 0);
+    for (const auto& d : diameters)
+        if (unit != 0) tool_entry(s, d.first).diameter_mm = d.second * (unit == 2 ? 25.4 : 1.0);
     s.route = false;
     std::sort(s.tools.begin(), s.tools.end(), [](const ToolInfo& a, const ToolInfo& b) { return a.number < b.number; });
+    return s;
+}
+
+}  // namespace detail
+
+/// The summary of a drilling file (Excellon: `T1C0.8` declares a tool, a line `T1` chooses it and each `X..Y..` line is a hole). `drill_format` is the format chosen
+/// for a file that does not say how its numbers are written (the setting of the same name; empty: none). A file that says it is read as it says. When neither says
+/// enough, the holes and the tools are counted but the box (and a diameter with no unit) is not known: nothing is supposed.
+inline FileSummary summarize_drill(const std::string& text, const std::string& drill_format = {}) {
+    bool supposed = false, misfit = false;
+    FileSummary s = detail::read_drill(text, detail::ChosenFormat{}, supposed, misfit);
+    if (!supposed) return s;
+    const detail::ChosenFormat chosen = detail::chosen_format(drill_format);
+    if (chosen.set) s = detail::read_drill(text, chosen, supposed, misfit);
+    if (supposed || misfit) {
+        s.box = Box{};
+        s.format_unknown = true;
+    }
     return s;
 }
 
@@ -214,6 +372,8 @@ public:
         summary_ = s;
         off_.clear();
     }
+    /// The same file read again (the chosen number format changed): the tools switched off stay off.
+    void reread(const FileSummary& s) { summary_ = s; }
     void clear() { reset(FileSummary{}); }
 
     const FileSummary& summary() const { return summary_; }

@@ -743,6 +743,7 @@ extern "C" void app_main() {
                     xSemaphoreTake(g_lock, portMAX_DELAY);
                     g_flow.set_drill_format(g_settings.drill_format);
                     xSemaphoreGive(g_lock);
+                    refresh_job();  // the size of a drilling file that declares no format depends on the choice
                     break;
                 case ui::What::Resume: {
                     std::string why;

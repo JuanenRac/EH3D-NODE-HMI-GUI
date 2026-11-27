@@ -8,7 +8,7 @@ What the firmware does, and what is tested on a computer:
 * A spoken order is taken only from a short fixed list for each language, always asks for a confirmation, and is off until the operator turns it on. A spoken yes confirms only when the setting `voice_confirm` is on.
 * A value out of range in `hmi.cfg` or an unknown key is reported and the safe default stays. The access token is a setting that is never shown or logged, and nothing secret is compiled in.
 
-What it does **not** do: the link to the server or the machine does not exist yet, the real microphone path (noise, accents, echo) has not been tried, the settings file can be changed by anyone who holds the module, and it has had no independent review. Nothing has run on a module or on a machine yet.
+What it does **not** do: the direct link to the machine does not exist yet, the client of EH3D-SERVER has only been tested on a computer, the real microphone path (noise, accents, echo) has not been tried, the settings file can be changed by anyone who holds the module, and it has had no independent review. Nothing has run on a module or on a machine yet.
 
 ## Reporting a problem
 

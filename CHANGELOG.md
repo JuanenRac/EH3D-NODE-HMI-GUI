@@ -4,6 +4,9 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The summary of a drilling file supposes nothing about its numbers:** the screen reads them as the file declares them and, for what it leaves open, with the format chosen in `drill_format`. When neither says enough, or the choice cannot be what the file says, the holes and the tools are still counted but the size of the board is shown as not known, with no warning against the table, and a diameter with no unit is not shown. Before, coordinates without a point were taken as thousandths. Choosing the format reads a file not yet sent again and keeps the tools switched off. Host-tested only; not seen on a module.
+- **The documents say what exists today:** the releases carry firmware images built in GitHub Actions that have not been flashed or run on a module, the client of EH3D-SERVER is written and tested on a computer, and the copy of the settings contract has 107 settings (19 through the security page, 88 by file).
+
 ## [0.1.4] - Spindle, drill format and resume questions of the server - firmware not tested on hardware
 
 - **The numbers of host checks in the README were measured again.**

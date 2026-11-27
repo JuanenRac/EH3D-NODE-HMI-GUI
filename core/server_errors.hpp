@@ -83,6 +83,22 @@ inline std::string drill_format_note(Lang l) {
     return std::string(text_in_font(wanted) ? wanted : texts[0]) + " (EH3D-FORMATS-014)";
 }
 
+/// What the job page says of a drilling file whose size cannot be told: neither the file nor the settings say how its numbers are written.
+inline const char* drill_size_unknown_note(Lang l) {
+    static const Row texts = {
+        "Size of the board not known: the drill file does not say its number format",
+        "Tama\u00f1o de la placa desconocido: el taladrado no dice su formato num\u00e9rico",
+        "Dimensioni della scheda non note: la foratura non dice il formato numerico",
+        "Gr\u00f6\u00dfe der Platine unbekannt: die Bohrdatei nennt ihr Zahlenformat nicht",
+        "Taille de la carte inconnue : le per\u00e7age ne dit pas son format",
+        "Tamanho da placa desconhecido: a fura\u00e7\u00e3o n\u00e3o diz o formato num\u00e9rico",
+        "电路板大小未知：钻孔文件未声明数值格式",
+        "基板の大きさは不明です。ドリルファイルに数値の書式がありません",
+    };
+    const char* wanted = pick(texts, l);
+    return text_in_font(wanted) ? wanted : texts[0];
+}
+
 /// The title of the choice of the number format in the settings of the screen.
 inline const char* drill_format_title(Lang l) {
     static const Row texts = {"Drill file format", "Formato de taladrado", "Formato foratura", "Bohrformat", "Format de per\u00e7age", "Formato de fura\u00e7\u00e3o", "钻孔格式", "ドリル書式"};

@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Safety: Continue and "Tool changed" answer the question on the screen.** The screen sends back the identifier of what the job asked when the button was pressed (`pause.question`), so a server that asks something else by then refuses the answer (`409 question_changed`, with its text in the eight languages) instead of taking it as the answer to a question nobody has read; the buttons are drawn again as soon as the question changes. The copy of the settings contract has the new setting `answer_needs_question` of the server (106 settings). A server of an earlier version is answered as before. Checked by the host tests; not tried on a screen.
+
 - **Safety: the screen says that the spindle is started when a job goes on.** While a job that goes on after a stop waits before its first move, the job page warns that letting it go moves the machine back to where it stopped and starts the spindle the program had on.
 - **The reason of a resume the server does not do is shown:** a `422 bad_request` of `resume-from` shows the reason of the server on the screen, not only that something was wrong.
 - **The copy of the settings contract follows the server:** 105 settings in 17 groups, with the settings of a stop and of going on, and millimetres and micrometres written as `mm` and `µm`; the fonts hold the characters of the new texts.

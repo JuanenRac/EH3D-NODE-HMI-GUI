@@ -66,6 +66,8 @@ static std::string g_version;                      // the version of this firmwa
 static std::vector<hmi::Problem> g_problems;       // the lines of hmi.cfg that were not used
 static bool g_cfg_missing = false;                 // hmi.cfg is not there
 static std::string g_note;
+static std::string g_shown_question;    // the identifier of what the job asks, as the buttons on the screen show it (guarded by g_lock)
+static std::string g_pressed_question;  // the one that was on the screen when Continue or "Tool changed" was pressed (guarded by g_lock)
 static hmi::Workflow g_flow;
 static hmi::EndWatcher g_end;           // tells once when a stage is done or the whole job is over
 static hmi::SpindleView g_spindle;  // the spindle of the machine, as the server says it (asked now and then)
@@ -354,10 +356,10 @@ static void link_task(void*) {
             switch (job.what) {
                 case ServerJob::Do::Create: req = g_flow.create_request(g_settings.server_machine); break;
                 case ServerJob::Do::Start: req = g_flow.start_request(); break;
-                case ServerJob::Do::Confirm: req = g_flow.confirm_request(); break;
+                case ServerJob::Do::Confirm: req = g_flow.confirm_request(g_pressed_question); break;
                 case ServerJob::Do::ResumeFrom: req = g_flow.resume_request(); break;
                 case ServerJob::Do::Pause: req = g_flow.pause_request(); break;
-                case ServerJob::Do::Release: req = g_flow.release_request(); break;
+                case ServerJob::Do::Release: req = g_flow.release_request(g_pressed_question); break;
                 // the quality check has its own function (quality_job): it never gets here
                 case ServerJob::Do::Light:
                 case ServerJob::Do::Inspect:
@@ -531,6 +533,7 @@ static void link_task(void*) {
 // Shows the tools of the chosen file and the spindle of the machine (the LVGL lock is taken by the caller).
 static void refresh_job() {
     xSemaphoreTake(g_lock, portMAX_DELAY);
+    g_shown_question = g_flow.question();
     const hmi::ToolSwitch tools = g_flow.tool_switch();
     const hmi::SpindleView spindle = g_spindle;
     ui::FlowState flow;
@@ -650,6 +653,7 @@ extern "C" void app_main() {
     hmi::Gate gate(g_settings);
     ui::State state;
     hmi::Stage last_stage = hmi::Stage::Nothing;
+    std::string last_question;
     bool last_ended_well = false;
     bool fleet_stale_shown = false;
     std::uint32_t next_stack_report = board::now_ms() + 5000;
@@ -708,6 +712,12 @@ extern "C" void app_main() {
                                 set_note(bad);
                                 break;
                             }
+                        }
+                        // what is answered is what the screen showed when it was pressed, also when the gate asks first and the job moves on meanwhile
+                        if (r.action.op == hmi::Op::ResumeJob || r.action.op == hmi::Op::ToolChanged) {
+                            xSemaphoreTake(g_lock, portMAX_DELAY);
+                            g_pressed_question = g_shown_question;
+                            xSemaphoreGive(g_lock);
                         }
                         hmi::Decision d = gate.request(r.action, hmi::Origin::Touch, board::now_ms());
                         if (d.verdict == hmi::Verdict::NeedConfirm) {
@@ -861,6 +871,7 @@ extern "C" void app_main() {
         const bool over = g_flow.settled();
         const bool ended_well = g_flow.ended_well();
         const hmi::Stage stage_now = g_flow.stage();
+        const std::string question_now = g_flow.question();
         const int stages_done = g_flow.stages_done();
         const bool job_complete = g_flow.job_complete();
         const std::string stage_next = g_flow.stage_next_name();
@@ -868,6 +879,10 @@ extern "C" void app_main() {
         if (over && g_remembered) memory_clear();
         // the notices of the job, once each time the stage changes into them
         bool stage_changed = false;
+        if (question_now != last_question) {  // the job asks something else without having been seen running: the buttons are drawn again
+            last_question = question_now;
+            stage_changed = true;
+        }
         if (stage_now != last_stage) {
             if (stage_now == hmi::Stage::Waiting) say(hmi::Cue::ToolChange);
             last_stage = stage_now;

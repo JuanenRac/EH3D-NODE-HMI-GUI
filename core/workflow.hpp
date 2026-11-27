@@ -275,9 +275,14 @@ public:
     /// True while the job waits for the operator at a tool change.
     bool tool_wait() const { return stage_ == Stage::Waiting && !held(); }
     /// The request that lets a held job go on.
-    Request release_request() const { return held() ? job_resume_request(job_id_) : Request{}; }
+    /// `shown` is the question the operator was looking at when the button was pressed: the job may ask something else by the time the request goes.
+    Request release_request(const std::string& shown) const { return held() ? job_resume_request(job_id_, shown) : Request{}; }
+    Request release_request() const { return release_request(question_); }
     /// The request that answers the dialog the job waits at (a tool change that the operator has done).
-    Request confirm_request() const { return tool_wait() ? job_confirm_request(job_id_) : Request{}; }
+    Request confirm_request(const std::string& shown) const { return tool_wait() ? job_confirm_request(job_id_, shown) : Request{}; }
+    Request confirm_request() const { return confirm_request(question_); }
+    /// The identifier of what the job asks now (empty while it does not wait, or when the server does not say it).
+    const std::string& question() const { return question_; }
 
     /// The answer of the server to the start: it is running, or it was refused (the machine is busy, the job is gone).
     bool on_started(const Response& r, std::string& why) {
@@ -322,11 +327,13 @@ public:
                 pause_tool_ = m.pause_tool;
                 stage_ = (m.state == "waiting" || !m.pause_kind.empty()) ? Stage::Waiting : Stage::Running;
                 pause_ = m.pause_kind;
+                question_ = m.pause_question;
             } else if (stage_ == Stage::Running || stage_ == Stage::Waiting) {
                 // the machine has another job or none: ours is over; how it ended (done, stopped, failed) is asked of the server next
                 stage_ = Stage::Finished;
                 percent_ = 100;
                 pause_.clear();
+                question_.clear();
                 pause_tool_ = 0;
                 unreported_ = true;
             }
@@ -550,6 +557,7 @@ private:
         total_ = 0;
         message_.clear();
         pause_.clear();
+        question_.clear();
         unreported_ = false;
         reported_done_ = false;
         no_work_ = false;
@@ -570,6 +578,7 @@ private:
     int cur_ = 0;    // the program in turn
     int last_ = 0;   // the program whose file was chosen last (it receives its tool table)
     std::string job_id_, pause_, message_, resumed_from_;
+    std::string question_;
     int percent_ = 0;
     int done_ = 0, total_ = 0;
     bool unreported_ = false, reported_done_ = false;

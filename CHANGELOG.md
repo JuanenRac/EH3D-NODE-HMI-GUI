@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Third-party notices:** `docs/THIRD_PARTY_NOTICES` holds the licences and copyright notices of ESP-IDF, of the third-party code inside it and of the components the firmware is built with, made by `tools/third_party_notices.py` from the build of every board. The CI fails when a declared dependency is not listed.
+
 ## [0.1.4] - Spindle, drill format and resume questions of the server - firmware not tested on hardware
 
 - **The numbers of host checks in the README were measured again.**

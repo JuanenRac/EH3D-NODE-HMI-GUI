@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.4] - Spindle, drill format and resume questions of the server - firmware not tested on hardware
+
 - **The numbers of host checks in the README were measured again.**
 
 - **A drilling file that does not declare its number format can be sent:** the new setting `drill_format` of `hmi.cfg` (`ask` by default) and a choice in the settings of the screen send `drill_format` with the job; nothing is chosen until a person does. A refusal of the server for the format says in the eight languages where to choose it. Checked by the host tests; not seen on a module.

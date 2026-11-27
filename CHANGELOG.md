@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.5] - The screens start the module with their own drivers - firmware not tested on hardware
+
 - **The module starts with its own drivers, without a board package:** the display is the JD9365 panel of the module (the package used before was the one of Espressif's own board, which drives other panels), the touch is driven when a GT911 answers, sound is played through the ES8311 codec (the microphone is not started) and the card is mounted from `main/module_p4.c`. The image no longer holds the camera libraries that package brought, whose licence allows Espressif chips only. New settings of menuconfig: `HMI_BACKLIGHT_GPIO` (23) and `HMI_AMP_GPIO` (-1). Not run on a module.
 
 - **The contract of the settings of the server is the current one:** `answer_needs_question` is now on by default there (an answer to a job names its question, as this program already sends it). No other change.

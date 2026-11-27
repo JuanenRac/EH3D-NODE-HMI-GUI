@@ -1,6 +1,6 @@
 // EH3D-NODE-HMI-GUI - main/board_p4.cpp: the Guition JC8012P4A1C module (ESP32-P4, 10.1" JD9365 800x1280 MIPI-DSI with touch,
-// ES8311 codec, NS4150 amplifier). The display and the touch start through the board support package of the component registry;
-// this file has not been built or run on a module yet. GPL-3.0-or-later.
+// ES8311 codec, NS4150 amplifier). The parts start with their own drivers in module_p4.c; this has not been run on a module
+// yet. GPL-3.0-or-later.
 #include "board.hpp"
 
 #include <dirent.h>
@@ -8,29 +8,30 @@
 
 #include <cstdio>
 
-#include "bsp/esp-bsp.h"
 #include "driver/gpio.h"
+#include "esp_lvgl_port.h"
 #include "esp_timer.h"
+#include "module_p4.h"
 #include "sdkconfig.h"
 
 namespace board {
 
-bool display_start() { return bsp_display_start() != nullptr; }
+bool display_start() { return module_display_start(); }
 
-void lvgl_lock() { bsp_display_lock(0); }
-void lvgl_unlock() { bsp_display_unlock(); }
+void lvgl_lock() { lvgl_port_lock(0); }
+void lvgl_unlock() { lvgl_port_unlock(); }
 
 void set_brightness(unsigned percent) {
     if (percent < 10) percent = 10;
     if (percent > 100) percent = 100;
-    bsp_display_brightness_set(static_cast<int>(percent));
+    module_set_brightness(static_cast<int>(percent));
 }
 
 static esp_codec_dev_handle_t g_speaker = nullptr;
 
 bool audio_start() {
-    g_speaker = bsp_audio_codec_speaker_init();
-    return g_speaker != nullptr && bsp_audio_codec_microphone_init() != nullptr;
+    g_speaker = module_speaker_start();
+    return g_speaker != nullptr;
 }
 
 void play(const std::int16_t* samples, std::size_t count, unsigned rate) {
@@ -92,7 +93,7 @@ void set_rotation(int degrees) {
     lv_display_set_rotation(d, degrees == 90 ? LV_DISPLAY_ROTATION_90 : LV_DISPLAY_ROTATION_0);
 }
 
-bool sd_mount() { return bsp_sdcard_mount() == ESP_OK; }
+bool sd_mount() { return module_sd_mount(hmi::kSdMount); }
 
 std::vector<hmi::Entry> sd_list() {
     std::vector<hmi::Entry> out;

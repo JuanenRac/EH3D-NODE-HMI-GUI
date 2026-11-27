@@ -155,9 +155,9 @@ Come si incastrano le parti di questo repository: chi parla con esso, cosa conti
 |---|---|---|
 | File delle impostazioni | `hmi.cfg` nella partizione `config`: righe `chiave = valore`; vedi `hmi.cfg.example` e la tabella sopra | `core/hmi_config.hpp` |
 | Ingresso arresto hardware | un GPIO (`HMI_HW_STOP_GPIO` in menuconfig, attivo basso di default, con pull-up così un filo aperto vale come premuto) | `main/board_p4.cpp` |
-| Display touch | MIPI-DSI 800x1280 tramite LVGL 9 | `main/ui.cpp` |
-| Suono | codec ES8311 con amplificatore per altoparlante e ingresso microfono ES7210 | `main/board_p4.cpp` |
-| microSD | la radice della scheda in `/sdcard`: si elencano e leggono file di foratura, fresatura, Gerber, DXF e ZIP e si scrivono rapporti; si accettano solo nomi di file semplici | `core/sdfiles.hpp`, `main/board_p4.cpp` |
+| Display touch | JD9365 MIPI-DSI 800x1280 tramite LVGL 9; touch solo con un controller GT911 | `main/module_p4.c`, `main/ui.cpp` |
+| Suono | codec ES8311 con amplificatore per altoparlante, per la riproduzione; il microfono non viene avviato, ancora nulla registra | `main/module_p4.c` |
+| microSD | la radice della scheda in `/sdcard`: si elencano e leggono file di foratura, fresatura, Gerber, DXF e ZIP e si scrivono rapporti; si accettano solo nomi di file semplici | `core/sdfiles.hpp`, `main/module_p4.c` |
 | EH3D-SERVER | HTTP con il token di accesso: `GET /api/v1/fleet` ogni `poll_s` secondi, `POST /api/v1/machines/:id/jobs`, `POST /api/v1/jobs/:id/start`, `confirm` e `cancel` Accede come applicazione `hmi` (`POST /api/v1/auth/login`, con `server_user` e `server_password`), rinnova l'accesso nell'ultimo quarto della sua vita e dimentica il token su un 401; mostra i rifiuti del server per codice nella lingua dell'operatore; legge `GET /api/v1/work/machines` e mostra il `detail` delle macchine dei plugin, in rosso se una è bloccata o in allarme. | `core/server_link.hpp`, `main/server_link.cpp` |
 | Impostazioni del server | `GET /api/v1/settings/contract` ogni `settings_poll_s` secondi (accesso da amministratore; fino a 1 MiB di risposta); se il contratto in tempo reale non si legge, lo schermo mostra la copia che porta, in sola lettura; una modifica è `PUT /api/v1/auth/policy`, disattivata di default (vedi [docs/SETTINGS_CONTRACT.md](docs/SETTINGS_CONTRACT.md)) | `core/settings_contract.hpp`, `core/settings_page.hpp` |
 | Valori in vigore senza essere amministratore | `GET /api/v1/settings/values` ogni `settings_values_poll_s` secondi con l'`ETag` dell'ultima risposta in `If-None-Match` (qualsiasi accesso, pochi KB e mai oltre 16 KiB; un `304` costa pochi byte); la pagina mostra i valori con i testi della copia che porta, in sola lettura, non conserva alcun segreto né percorso del computer e avvisa se il `contract_hash` del server non è l'hash della copia | `core/settings_values.hpp` |
@@ -259,6 +259,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── ui.cpp ui.hpp                                 le schermate LVGL e il pulsante di arresto
 │   ├── fonts/                                        i font: dal latino al giapponese
 │   ├── board_p4.cpp board.hpp                        il modulo: display, suono, ingresso di arresto
+│   ├── module_p4.c module_p4.h                       i driver di ogni parte del modulo
 │   ├── server_link.cpp server_link.hpp               i socket del client del server
 │   └── idf_component.yml Kconfig.projbuild           elenco dei componenti e pin di menuconfig
 ├── tests/                                            test su computer di impostazioni, varco, voce e testi delle schermate
@@ -288,9 +289,9 @@ EH3D-NODE-HMI-GUI/
 
 **Limiti noti oggi**
 
-* Nulla ha girato su un modulo: il firmware si compila, ma non è stato scritto né provato, e il pacchetto di supporto scheda richiesto potrebbe richiedere modifiche per questo modulo.
+* Nulla ha girato su un modulo: il firmware si compila, ma non è stato scritto né provato; la temporizzazione del pannello e i comandi di inizializzazione sono quelli predefiniti del driver JD9365 e potrebbero servire quelli di questo pannello.
 * Lo schermo raggiunge la macchina solo tramite un lavoro di EH3D-SERVER; i suoi movimenti diretti (spostamento, origine, mandrino) passano dal varco e poi aspettano il collegamento con il nodo, non ancora scritto. Il client del server e la scheda non hanno mai girato su un modulo.
-* Il pin dell'arresto hardware e il controller touch non sono ancora fissati: vanno verificati sullo schema dell'unità.
+* I pin dell'arresto hardware, della retroilluminazione e dell'amplificatore vanno verificati sullo schema dell'unità. È pilotato solo un controller touch GT911; il modulo ne monterebbe un altro (GSL3680), e allora lo schermo parte senza touch.
 * Il riconoscitore vocale e l'altoparlante non sono ancora nel firmware; ordini e avvisi sono provati come testo.
 * La logica dei programmi desktop (formati, controller, flotta) non è riutilizzata: le schermate seguono il programma desktop, ma le regole sono riscritte in C++.
 

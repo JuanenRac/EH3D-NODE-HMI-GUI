@@ -155,9 +155,9 @@ How the parts of this repository fit together: who talks to it, what it holds an
 |---|---|---|
 | Settings file | `hmi.cfg` in the `config` partition: `key = value` lines; see `hmi.cfg.example` and the table above | `core/hmi_config.hpp` |
 | Hardware stop input | one GPIO (`HMI_HW_STOP_GPIO` in menuconfig, active low by default, with a pull-up so an open wire reads as pressed) | `main/board_p4.cpp` |
-| Touch display | 800x1280 MIPI-DSI through LVGL 9 | `main/ui.cpp` |
-| Sound | ES8311 codec with speaker amplifier and the ES7210 microphone input | `main/board_p4.cpp` |
-| microSD | the root of the card at `/sdcard`: drilling, routing, Gerber, DXF and ZIP files are listed and read, reports are written; only plain file names are accepted | `core/sdfiles.hpp`, `main/board_p4.cpp` |
+| Touch display | JD9365 800x1280 MIPI-DSI through LVGL 9; touch only with a GT911 controller | `main/module_p4.c`, `main/ui.cpp` |
+| Sound | ES8311 codec with speaker amplifier, for playing; the microphone is not started, nothing records yet | `main/module_p4.c` |
+| microSD | the root of the card at `/sdcard`: drilling, routing, Gerber, DXF and ZIP files are listed and read, reports are written; only plain file names are accepted | `core/sdfiles.hpp`, `main/module_p4.c` |
 | EH3D-SERVER | HTTP with the access token: `GET /api/v1/fleet` every `poll_s` seconds, `POST /api/v1/machines/:id/jobs`, `POST /api/v1/jobs/:id/start`, `confirm` and `cancel` Logs in as the application `hmi` (`POST /api/v1/auth/login`, with `server_user` and `server_password`), renews the login in the last quarter of its life and forgets the token on a 401; shows the refusals of the server by code in the language of the operator; reads `GET /api/v1/work/machines` and shows the `detail` of the machines of the plugins, in red when one is latched or in alarm. | `core/server_link.hpp`, `main/server_link.cpp` |
 | Settings of the server | `GET /api/v1/settings/contract` every `settings_poll_s` seconds (an administrator login; up to 1 MiB of answer); when the live contract cannot be read the screen shows the copy of it that it carries, read only; a change is `PUT /api/v1/auth/policy`, off by default (see [docs/SETTINGS_CONTRACT.md](docs/SETTINGS_CONTRACT.md)) | `core/settings_contract.hpp`, `core/settings_page.hpp` |
 | Values in force without an administrator | `GET /api/v1/settings/values` every `settings_values_poll_s` seconds with the `ETag` of the last answer in `If-None-Match` (any login, a few KB and never more than 16 KiB; a `304` costs a few bytes); the page shows the values with the texts of the copy it carries, read only, keeps no secret and no path of the computer, and warns when the `contract_hash` of the server is not the hash of the copy | `core/settings_values.hpp` |
@@ -259,6 +259,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── ui.cpp ui.hpp                                 the LVGL screens and the stop button
 │   ├── fonts/                                        the fonts: Latin to Japanese
 │   ├── board_p4.cpp board.hpp                        the module: display, sound, stop input
+│   ├── module_p4.c module_p4.h                       the drivers of each part of the module
 │   ├── server_link.cpp server_link.hpp               the sockets of the client of the server
 │   └── idf_component.yml Kconfig.projbuild           component list and menuconfig pins
 ├── tests/                                            host tests of the settings, the gate, the voice and the screen texts
@@ -288,9 +289,9 @@ EH3D-NODE-HMI-GUI/
 
 **Known limits today**
 
-* Nothing has run on a module: the firmware builds, but it has not been flashed or tried, and the board support package it asks for may need changes for this module.
+* Nothing has run on a module: the firmware builds, but it has not been flashed or tried; the panel timing and its initialisation commands are the defaults of the JD9365 driver and may need those of this panel.
 * The screen reaches the machine only through a job of EH3D-SERVER; its own moves (jog, home, spindle) ask the gate and then wait for the link to the node, which is not written yet. The client of the server and the card have never run on a module.
-* The pin of the hardware stop and the touch controller are not fixed yet: they must be checked against the schematic of the unit.
+* The pins of the hardware stop, the backlight and the amplifier must be checked against the schematic of the unit. Only a GT911 touch controller is driven; the module is reported to carry another one (GSL3680), and then the screen starts without touch.
 * The speech recogniser and the speaker are not in the firmware yet; the orders and alerts are tested as text.
 * The logic of the desktop programs (formats, controller, fleet) is not reused: the screens follow the desktop program, but the rules are rewritten in C++.
 

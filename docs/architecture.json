@@ -94,7 +94,8 @@
         "microphone; never flashed"
       ],
       "code": [
-        "main/board_p4.cpp"
+        "main/board_p4.cpp",
+        "main/module_p4.c"
       ]
     },
     {

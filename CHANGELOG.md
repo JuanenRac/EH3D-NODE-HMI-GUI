@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The module starts with its own drivers, without a board package:** the display is the JD9365 panel of the module (the package used before was the one of Espressif's own board, which drives other panels), the touch is driven when a GT911 answers, sound is played through the ES8311 codec (the microphone is not started) and the card is mounted from `main/module_p4.c`. The image no longer holds the camera libraries that package brought, whose licence allows Espressif chips only. New settings of menuconfig: `HMI_BACKLIGHT_GPIO` (23) and `HMI_AMP_GPIO` (-1). Not run on a module.
+
 - **The contract of the settings of the server is the current one:** `answer_needs_question` is now on by default there (an answer to a job names its question, as this program already sends it). No other change.
 
 - **The summary of a drilling file supposes nothing about its numbers:** the screen reads them as the file declares them and, for what it leaves open, with the format chosen in `drill_format`. When neither says enough, or the choice cannot be what the file says, the holes and the tools are still counted but the size of the board is shown as not known, with no warning against the table, and a diameter with no unit is not shown. Before, coordinates without a point were taken as thousandths. Choosing the format reads a file not yet sent again and keeps the tools switched off. Host-tested only; not seen on a module.

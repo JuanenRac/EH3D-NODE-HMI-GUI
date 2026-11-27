@@ -155,9 +155,9 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 |---|---|---|
 | Ficheiro de definições | `hmi.cfg` na partição `config`: linhas `chave = valor`; ver `hmi.cfg.example` e a tabela acima | `core/hmi_config.hpp` |
 | Entrada de paragem por hardware | um GPIO (`HMI_HW_STOP_GPIO` no menuconfig, ativo em baixo por omissão, com pull-up para que um fio aberto conte como premido) | `main/board_p4.cpp` |
-| Ecrã tátil | MIPI-DSI de 800x1280 através do LVGL 9 | `main/ui.cpp` |
-| Som | codec ES8311 com amplificador de altifalante e a entrada de microfone ES7210 | `main/board_p4.cpp` |
-| microSD | a raiz do cartão em `/sdcard`: listam-se e leem-se ficheiros de furação, fresagem, Gerber, DXF e ZIP e escrevem-se relatórios; só se aceitam nomes de ficheiro simples | `core/sdfiles.hpp`, `main/board_p4.cpp` |
+| Ecrã tátil | JD9365 MIPI-DSI de 800x1280 através do LVGL 9; tátil apenas com um controlador GT911 | `main/module_p4.c`, `main/ui.cpp` |
+| Som | codec ES8311 com amplificador de altifalante, para reproduzir; o microfone não é arrancado, ainda nada grava | `main/module_p4.c` |
+| microSD | a raiz do cartão em `/sdcard`: listam-se e leem-se ficheiros de furação, fresagem, Gerber, DXF e ZIP e escrevem-se relatórios; só se aceitam nomes de ficheiro simples | `core/sdfiles.hpp`, `main/module_p4.c` |
 | EH3D-SERVER | HTTP com o token de acesso: `GET /api/v1/fleet` a cada `poll_s` segundos, `POST /api/v1/machines/:id/jobs`, `POST /api/v1/jobs/:id/start`, `confirm` e `cancel` Inicia sessão como a aplicação `hmi` (`POST /api/v1/auth/login`, com `server_user` e `server_password`), renova o início de sessão no último quarto da sua vida e esquece o token perante um 401; mostra as recusas do servidor por código na língua do operador; lê `GET /api/v1/work/machines` e mostra o `detail` das máquinas dos plugins, a vermelho quando uma está bloqueada ou em alarme. | `core/server_link.hpp`, `main/server_link.cpp` |
 | Definições do servidor | `GET /api/v1/settings/contract` a cada `settings_poll_s` segundos (sessão de administrador; até 1 MiB de resposta); se não se conseguir ler o contrato em direto, o ecrã mostra a cópia que traz, só de leitura; uma alteração é `PUT /api/v1/auth/policy`, desativada por omissão (ver [docs/SETTINGS_CONTRACT.md](docs/SETTINGS_CONTRACT.md)) | `core/settings_contract.hpp`, `core/settings_page.hpp` |
 | Valores em vigor sem ser administrador | `GET /api/v1/settings/values` a cada `settings_values_poll_s` segundos com o `ETag` da última resposta em `If-None-Match` (qualquer sessão, uns poucos KB e nunca mais de 16 KiB; um `304` custa uns poucos bytes); a página mostra os valores com os textos da cópia que leva, só de leitura, não guarda nenhum segredo nem caminho do computador e avisa quando o `contract_hash` do servidor não é o hash da cópia | `core/settings_values.hpp` |
@@ -259,6 +259,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── ui.cpp ui.hpp                                 os ecrãs LVGL e o botão de paragem
 │   ├── fonts/                                        os tipos: do latim ao japonês
 │   ├── board_p4.cpp board.hpp                        o módulo: ecrã, som, entrada de paragem
+│   ├── module_p4.c module_p4.h                       os controladores de cada parte do módulo
 │   ├── server_link.cpp server_link.hpp               os sockets do cliente do servidor
 │   └── idf_component.yml Kconfig.projbuild           lista de componentes e pinos do menuconfig
 ├── tests/                                            testes no computador das definições, da comporta, da voz e dos textos de ecrã
@@ -288,9 +289,9 @@ EH3D-NODE-HMI-GUI/
 
 **Limites conhecidos hoje**
 
-* Nada correu num módulo: o firmware compila, mas não foi gravado nem experimentado, e o pacote de suporte de placa que pede pode precisar de alterações para este módulo.
+* Nada correu num módulo: o firmware compila, mas não foi gravado nem experimentado; a temporização do painel e os comandos de arranque são os predefinidos do controlador JD9365 e podem ser precisos os deste painel.
 * O ecrã só chega à máquina através de um trabalho do EH3D-SERVER; os seus próprios movimentos (movimento manual, origem, fuso) consultam a comporta e depois esperam pela ligação ao nó, que ainda não está escrita. O cliente do servidor e o cartão nunca correram num módulo.
-* O pino da paragem por hardware e o controlador tátil ainda não estão fixados: têm de ser verificados com o esquema da unidade.
+* Os pinos da paragem por hardware, da retroiluminação e do amplificador têm de ser verificados com o esquema da unidade. Só é comandado um controlador tátil GT911; o módulo terá outro (GSL3680) e nesse caso o ecrã arranca sem tátil.
 * O reconhecedor de voz e o altifalante ainda não estão no firmware; as ordens e avisos são testados como texto.
 * A lógica dos programas de secretária (formatos, controlador, frota) não é reutilizada: os ecrãs seguem o programa de secretária, mas as regras são reescritas em C++.
 

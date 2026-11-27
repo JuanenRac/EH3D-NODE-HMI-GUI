@@ -155,9 +155,9 @@ Wie die Teile dieses Repositorys zusammenpassen: wer mit ihm spricht, was es ent
 |---|---|---|
 | Einstellungsdatei | `hmi.cfg` in der Partition `config`: Zeilen `Schlüssel = Wert`; siehe `hmi.cfg.example` und die Tabelle oben | `core/hmi_config.hpp` |
 | Hardware-Stopp-Eingang | ein GPIO (`HMI_HW_STOP_GPIO` in menuconfig, standardmäßig aktiv niedrig, mit Pull-up, damit ein offenes Kabel als gedrückt gilt) | `main/board_p4.cpp` |
-| Touchdisplay | 800x1280 MIPI-DSI über LVGL 9 | `main/ui.cpp` |
-| Ton | Codec ES8311 mit Lautsprecherverstärker und Mikrofoneingang ES7210 | `main/board_p4.cpp` |
-| microSD | die Wurzel der Karte unter `/sdcard`: Bohr-, Fräs-, Gerber-, DXF- und ZIP-Dateien werden gelistet und gelesen, Berichte geschrieben; nur einfache Dateinamen werden angenommen | `core/sdfiles.hpp`, `main/board_p4.cpp` |
+| Touchdisplay | JD9365 800x1280 MIPI-DSI über LVGL 9; Touch nur mit einem GT911-Controller | `main/module_p4.c`, `main/ui.cpp` |
+| Ton | Codec ES8311 mit Lautsprecherverstärker, zur Wiedergabe; das Mikrofon wird nicht gestartet, noch nimmt nichts auf | `main/module_p4.c` |
+| microSD | die Wurzel der Karte unter `/sdcard`: Bohr-, Fräs-, Gerber-, DXF- und ZIP-Dateien werden gelistet und gelesen, Berichte geschrieben; nur einfache Dateinamen werden angenommen | `core/sdfiles.hpp`, `main/module_p4.c` |
 | EH3D-SERVER | HTTP mit dem Zugriffstoken: `GET /api/v1/fleet` alle `poll_s` Sekunden, `POST /api/v1/machines/:id/jobs`, `POST /api/v1/jobs/:id/start`, `confirm` und `cancel` Meldet sich als Anwendung `hmi` an (`POST /api/v1/auth/login`, mit `server_user` und `server_password`), erneuert die Anmeldung im letzten Viertel ihrer Lebensdauer und vergisst das Token bei einem 401; zeigt die Ablehnungen des Servers nach Code in der Sprache des Bedieners; liest `GET /api/v1/work/machines` und zeigt das `detail` der Maschinen der Plugins, rot, wenn eine gesperrt ist oder Alarm hat. | `core/server_link.hpp`, `main/server_link.cpp` |
 | Einstellungen des Servers | `GET /api/v1/settings/contract` alle `settings_poll_s` Sekunden (Anmeldung als Administrator; bis zu 1 MiB Antwort); lässt sich der Live-Vertrag nicht lesen, zeigt der Bildschirm die mitgeführte Kopie, nur lesbar; eine Änderung ist `PUT /api/v1/auth/policy`, standardmäßig aus (siehe [docs/SETTINGS_CONTRACT.md](docs/SETTINGS_CONTRACT.md)) | `core/settings_contract.hpp`, `core/settings_page.hpp` |
 | Gültige Werte ohne Administrator | `GET /api/v1/settings/values` alle `settings_values_poll_s` Sekunden mit dem `ETag` der letzten Antwort in `If-None-Match` (jede Anmeldung, wenige KB und nie mehr als 16 KiB; ein `304` kostet wenige Bytes); die Seite zeigt die Werte mit den Texten der mitgeführten Kopie, nur lesbar, behält kein Geheimnis und keinen Pfad des Rechners und warnt, wenn der `contract_hash` des Servers nicht der Hash der Kopie ist | `core/settings_values.hpp` |
@@ -259,6 +259,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── ui.cpp ui.hpp                                 die LVGL-Bildschirme und der Stopp-Knopf
 │   ├── fonts/                                        die Schriften: Latein bis Japanisch
 │   ├── board_p4.cpp board.hpp                        das Modul: Display, Ton, Stopp-Eingang
+│   ├── module_p4.c module_p4.h                       die Treiber der Teile des Moduls
 │   ├── server_link.cpp server_link.hpp               die Sockets des Server-Clients
 │   └── idf_component.yml Kconfig.projbuild           Komponentenliste und menuconfig-Pins
 ├── tests/                                            Host-Tests von Einstellungen, Tor, Sprache und Bildschirmtexten
@@ -288,9 +289,9 @@ EH3D-NODE-HMI-GUI/
 
 **Bekannte Grenzen heute**
 
-* Nichts hat auf einem Modul gelaufen: Die Firmware lässt sich bauen, wurde aber weder geflasht noch erprobt, und das verlangte Board-Support-Paket braucht für dieses Modul vielleicht Änderungen.
+* Nichts hat auf einem Modul gelaufen: Die Firmware lässt sich bauen, wurde aber weder geflasht noch erprobt; Panel-Timing und Initialisierungsbefehle sind die Vorgaben des JD9365-Treibers und brauchen vielleicht die dieses Panels.
 * Der Bildschirm erreicht die Maschine nur über einen Auftrag von EH3D-SERVER; seine eigenen Bewegungen (Tippen, Referenz, Spindel) fragen das Tor und warten dann auf die Verbindung zum Knoten, die noch nicht geschrieben ist. Der Client des Servers und die Karte liefen nie auf einem Modul.
-* Der Pin des Hardware-Stopps und der Touch-Controller sind noch nicht festgelegt: Sie müssen am Schaltplan der Einheit geprüft werden.
+* Die Pins des Hardware-Stopps, der Hintergrundbeleuchtung und des Verstärkers müssen am Schaltplan der Einheit geprüft werden. Nur ein GT911-Touch-Controller wird angesteuert; das Modul soll einen anderen tragen (GSL3680), dann startet der Bildschirm ohne Touch.
 * Spracherkenner und Lautsprecher sind noch nicht in der Firmware; Befehle und Hinweise werden als Text getestet.
 * Die Logik der Desktop-Programme (Formate, Controller, Flotte) wird nicht wiederverwendet: Die Bildschirme folgen dem Desktop-Programm, die Regeln sind aber in C++ neu geschrieben.
 

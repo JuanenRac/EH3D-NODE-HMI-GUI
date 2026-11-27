@@ -8,6 +8,18 @@ menu "EH3D HMI"
     config HMI_HW_STOP_ACTIVE_LOW
         bool "The stop input is active low"
         default y
+    config HMI_BACKLIGHT_GPIO
+        int "GPIO of the backlight of the panel"
+        default 23
+        range 0 54
+        help
+            Taken from the demos of the maker for this family of modules. Check the pin against the schematic of the module.
+    config HMI_AMP_GPIO
+        int "GPIO that enables the speaker amplifier (-1: not driven)"
+        default -1
+        range -1 54
+        help
+            The pin is not known for this module yet: with -1 no pin is driven and the speaker may stay silent.
     config HMI_CONFIG_PATH
         string "Settings file in the config partition"
         default "/config/hmi.cfg"

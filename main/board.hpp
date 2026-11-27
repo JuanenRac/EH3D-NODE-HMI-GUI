@@ -17,7 +17,7 @@ void lvgl_lock();
 void lvgl_unlock();
 /// Brightness of the backlight, 10 to 100.
 void set_brightness(unsigned percent);
-/// Starts the codec, the speaker and the microphone; false when the codec does not answer.
+/// Starts the codec and the speaker; false when the codec does not answer.
 bool audio_start();
 /// Plays 16-bit mono samples through the speaker and waits until they have been played (call it from a task of its own, never from the one of the screen).
 void play(const std::int16_t* samples, std::size_t count, unsigned rate);

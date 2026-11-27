@@ -2,4 +2,8 @@ dependencies:
   idf: ">=5.5.5"
   lvgl/lvgl: "~9.3.0"
   espressif/esp_lvgl_port: "^2.6.0"
-  espressif/esp32_p4_function_ev_board: "^5.0.0"
+  # the parts of the module, one driver each: no board package (the one for Espressif's own board brings camera code whose
+  # licence allows Espressif chips only)
+  espressif/esp_lcd_jd9365: "~2.0.2"
+  espressif/esp_lcd_touch_gt911: "^1.2.0"
+  espressif/esp_codec_dev: "~1.5.0"

@@ -52,6 +52,8 @@ Rules of the change itself (--precheck, needs git):
 It also prints the commands the workflows of the repository run (ruff, mypy, cargo fmt, tsc...) so the same ones are run before pushing, and the new findings of
 workflow_hygiene.py with its speed rules when that tool is beside this one.
 
+What git ignores (and the folders of downloaded or built things, such as managed_components and build) is not read: it is not part of the repository and the CI does not have it.
+
 Nothing is modified (only --write-baseline writes, and only the baseline file).
 """
 from __future__ import annotations
@@ -69,13 +71,20 @@ from typing import Any
 
 LANGS = ("en", "es", "de", "fr", "it", "ja", "zh", "pt")
 RULES = ("subprocess-timeout", "visible-text", "coverage-floor", "lang-keys", "version-mismatch")
-SKIP_DIRS = {".git", "node_modules", "venv", ".venv", "__pycache__", "build", "dist", "target", "third_party", ".mypy_cache", ".ruff_cache", "site-packages", ".compile"}
+SKIP_DIRS = {".git", "node_modules", "venv", ".venv", "__pycache__", "build", "dist", "target", "third_party", "managed_components", ".mypy_cache", ".ruff_cache", "site-packages", ".compile"}
 PRAGMA = re.compile(r"#\s*lessons:\s*ok")
 SENTENCE = re.compile(r"[A-Za-zÀ-ÿ]{3,}[ ,:]+[A-Za-zÀ-ÿ]{2,}")
 SUBPROCESS_FUNCS = {"run", "check_output", "check_call", "call"}
 
 
+def git_ignored(repo: Path) -> set[str]:
+    """The paths git ignores under repo (relative, with /; a folder ignored as a whole is listed once). Empty when it is not a repository. A file git tracks is never listed."""
+    out = git_run(repo, "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory")
+    return {p.rstrip("/") for p in (out or "").split("\0") if p.rstrip("/") not in ("", ".")}
+
+
 def walk(repo: Path, suffixes: tuple[str, ...]):
+    ignored = git_ignored(repo)
     stack = [repo]
     while stack:
         d = stack.pop()
@@ -84,6 +93,8 @@ def walk(repo: Path, suffixes: tuple[str, ...]):
         except OSError:
             continue
         for e in entries:
+            if ignored and e.relative_to(repo).as_posix() in ignored:
+                continue
             if e.is_dir():
                 if e.name not in SKIP_DIRS:
                     stack.append(e)

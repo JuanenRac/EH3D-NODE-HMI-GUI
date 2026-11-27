@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Touch with a GSL3680 controller:** when no GT911 answers, the screen starts a GSL3680 with a table the user provides (`gsl3680.fw` in the settings partition or on the card, made with `tools/gsl3680_table.py`). The table has no licence that allows passing it on: it is not in the repository nor in the releases. New menuconfig switch `HMI_TOUCH_TABLE_FROM_CARD` (on). Start-up and packet reading adapted from the MIT component `guition/esp_lcd_touch_gsl3680`. Host tests of the table and the packets; not run on a module.
+
 ## [0.1.5] - The screens start the module with their own drivers - firmware not tested on hardware
 
 - **The module starts with its own drivers, without a board package:** the display is the JD9365 panel of the module (the package used before was the one of Espressif's own board, which drives other panels), the touch is driven when a GT911 answers, sound is played through the ES8311 codec (the microphone is not started) and the card is mounted from `main/module_p4.c`. The image no longer holds the camera libraries that package brought, whose licence allows Espressif chips only. New settings of menuconfig: `HMI_BACKLIGHT_GPIO` (23) and `HMI_AMP_GPIO` (-1). Not run on a module.

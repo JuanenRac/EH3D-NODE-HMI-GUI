@@ -20,6 +20,11 @@ menu "EH3D HMI"
         range -1 54
         help
             The pin is not known for this module yet: with -1 no pin is driven and the speaker may stay silent.
+    config HMI_TOUCH_TABLE_FROM_CARD
+        bool "Take the table of the GSL3680 touch controller from the card too"
+        default y
+        help
+            The table (gsl3680.fw) is looked for in the settings partition first. Switch this off to load it from there only.
     config HMI_CONFIG_PATH
         string "Settings file in the config partition"
         default "/config/hmi.cfg"

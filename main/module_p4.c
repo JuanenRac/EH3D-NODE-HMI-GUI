@@ -126,7 +126,7 @@ static esp_err_t panel_start(esp_lcd_panel_io_handle_t *io, esp_lcd_panel_handle
     return esp_lcd_panel_disp_on_off(*panel, true);
 }
 
-// A GT911 after a reset pulse, read by polling. Other controllers are not driven.
+// After a reset pulse: a GT911 read by polling, or else a GSL3680 (main/touch_gsl3680.cpp).
 static void touch_start(lv_display_t *display) {
     if (!i2c_start()) {
         ESP_LOGW(TAG, "no touch: the I2C bus does not start");
@@ -148,7 +148,7 @@ static void touch_start(lv_display_t *display) {
         address = ESP_LCD_TOUCH_IO_I2C_GT911_ADDRESS_BACKUP;
     }
     if (address == 0) {
-        ESP_LOGW(TAG, "no touch: no GT911 answers, and this firmware drives no other touch controller");
+        if (!touch_gsl3680_start(s_i2c, display, TOUCH_RESET_GPIO)) ESP_LOGW(TAG, "no touch: no GT911 answers and no GSL3680 starts");
         return;
     }
 
@@ -243,6 +243,8 @@ esp_codec_dev_handle_t module_speaker_start(void) {
 
 bool module_sd_mount(const char *mount_point) {
     static sd_pwr_ctrl_handle_t power = NULL;
+    static bool mounted = false;  // the start of the touch may have mounted it already
+    if (mounted) return true;
     if (power == NULL) {
         const sd_pwr_ctrl_ldo_config_t ldo = {.ldo_chan_id = SD_LDO_CHANNEL};
         if (sd_pwr_ctrl_new_on_chip_ldo(&ldo, &power) != ESP_OK) {
@@ -267,5 +269,6 @@ bool module_sd_mount(const char *mount_point) {
         .allocation_unit_size = 64 * 1024,
     };
     sdmmc_card_t *card = NULL;
-    return esp_vfs_fat_sdmmc_mount(mount_point, &host, &slot, &mount, &card) == ESP_OK;
+    mounted = esp_vfs_fat_sdmmc_mount(mount_point, &host, &slot, &mount, &card) == ESP_OK;
+    return mounted;
 }

@@ -25,7 +25,17 @@ These come from the board support code of the maker's demo and are to be checked
 
 ## The drivers
 
-`main/module_p4.c` starts each part with its own driver from the component registry: JD9365 (display, with the default timing and initialisation commands of the driver), GT911 (touch, if one answers), ES8311 through `esp_codec_dev` (sound) and the SD card of SDMMC slot 0. No board package is used: the one for Espressif's own board drives other panels and brings camera code whose licence allows Espressif chips only. The module is reported to carry a GSL3680 touch controller, which needs a binary firmware of its maker and is not driven; this is to be checked on the unit.
+`main/module_p4.c` starts each part with its own driver from the component registry: JD9365 (display, with the default timing and initialisation commands of the driver), GT911 (touch, if one answers), ES8311 through `esp_codec_dev` (sound) and the SD card of SDMMC slot 0. No board package is used: the one for Espressif's own board drives other panels and brings camera code whose licence allows Espressif chips only. The module is reported to carry a GSL3680 touch controller instead of a GT911; this is to be checked on the unit.
+
+## The table of a GSL3680
+
+A GSL3680 keeps no program: it is given a table at each start. That table comes from the maker of the panel and has no licence that lets this project pass it on, so it is **not in this repository nor in its releases**: you provide it.
+
+1. Get `gsl3680_firmware.h` from the maker of your module (for the JC8012P4A1C, Guition's component `guition/esp_lcd_touch_gsl3680` of the ESP-IDF component registry carries it).
+2. `python tools/gsl3680_table.py gsl3680_firmware.h -o gsl3680.fw`
+3. Put `gsl3680.fw` in the root of the microSD card, or in the settings partition next to `hmi.cfg` (looked at first). `HMI_TOUCH_TABLE_FROM_CARD` switches the card off.
+
+Without the file the screen starts without touch and says so in its log. A table made for another panel gives wrong positions: use the one of your module.
 
 ## The stop
 

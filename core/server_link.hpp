@@ -315,10 +315,13 @@ inline Request job_cancel_request(const std::string& id) { return {"POST", "/api
 /// Stops whatever job the server has on the machine (`POST /machines/:id/stop`); it needs no job id, so it works for a job another program started after the last reading of
 /// the fleet. An old server has no such route (404 or 405).
 inline Request machine_stop_request(const std::string& machine) { return {"POST", "/api/v1/machines/" + machine + "/stop", "{}"}; }
-inline Request job_confirm_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/confirm", "{}"}; }
+/// The body of an answer: the identifier of the question the screen shows (`pause.question` of the job), so that the server refuses the answer (`409 question_changed`) when
+/// the job asks something else by then. A server of an earlier version gives no identifier and gets none.
+inline std::string answer_body(const std::string& question) { return question.empty() ? std::string("{}") : "{\"question\":" + json_quote(question) + "}"; }
+inline Request job_confirm_request(const std::string& id, const std::string& question = {}) { return {"POST", "/api/v1/jobs/" + id + "/confirm", answer_body(question)}; }
 /// Holds a running job where it is (`POST /jobs/:id/pause`) and lets a held one go on (`POST /jobs/:id/resume`); the server holds only G-code jobs.
 inline Request job_pause_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/pause", "{}"}; }
-inline Request job_resume_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/resume", "{}"}; }
+inline Request job_resume_request(const std::string& id, const std::string& question = {}) { return {"POST", "/api/v1/jobs/" + id + "/resume", answer_body(question)}; }
 /// Asks the server to make a new job, ready and not started, from the saved request of a stopped one (`POST /jobs/:id/resume-from`): it brings the `skip` forward
 /// by itself, so no file is sent. An old server has no such route (404 or 405).
 inline Request job_resume_from_request(const std::string& id) { return {"POST", "/api/v1/jobs/" + id + "/resume-from", "{}"}; }
@@ -644,6 +647,7 @@ struct MachineRow {
     int ready = 0;
     std::string pause_kind;                // `tool_change` while a job waits for the operator
     int pause_tool = 0;                    // the tool the job waits for at a tool change (0 when the server does not say it)
+    std::string pause_question;            // the identifier of what the job asks now (empty when the server does not say it)
     int steps_done = 0, steps_total = 0;   // the holes (paths) of the job done and in all; the lines of a G-code program
     double estimate_s = 0;                 // how long the movements of the job take, as the server estimated it (0: not said)
     // what the server may say about the head and the tool while the job runs (every one is optional: an answer without them leaves the card with dashes)
@@ -690,6 +694,7 @@ inline bool parse_fleet(const std::string& body, FleetView& out) {
             const Json* pause = job->get("pause");
             if (pause && pause->type == Json::Type::Object) {
                 r.pause_kind = pause->str("kind");
+                r.pause_question = pause->str("question");
                 r.pause_tool = static_cast<int>(pause->int_in("tool", -1000000000L, 1000000000L));
             }
             const bool lines = job->str("kind") == "gcode";

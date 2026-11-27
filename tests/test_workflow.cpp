@@ -467,6 +467,21 @@ static void a_job_is_held_and_a_stop_reaches_the_job_of_the_machine() {
     w.on_fleet(fleet_of("j42", "waiting", 50, "tool_change"), "m1");
     CHECK(w.tool_wait() && !w.held());
     CHECK(w.confirm_request().path == "/api/v1/jobs/j42/confirm" && w.release_request().path.empty());
+    // an answer carries the question the operator was looking at; a server that names none gets none
+    CHECK(w.question().empty() && w.confirm_request().body == "{}");
+    FleetView asking = fleet_of("j42", "waiting", 50, "tool_change");
+    asking.machines[0].pause_question = "q0a1b2c3";
+    w.on_fleet(asking, "m1");
+    CHECK(w.question() == "q0a1b2c3" && w.confirm_request().body == "{\"question\":\"q0a1b2c3\"}");
+    CHECK(w.confirm_request("q4d5e6f7").body == "{\"question\":\"q4d5e6f7\"}");  // the one shown when it was pressed, not the one of now
+    asking.machines[0].pause_kind = "hold";
+    w.on_fleet(asking, "m1");
+    CHECK(w.release_request().body == "{\"question\":\"q0a1b2c3\"}" && w.release_request("").body == "{}");
+    w.on_fleet(fleet_of("j42", "busy", 51, ""), "m1");
+    CHECK(w.question().empty());
+    FleetView read;
+    CHECK(parse_fleet("{\"machines\":[{\"id\":\"m1\",\"job\":{\"id\":\"j1\",\"pause\":{\"kind\":\"hold\",\"question\":\"q0a1b2c3\"}}}]}", read));
+    CHECK(read.machines[0].pause_question == "q0a1b2c3");
 
     // the stop of the machine goes first and needs no job id; the cancel of the jobs the fleet shows is the backup for a server without that route
     Workflow other;

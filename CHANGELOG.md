@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.3] - Japanese and Chinese are drawn on every screen - firmware not tested on hardware
+
 - **Japanese and Chinese are drawn everywhere:** the two fonts of the screen are built again with every character of every text of the screen (the settings of the server, the refusals of the server, the sentences of the speaker), so those pages no longer fall back to English; the characters of the languages that were removed are no longer in them. `tools/make_locales.py --check` now looks at every source that holds text and the host tests fail when a text of any of the eight languages cannot be drawn. The new fonts have not been seen on the module.
 - **The refusal codes added by the server since the last release have their texts in the eight languages**.
 - **The shared lessons check reads only what is part of the repository:** what git ignores, and folders such as `managed_components` that a firmware build downloads, are no longer analysed, so the local validation no longer fails over downloaded code.

@@ -14,20 +14,11 @@ Components
 
 idf | 5.5.5 | Apache-2.0
 espressif/cmake_utilities | 0.5.3 | Apache-2.0
-espressif/esp32_p4_function_ev_board | 5.2.3 | Apache-2.0
-espressif/esp_cam_sensor | 2.0.1 | Apache-2.0
 espressif/esp_codec_dev | 1.5.11 | Apache-2.0 and MIT
-espressif/esp_h264 | 1.0.4 | Apache-2.0
-espressif/esp_ipa | 1.3.1 | see its text below
-espressif/esp_lcd_ek79007 | 2.0.2~1 | Apache-2.0
-espressif/esp_lcd_ili9881c | 1.1.0 | Apache-2.0
-espressif/esp_lcd_lt8912b | 0.2.1 | Apache-2.0
+espressif/esp_lcd_jd9365 | 2.0.2 | Apache-2.0
 espressif/esp_lcd_touch | 1.2.1 | Apache-2.0
 espressif/esp_lcd_touch_gt911 | 1.2.1 | Apache-2.0
 espressif/esp_lvgl_port | 2.9.0 | Apache-2.0
-espressif/esp_sccb_intf | 1.0.0 | Apache-2.0
-espressif/esp_video | 2.0.1 | see its text below
-espressif/usb_host_uvc | 2.4.2 | Apache-2.0
 lvgl/lvgl | 9.3.0 | MIT and BSD
 Montserrat-Medium.ttf | font | OFL-1.1
 DejaVuSans.ttf | font | Bitstream Vera and public domain
@@ -40,7 +31,7 @@ Copyright notices and licence texts
 -----------------------------------
 
 ==============================================================================
-Used by: ESP-IDF, ESP-IDF components/bt/controller/lib_esp32/LICENSE, ESP-IDF components/bt/controller/lib_esp32c3_family/LICENSE, ESP-IDF components/bt/esp_ble_mesh/lib/lib/LICENSE, ESP-IDF components/esp_coex/lib/LICENSE, ESP-IDF components/esp_phy/lib/LICENSE, ESP-IDF components/esp_wifi/lib/LICENSE, ESP-IDF components/openthread/lib/LICENSE, espressif/cmake_utilities: license.txt, espressif/esp32_p4_function_ev_board: LICENSE, espressif/esp_cam_sensor: LICENSE, espressif/esp_codec_dev: LICENSE, espressif/esp_h264: LICENSE, espressif/esp_lcd_ek79007: license.txt, espressif/esp_lcd_ili9881c: license.txt, espressif/esp_lcd_lt8912b: license.txt, espressif/esp_lcd_touch: license.txt, espressif/esp_lcd_touch_gt911: license.txt, espressif/esp_lvgl_port: license.txt, espressif/esp_sccb_intf: LICENSE, espressif/usb_host_uvc: LICENSE
+Used by: ESP-IDF, ESP-IDF components/bt/controller/lib_esp32/LICENSE, ESP-IDF components/bt/controller/lib_esp32c3_family/LICENSE, ESP-IDF components/bt/esp_ble_mesh/lib/lib/LICENSE, ESP-IDF components/esp_coex/lib/LICENSE, ESP-IDF components/esp_phy/lib/LICENSE, ESP-IDF components/esp_wifi/lib/LICENSE, ESP-IDF components/openthread/lib/LICENSE, espressif/cmake_utilities: license.txt, espressif/esp_codec_dev: LICENSE, espressif/esp_lcd_jd9365: license.txt, espressif/esp_lcd_touch: license.txt, espressif/esp_lcd_touch_gt911: license.txt, espressif/esp_lvgl_port: license.txt
 ==============================================================================
 
                                  Apache License
@@ -4327,31 +4318,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-==============================================================================
-Used by: espressif/esp_ipa: LICENSE, espressif/esp_video: LICENSE
-==============================================================================
-
- ESPRESSIF MIT License
-
- Copyright (c) 2024 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
-
- Permission is hereby granted for use on all ESPRESSIF SYSTEMS products, in which case,
- it is free of charge, to any person obtaining a copy of this software and associated
- documentation files (the "Software"), to deal in the Software without restriction, including
- without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- and/or sell copies of the Software, and to permit persons to whom the Software is furnished
- to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all copies or
- substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ==============================================================================
 Used by: lvgl/lvgl: LICENCE.txt

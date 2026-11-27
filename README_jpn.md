@@ -155,9 +155,9 @@ EH3D-NODE-HMI-GUI は CNC マシン、レーザー、ピック＆プレース機
 |---|---|---|
 | 設定ファイル | `config` パーティションの `hmi.cfg`：`キー = 値` の行。`hmi.cfg.example` と上の表を参照 | `core/hmi_config.hpp` |
 | ハードウェア停止入力 | GPIO 1 本（menuconfig の `HMI_HW_STOP_GPIO`、既定はアクティブロー、プルアップ付きで断線は押下扱い） | `main/board_p4.cpp` |
-| タッチディスプレイ | LVGL 9 経由の 800x1280 MIPI-DSI | `main/ui.cpp` |
-| サウンド | スピーカーアンプ付き ES8311 コーデックと ES7210 マイク入力 | `main/board_p4.cpp` |
-| microSD | カードのルート `/sdcard`：穴あけ、ルーティング、Gerber、DXF、ZIP のファイルを一覧・読み取りし、レポートを書き込みます。単純なファイル名のみ受け付けます | `core/sdfiles.hpp`, `main/board_p4.cpp` |
+| タッチディスプレイ | LVGL 9 経由の JD9365 800x1280 MIPI-DSI。タッチは GT911 コントローラーの場合のみ | `main/module_p4.c`, `main/ui.cpp` |
+| サウンド | スピーカーアンプ付き ES8311 コーデック（再生用）。まだ録音する機能がないためマイクは起動しません | `main/module_p4.c` |
+| microSD | カードのルート `/sdcard`：穴あけ、ルーティング、Gerber、DXF、ZIP のファイルを一覧・読み取りし、レポートを書き込みます。単純なファイル名のみ受け付けます | `core/sdfiles.hpp`, `main/module_p4.c` |
 | EH3D-SERVER | アクセストークン付き HTTP：`poll_s` 秒ごとに `GET /api/v1/fleet`、`POST /api/v1/machines/:id/jobs`、`POST /api/v1/jobs/:id/start`、`confirm`、`cancel`アプリケーション `hmi` としてログインし（`POST /api/v1/auth/login`、`server_user` と `server_password`）、ログインの寿命の最後の 4 分の 1 で更新し、401 でトークンを忘れます。サーバーの拒否理由をコードごとに操作者の言語で表示し、`GET /api/v1/work/machines` を読んでプラグインのマシンの `detail` を表示します（ロックまたはアラーム中は赤）。 | `core/server_link.hpp`, `main/server_link.cpp` |
 | サーバーの設定 | `settings_poll_s` 秒ごとに `GET /api/v1/settings/contract`（管理者ログイン、応答は最大 1 MiB）。ライブの契約を読めないときは、画面が持つコピーを読み取り専用で表示します。変更は `PUT /api/v1/auth/policy` で、既定ではオフです（[docs/SETTINGS_CONTRACT.md](docs/SETTINGS_CONTRACT.md) を参照） | `core/settings_contract.hpp`, `core/settings_page.hpp` |
 | 管理者以外の有効な値 | `settings_values_poll_s` 秒ごとに `GET /api/v1/settings/values`（前回応答の `ETag` を `If-None-Match` に付与。ログインは何でも可、数 KB で最大 16 KiB、`304` は数バイト）。ページは内蔵コピーの文言で値を読み取り専用で表示し、秘密やコンピューターのパスは保持せず、サーバーの `contract_hash` がコピーのハッシュと異なる場合に警告します | `core/settings_values.hpp` |
@@ -259,6 +259,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── ui.cpp ui.hpp                                 LVGL 画面と停止ボタン
 │   ├── fonts/                                        フォント：ラテンから日本語
 │   ├── board_p4.cpp board.hpp                        モジュール：表示、サウンド、停止入力
+│   ├── module_p4.c module_p4.h                       モジュール各部のドライバー
 │   ├── server_link.cpp server_link.hpp               サーバークライアントのソケット
 │   └── idf_component.yml Kconfig.projbuild           コンポーネント一覧と menuconfig のピン
 ├── tests/                                            設定、関門、音声、画面文言のホストテスト
@@ -288,9 +289,9 @@ EH3D-NODE-HMI-GUI/
 
 **現時点の既知の制限**
 
-* モジュール上では何も動いていません。ファームウェアはビルドできますが、書き込みも試用もしておらず、必要なボードサポートパッケージはこのモジュール用に変更が要るかもしれません。
+* モジュール上では何も動いていません。ファームウェアはビルドできますが、書き込みも試用もしていません。パネルのタイミングと初期化コマンドは JD9365 ドライバーの既定値で、このパネル用の値が必要になるかもしれません。
 * 画面は EH3D-SERVER のジョブを通してのみマシンに届きます。画面自身の動き（ジョグ、原点、スピンドル）は関門を通った後、まだ書かれていないノードへのリンクを待ちます。サーバーのクライアントとカードはモジュール上で動いたことがありません。
-* ハードウェア停止のピンとタッチコントローラーはまだ確定しておらず、本体の回路図で確認する必要があります。
+* ハードウェア停止、バックライト、アンプのピンは本体の回路図で確認する必要があります。駆動するタッチコントローラーは GT911 のみです。このモジュールは別のもの（GSL3680）を搭載しているとの報告があり、その場合はタッチなしで起動します。
 * 音声認識器とスピーカーはまだファームウェアに入っておらず、命令と通知はテキストとしてテストしています。
 * デスクトップ版のロジック（フォーマット、コントローラー、フリート）は再利用していません。画面はデスクトップ版に倣いますが、ルールは C++ で書き直しています。
 

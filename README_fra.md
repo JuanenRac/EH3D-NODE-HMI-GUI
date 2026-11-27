@@ -155,9 +155,9 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 |---|---|---|
 | Fichier de réglages | `hmi.cfg` dans la partition `config` : lignes `clé = valeur` ; voir `hmi.cfg.example` et le tableau ci-dessus | `core/hmi_config.hpp` |
 | Entrée d'arrêt matériel | un GPIO (`HMI_HW_STOP_GPIO` dans menuconfig, actif bas par défaut, avec pull-up pour qu'un fil ouvert compte comme enfoncé) | `main/board_p4.cpp` |
-| Écran tactile | MIPI-DSI 800x1280 via LVGL 9 | `main/ui.cpp` |
-| Son | codec ES8311 avec amplificateur de haut-parleur et entrée micro ES7210 | `main/board_p4.cpp` |
-| microSD | la racine de la carte à `/sdcard` : les fichiers de perçage, de défonçage, Gerber, DXF et ZIP sont listés et lus, des rapports sont écrits ; seuls des noms de fichier simples sont acceptés | `core/sdfiles.hpp`, `main/board_p4.cpp` |
+| Écran tactile | JD9365 MIPI-DSI 800x1280 via LVGL 9 ; tactile seulement avec un contrôleur GT911 | `main/module_p4.c`, `main/ui.cpp` |
+| Son | codec ES8311 avec amplificateur de haut-parleur, pour la lecture ; le micro n'est pas démarré, rien n'enregistre encore | `main/module_p4.c` |
+| microSD | la racine de la carte à `/sdcard` : les fichiers de perçage, de défonçage, Gerber, DXF et ZIP sont listés et lus, des rapports sont écrits ; seuls des noms de fichier simples sont acceptés | `core/sdfiles.hpp`, `main/module_p4.c` |
 | EH3D-SERVER | HTTP avec le jeton d'accès : `GET /api/v1/fleet` toutes les `poll_s` secondes, `POST /api/v1/machines/:id/jobs`, `POST /api/v1/jobs/:id/start`, `confirm` et `cancel` Ouvre une session comme l'application `hmi` (`POST /api/v1/auth/login`, avec `server_user` et `server_password`), renouvelle la session dans le dernier quart de sa vie et oublie le jeton sur un 401 ; montre les refus du serveur par code dans la langue de l'opérateur ; lit `GET /api/v1/work/machines` et montre le `detail` des machines des greffons, en rouge quand l'une est verrouillée ou en alarme. | `core/server_link.hpp`, `main/server_link.cpp` |
 | Réglages du serveur | `GET /api/v1/settings/contract` toutes les `settings_poll_s` secondes (connexion d'administrateur ; jusqu'à 1 MiB de réponse) ; si le contrat en direct ne peut pas être lu, l'écran montre la copie qu'il porte, en lecture seule ; un changement est `PUT /api/v1/auth/policy`, désactivé par défaut (voir [docs/SETTINGS_CONTRACT.md](docs/SETTINGS_CONTRACT.md)) | `core/settings_contract.hpp`, `core/settings_page.hpp` |
 | Valeurs en vigueur sans être administrateur | `GET /api/v1/settings/values` toutes les `settings_values_poll_s` secondes avec l'`ETag` de la dernière réponse dans `If-None-Match` (toute connexion, quelques Ko et jamais plus de 16 Kio ; un `304` coûte quelques octets) ; la page montre les valeurs avec les textes de la copie qu'elle porte, en lecture seule, ne garde ni secret ni chemin de l'ordinateur et avertit quand le `contract_hash` du serveur n'est pas le hash de la copie | `core/settings_values.hpp` |
@@ -259,6 +259,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── ui.cpp ui.hpp                                 les écrans LVGL et le bouton d'arrêt
 │   ├── fonts/                                        les polices : du latin au japonais
 │   ├── board_p4.cpp board.hpp                        le module : écran, son, entrée d'arrêt
+│   ├── module_p4.c module_p4.h                       les pilotes de chaque partie du module
 │   ├── server_link.cpp server_link.hpp               les sockets du client du serveur
 │   └── idf_component.yml Kconfig.projbuild           liste des composants et broches de menuconfig
 ├── tests/                                            tests sur ordinateur des réglages, de la porte, de la voix et des textes d'écran
@@ -288,9 +289,9 @@ EH3D-NODE-HMI-GUI/
 
 **Limites connues aujourd'hui**
 
-* Rien n'a tourné sur un module : le firmware se compile, mais il n'a été ni flashé ni essayé, et le paquet de support de carte demandé peut nécessiter des changements pour ce module.
+* Rien n'a tourné sur un module : le firmware se compile, mais il n'a été ni flashé ni essayé ; la temporisation de la dalle et ses commandes d'initialisation sont celles par défaut du pilote JD9365 et il faudra peut-être celles de cette dalle.
 * L'écran n'atteint la machine que par un travail d'EH3D-SERVER ; ses propres déplacements (jog, origine, broche) interrogent la porte puis attendent la liaison avec le nœud, pas encore écrite. Le client du serveur et la carte n'ont jamais tourné sur un module.
-* La broche de l'arrêt matériel et le contrôleur tactile ne sont pas encore fixés : il faut les vérifier sur le schéma de l'unité.
+* Les broches de l'arrêt matériel, du rétroéclairage et de l'amplificateur sont à vérifier sur le schéma de l'unité. Seul un contrôleur tactile GT911 est piloté ; le module en porterait un autre (GSL3680), et l'écran démarre alors sans tactile.
 * Le reconnaisseur vocal et le haut-parleur ne sont pas encore dans le firmware ; les ordres et alertes sont testés comme du texte.
 * La logique des programmes de bureau (formats, contrôleur, flotte) n'est pas réutilisée : les écrans suivent le programme de bureau, mais les règles sont réécrites en C++.
 

@@ -288,6 +288,20 @@
         },
         {
           "desc": {
+            "en": "the drivers of each part of the module",
+            "es": "los controladores de cada parte del módulo",
+            "it": "i driver di ogni parte del modulo",
+            "de": "die Treiber der Teile des Moduls",
+            "fr": "les pilotes de chaque partie du module",
+            "pt": "os controladores de cada parte do módulo",
+            "zh": "模块各部分的驱动",
+            "ja": "モジュール各部のドライバー"
+          },
+          "name": "module_p4.c  module_p4.h",
+          "tree_name": "module_p4.c module_p4.h"
+        },
+        {
+          "desc": {
             "en": "the sockets of the client of the server",
             "es": "los sockets del cliente del servidor",
             "it": "i socket del client del server",
@@ -316,14 +330,14 @@
         }
       ],
       "sub": {
-        "en": "the ESP-IDF firmware, not built yet",
-        "es": "el firmware de ESP-IDF, aún sin compilar",
-        "it": "il firmware ESP-IDF, ancora da compilare",
-        "de": "die ESP-IDF-Firmware, noch nicht gebaut",
-        "fr": "le firmware ESP-IDF, pas encore compilé",
-        "pt": "o firmware ESP-IDF, ainda por compilar",
-        "zh": "ESP-IDF 固件，尚未编译",
-        "ja": "ESP-IDF ファームウェア（未ビルド）"
+        "en": "the ESP-IDF firmware, never run on a module",
+        "es": "el firmware de ESP-IDF, nunca probado en un módulo",
+        "it": "il firmware ESP-IDF, mai provato su un modulo",
+        "de": "die ESP-IDF-Firmware, nie auf einem Modul",
+        "fr": "le firmware ESP-IDF, jamais lancé sur un module",
+        "pt": "o firmware ESP-IDF, nunca corrido num módulo",
+        "zh": "ESP-IDF 固件，尚未在模块上运行",
+        "ja": "ESP-IDF ファームウェア（実機未実行）"
       }
     },
     {

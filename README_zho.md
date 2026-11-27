@@ -155,9 +155,9 @@ EH3D-NODE-HMI-GUI 是数控机床、激光机或贴片机操作员自己的屏�
 |---|---|---|
 | 设置文件 | `config` 分区中的 `hmi.cfg`：`键 = 值` 行；见 `hmi.cfg.example` 和上表 | `core/hmi_config.hpp` |
 | 硬件急停输入 | 一个 GPIO（menuconfig 中的 `HMI_HW_STOP_GPIO`，默认低电平有效，带上拉，因此断线视为按下） | `main/board_p4.cpp` |
-| 触摸屏 | 通过 LVGL 9 驱动 800x1280 MIPI-DSI | `main/ui.cpp` |
-| 声音 | 带扬声器功放的 ES8311 编解码器和 ES7210 麦克风输入 | `main/board_p4.cpp` |
-| microSD | 卡的根目录 `/sdcard`：列出并读取钻孔、铣切、Gerber、DXF 和 ZIP 文件，写入报告；只接受简单文件名 | `core/sdfiles.hpp`, `main/board_p4.cpp` |
+| 触摸屏 | 通过 LVGL 9 驱动 JD9365 800x1280 MIPI-DSI；仅 GT911 控制器支持触摸 | `main/module_p4.c`, `main/ui.cpp` |
+| 声音 | 带扬声器功放的 ES8311 编解码器，用于播放；尚无录音功能，因此不启动麦克风 | `main/module_p4.c` |
+| microSD | 卡的根目录 `/sdcard`：列出并读取钻孔、铣切、Gerber、DXF 和 ZIP 文件，写入报告；只接受简单文件名 | `core/sdfiles.hpp`, `main/module_p4.c` |
 | EH3D-SERVER | 带访问令牌的 HTTP：每 `poll_s` 秒 `GET /api/v1/fleet`，`POST /api/v1/machines/:id/jobs`，`POST /api/v1/jobs/:id/start`，以及 `confirm` 和 `cancel`以应用 `hmi` 登录（`POST /api/v1/auth/login`，使用 `server_user` 和 `server_password`），在登录有效期的最后四分之一续期，收到 401 时忘记令牌；按代码以操作员的语言显示服务器的拒绝原因；读取 `GET /api/v1/work/machines` 并显示插件机床的 `detail`，被锁定或报警的显示为红色。 | `core/server_link.hpp`, `main/server_link.cpp` |
 | 服务器设置 | 每 `settings_poll_s` 秒 `GET /api/v1/settings/contract`（管理员登录；应答最大 1 MiB）；读不到实时契约时，屏幕以只读方式显示自带的副本；修改是 `PUT /api/v1/auth/policy`，默认关闭（见 [docs/SETTINGS_CONTRACT.md](docs/SETTINGS_CONTRACT.md)） | `core/settings_contract.hpp`, `core/settings_page.hpp` |
 | 非管理员的当前生效值 | 每 `settings_values_poll_s` 秒 `GET /api/v1/settings/values`，并在 `If-None-Match` 中带上上次应答的 `ETag`（任何登录均可，几 KB，最大 16 KiB；`304` 只需几个字节）；页面用自带副本的文本只读显示这些值，不保留任何机密或电脑路径，并在服务器的 `contract_hash` 与副本的哈希不一致时发出警告 | `core/settings_values.hpp` |
@@ -259,6 +259,7 @@ EH3D-NODE-HMI-GUI/
 │   ├── ui.cpp ui.hpp                                 LVGL 界面和停止按钮
 │   ├── fonts/                                        字体：拉丁到日文
 │   ├── board_p4.cpp board.hpp                        模块：显示、声音、急停输入
+│   ├── module_p4.c module_p4.h                       模块各部分的驱动
 │   ├── server_link.cpp server_link.hpp               服务器客户端的套接字
 │   └── idf_component.yml Kconfig.projbuild           组件列表和 menuconfig 引脚
 ├── tests/                                            设置、闸门、语音和界面文本的主机测试
@@ -288,9 +289,9 @@ EH3D-NODE-HMI-GUI/
 
 **目前已知的限制**
 
-* 尚无任何内容在模块上运行：固件可以编译，但尚未烧录或试用，所需的板级支持包可能需要为该模块做修改。
+* 尚无任何内容在模块上运行：固件可以编译，但尚未烧录或试用；面板时序和初始化命令为 JD9365 驱动的默认值，可能需要使用本面板自己的参数。
 * 屏幕只能通过 EH3D-SERVER 的作业到达机床；它自己的动作（点动、回原点、主轴）先经过闸门，然后等待与节点的连接，而该连接尚未编写。服务器客户端和存储卡从未在模块上运行。
-* 急停引脚和触摸控制器尚未确定：必须对照本机的原理图核实。
+* 急停、背光和功放的引脚必须对照本机原理图核实。仅驱动 GT911 触摸控制器；据报道该模块使用另一种（GSL3680），此时屏幕启动但没有触摸。
 * 语音识别器和扬声器尚未进入固件；指令和提示以文本方式测试。
 * 桌面程序的逻辑（格式、控制器、机群）没有复用：界面遵循桌面程序，但规则用 C++ 重写。
 

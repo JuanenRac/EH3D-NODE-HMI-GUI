@@ -69,7 +69,7 @@ void read_hardware_stop(bool& wired, bool& pressed) {
     const gpio_num_t pin = static_cast<gpio_num_t>(CONFIG_HMI_HW_STOP_GPIO);
     if (!configured) {
         gpio_config_t cfg = {};
-        cfg.pin_bit_mask = 1ULL << pin;
+        cfg.pin_bit_mask = 1ULL << (pin < 0 ? 0 : static_cast<int>(pin));  // `wired` is false for -1: this keeps the compiler quiet
         cfg.mode = GPIO_MODE_INPUT;
 #if CONFIG_HMI_HW_STOP_ACTIVE_LOW
         cfg.pull_up_en = GPIO_PULLUP_ENABLE;

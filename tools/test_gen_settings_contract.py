@@ -1,6 +1,6 @@
 # Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 """Tests of tools/gen_settings_contract.py: the header it writes is well formed, refuses a document the screen would not understand and, when the server is next to this repository,
-it is the one on disk and says what the server says (89 settings in 15 groups today)."""
+it is the one on disk and says what the server says (109 settings in 17 groups today)."""
 import copy
 import json
 import sys
@@ -95,10 +95,10 @@ class SourceTests(unittest.TestCase):
     def test_the_server_says_what_the_screen_expects(self):
         doc = json.loads(gen.SOURCE.read_text(encoding="utf-8"))
         gen.check_document(doc)
-        self.assertEqual(len(doc["settings"]), 89)
-        self.assertEqual(len(doc["groups"]), 15)
-        self.assertEqual(sum(1 for s in doc["settings"] if s["write"]["via"] == "policy"), 19)
-        self.assertEqual(sum(1 for s in doc["settings"] if s["write"]["via"] == "file"), 70)
+        self.assertEqual(len(doc["settings"]), 109)
+        self.assertEqual(len(doc["groups"]), 17)
+        self.assertEqual(sum(1 for s in doc["settings"] if s["write"]["via"] == "policy"), 20)
+        self.assertEqual(sum(1 for s in doc["settings"] if s["write"]["via"] == "file"), 89)
 
     def test_every_key_of_the_server_is_a_row_of_the_table(self):
         doc = json.loads(gen.SOURCE.read_text(encoding="utf-8"))

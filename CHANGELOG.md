@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.6] - GSL3680 touch with a table you provide - firmware not tested on hardware
+
 - **The copy of the settings contract is the current one:** it has the settings of the notices on a phone (`push_enabled` and `push_service_account_file`). A warning of the compiler about the pin of the hardware stop is gone.
 
 - **Touch with a GSL3680 controller:** when no GT911 answers, the screen starts a GSL3680 with a table the user provides (`gsl3680.fw` in the settings partition or on the card, made with `tools/gsl3680_table.py`). The table has no licence that allows passing it on: it is not in the repository nor in the releases. New menuconfig switch `HMI_TOUCH_TABLE_FROM_CARD` (on). Start-up and packet reading adapted from the MIT component `guition/esp_lcd_touch_gsl3680`. Host tests of the table and the packets; not run on a module.
